@@ -121,7 +121,7 @@ class Dashboard extends StatelessWidget {
                       description: 'Electric Bill',
                       price: '100',
                       date: '04 June',
-                      isIncome: false,
+                      isIncome: true,
                     ),
                     TransactionTile(
                       boxColor: Colors.yellow.shade200,

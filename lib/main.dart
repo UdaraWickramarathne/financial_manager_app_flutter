@@ -1,4 +1,5 @@
 import 'package:financial_app/screens/dashboard.dart';
+import 'package:financial_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

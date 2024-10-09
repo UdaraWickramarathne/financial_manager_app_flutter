@@ -11,7 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isHome = true;
   int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,24 +24,76 @@ class _HomePageState extends State<HomePage> {
           ProfileIndexPage(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        key: bottomNavigatorKey,
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      floatingActionButton: isHome
+          ? FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Colors.purple,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.add),
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 0.5,
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+        ]),
+        height: 60,
+        child: BottomAppBar(
+          elevation: 10.0,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.home),
+                onPressed: () {
+                  setState(() {
+                    isHome = true;
+                    _currentIndex = 0;
+                  });
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.person),
+                onPressed: () {
+                  setState(() {
+                    isHome = false;
+                    _currentIndex = 1;
+                  });
+                },
+              ),
+              if (isHome)
+                const IconButton(
+                  icon: Icon(null),
+                  onPressed: null,
+                ),
+              IconButton(
+                icon: const Icon(Icons.report),
+                onPressed: () {
+                  setState(() {
+                    isHome = false;
+                    _currentIndex = 2;
+                  });
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.currency_exchange),
+                onPressed: () {
+                  setState(() {
+                    isHome = false;
+                    _currentIndex = 3;
+                  });
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

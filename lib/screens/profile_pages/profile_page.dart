@@ -150,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ProfileOption(
                   icon: Icons.star_rate_outlined,
                   text: 'Rate App',
-                  iconColor: Color(0xFFFFD700),
+                  iconColor: const Color(0xFFFFD700),
                   onTap: () {
                     RatingDialog.showRatingDialog(context, _userRating);
                   },

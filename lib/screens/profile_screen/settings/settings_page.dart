@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../themes/theme.dart';
-import '../profile_screen.dart';
+import '../profile_page.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                    (Route<dynamic> route) => false,
+                (Route<dynamic> route) => false,
               );
             },
           ),

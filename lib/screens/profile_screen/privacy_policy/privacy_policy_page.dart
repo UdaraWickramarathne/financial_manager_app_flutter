@@ -1,4 +1,4 @@
-import 'package:financial_app/screens/profile_screen/profile_screen.dart';
+import 'package:financial_app/screens/profile_screen/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -54,9 +54,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
               ),
               const SizedBox(height: 16),
 
-
               if (!_isExpanded) _buildInitialContent(),
-
 
               if (_isExpanded) _buildFullContent(),
 
@@ -88,12 +86,13 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 child: ElevatedButton(
                   onPressed: _isAgreed
                       ? () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                          (Route<dynamic> route) => false,
-                    );
-                  }
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ProfileScreen()),
+                            (Route<dynamic> route) => false,
+                          );
+                        }
                       : null, // Disable button if not agreed
                   child: const Text('Proceed'),
                 ),
@@ -171,7 +170,8 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Confirm Exit'),
-        content: const Text('You need to agree to the Privacy Policy before exiting.'),
+        content: const Text(
+            'You need to agree to the Privacy Policy before exiting.'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),

@@ -1,14 +1,14 @@
-import 'package:financial_app/screens/dashboard.dart';
+import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'rating/rating_dialog.dart';
 
-import '../../components/ProfileOption.dart';
-import 'account_info/accountInfo_screen.dart';
-import 'privacy_policy/privacy_policy_screen.dart';
-import 'settings/settings_screen.dart';
+import '../../components/profile_option.dart';
+import 'account_info/accountInfo_page.dart';
+import 'privacy_policy/privacy_policy_page.dart';
+import 'settings/settings_page.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // Function to show star rating dialog
- /* void _showRatingDialog() {
+  /* void _showRatingDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const Dashboard()),
-                  (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false,
             );
           },
         ),
@@ -115,18 +115,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: _pickImage,
                       child: CircleAvatar(
                         radius: 80,
-                        backgroundImage: _image != null
-                            ? FileImage(_image!)
-                            : null,
+                        backgroundImage:
+                            _image != null ? FileImage(_image!) : null,
                         child: _image == null
                             ? const Icon(
-                          Icons.person,
-                          size: 80,
-                        )
+                                Icons.person,
+                                size: 80,
+                              )
                             : null,
                       ),
                     ),
-
                     Container(
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
@@ -225,7 +223,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text("Logout"),
-                          content: const Text("Are you sure you want to logout?"),
+                          content:
+                              const Text("Are you sure you want to logout?"),
                           actions: [
                             TextButton(
                               child: const Text("Cancel"),

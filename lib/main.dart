@@ -1,12 +1,9 @@
-
-import 'package:financial_app/screens/login_page.dart';
+import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
-
-
 
 void main() {
   runApp(
@@ -54,8 +51,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home: const LoginScreen(),
-
+      home: const HomePage(),
     );
   }
 }

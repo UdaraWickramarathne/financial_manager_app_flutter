@@ -1,4 +1,3 @@
-import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -36,6 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: const Center(
           child: Text(
             'Profile',

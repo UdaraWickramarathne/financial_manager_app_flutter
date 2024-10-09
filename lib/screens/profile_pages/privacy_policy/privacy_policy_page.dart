@@ -1,4 +1,4 @@
-import 'package:financial_app/screens/profile_screen/profile_page.dart';
+import 'package:financial_app/screens/profile_pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -89,7 +89,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ProfileScreen()),
+                                builder: (context) => const ProfilePage()),
                             (Route<dynamic> route) => false,
                           );
                         }

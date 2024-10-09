@@ -10,14 +10,14 @@ import 'account_info/accountInfo_page.dart';
 import 'privacy_policy/privacy_policy_page.dart';
 import 'settings/settings_page.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfilePageState extends State<ProfilePage> {
   File? _image;
   final ValueNotifier<double> _userRating = ValueNotifier<double>(0);
 
@@ -32,74 +32,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  // Function to show star rating dialog
-  /* void _showRatingDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Rate Our App"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (index) {
-                  return IconButton(
-                    icon: Icon(
-                      index < _userRating
-                          ? Icons.star // Filled star
-                          : Icons.star_border, // Empty star
-                      color: Colors.amber,
-                      size: 40, // Adjust star size
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _userRating = index + 1; // Update user rating
-                      });
-                    },
-                  );
-                }),
-              ),
-              const SizedBox(height: 20),
-              Text("Your rating: $_userRating"),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Cancel"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text("Submit"),
-              onPressed: () {
-                // Handle the rating submission (e.g., save to a database)
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () async {
-            await RatingDialog.showRatingDialog(context, _userRating);
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const Dashboard()),
-              (Route<dynamic> route) => false,
-            );
-          },
+        title: const Center(
+          child: Text(
+            'Profile',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
       body: Column(

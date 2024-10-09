@@ -11,3 +11,6 @@ final GlobalKey<NavigatorState> dashboardNavigatorKey =
 
 final GlobalKey<NavigatorState> transactionNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'Transaction');
+
+final GlobalKey<NavigatorState> profileNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'Profile');

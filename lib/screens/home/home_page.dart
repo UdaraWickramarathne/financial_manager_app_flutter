@@ -1,5 +1,5 @@
 import 'package:financial_app/screens/dashboard/dashboard_index_page.dart';
-import 'package:financial_app/screens/transaction/transaction_index_page.dart';
+import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
 import 'package:financial_app/services/navigators.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
         index: _currentIndex,
         children: const [
           DashboardIndexPage(),
-          TransactionIndexPage(),
+          ProfileIndexPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -36,8 +36,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.handshake_sharp),
-            label: 'Transaction',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),

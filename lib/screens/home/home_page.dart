@@ -1,7 +1,8 @@
 import 'package:financial_app/screens/dashboard/dashboard_index_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
-import 'package:financial_app/services/navigators.dart';
+import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +17,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -29,19 +32,33 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {},
               backgroundColor: Colors.purple,
               shape: const CircleBorder(),
+              elevation: 0,
               child: const Icon(Icons.add),
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 0.5,
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ]),
+        decoration: isDarkMode
+            ? BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 0.5,
+                    blurRadius: 20,
+                    offset: const Offset(0, 9),
+                  ),
+                ],
+              )
+            : BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 0.5,
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
         height: 60,
         child: BottomAppBar(
           elevation: 10.0,

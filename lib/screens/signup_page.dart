@@ -2,7 +2,7 @@ import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/login_singup_button.dart';
 import 'package:flutter/material.dart';
 
-import 'login_screen.dart';
+import 'login_page.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -114,8 +114,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     const Text("Already have an account?"),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (c) => LoginScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (c) => const LoginScreen()));
                       },
                       child: const Text(
                         'Sign in',

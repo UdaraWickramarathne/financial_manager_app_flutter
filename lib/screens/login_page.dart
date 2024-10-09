@@ -1,6 +1,6 @@
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/login_singup_button.dart';
-import 'package:financial_app/screens/signup_screen.dart';
+import 'package:financial_app/screens/signup_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {

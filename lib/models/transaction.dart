@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+
+class Transaction {
+  final Color? boxColor;
+  final IconData? icon;
+  final Color? iconColor;
+  final String title;
+  final String description;
+  final String price;
+  final String date;
+  final bool isIncome;
+
+  Transaction({
+    this.boxColor,
+    this.icon,
+    this.iconColor,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.date,
+    required this.isIncome,
+  });
+}
+
+List<Transaction> transactions = [
+  Transaction(
+    title: 'Bill Pay',
+    description: 'Electric Bill',
+    price: '1000',
+    date: '04 June',
+    isIncome: true,
+    boxColor: Colors.yellow.shade200,
+    icon: Icons.electric_bolt_rounded,
+    iconColor: Colors.yellow.shade900,
+  ),
+  Transaction(
+    title: 'Bill Pay',
+    description: 'Electric Bill',
+    price: '100',
+    date: '04 June',
+    isIncome: true,
+    boxColor: Colors.yellow.shade200,
+    icon: Icons.electric_bolt_rounded,
+    iconColor: Colors.yellow.shade900,
+  ),
+  Transaction(
+    title: 'Bill Pay',
+    description: 'Electric Bill',
+    price: '500',
+    date: '04 June',
+    isIncome: true,
+    boxColor: Colors.yellow.shade200,
+    icon: Icons.electric_bolt_rounded,
+    iconColor: Colors.yellow.shade900,
+  ),
+  Transaction(
+    title: 'Bill Pay',
+    description: 'Electric Bill',
+    price: '200',
+    date: '04 June',
+    isIncome: false,
+    boxColor: Colors.yellow.shade200,
+    icon: Icons.electric_bolt_rounded,
+    iconColor: Colors.yellow.shade900,
+  ),
+  Transaction(
+    title: 'Bill Pay',
+    description: 'Electric Bill',
+    price: '100',
+    date: '04 June',
+    isIncome: false,
+    boxColor: Colors.yellow.shade200,
+    icon: Icons.electric_bolt_rounded,
+    iconColor: Colors.yellow.shade900,
+  ),
+  Transaction(
+    title: 'Bill Pay',
+    description: 'Electric Bill',
+    price: '1000',
+    date: '04 June',
+    isIncome: false,
+    boxColor: Colors.yellow.shade200,
+    icon: Icons.electric_bolt_rounded,
+    iconColor: Colors.yellow.shade900,
+  ),
+];

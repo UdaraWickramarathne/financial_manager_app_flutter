@@ -2,6 +2,7 @@ import 'package:financial_app/components/dropdown_button.dart';
 import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
+import 'package:financial_app/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -10,7 +11,11 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        scrolledUnderElevation: 0,
+        elevation: 0,
         leading: const Padding(
           padding: EdgeInsets.only(left: 30),
           child: Icon(Icons.grid_view_rounded),
@@ -100,71 +105,21 @@ class Dashboard extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TransactionTile(
-                      boxColor: Colors.yellow.shade200,
-                      icon: Icons.electric_bolt_rounded,
-                      iconColor: Colors.yellow.shade900,
-                      title: 'Bill Pay',
-                      description: 'Electric Bill',
-                      price: '100',
-                      date: '04 June',
-                      isIncome: false,
-                    ),
-                    TransactionTile(
-                      boxColor: Colors.yellow.shade200,
-                      icon: Icons.electric_bolt_rounded,
-                      iconColor: Colors.yellow.shade900,
-                      title: 'Income',
-                      description: 'Electric Bill',
-                      price: '100',
-                      date: '04 June',
-                      isIncome: true,
-                    ),
-                    TransactionTile(
-                      boxColor: Colors.yellow.shade200,
-                      icon: Icons.electric_bolt_rounded,
-                      iconColor: Colors.yellow.shade900,
-                      title: 'Bill Pay',
-                      description: 'Electric Bill',
-                      price: '100',
-                      date: '04 June',
-                      isIncome: false,
-                    ),
-                    TransactionTile(
-                      boxColor: Colors.yellow.shade200,
-                      icon: Icons.electric_bolt_rounded,
-                      iconColor: Colors.yellow.shade900,
-                      title: 'Bill Pay',
-                      description: 'Electric Bill',
-                      price: '100',
-                      date: '04 June',
-                      isIncome: false,
-                    ),
-                    TransactionTile(
-                      boxColor: Colors.yellow.shade200,
-                      icon: Icons.electric_bolt_rounded,
-                      iconColor: Colors.yellow.shade900,
-                      title: 'Bill Pay',
-                      description: 'Electric Bill',
-                      price: '100',
-                      date: '04 June',
-                      isIncome: false,
-                    ),
-                    TransactionTile(
-                      boxColor: Colors.yellow.shade200,
-                      icon: Icons.electric_bolt_rounded,
-                      iconColor: Colors.yellow.shade900,
-                      title: 'Bill Pay',
-                      description: 'Electric Bill',
-                      price: '100',
-                      date: '04 June',
-                      isIncome: false,
-                    )
-                  ],
-                ),
+              child: ListView.builder(
+                itemCount: transactions.length,
+                itemBuilder: (context, index) {
+                  final transaction = transactions[index];
+                  return TransactionTile(
+                    boxColor: transaction.boxColor,
+                    icon: transaction.icon,
+                    iconColor: transaction.iconColor,
+                    title: transaction.title,
+                    description: transaction.description,
+                    price: transaction.price,
+                    date: transaction.date,
+                    isIncome: transaction.isIncome,
+                  );
+                },
               ),
             ),
           ],

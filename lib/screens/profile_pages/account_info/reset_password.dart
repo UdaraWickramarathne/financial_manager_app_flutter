@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/input_field.dart';
+import '../../../components/login_singup_button.dart';
+
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  const ResetPasswordScreen({super.key});
 
   @override
-  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+  TextEditingController();
 
   bool _oldPasswordVisible = false;
   bool _newPasswordVisible = false;
@@ -35,82 +39,71 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
           children: [
             const SizedBox(height: 20),
-            _buildPasswordField(
+            InputField(
               controller: oldPasswordController,
+              isObsecure: !_oldPasswordVisible,
+              prefixIcon: Icons.lock,
               label: 'Old Password',
-              isVisible: _oldPasswordVisible,
-              onToggleVisibility: () {
-                setState(() {
-                  _oldPasswordVisible = !_oldPasswordVisible;
-                });
-              },
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _oldPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _oldPasswordVisible = !_oldPasswordVisible;
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 20),
-            _buildPasswordField(
+            InputField(
               controller: newPasswordController,
+              isObsecure: !_newPasswordVisible,
+              prefixIcon: Icons.lock,
               label: 'New Password',
-              isVisible: _newPasswordVisible,
-              onToggleVisibility: () {
-                setState(() {
-                  _newPasswordVisible = !_newPasswordVisible;
-                });
-              },
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _newPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _newPasswordVisible = !_newPasswordVisible;
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 20),
-            _buildPasswordField(
+            InputField(
               controller: confirmPasswordController,
+              isObsecure: !_confirmPasswordVisible,
+              prefixIcon: Icons.lock,
               label: 'Confirm Password',
-              isVisible: _confirmPasswordVisible,
-              onToggleVisibility: () {
-                setState(() {
-                  _confirmPasswordVisible = !_confirmPasswordVisible;
-                });
-              },
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _confirmPasswordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _confirmPasswordVisible = !_confirmPasswordVisible;
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: const Text(
-                'Save',
-                style: TextStyle(fontSize: 16),
-              ),
+            LoginSingupButton(
+              data: 'Save',
+              onPressed: () {},
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPasswordField({
-    required TextEditingController controller,
-    required String label,
-    required bool isVisible,
-    required VoidCallback onToggleVisibility,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: !isVisible,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const UnderlineInputBorder(),
-        suffixIcon: IconButton(
-          icon: Icon(
-            isVisible ? Icons.visibility : Icons.visibility_off,
-            color: Colors.grey,
-          ),
-          onPressed: onToggleVisibility,
         ),
       ),
     );

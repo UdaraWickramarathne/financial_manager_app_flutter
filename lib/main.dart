@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
       key: globalNavigatorKey,
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

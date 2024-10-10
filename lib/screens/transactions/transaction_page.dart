@@ -1,6 +1,5 @@
 import 'package:financial_app/components/login_singup_button.dart';
 import 'package:financial_app/components/transaction_type_tile.dart';
-import 'package:financial_app/screens/expense/expense_category_page.dart';
 import 'package:financial_app/screens/income/income_category_page.dart';
 import 'package:flutter/material.dart';
 

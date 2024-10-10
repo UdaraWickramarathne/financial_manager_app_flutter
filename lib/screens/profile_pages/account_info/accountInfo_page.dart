@@ -197,7 +197,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                   label: 'Bio',
                   suffixIcon: null),
               const SizedBox(height: 80),
-              LoginSingupButton(
+              SimpleButton(
                 data: 'Save',
                 onPressed: () {},
               ),

@@ -4,6 +4,9 @@ ThemeData lightMode = ThemeData(
     primaryColor: const Color.fromRGBO(244, 241, 248, 1),
     brightness: Brightness.light,
     scaffoldBackgroundColor: const Color.fromRGBO(244, 241, 248, 1),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color.fromRGBO(244, 241, 248, 1),
+    ),
     colorScheme: ColorScheme.light(
       surface: Colors.white,
       primary: Colors.grey.shade800,

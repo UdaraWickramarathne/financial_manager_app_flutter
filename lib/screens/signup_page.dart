@@ -102,7 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 180),
                 // Sign Up button
-                LoginSingupButton(
+                SimpleButton(
                   data: 'Sign Up',
                   onPressed: () {},
                 ),

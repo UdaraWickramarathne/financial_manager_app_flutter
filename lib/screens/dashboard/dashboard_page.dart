@@ -11,9 +11,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         scrolledUnderElevation: 0,
         elevation: 0,
         leading: const Padding(

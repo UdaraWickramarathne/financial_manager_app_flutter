@@ -1,6 +1,8 @@
 import 'package:financial_app/screens/dashboard/dashboard_index_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
-import 'package:financial_app/screens/transaction/transaction_index_page.dart';
+import 'package:financial_app/screens/transactions/transaction_index_page.dart';
+import 'package:financial_app/screens/transactions/transaction_page.dart';
+import 'package:financial_app/services/navigators.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +33,13 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: isHome
           ? FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TransactionPage(),
+                    ));
+              },
               backgroundColor: Colors.purple,
               shape: const CircleBorder(),
               elevation: 0,
@@ -40,6 +48,7 @@ class _HomePageState extends State<HomePage> {
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Container(
+        key: bottomNavigatorKey,
         decoration: isDarkMode
             ? BoxDecoration(
                 boxShadow: [

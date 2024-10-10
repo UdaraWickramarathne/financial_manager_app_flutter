@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   const SizedBox(height: 60),
-                  LoginSingupButton(
+                  SimpleButton(
                     data: 'Login',
                     onPressed: () {},
                   ),

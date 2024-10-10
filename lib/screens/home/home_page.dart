@@ -1,5 +1,6 @@
 import 'package:financial_app/screens/dashboard/dashboard_index_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
+import 'package:financial_app/screens/transaction/transaction_index_page.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
         children: const [
           DashboardIndexPage(),
           ProfileIndexPage(),
+          TransactionIndexPage()
         ],
       ),
       floatingActionButton: isHome
@@ -42,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             ? BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withOpacity(0.12),
                     spreadRadius: 0.5,
                     blurRadius: 20,
                     offset: const Offset(0, 9),
@@ -64,49 +66,76 @@ class _HomePageState extends State<HomePage> {
           elevation: 10.0,
           shape: const CircularNotchedRectangle(),
           notchMargin: 8.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Stack(
             children: [
-              IconButton(
-                icon: const Icon(Icons.home),
-                onPressed: () {
-                  setState(() {
-                    isHome = true;
-                    _currentIndex = 0;
-                  });
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.person),
-                onPressed: () {
-                  setState(() {
-                    isHome = false;
-                    _currentIndex = 1;
-                  });
-                },
-              ),
-              if (isHome)
-                const IconButton(
-                  icon: Icon(null),
-                  onPressed: null,
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                left: 20, // Animate the horizontal position
+                top: 0.0,
+                bottom: 0.0,
+                child: IconButton(
+                  icon: const Icon(Icons.home),
+                  color: _currentIndex == 0 ? Colors.black : Colors.grey,
+                  onPressed: () {
+                    setState(() {
+                      isHome = true;
+                      _currentIndex = 0;
+                    });
+                  },
                 ),
-              IconButton(
-                icon: const Icon(Icons.report),
-                onPressed: () {
-                  setState(() {
-                    isHome = false;
-                    _currentIndex = 2;
-                  });
-                },
               ),
-              IconButton(
-                icon: const Icon(Icons.currency_exchange),
-                onPressed: () {
-                  setState(() {
-                    isHome = false;
-                    _currentIndex = 3;
-                  });
-                },
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                left: isHome ? 100.0 : 115.0,
+                top: 0.0,
+                bottom: 0.0,
+                child: IconButton(
+                  icon: const Icon(Icons.person),
+                  color: _currentIndex == 1 ? Colors.black : Colors.grey,
+                  onPressed: () {
+                    setState(() {
+                      isHome = false;
+                      _currentIndex = 1;
+                    });
+                  },
+                ),
+              ),
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                right:
+                    isHome ? 100.0 : 115.0, // Animate the horizontal position
+                top: 0.0,
+                bottom: 0.0,
+                child: IconButton(
+                  icon: const Icon(Icons.money),
+                  color: _currentIndex == 2 ? Colors.black : Colors.grey,
+                  onPressed: () {
+                    setState(() {
+                      isHome = false;
+                      _currentIndex = 2;
+                    });
+                  },
+                ),
+              ),
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                right: 20.0,
+                top: 0.0,
+                bottom: 0.0,
+                child: IconButton(
+                  icon: const Icon(Icons.currency_exchange),
+                  color: _currentIndex == 3 ? Colors.black : Colors.grey,
+                  onPressed: () {
+                    setState(() {
+                      isHome = false;
+                      _currentIndex = 3;
+                    });
+                  },
+                ),
               ),
             ],
           ),

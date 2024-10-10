@@ -300,10 +300,12 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       ],
                     ),
                     // Space between the Row and the Save button
-
                   ],
                 ),
               ],
+              ),
+              const SizedBox(height: 20),
+
             ],
           ),
         ),

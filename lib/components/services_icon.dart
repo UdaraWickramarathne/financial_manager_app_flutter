@@ -5,12 +5,15 @@ class ServicesIcon extends StatelessWidget {
   final IconData? icon;
   final Color? foregroundColor;
   final String text;
+  final VoidCallback onPressed;
+
   const ServicesIcon({
     super.key,
     required this.backgroundColor,
     required this.icon,
     required this.foregroundColor,
     required this.text,
+    required this.onPressed,
   });
 
   @override
@@ -18,17 +21,30 @@ class ServicesIcon extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: backgroundColor,
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              elevation: 0,
+              padding:
+                  EdgeInsets.zero, // Remove default padding from the button
             ),
-            child: Icon(
-              icon,
-              size: 40,
-              color: foregroundColor,
+            onPressed: onPressed,
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: backgroundColor,
+              ),
+              child: Padding(
+                padding:
+                    const EdgeInsets.all(10.0), // Add padding around the icon
+                child: Icon(
+                  icon,
+                  size: 40,
+                  color: foregroundColor,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 6),

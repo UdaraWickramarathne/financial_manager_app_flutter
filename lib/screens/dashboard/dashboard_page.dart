@@ -39,25 +39,26 @@ class Dashboard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             const VisaCard(),
-            const SizedBox(height: 30),
-            const Row(
+            const SizedBox(height: 15),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Services",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  'See All',
-                  style: TextStyle(
-                    color: Colors.grey,
+                TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
                   ),
-                )
+                  child: const Text('See All'),
+                ),
               ],
             ),
             const SizedBox(height: 15),
@@ -65,27 +66,31 @@ class Dashboard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ServicesIcon(
+                  onPressed: () {},
                   backgroundColor: Colors.blue[100],
                   text: 'Transcations',
                   icon: Icons.monetization_on_outlined,
                   foregroundColor: Colors.blue,
                 ),
-                const ServicesIcon(
-                    backgroundColor: Color.fromARGB(255, 251, 187, 251),
+                ServicesIcon(
+                    onPressed: () {},
+                    backgroundColor: const Color.fromARGB(255, 251, 187, 251),
                     text: 'Report',
                     icon: Icons.file_copy_outlined,
-                    foregroundColor: Color.fromARGB(255, 255, 98, 255)),
-                const ServicesIcon(
-                  backgroundColor: Color.fromARGB(255, 251, 218, 187),
+                    foregroundColor: const Color.fromARGB(255, 255, 98, 255)),
+                ServicesIcon(
+                  onPressed: () {},
+                  backgroundColor: const Color.fromARGB(255, 251, 218, 187),
                   text: 'Reminders',
                   icon: Icons.alarm,
-                  foregroundColor: Color.fromARGB(255, 253, 159, 71),
+                  foregroundColor: const Color.fromARGB(255, 253, 159, 71),
                 ),
-                const ServicesIcon(
-                  backgroundColor: Color.fromARGB(255, 187, 251, 190),
+                ServicesIcon(
+                  onPressed: () {},
+                  backgroundColor: const Color.fromARGB(255, 187, 251, 190),
                   text: 'Goals',
                   icon: Icons.stairs_outlined,
-                  foregroundColor: Color.fromARGB(255, 56, 250, 66),
+                  foregroundColor: const Color.fromARGB(255, 56, 250, 66),
                 ),
               ],
             ),
@@ -100,7 +105,7 @@ class Dashboard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                ChoiceBox()
+                ChoiceBox(),
               ],
             ),
             const SizedBox(height: 20),

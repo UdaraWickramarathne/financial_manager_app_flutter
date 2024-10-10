@@ -1,10 +1,12 @@
-import 'package:financial_app/components/clickble_textfield.dart';
-import 'package:financial_app/components/input_field.dart';
-import 'package:financial_app/components/login_singup_button.dart';
-import 'package:financial_app/services/navigators.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:financial_app/components/clickble_textfield.dart';
+import 'package:financial_app/components/input_field.dart';
+import 'package:financial_app/services/navigators.dart';
+
+import '../../../components/login_singup_button.dart';
 
 class AccountInfoScreen extends StatefulWidget {
   const AccountInfoScreen({super.key});
@@ -14,6 +16,7 @@ class AccountInfoScreen extends StatefulWidget {
 }
 
 class _AccountInfoScreenState extends State<AccountInfoScreen> {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   String gender = '';
@@ -23,6 +26,26 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
 
   File? _image;
   final ImagePicker _picker = ImagePicker();
+
+  bool isEditing = false;
+
+  String originalName = 'Anura kumara';
+  String originalEmail = '';
+  String originalPhone = '';
+  String originalGender = '';
+  String originalBirthdate = '';
+  String originalBio = '';
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = originalName;
+    emailController.text = originalEmail;
+    phoneController.text = originalPhone;
+    genderController.text = originalGender;
+    birthdateController.text = originalBirthdate;
+    bioController.text = originalBio;
+  }
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -37,6 +60,24 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
     setState(() {
       gender = value;
       genderController.text = value;
+    });
+  }
+
+  void _saveChanges() {
+    setState(() {
+      isEditing = false;
+    });
+  }
+
+  void _resetChanges() {
+    setState(() {
+      nameController.text = originalName;
+      emailController.text = originalEmail;
+      phoneController.text = originalPhone;
+      genderController.text = originalGender;
+      birthdateController.text = originalBirthdate;
+      bioController.text = originalBio;
+      isEditing = true;
     });
   }
 
@@ -64,8 +105,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     radius: 80,
                     backgroundImage: _image != null
                         ? FileImage(_image!)
-                        : const AssetImage('assets/profile.jpg')
-                            as ImageProvider, // Placeholder image
+                        : const AssetImage(
+                        'assets/profile.jpg') as ImageProvider,
                   ),
                   Positioned(
                     bottom: 0,
@@ -80,38 +121,84 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
                         ),
-                        child: const Icon(Icons.camera_alt,
-                            color: Colors.white, size: 20),
+                        child: const Icon(
+                            Icons.camera_alt, color: Colors.white, size: 20),
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Jack Black',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              TextFormField(
+                controller: nameController,
+                style: const TextStyle(
+                    fontSize: 25, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                ),
+                enabled: isEditing,
+              ),
+              if (!isEditing) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isEditing = true;
+                        });
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Icons.edit, color: Colors.blue, size: 15),
+                          SizedBox(width: 10),
+                          Text(
+                            'Edit',
+                            style: TextStyle(color: Colors.blue,fontSize: 15),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                  ],
+                ),
+              ],
+              const SizedBox(height: 10),
+              // InputField for name
+              InputField(
+                controller: nameController,
+                isObsecure: false,
+                prefixIcon: Icons.supervised_user_circle,
+                label: 'Name',
+                suffixIcon: null,
+                enabled: isEditing,
               ),
               const SizedBox(height: 10),
               InputField(
-                  controller: emailController,
-                  isObsecure: false,
-                  prefixIcon: Icons.email,
-                  label: 'Email',
-                  suffixIcon: null),
+                controller: emailController,
+                isObsecure: false,
+                prefixIcon: Icons.email,
+                label: 'Email',
+                suffixIcon: null,
+                enabled: isEditing,
+              ),
               const SizedBox(height: 10),
               InputField(
-                  controller: emailController,
-                  isObsecure: false,
-                  prefixIcon: Icons.phone,
-                  label: 'Phone Number',
-                  suffixIcon: null),
+                controller: phoneController,
+                isObsecure: false,
+                prefixIcon: Icons.phone,
+                label: 'Phone Number',
+                suffixIcon: null,
+                enabled: isEditing,
+              ),
               const SizedBox(height: 10),
               ClickbleTextfield(
-                prefixIcon: Icons.male,
+                prefixIcon: Icons.transgender,
                 label: 'Gender',
                 controller: genderController,
-                onTap: () {
+                onTap: isEditing
+                    ? () {
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -140,88 +227,85 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       );
                     },
                   );
-                },
+                }
+                    : () {},
               ),
               const SizedBox(height: 10),
               ClickbleTextfield(
-                prefixIcon: Icons.male,
+                prefixIcon: Icons.date_range,
                 label: 'Birth Date',
-                controller: genderController,
-                onTap: () {
-                  /*
-                  NEED
+                controller: birthdateController,
+                onTap: isEditing
+                    ? () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
 
-                  TO
-
-                  ADD
-
-                  CALENDER
-
-                  */
-
-                  // showDialog(
-                  //   context: context,
-                  //   builder: (context) {
-                  //     return AlertDialog(
-                  //       title: const Text('Select Gender'),
-                  //       content: SingleChildScrollView(
-                  //         child: ListBody(
-                  //           children: <Widget>[
-                  //             ListTile(
-                  //               title: const Text('Male'),
-                  //               onTap: () {
-                  //                 Navigator.of(context).pop();
-                  //                 _selectGender('Male');
-                  //               },
-                  //             ),
-                  //             ListTile(
-                  //               title: const Text('Female'),
-                  //               onTap: () {
-                  //                 Navigator.of(context).pop();
-                  //                 _selectGender('Female');
-                  //               },
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  // );
-                },
+                  if (pickedDate != null) {
+                    birthdateController.text =
+                        DateFormat('yyyy-MM-dd').format(pickedDate);
+                  }
+                }
+                    : () {},
               ),
               const SizedBox(height: 10),
-              InputField(
-                  controller: emailController,
-                  isObsecure: false,
-                  prefixIcon: Icons.library_books,
-                  label: 'Bio',
-                  suffixIcon: null),
-              const SizedBox(height: 80),
-              LoginSingupButton(
-                data: 'Save',
-                onPressed: () {},
-              ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  profileNavigatorKey.currentState!
-                      .pushNamed('/reset_password');
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              const SizedBox(height: 50),
+
+              if (isEditing) ...[
+                Column(
                   children: [
-                    Icon(Icons.lock_reset, color: Colors.blue),
-                    SizedBox(width: 15),
-                    Text(
-                      'Reset Password',
-                      style: TextStyle(
-                        color: Colors.blue,
-                      ),
+                    LoginSingupButton(
+                      data: 'Save',
+                      onPressed: _saveChanges,
                     ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: _resetChanges,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.refresh, color: Colors.blue),
+                              SizedBox(width: 15),
+                              Text(
+                                'Reset',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            profileNavigatorKey.currentState!.pushNamed('/reset_password');
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.lock_reset, color: Colors.blue),
+                              SizedBox(width: 15),
+                              Text(
+                                'Reset Password',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Space between the Row and the Save button
                   ],
                 ),
+              ],
               ),
               const SizedBox(height: 20),
+
             ],
           ),
         ),

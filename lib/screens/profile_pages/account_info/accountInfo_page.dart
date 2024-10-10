@@ -1,5 +1,9 @@
+import 'package:financial_app/components/clickble_textfield.dart';
+import 'package:financial_app/components/input_field.dart';
+import 'package:financial_app/components/login_singup_button.dart';
 import 'package:financial_app/screens/profile_pages/account_info/reset_password.dart';
 import 'package:financial_app/screens/profile_pages/profile_page.dart';
+import 'package:financial_app/services/navigators.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -44,25 +48,14 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
-              ),
-            );
-          },
-        ),
-      title: const Text(
+        title: const Text(
           'My Profile',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -70,11 +63,11 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               Stack(
                 children: [
                   CircleAvatar(
-                    radius: 50,
+                    radius: 80,
                     backgroundImage: _image != null
                         ? FileImage(_image!)
                         : const AssetImage('assets/profile.jpg')
-                    as ImageProvider, // Placeholder image
+                            as ImageProvider, // Placeholder image
                   ),
                   Positioned(
                     bottom: 0,
@@ -102,29 +95,24 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email Address',
-                  border: UnderlineInputBorder(),
-                ),
-              ),
+              InputField(
+                  controller: emailController,
+                  isObsecure: false,
+                  prefixIcon: Icons.email,
+                  label: 'Email',
+                  suffixIcon: null),
               const SizedBox(height: 10),
-              TextField(
-                controller: phoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  border: UnderlineInputBorder(),
-                ),
-              ),
+              InputField(
+                  controller: emailController,
+                  isObsecure: false,
+                  prefixIcon: Icons.phone,
+                  label: 'Phone Number',
+                  suffixIcon: null),
               const SizedBox(height: 10),
-              TextField(
+              ClickbleTextfield(
+                prefixIcon: Icons.male,
+                label: 'Gender',
                 controller: genderController,
-                decoration: const InputDecoration(
-                  labelText: 'Gender',
-                  border: UnderlineInputBorder(),
-                ),
-                readOnly: true,
                 onTap: () {
                   showDialog(
                     context: context,
@@ -148,13 +136,6 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                   _selectGender('Female');
                                 },
                               ),
-                              ListTile(
-                                title: const Text('Other'),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  _selectGender('Other');
-                                },
-                              ),
                             ],
                           ),
                         ),
@@ -164,48 +145,69 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 },
               ),
               const SizedBox(height: 10),
-              TextField(
-                controller: birthdateController,
-                decoration: const InputDecoration(
-                  labelText: 'Birth Day',
-                  border: UnderlineInputBorder(),
-                ),
+              ClickbleTextfield(
+                prefixIcon: Icons.male,
+                label: 'Birth Date',
+                controller: genderController,
+                onTap: () {
+                  /*
+                  NEED
+
+                  TO
+
+                  ADD
+
+                  CALENDER
+
+                  */
+
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (context) {
+                  //     return AlertDialog(
+                  //       title: const Text('Select Gender'),
+                  //       content: SingleChildScrollView(
+                  //         child: ListBody(
+                  //           children: <Widget>[
+                  //             ListTile(
+                  //               title: const Text('Male'),
+                  //               onTap: () {
+                  //                 Navigator.of(context).pop();
+                  //                 _selectGender('Male');
+                  //               },
+                  //             ),
+                  //             ListTile(
+                  //               title: const Text('Female'),
+                  //               onTap: () {
+                  //                 Navigator.of(context).pop();
+                  //                 _selectGender('Female');
+                  //               },
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // );
+                },
               ),
               const SizedBox(height: 10),
-              TextField(
-                controller: bioController,
-                decoration: const InputDecoration(
-                  labelText: 'Bio',
-                  border: UnderlineInputBorder(),
-                ),
+              InputField(
+                  controller: emailController,
+                  isObsecure: false,
+                  prefixIcon: Icons.library_books,
+                  label: 'Bio',
+                  suffixIcon: null),
+              const SizedBox(height: 80),
+              LoginSingupButton(
+                data: 'Save',
+                onPressed: () {},
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 100, vertical: 15),
-                  backgroundColor: Colors.blue,
-                ),
-                child: const Text(
-                  'Save',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 20),
-
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ResetPasswordScreen(),
-                    ),
-                  );
+                  profileNavigatorKey.currentState!
+                      .pushNamed('/reset_password');
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -216,13 +218,11 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       'Reset Password',
                       style: TextStyle(
                         color: Colors.blue,
-                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 20),
             ],
           ),

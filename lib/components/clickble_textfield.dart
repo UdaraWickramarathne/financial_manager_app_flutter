@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 
-class InputField extends StatefulWidget {
-  final bool isObsecure;
+class ClickbleTextfield extends StatefulWidget {
   final IconData? prefixIcon;
   final String label;
-  final Widget? suffixIcon;
   final TextEditingController? controller;
+  final VoidCallback onTap;
 
-  const InputField({
+  const ClickbleTextfield({
     super.key,
-    required this.isObsecure,
     required this.prefixIcon,
     required this.label,
-    required this.suffixIcon,
     required this.controller,
+    required this.onTap,
   });
 
   @override
-  State<InputField> createState() => _InputFieldState();
+  State<ClickbleTextfield> createState() => _ClickbleTextfieldState();
 }
 
-class _InputFieldState extends State<InputField> {
+class _ClickbleTextfieldState extends State<ClickbleTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextField(
       style: const TextStyle(color: Color.fromARGB(255, 102, 138, 160)),
       controller: widget.controller,
-      obscureText: widget.isObsecure,
       decoration: InputDecoration(
         labelStyle: const TextStyle(color: Color.fromARGB(255, 145, 145, 145)),
         filled: true,
@@ -40,9 +37,10 @@ class _InputFieldState extends State<InputField> {
           borderRadius: BorderRadius.circular(25),
           borderSide: BorderSide.none,
         ),
-        suffixIcon: widget.suffixIcon,
         floatingLabelBehavior: FloatingLabelBehavior.never,
       ),
+      readOnly: true,
+      onTap: widget.onTap,
     );
   }
 }

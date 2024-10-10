@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  const ResetPasswordScreen({super.key});
 
   @override
-  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   bool _oldPasswordVisible = false;
   bool _newPasswordVisible = false;
@@ -35,7 +36,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
           children: [
             const SizedBox(height: 20),
@@ -73,10 +74,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),

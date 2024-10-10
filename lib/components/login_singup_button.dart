@@ -14,7 +14,7 @@ class LoginSingupButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(25),
         ),
         padding: const EdgeInsets.symmetric(vertical: 15),
         backgroundColor: const Color.fromARGB(255, 102, 138, 160),

@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                 top: 0.0,
                 bottom: 0.0,
                 child: IconButton(
-                  icon: const Icon(Icons.report),
+                  icon: const Icon(Icons.money),
                   color: _currentIndex == 2 ? Colors.black : Colors.grey,
                   onPressed: () {
                     setState(() {

@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage> {
                 bottom: 0.0,
                 child: IconButton(
                   icon: const Icon(Icons.home),
+                  color: _currentIndex == 0 ? Colors.black : Colors.grey,
                   onPressed: () {
                     setState(() {
                       isHome = true;
@@ -87,11 +88,12 @@ class _HomePageState extends State<HomePage> {
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.linear,
-                left: isHome ? 100.0 : 120.0,
+                left: isHome ? 100.0 : 115.0,
                 top: 0.0,
                 bottom: 0.0,
                 child: IconButton(
                   icon: const Icon(Icons.person),
+                  color: _currentIndex == 1 ? Colors.black : Colors.grey,
                   onPressed: () {
                     setState(() {
                       isHome = false;
@@ -104,11 +106,12 @@ class _HomePageState extends State<HomePage> {
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.linear,
                 right:
-                    isHome ? 100.0 : 120.0, // Animate the horizontal position
+                    isHome ? 100.0 : 115.0, // Animate the horizontal position
                 top: 0.0,
                 bottom: 0.0,
                 child: IconButton(
                   icon: const Icon(Icons.report),
+                  color: _currentIndex == 2 ? Colors.black : Colors.grey,
                   onPressed: () {
                     setState(() {
                       isHome = false;
@@ -125,6 +128,7 @@ class _HomePageState extends State<HomePage> {
                 bottom: 0.0,
                 child: IconButton(
                   icon: const Icon(Icons.currency_exchange),
+                  color: _currentIndex == 3 ? Colors.black : Colors.grey,
                   onPressed: () {
                     setState(() {
                       isHome = false;

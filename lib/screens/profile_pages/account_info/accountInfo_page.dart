@@ -1,8 +1,6 @@
 import 'package:financial_app/components/clickble_textfield.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/login_singup_button.dart';
-import 'package:financial_app/screens/profile_pages/account_info/reset_password.dart';
-import 'package:financial_app/screens/profile_pages/profile_page.dart';
 import 'package:financial_app/services/navigators.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

@@ -6,6 +6,7 @@ class InputField extends StatefulWidget {
   final String label;
   final Widget? suffixIcon;
   final TextEditingController? controller;
+  final bool enabled;
 
   const InputField({
     super.key,
@@ -14,6 +15,7 @@ class InputField extends StatefulWidget {
     required this.label,
     required this.suffixIcon,
     required this.controller,
+    this.enabled = true,
   });
 
   @override
@@ -27,6 +29,7 @@ class _InputFieldState extends State<InputField> {
       style: const TextStyle(color: Color.fromARGB(255, 102, 138, 160)),
       controller: widget.controller,
       obscureText: widget.isObsecure,
+      enabled: widget.enabled,
       decoration: InputDecoration(
         labelStyle: const TextStyle(color: Color.fromARGB(255, 145, 145, 145)),
         filled: true,
@@ -37,7 +40,7 @@ class _InputFieldState extends State<InputField> {
         ),
         labelText: widget.label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(25),
           borderSide: BorderSide.none,
         ),
         suffixIcon: widget.suffixIcon,

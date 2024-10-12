@@ -1,6 +1,7 @@
 import 'package:financial_app/components/login_singup_button.dart';
 import 'package:financial_app/components/transaction_type_tile.dart';
-import 'package:financial_app/screens/income/income_category_page.dart';
+import 'package:financial_app/screens/expense/add_expense_page.dart';
+import 'package:financial_app/screens/income/add_income_page.dart';
 import 'package:flutter/material.dart';
 
 class TransactionPage extends StatefulWidget {
@@ -48,7 +49,7 @@ class _TransactionPageState extends State<TransactionPage> {
             const SizedBox(height: 10),
             TransactionTypeTile(
               icon: Icons.book,
-              title: 'Expenses',
+              title: 'Expense',
               isSelected: _selectedType == 'Expense',
               onTap: () {
                 setState(() {
@@ -70,11 +71,19 @@ class _TransactionPageState extends State<TransactionPage> {
             SimpleButton(
               data: 'Next',
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const IncomeCategoryPage(),
-                    ));
+                if (_selectedType == 'Expense') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddExpensePage(),
+                      ));
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddIncomePage(),
+                      ));
+                }
               },
               color: Colors.green,
             ),

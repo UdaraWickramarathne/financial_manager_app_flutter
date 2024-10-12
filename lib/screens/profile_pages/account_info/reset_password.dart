@@ -14,7 +14,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
 
   bool _oldPasswordVisible = false;
   bool _newPasswordVisible = false;
@@ -44,6 +44,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           children: [
             const SizedBox(height: 20),
             InputField(
+              isReadOnly: false,
               controller: oldPasswordController,
               isObsecure: !_oldPasswordVisible,
               prefixIcon: Icons.lock,
@@ -62,6 +63,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
             const SizedBox(height: 20),
             InputField(
+              isReadOnly: false,
               controller: newPasswordController,
               isObsecure: !_newPasswordVisible,
               prefixIcon: Icons.lock,
@@ -80,6 +82,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             ),
             const SizedBox(height: 20),
             InputField(
+              isReadOnly: false,
               controller: confirmPasswordController,
               isObsecure: !_confirmPasswordVisible,
               prefixIcon: Icons.lock,
@@ -90,7 +93,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ? Icons.visibility
                       : Icons.visibility_off,
                   color: Colors.grey,
-
                 ),
                 onPressed: () {
                   setState(() {
@@ -100,7 +102,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
             ),
             const SizedBox(height: 40),
-            LoginSingupButton(
+            SimpleButton(
               data: 'Save',
               onPressed: () {},
             ),

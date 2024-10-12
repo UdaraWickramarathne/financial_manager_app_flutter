@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   InputField(
+                    isReadOnly: false,
                     isObsecure: false,
                     prefixIcon: Icons.person,
                     label: 'Full name',
@@ -62,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 15),
                   InputField(
+                    isReadOnly: false,
                     controller: passwordController,
                     isObsecure: !_isPasswordVisible,
                     prefixIcon: Icons.lock,

@@ -1,4 +1,5 @@
 import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/screens/income/add_income_page.dart';
 import 'package:financial_app/services/navigators.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';

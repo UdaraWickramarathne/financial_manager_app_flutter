@@ -50,6 +50,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 120),
                 // Full Name field
                 InputField(
+                    isReadOnly: false,
                     controller: nameController,
                     isObsecure: false,
                     prefixIcon: Icons.person,
@@ -58,6 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 25),
                 // Email field
                 InputField(
+                    isReadOnly: false,
                     controller: emailController,
                     isObsecure: false,
                     prefixIcon: Icons.email,
@@ -67,6 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 // Password field
 
                 InputField(
+                  isReadOnly: false,
                   controller: passwordController,
                   isObsecure: !_isPasswordVisible,
                   prefixIcon: Icons.lock,
@@ -85,6 +88,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const SizedBox(height: 25),
                 // Confirm Password field
                 InputField(
+                  isReadOnly: false,
                   controller: conformPasswordController,
                   isObsecure: !_isConfirmPasswordVisible,
                   prefixIcon: Icons.lock,

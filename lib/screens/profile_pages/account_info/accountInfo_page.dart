@@ -167,6 +167,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               const SizedBox(height: 10),
               // InputField for name
               InputField(
+                isReadOnly: false,
                 controller: nameController,
                 isObsecure: false,
                 prefixIcon: Icons.supervised_user_circle,
@@ -176,6 +177,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               ),
               const SizedBox(height: 10),
               InputField(
+                isReadOnly: false,
                 controller: emailController,
                 isObsecure: false,
                 prefixIcon: Icons.email,
@@ -185,6 +187,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               ),
               const SizedBox(height: 10),
               InputField(
+                isReadOnly: false,
                 controller: phoneController,
                 isObsecure: false,
                 prefixIcon: Icons.phone,
@@ -253,6 +256,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               ),
               const SizedBox(height: 10),
               InputField(
+                  isReadOnly: false,
                   controller: emailController,
                   isObsecure: false,
                   prefixIcon: Icons.library_books,

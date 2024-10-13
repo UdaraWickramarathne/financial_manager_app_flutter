@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
-    primaryColor: const Color.fromRGBO(244, 241, 248, 1),
     brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color.fromRGBO(244, 241, 248, 1),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color.fromRGBO(244, 241, 248, 1),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.grey[300]!,
     ),
     colorScheme: ColorScheme.light(
-      surface: Colors.white,
-      primary: Colors.grey.shade800,
-      secondary: Colors.grey.shade200,
+      surface: Colors.grey[300]!,
+      primary: Colors.grey[200]!,
+      secondary: Colors.grey[300]!,
     ));
 
 ThemeData darkMode = ThemeData(
-    primaryColor: const Color(0x12121212),
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color.fromRGBO(34, 35, 34, 1),
     colorScheme: ColorScheme.dark(
-      surface: Colors.grey.shade900,
-      primary: Colors.grey.shade300,
-      secondary: Colors.grey.shade800,
+      surface: const Color.fromARGB(255, 22, 22, 22),
+      primary: Colors.grey[900]!,
+      secondary: Colors.grey[800]!,
     ));

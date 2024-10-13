@@ -171,7 +171,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
                           child: Column(
                             children: [
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 60),
                               Container(
                                 padding: const EdgeInsets.only(
                                   left: 15,
@@ -180,7 +180,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                                   bottom: 20,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.primary,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Column(
@@ -278,7 +278,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 70),
+                                    const SizedBox(height: 180),
                                     SimpleButton(
                                       data: 'Save',
                                       onPressed: () {

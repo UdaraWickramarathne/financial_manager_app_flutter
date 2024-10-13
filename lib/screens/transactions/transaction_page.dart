@@ -85,7 +85,6 @@ class _TransactionPageState extends State<TransactionPage> {
                       ));
                 }
               },
-              color: Colors.green,
             ),
             const SizedBox(height: 40)
           ],

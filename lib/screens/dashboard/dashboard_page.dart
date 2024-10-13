@@ -55,7 +55,12 @@ class Dashboard extends StatelessWidget {
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                   ),
-                  child: const Text('See All'),
+                  child: Text(
+                    'See All',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
                 ),
               ],
             ),

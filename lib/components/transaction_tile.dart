@@ -25,6 +25,11 @@ class TransactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: Theme.of(context).colorScheme.primary,
+      ),
       margin: const EdgeInsets.only(bottom: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

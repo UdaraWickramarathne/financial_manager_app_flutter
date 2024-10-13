@@ -21,20 +21,28 @@ class TransactionTypeTile extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.black12 : Colors.white,
+          color: isSelected
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(
-            color: isSelected ? Colors.black : Colors.grey,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.secondary,
           ),
         ),
         child: Row(
           children: [
-            Icon(icon, color: isSelected ? Colors.black : Colors.grey),
+            Icon(
+              icon,
+              color: isSelected ? Theme.of(context).colorScheme.primary : null,
+            ),
             const SizedBox(width: 16),
             Text(
               title,
               style: TextStyle(
-                color: isSelected ? Colors.black : Colors.grey,
+                color:
+                    isSelected ? Theme.of(context).colorScheme.primary : null,
                 fontSize: 16,
               ),
             ),

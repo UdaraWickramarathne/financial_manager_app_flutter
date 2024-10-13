@@ -163,7 +163,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
                           child: Column(
                             children: [
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 60),
                               Container(
                                 padding: const EdgeInsets.only(
                                   left: 15,
@@ -172,7 +172,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                   bottom: 20,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.primary,
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Column(
@@ -270,7 +270,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 70),
+                                    const SizedBox(height: 180),
                                     SimpleButton(
                                       data: 'Save',
                                       onPressed: () {

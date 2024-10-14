@@ -2,10 +2,7 @@ import 'package:financial_app/screens/dashboard/dashboard_index_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
 import 'package:financial_app/screens/transactions/transaction_index_page.dart';
 import 'package:financial_app/screens/transactions/transaction_page.dart';
-import 'package:financial_app/services/navigators.dart';
-import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,8 +17,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    // final themeProvider = Provider.of<ThemeProvider>(context);
+    // final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -40,114 +37,90 @@ class _HomePageState extends State<HomePage> {
                       builder: (context) => const TransactionPage(),
                     ));
               },
-              backgroundColor: Colors.purple,
+              backgroundColor: const Color(0xFF456EFE),
               shape: const CircleBorder(),
               elevation: 0,
               child: const Icon(Icons.add),
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Container(
-        key: bottomNavigatorKey,
-        decoration: isDarkMode
-            ? BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.12),
-                    spreadRadius: 0.5,
-                    blurRadius: 20,
-                    offset: const Offset(0, 9),
-                  ),
-                ],
-              )
-            : BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 0.5,
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).colorScheme.primary,
         height: 60,
-        child: BottomAppBar(
-          elevation: 10.0,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 8.0,
-          child: Stack(
-            children: [
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.linear,
-                left: 20, // Animate the horizontal position
-                top: 0.0,
-                bottom: 0.0,
-                child: IconButton(
-                  icon: const Icon(Icons.home),
-                  color: _currentIndex == 0 ? Colors.black : Colors.grey,
-                  onPressed: () {
-                    setState(() {
-                      isHome = true;
-                      _currentIndex = 0;
-                    });
-                  },
-                ),
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Stack(
+          children: [
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.linear,
+              left: 20,
+              top: 0.0,
+              bottom: 0.0,
+              child: IconButton(
+                icon: const Icon(Icons.home),
+                padding: EdgeInsets.zero,
+                color: _currentIndex == 0 ? Colors.grey : Colors.black,
+                onPressed: () {
+                  setState(() {
+                    isHome = true;
+                    _currentIndex = 0;
+                  });
+                },
               ),
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.linear,
-                left: isHome ? 100.0 : 115.0,
-                top: 0.0,
-                bottom: 0.0,
-                child: IconButton(
-                  icon: const Icon(Icons.person),
-                  color: _currentIndex == 1 ? Colors.black : Colors.grey,
-                  onPressed: () {
-                    setState(() {
-                      isHome = false;
-                      _currentIndex = 1;
-                    });
-                  },
-                ),
+            ),
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.linear,
+              left: isHome ? 100.0 : 115.0,
+              top: 0.0,
+              bottom: 0.0,
+              child: IconButton(
+                icon: const Icon(Icons.person),
+                color: _currentIndex == 1 ? Colors.grey : Colors.black,
+                onPressed: () {
+                  setState(() {
+                    isHome = false;
+                    _currentIndex = 1;
+                  });
+                },
               ),
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.linear,
-                right:
-                    isHome ? 100.0 : 115.0, // Animate the horizontal position
-                top: 0.0,
-                bottom: 0.0,
-                child: IconButton(
-                  icon: const Icon(Icons.money),
-                  color: _currentIndex == 2 ? Colors.black : Colors.grey,
-                  onPressed: () {
-                    setState(() {
-                      isHome = false;
-                      _currentIndex = 2;
-                    });
-                  },
-                ),
+            ),
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.linear,
+              right: isHome ? 100.0 : 115.0, // Animate the horizontal position
+              top: 0.0,
+              bottom: 0.0,
+              child: IconButton(
+                icon: const Icon(Icons.money),
+                color: _currentIndex == 2 ? Colors.grey : Colors.black,
+                onPressed: () {
+                  setState(() {
+                    isHome = false;
+                    _currentIndex = 2;
+                  });
+                },
               ),
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.linear,
-                right: 20.0,
-                top: 0.0,
-                bottom: 0.0,
-                child: IconButton(
-                  icon: const Icon(Icons.currency_exchange),
-                  color: _currentIndex == 3 ? Colors.black : Colors.grey,
-                  onPressed: () {
-                    setState(() {
-                      isHome = false;
-                      _currentIndex = 3;
-                    });
-                  },
-                ),
+            ),
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.linear,
+              right: 20.0,
+              top: 0.0,
+              bottom: 0.0,
+              child: IconButton(
+                icon: const Icon(Icons.currency_exchange),
+                color: _currentIndex == 3 ? Colors.grey : Colors.black,
+                onPressed: () {
+                  setState(() {
+                    isHome = false;
+                    _currentIndex = 3;
+                  });
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

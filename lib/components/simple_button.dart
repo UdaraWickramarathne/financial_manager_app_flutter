@@ -4,11 +4,13 @@ class SimpleButton extends StatelessWidget {
   final String data;
   final Function()? onPressed;
   final Color color;
+  final Color textColor;
   const SimpleButton({
     super.key,
     required this.data,
     required this.onPressed,
-    this.color = const Color.fromARGB(255, 102, 138, 160),
+    this.color = const Color(0xFF456EFE),
+    this.textColor = const Color(0xFF456EFE),
   });
 
   @override
@@ -27,8 +29,8 @@ class SimpleButton extends StatelessWidget {
         child: Center(
           child: Text(
             data,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: textColor,
               fontSize: 18,
             ),
           ),

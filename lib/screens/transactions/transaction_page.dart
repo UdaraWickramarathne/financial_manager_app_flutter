@@ -1,4 +1,4 @@
-import 'package:financial_app/components/login_singup_button.dart';
+import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/components/transaction_type_tile.dart';
 import 'package:financial_app/screens/expense/add_expense_page.dart';
 import 'package:financial_app/screens/income/add_income_page.dart';
@@ -27,67 +27,66 @@ class _TransactionPageState extends State<TransactionPage> {
         title: const Center(
           child: Text(
             'Transaction',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 22),
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              'Type',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        padding: const EdgeInsets.all(25.0),
+        child: Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                'Type',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            TransactionTypeTile(
-              icon: Icons.book,
-              title: 'Expense',
-              isSelected: _selectedType == 'Expense',
-              onTap: () {
-                setState(() {
-                  _selectedType = 'Expense';
-                });
-              },
-            ),
-            TransactionTypeTile(
-              icon: Icons.auto_graph,
-              title: 'Income',
-              isSelected: _selectedType == 'Income',
-              onTap: () {
-                setState(() {
-                  _selectedType = 'Income';
-                });
-              },
-            ),
-            const Spacer(),
-            SimpleButton(
-              data: 'Next',
-              onPressed: () {
-                if (_selectedType == 'Expense') {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddExpensePage(),
-                      ));
-                } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddIncomePage(),
-                      ));
-                }
-              },
-            ),
-            const SizedBox(height: 40)
-          ],
+              const SizedBox(height: 10),
+              TransactionTypeTile(
+                icon: Icons.book,
+                title: 'Expense',
+                isSelected: _selectedType == 'Expense',
+                onTap: () {
+                  setState(() {
+                    _selectedType = 'Expense';
+                  });
+                },
+              ),
+              TransactionTypeTile(
+                icon: Icons.auto_graph,
+                title: 'Income',
+                isSelected: _selectedType == 'Income',
+                onTap: () {
+                  setState(() {
+                    _selectedType = 'Income';
+                  });
+                },
+              ),
+              const Spacer(),
+              SimpleButton(
+                data: 'Next',
+                onPressed: () {
+                  if (_selectedType == 'Expense') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddExpensePage(),
+                        ));
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddIncomePage(),
+                        ));
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

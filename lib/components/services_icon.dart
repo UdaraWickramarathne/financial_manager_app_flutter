@@ -18,7 +18,14 @@ class ServicesIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
+      padding: const EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      width: 100,
+      height: 100,
       child: Column(
         children: [
           ElevatedButton(

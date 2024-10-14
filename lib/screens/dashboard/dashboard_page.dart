@@ -26,15 +26,13 @@ class Dashboard extends StatelessWidget {
         ],
         title: const Center(
           child: Text(
-            'Home',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            'Dashboard',
+            style: TextStyle(fontSize: 20),
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           children: [
             const SizedBox(height: 20),
@@ -64,36 +62,54 @@ class Dashboard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 5),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ServicesIcon(
-                  onPressed: () {},
-                  backgroundColor: Colors.blue[100],
-                  text: 'Transcations',
-                  icon: Icons.monetization_on_outlined,
-                  foregroundColor: Colors.blue,
-                ),
-                ServicesIcon(
-                    onPressed: () {},
-                    backgroundColor: const Color.fromARGB(255, 251, 187, 251),
-                    text: 'Report',
-                    icon: Icons.file_copy_outlined,
-                    foregroundColor: const Color.fromARGB(255, 255, 98, 255)),
-                ServicesIcon(
-                  onPressed: () {},
-                  backgroundColor: const Color.fromARGB(255, 251, 218, 187),
-                  text: 'Reminders',
-                  icon: Icons.alarm,
-                  foregroundColor: const Color.fromARGB(255, 253, 159, 71),
-                ),
-                ServicesIcon(
-                  onPressed: () {},
-                  backgroundColor: const Color.fromARGB(255, 187, 251, 190),
-                  text: 'Goals',
-                  icon: Icons.stairs_outlined,
-                  foregroundColor: const Color.fromARGB(255, 56, 250, 66),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ServicesIcon(
+                          onPressed: () {},
+                          backgroundColor: Colors.blue[100],
+                          text: 'Transcations',
+                          icon: Icons.monetization_on_outlined,
+                          foregroundColor: Colors.blue,
+                        ),
+                        const SizedBox(width: 10),
+                        ServicesIcon(
+                          onPressed: () {},
+                          backgroundColor:
+                              const Color.fromARGB(255, 251, 187, 251),
+                          text: 'Reports',
+                          icon: Icons.file_copy_outlined,
+                          foregroundColor:
+                              const Color.fromARGB(255, 255, 98, 255),
+                        ),
+                        const SizedBox(width: 10),
+                        ServicesIcon(
+                          onPressed: () {},
+                          backgroundColor:
+                              const Color.fromARGB(255, 251, 218, 187),
+                          text: 'Reminders',
+                          icon: Icons.alarm,
+                          foregroundColor:
+                              const Color.fromARGB(255, 253, 159, 71),
+                        ),
+                        const SizedBox(width: 10),
+                        ServicesIcon(
+                          onPressed: () {},
+                          backgroundColor:
+                              const Color.fromARGB(255, 187, 251, 190),
+                          text: 'Goals',
+                          icon: Icons.stairs_outlined,
+                          foregroundColor:
+                              const Color.fromARGB(255, 56, 250, 66),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -5,6 +5,7 @@ class InputField extends StatefulWidget {
   final bool isObsecure;
   final IconData? prefixIcon;
   final String? label;
+  final String? prefixText;
   final Widget? suffixIcon;
   final TextEditingController? controller;
   final bool enabled;
@@ -25,6 +26,7 @@ class InputField extends StatefulWidget {
     this.inputFormat,
     required this.isReadOnly,
     this.onTap,
+    this.prefixText,
   });
 
   @override
@@ -38,7 +40,8 @@ class _InputFieldState extends State<InputField> {
       height: 58,
       child: TextField(
         onTap: widget.onTap,
-        style: const TextStyle(color: Color.fromARGB(255, 102, 138, 160)),
+        style: const TextStyle(
+            color: Color.fromARGB(255, 102, 138, 160), fontSize: 16),
         controller: widget.controller,
         obscureText: widget.isObsecure,
         enabled: widget.enabled,
@@ -46,6 +49,9 @@ class _InputFieldState extends State<InputField> {
         inputFormatters: widget.inputFormat,
         readOnly: widget.isReadOnly,
         decoration: InputDecoration(
+          prefixText: widget.prefixText,
+          prefixStyle: const TextStyle(
+              color: Color.fromARGB(255, 102, 138, 160), fontSize: 16),
           labelStyle:
               const TextStyle(color: Color.fromARGB(255, 145, 145, 145)),
           filled: true,

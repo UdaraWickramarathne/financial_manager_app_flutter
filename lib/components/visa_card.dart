@@ -14,13 +14,14 @@ class VisaCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             gradient: const LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 73, 164, 238),
-                  Color.fromARGB(255, 150, 65, 165),
-                  Color.fromARGB(255, 253, 172, 49),
-                ],
-                begin: AlignmentDirectional(-1, 1),
-                end: AlignmentDirectional(1, -1)),
+              colors: [
+                Color.fromARGB(255, 73, 164, 238), // Light blue
+                Color.fromARGB(255, 38, 128, 198), // Medium blue
+                Color(0xFF456EFE), // Dark blue
+              ],
+              begin: AlignmentDirectional(-1, 1),
+              end: AlignmentDirectional(1, -1),
+            ),
           ),
           child: const Padding(
             padding: EdgeInsets.all(25),

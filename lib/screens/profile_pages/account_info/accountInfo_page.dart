@@ -6,7 +6,7 @@ import 'package:financial_app/components/clickble_textfield.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/services/navigators.dart';
 
-import '../../../components/login_singup_button.dart';
+import '../../../components/simple_button.dart';
 
 class AccountInfoScreen extends StatefulWidget {
   const AccountInfoScreen({super.key});

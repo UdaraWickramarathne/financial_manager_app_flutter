@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../components/input_field.dart';
-import '../../../components/login_singup_button.dart';
+import '../../../components/simple_button.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});

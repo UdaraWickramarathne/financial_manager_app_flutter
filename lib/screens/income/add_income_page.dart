@@ -1,8 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:financial_app/components/dashed_border_button.dart';
 import 'package:financial_app/components/input_field.dart';
-import 'package:financial_app/components/login_singup_button.dart';
-import 'package:financial_app/services/header_clipper.dart';
+import 'package:financial_app/components/simple_button.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -131,166 +130,119 @@ class _AddIncomePageState extends State<AddIncomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0D47A1),
         title: const Text(
           'Add Income',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(fontSize: 22),
         ),
         centerTitle: true,
         elevation: 0,
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: IntrinsicHeight(
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Stack(
-                      children: [
-                        ClipPath(
-                          clipper: HeaderClipper(),
-                          child: Container(
-                            height: 220,
-                            color: const Color(0xFF0D47A1),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 60),
-                              Container(
-                                padding: const EdgeInsets.only(
-                                  left: 15,
-                                  right: 15,
-                                  top: 30,
-                                  bottom: 20,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      ' AMOUNT',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    InputField(
-                                      isReadOnly: false,
-                                      isObsecure: false,
-                                      label: '0.00',
-                                      suffixIcon: TextButton(
-                                        onPressed: () {
-                                          amountController.text = '';
-                                        },
-                                        child: const Text('Clear'),
-                                      ),
-                                      controller: amountController,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      ' INCOME TYPE',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    InputField(
-                                      isObsecure: false,
-                                      controller: typeController,
-                                      prefixIcon: selectedIcon,
-                                      isReadOnly:
-                                          true, // Make the field read-only since it's a selection
-                                      label: 'Select Category',
-                                      suffixIcon: const Icon(
-                                          Icons.keyboard_arrow_down_sharp),
-                                      onTap: showIncomeTypes,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      ' DATE',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    InputField(
-                                      isReadOnly: true,
-                                      isObsecure: false,
-                                      suffixIcon: IconButton(
-                                        onPressed: () async {
-                                          DateTime? pickedDate =
-                                              await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(1900),
-                                            lastDate: DateTime.now(),
-                                          );
+                    const SizedBox(height: 15),
+                    const Text(
+                      ' AMOUNT',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isReadOnly: false,
+                      isObsecure: false,
+                      label: '0.00',
+                      prefixText: 'Rs. ',
+                      suffixIcon: TextButton(
+                        onPressed: () {
+                          amountController.text = '';
+                        },
+                        child: const Text('Clear'),
+                      ),
+                      controller: amountController,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' INCOME TYPE',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isObsecure: false,
+                      controller: typeController,
+                      prefixIcon: selectedIcon,
+                      isReadOnly: true,
+                      label: 'Select Category',
+                      suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
+                      onTap: showIncomeTypes,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' DATE',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isReadOnly: true,
+                      isObsecure: false,
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
 
-                                          if (pickedDate != null) {
-                                            dateController.text =
-                                                DateFormat('yyyy-MM-dd')
-                                                    .format(pickedDate);
-                                          }
-                                        },
-                                        icon: const Icon(Icons.date_range),
-                                      ),
-                                      controller: dateController,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      ' INVOICE(Optional)',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    DashedButton(
-                                      onPressed: pickFile,
-                                      icon: Icons.add_circle,
-                                      text: 'Add Invoice',
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Center(
-                                      child: Text(
-                                        result != null ? file.name : '',
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 180),
-                                    SimpleButton(
-                                      data: 'Save',
-                                      onPressed: () {
-                                        // Your save logic here
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                          if (pickedDate != null) {
+                            dateController.text =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                          }
+                        },
+                        icon: const Icon(Icons.date_range),
+                      ),
+                      controller: dateController,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' INVOICE(Optional)',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    DashedButton(
+                      onPressed: pickFile,
+                      icon: Icons.add_circle,
+                      text: 'Add Invoice',
+                    ),
+                    const SizedBox(height: 10),
+                    Center(
+                      child: Text(
+                        result != null ? file.name : '',
+                        style: const TextStyle(
+                          color: Colors.grey,
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          );
-        },
+            const SizedBox(height: 20),
+            SimpleButton(
+              data: 'Save',
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
     );
   }

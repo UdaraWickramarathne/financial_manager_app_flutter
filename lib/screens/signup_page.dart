@@ -1,5 +1,5 @@
 import 'package:financial_app/components/input_field.dart';
-import 'package:financial_app/components/login_singup_button.dart';
+import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 
 import 'login_page.dart';

@@ -3,6 +3,8 @@ import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
 import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/screens/goals/goal_page.dart';
+import 'package:financial_app/services/navigators.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -99,7 +101,10 @@ class Dashboard extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         ServicesIcon(
-                          onPressed: () {},
+                          onPressed: () {
+                            globalNavigatorKey.currentState!
+                                .pushNamed('/goals');
+                          },
                           backgroundColor:
                               const Color.fromARGB(255, 187, 251, 190),
                           text: 'Goals',

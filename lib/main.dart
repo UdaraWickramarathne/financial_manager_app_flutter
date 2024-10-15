@@ -1,5 +1,7 @@
 import 'package:financial_app/screens/goals/add_goal_page.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
+import 'package:financial_app/screens/home/home_index_page.dart';
+import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/services/navigators.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
@@ -53,8 +55,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      key: globalNavigatorKey,
-      home: const GoalPage(),
+      home: const HomeIndexPage(),
     );
   }
 }

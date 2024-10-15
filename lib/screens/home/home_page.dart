@@ -17,8 +17,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final themeProvider = Provider.of<ThemeProvider>(context);
-    // final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -89,7 +87,7 @@ class _HomePageState extends State<HomePage> {
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.linear,
-              right: isHome ? 100.0 : 115.0, // Animate the horizontal position
+              right: isHome ? 100.0 : 115.0,
               top: 0.0,
               bottom: 0.0,
               child: IconButton(

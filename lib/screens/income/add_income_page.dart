@@ -80,7 +80,11 @@ class _AddIncomePageState extends State<AddIncomePage> {
         return AlertDialog(
           title: const Text(
             'Select Income Type',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 25,
+              fontFamily: 'SofiaPro',
+              fontWeight: FontWeight.bold,
+            ),
           ),
           content: SingleChildScrollView(
             child: Column(
@@ -90,6 +94,9 @@ class _AddIncomePageState extends State<AddIncomePage> {
                   runSpacing: 8.0,
                   children: incomeCategories.map((category) {
                     return ChoiceChip(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                       label: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

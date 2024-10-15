@@ -69,6 +69,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
+                          fontSize: 18,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -82,6 +83,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
+                          fontSize: 18,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -102,6 +104,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
+                          fontSize: 18,
                         ),
                       ),
                       const SizedBox(height: 10),

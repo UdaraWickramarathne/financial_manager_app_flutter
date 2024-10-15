@@ -30,6 +30,7 @@ class SimpleButton extends StatelessWidget {
           child: Text(
             data,
             style: TextStyle(
+              fontFamily: 'SofiaPro',
               color: textColor,
               fontSize: 18,
             ),

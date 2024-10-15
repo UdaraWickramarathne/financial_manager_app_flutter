@@ -28,7 +28,7 @@ class TransactionTile extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.surface,
       ),
       margin: const EdgeInsets.only(bottom: 20),
       child: Row(

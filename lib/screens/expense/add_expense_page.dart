@@ -95,10 +95,13 @@ class _AddExpensePageState extends State<AddExpensePage> {
               children: [
                 const SizedBox(height: 10),
                 Wrap(
-                  spacing: 20.0,
-                  runSpacing: 20.0,
+                  spacing: 8.0,
+                  runSpacing: 8.0,
                   children: expenseCategories.map((category) {
                     return ChoiceChip(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                       label: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Row(
@@ -181,7 +184,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      ' Expense TYPE',
+                      ' EXPENSE TYPE',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.grey),
                     ),

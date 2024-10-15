@@ -2,6 +2,7 @@ import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -117,6 +118,135 @@ class _GoalPageState extends State<GoalPage> {
                     'Close',
                     style: TextStyle(color: Colors.black),
                   ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showUpdatePopup() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        targetController.text = '25000.00';
+        dateController.text = '2024-10-25';
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'New Car',
+              style: TextStyle(
+                fontFamily: 'SofiaPro',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Center(
+                  child: TextField(
+                    cursorColor: const Color(0xFF456EFE),
+                    style: const TextStyle(
+                      fontSize: 30,
+                      color: Color(0xFF456EFE),
+                    ),
+                    textAlignVertical: TextAlignVertical.bottom,
+                    keyboardType: TextInputType.number,
+                    controller: amountController,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      hintText: '0.00',
+                      prefixText: 'LKR',
+                      hintStyle: TextStyle(),
+                      prefixStyle: TextStyle(
+                        color: Color(0xFF456EFE),
+                        fontSize: 30,
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFEFEFEF),
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF456EFE)),
+                      ),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Target Amount: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: InputFieldBottomBorder(
+                        prefixText: 'LKR',
+                        textAlign: TextAlign.end,
+                        controller: targetController,
+                        isReadOnly: false,
+                        keyboardType: TextInputType.number,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Deadline: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(width: 45),
+                    Expanded(
+                      child: InputFieldBottomBorder(
+                        textAlign: TextAlign.end,
+                        controller: dateController,
+                        isReadOnly: true,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    GestureDetector(
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+
+                        if (pickedDate != null) {
+                          dateController.text =
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                        }
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 3),
+                        child: Icon(
+                          Icons.calendar_month,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 30),
+                SimpleButton(
+                  data: 'Update',
+                  onPressed: () {},
                 )
               ],
             ),
@@ -256,129 +386,7 @@ class _GoalPageState extends State<GoalPage> {
                             children: [
                               const Text('Rs.1200'),
                               TextButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      targetController.text = '25000.00';
-                                      dateController.text = '2024-10-25';
-                                      return AlertDialog(
-                                        title: Center(
-                                          child: Text(
-                                            'New Car',
-                                            style: TextStyle(
-                                              fontFamily: 'SofiaPro',
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        content: SingleChildScrollView(
-                                          child: Column(
-                                            children: [
-                                              Center(
-                                                child: TextField(
-                                                  cursorColor:
-                                                      const Color(0xFF456EFE),
-                                                  style: const TextStyle(
-                                                    fontSize: 30,
-                                                    color: Color(0xFF456EFE),
-                                                  ),
-                                                  textAlignVertical:
-                                                      TextAlignVertical.bottom,
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  controller: amountController,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    contentPadding:
-                                                        EdgeInsets.zero,
-                                                    hintText: '0.00',
-                                                    prefixText: 'Rs.',
-                                                    hintStyle: TextStyle(),
-                                                    prefixStyle: TextStyle(
-                                                      color: Color(0xFF456EFE),
-                                                      fontSize: 30,
-                                                    ),
-                                                    enabledBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Color(0xFFEFEFEF),
-                                                      ),
-                                                    ),
-                                                    focusedBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                          color: Color(
-                                                              0xFF456EFE)),
-                                                    ),
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  const Text(
-                                                    'Target Amount: ',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Expanded(
-                                                    child:
-                                                        InputFieldBottomBorder(
-                                                      prefixText: 'Rs',
-                                                      textAlign: TextAlign.end,
-                                                      controller:
-                                                          targetController,
-                                                      isReadOnly: false,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  const Text(
-                                                    'Deadline: ',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 45),
-                                                  Expanded(
-                                                    child:
-                                                        InputFieldBottomBorder(
-                                                      textAlign: TextAlign.end,
-                                                      controller:
-                                                          dateController,
-                                                      isReadOnly: true,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 30),
-                                              SimpleButton(
-                                                data: 'Update',
-                                                onPressed: () {},
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
+                                onPressed: showUpdatePopup,
                                 style: ButtonStyle(
                                   backgroundColor: WidgetStateProperty.all(
                                       const Color.fromARGB(255, 219, 228, 255)),

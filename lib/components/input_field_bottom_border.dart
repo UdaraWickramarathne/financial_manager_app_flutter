@@ -7,6 +7,9 @@ class InputFieldBottomBorder extends StatelessWidget {
   final Function()? onTap;
   final TextEditingController controller;
   final bool isReadOnly;
+  final Function(String)? onChange;
+  final double? fontSize;
+  final TextAlign textAlign;
   const InputFieldBottomBorder({
     super.key,
     this.keyboardType,
@@ -15,23 +18,30 @@ class InputFieldBottomBorder extends StatelessWidget {
     this.onTap,
     required this.controller,
     required this.isReadOnly,
+    this.onChange,
+    this.fontSize,
+    this.textAlign = TextAlign.start,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(
-        fontSize: 25,
+      style: TextStyle(
+        fontSize: fontSize ?? 25,
       ),
+      onChanged: onChange,
       readOnly: isReadOnly,
       controller: controller,
+      textAlign: textAlign,
       onTap: onTap,
+      textAlignVertical: TextAlignVertical.center,
       keyboardType: keyboardType,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
         suffixIcon: suffixIcon,
         prefixText: prefixText,
-        prefixStyle: const TextStyle(
-          fontSize: 25,
+        prefixStyle: TextStyle(
+          fontSize: fontSize ?? 25,
         ),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(

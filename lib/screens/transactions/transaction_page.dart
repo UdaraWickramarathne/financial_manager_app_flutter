@@ -33,60 +33,58 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
-        child: Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              const Text(
-                'Type',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            const Text(
+              'Type',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 10),
-              TransactionTypeTile(
-                icon: Icons.book,
-                title: 'Expense',
-                isSelected: _selectedType == 'Expense',
-                onTap: () {
-                  setState(() {
-                    _selectedType = 'Expense';
-                  });
-                },
-              ),
-              TransactionTypeTile(
-                icon: Icons.auto_graph,
-                title: 'Income',
-                isSelected: _selectedType == 'Income',
-                onTap: () {
-                  setState(() {
-                    _selectedType = 'Income';
-                  });
-                },
-              ),
-              const Spacer(),
-              SimpleButton(
-                data: 'Next',
-                onPressed: () {
-                  if (_selectedType == 'Expense') {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddExpensePage(),
-                        ));
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddIncomePage(),
-                        ));
-                  }
-                },
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10),
+            TransactionTypeTile(
+              icon: Icons.book,
+              title: 'Expense',
+              isSelected: _selectedType == 'Expense',
+              onTap: () {
+                setState(() {
+                  _selectedType = 'Expense';
+                });
+              },
+            ),
+            TransactionTypeTile(
+              icon: Icons.auto_graph,
+              title: 'Income',
+              isSelected: _selectedType == 'Income',
+              onTap: () {
+                setState(() {
+                  _selectedType = 'Income';
+                });
+              },
+            ),
+            const Spacer(),
+            SimpleButton(
+              data: 'Next',
+              onPressed: () {
+                if (_selectedType == 'Expense') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddExpensePage(),
+                      ));
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddIncomePage(),
+                      ));
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

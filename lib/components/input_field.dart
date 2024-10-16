@@ -36,40 +36,46 @@ class InputField extends StatefulWidget {
 class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 58,
-      child: TextField(
-        onTap: widget.onTap,
-        style: const TextStyle(
-            color: Color.fromARGB(255, 102, 138, 160), fontSize: 16),
-        controller: widget.controller,
-        obscureText: widget.isObsecure,
-        enabled: widget.enabled,
-        keyboardType: widget.keyboardType,
-        inputFormatters: widget.inputFormat,
-        readOnly: widget.isReadOnly,
-        decoration: InputDecoration(
-          prefixText: widget.prefixText,
-          prefixStyle: const TextStyle(
-              color: Color.fromARGB(255, 102, 138, 160), fontSize: 16),
-          labelStyle:
-              const TextStyle(color: Color.fromARGB(255, 145, 145, 145)),
-          filled: true,
-          fillColor: const Color.fromARGB(255, 221, 240, 255),
-          prefixIcon: widget.prefixIcon != null
-              ? Icon(
-                  widget.prefixIcon,
-                  color: const Color.fromARGB(255, 102, 138, 160),
-                )
-              : null,
-          labelText: widget.label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
-          ),
-          suffixIcon: widget.suffixIcon,
-          floatingLabelBehavior: FloatingLabelBehavior.never,
+    return TextField(
+      onTap: widget.onTap,
+      style: const TextStyle(
+        fontSize: 16,
+      ),
+      controller: widget.controller,
+      obscureText: widget.isObsecure,
+      textAlignVertical: TextAlignVertical.center,
+      enabled: widget.enabled,
+      keyboardType: widget.keyboardType,
+      inputFormatters: widget.inputFormat,
+      readOnly: widget.isReadOnly,
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.transparent),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Color(0xFF456EFE), width: 2.0),
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        prefixText: widget.prefixText,
+        prefixStyle: const TextStyle(
+          color: Color(0xFF0e1633),
+          fontSize: 16,
+        ),
+        labelStyle: const TextStyle(color: Color(0xFF626262)),
+        filled: true,
+        fillColor: const Color(0xFFf1f4ff),
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(
+                widget.prefixIcon,
+                color: const Color(0xFF1b2c66),
+              )
+            : null,
+        labelText: widget.label,
+        suffixIcon: widget.suffixIcon,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
       ),
     );
   }

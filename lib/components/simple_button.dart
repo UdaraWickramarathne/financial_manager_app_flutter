@@ -20,7 +20,7 @@ class SimpleButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        padding: const EdgeInsets.symmetric(vertical: 18),
         backgroundColor: color,
       ),
       onPressed: onPressed,
@@ -30,9 +30,8 @@ class SimpleButton extends StatelessWidget {
           child: Text(
             data,
             style: TextStyle(
-              fontFamily: 'SofiaPro',
               color: textColor,
-              fontSize: 18,
+              fontSize: 20,
             ),
           ),
         ),

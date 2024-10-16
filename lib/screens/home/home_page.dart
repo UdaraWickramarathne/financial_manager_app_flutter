@@ -1,4 +1,4 @@
-import 'package:financial_app/screens/dashboard/dashboard_index_page.dart';
+import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
 import 'package:financial_app/screens/transactions/transaction_index_page.dart';
 import 'package:financial_app/screens/transactions/transaction_page.dart';
@@ -21,9 +21,9 @@ class _HomePageState extends State<HomePage> {
       body: IndexedStack(
         index: _currentIndex,
         children: const [
-          DashboardIndexPage(),
+          Dashboard(),
           ProfileIndexPage(),
-          TransactionIndexPage()
+          TransactionIndexPage(),
         ],
       ),
       floatingActionButton: isHome

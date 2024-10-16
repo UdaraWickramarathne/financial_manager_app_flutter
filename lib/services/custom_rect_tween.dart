@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 
 /// {@template custom_rect_tween}
@@ -8,9 +10,9 @@ import 'package:flutter/widgets.dart';
 class CustomRectTween extends RectTween {
   /// {@macro custom_rect_tween}
   CustomRectTween({
-    required Rect begin,
-    required Rect end,
-  }) : super(begin: begin, end: end);
+    required super.begin,
+    required super.end,
+  });
 
   @override
   Rect lerp(double t) {
@@ -23,6 +25,7 @@ class CustomRectTween extends RectTween {
     );
   }
 
+  // This method provides the correct implementation using lerp from dart:ui
   double? lerpDouble(double? a, double? b, double t) {
     return a == null || b == null ? null : a + (b - a) * t;
   }

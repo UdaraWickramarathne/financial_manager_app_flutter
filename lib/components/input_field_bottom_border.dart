@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputFieldBottomBorder extends StatelessWidget {
   final TextInputType? keyboardType;
@@ -10,6 +11,8 @@ class InputFieldBottomBorder extends StatelessWidget {
   final Function(String)? onChange;
   final double? fontSize;
   final TextAlign textAlign;
+  final List<TextInputFormatter>? inputFormats;
+  final FocusNode? focusNode;
   const InputFieldBottomBorder({
     super.key,
     this.keyboardType,
@@ -21,6 +24,8 @@ class InputFieldBottomBorder extends StatelessWidget {
     this.onChange,
     this.fontSize,
     this.textAlign = TextAlign.start,
+    this.inputFormats,
+    this.focusNode,
   });
 
   @override
@@ -30,12 +35,14 @@ class InputFieldBottomBorder extends StatelessWidget {
         fontSize: fontSize ?? 25,
       ),
       onChanged: onChange,
+      focusNode: focusNode,
       readOnly: isReadOnly,
       controller: controller,
       textAlign: textAlign,
       onTap: onTap,
       textAlignVertical: TextAlignVertical.center,
       keyboardType: keyboardType,
+      inputFormatters: inputFormats,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.zero,
         suffixIcon: suffixIcon,

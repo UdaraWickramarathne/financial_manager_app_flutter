@@ -43,7 +43,6 @@ class GoalDetailsCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'SofiaPro',
                             fontSize: 20,
                           ),
                         ),

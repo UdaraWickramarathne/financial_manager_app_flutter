@@ -20,8 +20,7 @@ class _TransactionPageState extends State<TransactionPage> {
       appBar: AppBar(
         actions: const [
           Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: Icon(Icons.notifications),
+            padding: EdgeInsets.only(right: 35),
           ),
         ],
         title: const Center(
@@ -36,15 +35,14 @@ class _TransactionPageState extends State<TransactionPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
             const Text(
-              'Type',
+              'Select your transaction type',
               style: TextStyle(
                 fontSize: 22,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             TransactionTypeTile(
               icon: Icons.book,
               title: 'Expense',

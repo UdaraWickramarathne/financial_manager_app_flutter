@@ -5,6 +5,7 @@ class TransactionTypeTile extends StatelessWidget {
   final String title;
   final bool isSelected;
   final VoidCallback onTap;
+
   const TransactionTypeTile({
     super.key,
     required this.icon,
@@ -17,32 +18,28 @@ class TransactionTypeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: isSelected
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(8.0),
           border: Border.all(
+            width: 2.0,
             color: isSelected
-                ? Theme.of(context).colorScheme.primary
+                ? const Color(0xFF446efe)
                 : Theme.of(context).colorScheme.secondary,
           ),
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: isSelected ? Theme.of(context).colorScheme.primary : null,
-            ),
+            Icon(icon),
             const SizedBox(width: 16),
             Text(
               title,
-              style: TextStyle(
-                color:
-                    isSelected ? Theme.of(context).colorScheme.primary : null,
+              style: const TextStyle(
                 fontSize: 16,
               ),
             ),

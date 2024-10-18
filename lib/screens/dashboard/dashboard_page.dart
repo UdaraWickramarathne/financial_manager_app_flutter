@@ -4,6 +4,8 @@ import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
+import 'package:financial_app/screens/notification/notification_page.dart';
+import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -19,12 +21,22 @@ class Dashboard extends StatelessWidget {
           padding: EdgeInsets.only(left: 30),
           child: Icon(Icons.grid_view_rounded),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: Icon(Icons.notifications),
+            padding: const EdgeInsets.only(right: 15),
+            child: IconButton(
+              icon: const Icon(
+                Icons.notifications,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(CustomPageRoute(
+                  page: const NotificationPage(),
+                ));
+              },
+            ),
           ),
         ],
+        centerTitle: true,
         title: const Center(
           child: Text(
             'Dashboard',
@@ -38,32 +50,19 @@ class Dashboard extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             const VisaCard(),
-            const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const SizedBox(height: 20),
+            const Row(
               children: [
-                const Text(
+                Text(
                   "Services",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Text(
-                    'See All',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
               ],
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
@@ -118,7 +117,7 @@ class Dashboard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

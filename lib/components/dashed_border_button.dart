@@ -17,18 +17,18 @@ class DashedButton extends StatelessWidget {
     return DottedBorder(
       borderType: BorderType.RRect,
       radius: const Radius.circular(15),
-      strokeWidth: 1.5, // Adjust stroke width if needed
+      strokeWidth: 1.5,
+      color: Theme.of(context).colorScheme.secondary,
       padding: EdgeInsets.zero, // Remove padding here
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15), // Match the border radius
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.zero, // Remove padding inside button
-            elevation: 0,
-            minimumSize:
-                const Size(0, 58), // Set minimum height to remove extra space
-            backgroundColor: Colors.white, // Button color
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            elevation: 0, // Set minimum height to remove extra space
+            backgroundColor:
+                Theme.of(context).colorScheme.surface, // Button color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),

@@ -82,7 +82,6 @@ class _AddIncomePageState extends State<AddIncomePage> {
             'Select Income Type',
             style: TextStyle(
               fontSize: 25,
-              fontFamily: 'SofiaPro',
               fontWeight: FontWeight.bold,
             ),
           ),

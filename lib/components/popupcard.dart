@@ -2,15 +2,7 @@ import 'package:financial_app/services/custom_rect_tween.dart';
 import 'package:financial_app/services/hero_dialog_route.dart';
 import 'package:flutter/material.dart';
 
-/// {@template add_todo_button}
-/// Button to add a new [Todo].
-///
-/// Opens a [HeroDialogRoute] of [_AddTodoPopupCard].
-///
-/// Uses a [Hero] with tag [_heroAddTodo].
-/// {@endtemplate}
 class AddTodoButton extends StatelessWidget {
-  /// {@macro add_todo_button}
   const AddTodoButton({super.key});
 
   @override
@@ -46,17 +38,7 @@ class AddTodoButton extends StatelessWidget {
   }
 }
 
-/// Tag-value used for the add todo popup button.
-const String _heroAddTodo = 'add-todo-hero';
-
-/// {@template add_todo_popup_card}
-/// Popup card to add a new [Todo]. Should be used in conjuction with
-/// [HeroDialogRoute] to achieve the popup effect.
-///
-/// Uses a [Hero] with tag [_heroAddTodo].
-/// {@endtemplate}
 class AddTodoPopupCard extends StatelessWidget {
-  /// {@macro add_todo_popup_card}
   const AddTodoPopupCard({super.key});
 
   @override

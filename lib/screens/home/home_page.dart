@@ -1,8 +1,10 @@
+import 'package:financial_app/screens/convertor/money_converor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
 import 'package:financial_app/screens/transactions/transaction_index_page.dart';
 import 'package:financial_app/screens/transactions/transaction_page.dart';
 import 'package:flutter/material.dart';
+import 'package:transitioned_indexed_stack/transitioned_indexed_stack.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,15 +17,23 @@ class _HomePageState extends State<HomePage> {
   bool isHome = true;
   int _currentIndex = 0;
 
+  final String _exchane = 'assets/icons/exchange.ico';
+  final String _exchaneOut = 'assets/icons/exchange_out.ico';
+  final String _transaction = 'assets/icons/transaction.png';
+  final String _transactionOut = 'assets/icons/transaction_out.png';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
+      body: FadeIndexedStack(
         index: _currentIndex,
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 200),
         children: const [
           Dashboard(),
           ProfileIndexPage(),
           TransactionIndexPage(),
+          MoneyConveror(),
         ],
       ),
       floatingActionButton: isHome
@@ -41,9 +51,10 @@ class _HomePageState extends State<HomePage> {
               child: const Icon(Icons.add),
             )
           : null,
+      extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).bottomAppBarTheme.color,
         height: 60,
         shape: const CircularNotchedRectangle(),
         notchMargin: 8.0,
@@ -56,9 +67,10 @@ class _HomePageState extends State<HomePage> {
               top: 0.0,
               bottom: 0.0,
               child: IconButton(
-                icon: const Icon(Icons.home),
+                icon: Icon(
+                  _currentIndex == 0 ? Icons.home : Icons.home_outlined,
+                ),
                 padding: EdgeInsets.zero,
-                color: _currentIndex == 0 ? Colors.grey : Colors.black,
                 onPressed: () {
                   setState(() {
                     isHome = true;
@@ -74,8 +86,10 @@ class _HomePageState extends State<HomePage> {
               top: 0.0,
               bottom: 0.0,
               child: IconButton(
-                icon: const Icon(Icons.person),
-                color: _currentIndex == 1 ? Colors.grey : Colors.black,
+                icon: Icon(
+                  _currentIndex == 1 ? Icons.person : Icons.person_outline,
+                ),
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   setState(() {
                     isHome = false;
@@ -91,8 +105,13 @@ class _HomePageState extends State<HomePage> {
               top: 0.0,
               bottom: 0.0,
               child: IconButton(
-                icon: const Icon(Icons.money),
-                color: _currentIndex == 2 ? Colors.grey : Colors.black,
+                icon: ImageIcon(
+                  AssetImage(
+                    _currentIndex == 2 ? _transaction : _transactionOut,
+                  ),
+                  size: 24,
+                ),
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   setState(() {
                     isHome = false;
@@ -108,8 +127,12 @@ class _HomePageState extends State<HomePage> {
               top: 0.0,
               bottom: 0.0,
               child: IconButton(
-                icon: const Icon(Icons.currency_exchange),
-                color: _currentIndex == 3 ? Colors.grey : Colors.black,
+                icon: ImageIcon(
+                  AssetImage(
+                    _currentIndex == 3 ? _exchane : _exchaneOut,
+                  ),
+                ),
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   setState(() {
                     isHome = false;

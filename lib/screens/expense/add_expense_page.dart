@@ -88,7 +88,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
         return AlertDialog(
           title: const Text(
             'Select Expense Type',
-            style: TextStyle(fontSize: 25, fontFamily: 'SofiaPro'),
+            style: TextStyle(
+              fontSize: 25,
+            ),
           ),
           content: SingleChildScrollView(
             child: Column(

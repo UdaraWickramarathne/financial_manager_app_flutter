@@ -1,14 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({super.key});
+class OnbordingPage extends StatefulWidget {
+  const OnbordingPage({super.key});
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  State<OnbordingPage> createState() => _OnbordingPageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _OnbordingPageState extends State<OnbordingPage> {
   bool isTapped = false;
   @override
   Widget build(BuildContext context) {

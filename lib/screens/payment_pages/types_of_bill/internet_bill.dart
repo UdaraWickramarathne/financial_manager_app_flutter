@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../../components/login_singup_button.dart';
 import '../payment_methord/payment_methord_screen.dart';
@@ -49,16 +48,6 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
     }
   }
 
-  final List<String> imagePaths = [
-    'assets/a/images.png',
-    'assets/a/images (4).jpg',
-    'assets/a/images (3).jpg',
-    'assets/a/download (8).jpg',
-    'assets/a/download (7).jpg',
-    'assets/a/images (1).png',
-    'assets/a/7xFun-highlights.jpg',
-
-  ];
 
   final List<String> billers = ['SLT Mobitel', 'Dialog Broadband', 'Lankabell'];
 
@@ -230,24 +219,6 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
                 },
               ),
               const SizedBox(height: 10),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 150.0,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                ),
-                items: imagePaths.map((imagePath) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Image.asset(
-                        imagePath,
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
             ],
           ),
         ),

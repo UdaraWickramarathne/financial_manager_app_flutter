@@ -25,7 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(25.0),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: Colors.grey,
                   ),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 120),
                 // Full Name field
                 InputField(
                     controller: nameController,
@@ -55,7 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     prefixIcon: Icons.person,
                     label: 'Full name',
                     suffixIcon: null),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 // Email field
                 InputField(
                     controller: emailController,
@@ -63,7 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     prefixIcon: Icons.email,
                     label: 'Email',
                     suffixIcon: null),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 // Password field
 
                 InputField(
@@ -82,7 +82,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         : Icons.visibility_off),
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 // Confirm Password field
                 InputField(
                   controller: conformPasswordController,
@@ -100,7 +100,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         : Icons.visibility_off),
                   ),
                 ),
-                const SizedBox(height: 160),
+                const SizedBox(height: 180),
                 // Sign Up button
                 LoginSingupButton(
                   data: 'Sign Up',

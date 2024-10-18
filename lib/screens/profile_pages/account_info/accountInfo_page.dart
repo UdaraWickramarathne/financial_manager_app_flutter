@@ -107,6 +107,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         ? FileImage(_image!)
                         : const AssetImage(
                         'assets/profile.jpg') as ImageProvider,
+
+
                   ),
                   Positioned(
                     bottom: 0,
@@ -228,6 +230,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     },
                   );
                 }
+
                     : () {},
               ),
               const SizedBox(height: 10),
@@ -284,6 +287,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         GestureDetector(
                           onTap: () {
                             profileNavigatorKey.currentState!.pushNamed('/reset_password');
+
+
                           },
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -298,12 +303,11 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           ),
                         ),
                       ],
-                    ),
-                     // Space between the Row and the Save button
-
+                    ),                    // Space between the Row and the Save button
                   ],
                 ),
               ],
+              const SizedBox(height: 20),
             ],
           ),
         ),

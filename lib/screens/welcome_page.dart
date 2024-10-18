@@ -1,14 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _WelcomePageState extends State<WelcomePage> {
   bool isTapped = false;
   @override
   Widget build(BuildContext context) {

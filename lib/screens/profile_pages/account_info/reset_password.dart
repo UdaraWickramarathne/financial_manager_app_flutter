@@ -90,7 +90,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ? Icons.visibility
                       : Icons.visibility_off,
                   color: Colors.grey,
-
                 ),
                 onPressed: () {
                   setState(() {

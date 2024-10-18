@@ -1,6 +1,5 @@
+import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
-
-import '../../../components/login_singup_button.dart';
 import '../payment_methord/payment_methord_screen.dart';
 
 class DateSelection extends StatefulWidget {
@@ -19,7 +18,8 @@ class _DateSelectionState extends State<DateSelection> {
   @override
   void initState() {
     super.initState();
-    paymentDateController.text = DateTime.now().toLocal().toString().split(' ')[0];
+    paymentDateController.text =
+        DateTime.now().toLocal().toString().split(' ')[0];
   }
 
   Future<void> _selectDueDate(BuildContext context) async {
@@ -104,7 +104,7 @@ class _DateSelectionState extends State<DateSelection> {
           readOnly: true,
         ),
         const SizedBox(height: 96),
-        LoginSingupButton(
+        SimpleButton(
           data: 'Pay Bill',
           onPressed: () {
             if (accountNumberController.text.isNotEmpty &&

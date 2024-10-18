@@ -105,10 +105,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     radius: 80,
                     backgroundImage: _image != null
                         ? FileImage(_image!)
-                        : const AssetImage(
-                        'assets/profile.jpg') as ImageProvider,
-
-
+                        : const AssetImage('assets/profile.jpg')
+                            as ImageProvider,
                   ),
                   Positioned(
                     bottom: 0,
@@ -123,8 +121,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
                         ),
-                        child: const Icon(
-                            Icons.camera_alt, color: Colors.white, size: 20),
+                        child: const Icon(Icons.camera_alt,
+                            color: Colors.white, size: 20),
                       ),
                     ),
                   ),
@@ -133,8 +131,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: nameController,
-                style: const TextStyle(
-                    fontSize: 25, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
@@ -157,7 +155,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           SizedBox(width: 10),
                           Text(
                             'Edit',
-                            style: TextStyle(color: Colors.blue,fontSize: 15),
+                            style: TextStyle(color: Colors.blue, fontSize: 15),
                           ),
                         ],
                       ),
@@ -204,36 +202,35 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 controller: genderController,
                 onTap: isEditing
                     ? () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('Select Gender'),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              ListTile(
-                                title: const Text('Male'),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  _selectGender('Male');
-                                },
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Select Gender'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: const Text('Male'),
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        _selectGender('Male');
+                                      },
+                                    ),
+                                    ListTile(
+                                      title: const Text('Female'),
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        _selectGender('Female');
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
-                              ListTile(
-                                title: const Text('Female'),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  _selectGender('Female');
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
-
+                            );
+                          },
+                        );
+                      }
                     : () {},
               ),
               const SizedBox(height: 10),
@@ -243,18 +240,18 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 controller: birthdateController,
                 onTap: isEditing
                     ? () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                  );
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
 
-                  if (pickedDate != null) {
-                    birthdateController.text =
-                        DateFormat('yyyy-MM-dd').format(pickedDate);
-                  }
-                }
+                        if (pickedDate != null) {
+                          birthdateController.text =
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                        }
+                      }
                     : () {},
               ),
               const SizedBox(height: 10),
@@ -276,7 +273,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                   profileNavigatorKey.currentState!
                       .pushNamed('/reset_password');
                 },
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.lock_reset, color: Colors.blue),
@@ -288,7 +285,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       ),
                     ),
 
-                    LoginSingupButton(
+                    SimpleButton(
                       data: 'Save',
                       onPressed: _saveChanges,
                     ),
@@ -314,9 +311,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         const SizedBox(width: 10),
                         GestureDetector(
                           onTap: () {
-                            profileNavigatorKey.currentState!.pushNamed('/reset_password');
-
-
+                            profileNavigatorKey.currentState!
+                                .pushNamed('/reset_password');
                           },
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -331,7 +327,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           ),
                         ),
                       ],
-                    ),                    // Space between the Row and the Save button
+                    ), // Space between the Row and the Save button
                   ],
                 ),
               ),

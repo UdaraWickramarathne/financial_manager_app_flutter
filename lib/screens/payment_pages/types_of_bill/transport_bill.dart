@@ -1,7 +1,6 @@
+import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../../components/login_singup_button.dart';
 import '../payment_methord/payment_methord_screen.dart'; // For date formatting
 
 class TransportScreen extends StatefulWidget {
@@ -23,7 +22,8 @@ class _TransportScreenState extends State<TransportScreen> {
   void initState() {
     super.initState();
     // Set the payment date to the current date
-    paymentDateController.text = DateFormat('MM/dd/yyyy').format(DateTime.now());
+    paymentDateController.text =
+        DateFormat('MM/dd/yyyy').format(DateTime.now());
   }
 
   Future<void> _selectTravelDate(BuildContext context) async {
@@ -149,10 +149,11 @@ class _TransportScreenState extends State<TransportScreen> {
               readOnly: true,
             ),
             const SizedBox(height: 16),
-            LoginSingupButton(
+            SimpleButton(
               data: 'Pay Bill',
               onPressed: () {
-                if (fromController.text.isNotEmpty && toController.text.isNotEmpty &&
+                if (fromController.text.isNotEmpty &&
+                    toController.text.isNotEmpty &&
                     amountController.text.isNotEmpty) {
                   Navigator.push(
                     context,

@@ -1,8 +1,7 @@
+import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-
-import '../../../components/login_singup_button.dart';
 import '../payment_success_screen.dart';
 
 class CardPaymentScreen extends StatefulWidget {
@@ -79,7 +78,8 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   }
 
   bool _isExpiryDateValid(String expiryDate) {
-    if (expiryDate.length != 5 || !RegExp(r'^\d{2}/\d{2}$').hasMatch(expiryDate)) {
+    if (expiryDate.length != 5 ||
+        !RegExp(r'^\d{2}/\d{2}$').hasMatch(expiryDate)) {
       return false;
     }
 
@@ -100,9 +100,9 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
       return false;
     }
 
-    return (year > currentYear) || (year == currentYear && month >= currentMonth);
+    return (year > currentYear) ||
+        (year == currentYear && month >= currentMonth);
   }
-
 
   void _onContinuePressed() {
     if (cardNumberController.text.isEmpty ||
@@ -168,7 +168,8 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
             TextButton(
               child: const Text('Save'),
               onPressed: () {
-                saveCardDetails(cardNumberController.text, expiryDateController.text, cvvController.text);
+                saveCardDetails(cardNumberController.text,
+                    expiryDateController.text, cvvController.text);
                 Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,
@@ -190,7 +191,8 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   @override
   void dispose() {
     _timer.cancel();
-    cardNumberController.removeListener(_updateCardType); // Remove listener on dispose
+    cardNumberController
+        .removeListener(_updateCardType); // Remove listener on dispose
     cardNumberController.dispose();
     expiryDateController.dispose();
     cvvController.dispose();
@@ -239,13 +241,20 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                       const SizedBox(height: 16),
                       _buildCardTypeSelection(),
                       const SizedBox(height: 20),
-                      _buildTextField('Card Number', cardNumberController, Colors.orange, isCardNumber: true),
+                      _buildTextField(
+                          'Card Number', cardNumberController, Colors.orange,
+                          isCardNumber: true),
                       const SizedBox(height: 20),
                       Row(
                         children: [
-                          Expanded(child: _buildTextField('Expiry Date', expiryDateController, Colors.green, isExpiryDate: true)),
+                          Expanded(
+                              child: _buildTextField('Expiry Date',
+                                  expiryDateController, Colors.green,
+                                  isExpiryDate: true)),
                           const SizedBox(width: 16),
-                          Expanded(child: _buildTextField('CVV', cvvController, Colors.red)),
+                          Expanded(
+                              child: _buildTextField(
+                                  'CVV', cvvController, Colors.red)),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -257,7 +266,10 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                               setState(() {
                                 saveCard = value ?? false;
                                 if (saveCard) {
-                                  saveCardDetails(cardNumberController.text, expiryDateController.text, cvvController.text);
+                                  saveCardDetails(
+                                      cardNumberController.text,
+                                      expiryDateController.text,
+                                      cvvController.text);
                                 }
                               });
                             },
@@ -266,9 +278,10 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                         ],
                       ),
                       const SizedBox(height: 26),
-                      LoginSingupButton(
+                      SimpleButton(
                         data: 'Continue',
-                        onPressed: _onContinuePressed, // Update to use the validation method
+                        onPressed:
+                            _onContinuePressed, // Update to use the validation method
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -318,28 +331,34 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, Color borderColor, {bool isCardNumber = false, bool isExpiryDate = false, bool isCVV = false}) {
+  Widget _buildTextField(
+      String label, TextEditingController controller, Color borderColor,
+      {bool isCardNumber = false,
+      bool isExpiryDate = false,
+      bool isCVV = false}) {
     return TextField(
       controller: controller,
-      keyboardType: isCardNumber || isExpiryDate || isCVV ? TextInputType.number : TextInputType.number,
+      keyboardType: isCardNumber || isExpiryDate || isCVV
+          ? TextInputType.number
+          : TextInputType.number,
       inputFormatters: isCardNumber
           ? [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(16),
-        CardNumberInputFormatter(),
-      ]
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(16),
+              CardNumberInputFormatter(),
+            ]
           : isExpiryDate
-          ? [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(4),
-        ExpiryDateInputFormatter(),
-      ]
-          : isCVV
-          ? [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(3),
-      ]
-          : [],
+              ? [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(4),
+                  ExpiryDateInputFormatter(),
+                ]
+              : isCVV
+                  ? [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3),
+                    ]
+                  : [],
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: borderColor),
@@ -351,11 +370,11 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: borderColor, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       ),
     );
   }
-
 
   Widget _buildAmountDisplay() {
     return Row(
@@ -363,11 +382,17 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
       children: [
         const Text(
           'Amount: ',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.lightBlueAccent),
         ),
         Text(
           '\$${widget.amount}',
-          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+          style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.lightBlueAccent),
         ),
       ],
     );
@@ -376,7 +401,8 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
 
 class CardNumberInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     String newText = newValue.text.replaceAll(RegExp(r'\D'), '');
     String formattedText = '';
     for (int i = 0; i < newText.length; i++) {
@@ -392,11 +418,13 @@ class CardNumberInputFormatter extends TextInputFormatter {
 
 class ExpiryDateInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     String newText = newValue.text.replaceAll(RegExp(r'\D'), '');
     String formattedText = '';
     if (newText.length > 2) {
-      formattedText = newText.substring(0, 2) + '/' + newText.substring(2, newText.length);
+      formattedText =
+          newText.substring(0, 2) + '/' + newText.substring(2, newText.length);
     } else {
       formattedText = newText;
     }

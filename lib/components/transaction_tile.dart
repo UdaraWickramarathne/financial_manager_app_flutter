@@ -24,66 +24,69 @@ class TransactionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // For icon and  description
-          Row(
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: boxColor,
-                ),
-                child: Icon(
-                  Icons.electric_bolt_outlined,
-                  color: iconColor,
-                ),
-              ),
-              const SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Card(
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // For icon and  description
+            Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: boxColor,
                   ),
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
+                  child: Icon(
+                    Icons.electric_bolt_outlined,
+                    color: iconColor,
                   ),
-                ],
-              )
-            ],
-          ),
-          //For balance and date
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                isIncome ? '+\$$price' : '-\$$price',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: isIncome ? Colors.green : Colors.red,
                 ),
-              ),
-              Text(
-                date,
-                style: const TextStyle(
-                  color: Colors.grey,
+                const SizedBox(width: 15),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      description,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            //For balance and date
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  isIncome ? '+\$$price' : '-\$$price',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isIncome ? Colors.green : Colors.red,
+                  ),
                 ),
-              ),
-            ],
-          )
-        ],
+                Text(
+                  date,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

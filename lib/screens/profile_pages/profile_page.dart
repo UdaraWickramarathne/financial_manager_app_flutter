@@ -6,7 +6,6 @@ import 'dart:io';
 import 'rating/rating_dialog.dart';
 
 import '../../components/profile_option.dart';
-import 'account_info/accountInfo_page.dart';
 import 'privacy_policy/privacy_policy_page.dart';
 import 'settings/settings_page.dart';
 
@@ -40,9 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Center(
           child: Text(
             'Profile',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 22),
           ),
         ),
       ),

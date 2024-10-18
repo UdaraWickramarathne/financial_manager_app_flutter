@@ -1,4 +1,5 @@
-import 'package:financial_app/screens/transaction/transaction_page.dart';
+import 'package:financial_app/screens/transactions/transaction_page.dart';
+import 'package:financial_app/screens/transactions/transactions_list.dart';
 import 'package:financial_app/services/navigators.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class TransactionIndexPage extends StatelessWidget {
         switch (settings.name) {
           case '/':
             return MaterialPageRoute(
-              builder: (context) => const TransactionPage(),
+              builder: (context) => const TransactionsList(),
             );
           default:
             return MaterialPageRoute(

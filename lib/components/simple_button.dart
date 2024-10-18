@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
-class LoginSingupButton extends StatelessWidget {
+class SimpleButton extends StatelessWidget {
   final String data;
   final Function()? onPressed;
-  const LoginSingupButton({
+  final Color color;
+  final Color textColor;
+  const SimpleButton({
     super.key,
     required this.data,
     required this.onPressed,
+    this.color = const Color(0xFF456EFE),
+    this.textColor = Colors.white,
   });
 
   @override
@@ -14,10 +18,10 @@ class LoginSingupButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(15),
         ),
         padding: const EdgeInsets.symmetric(vertical: 15),
-        backgroundColor: const Color.fromARGB(255, 102, 138, 160),
+        backgroundColor: color,
       ),
       onPressed: onPressed,
       child: SizedBox(
@@ -25,9 +29,9 @@ class LoginSingupButton extends StatelessWidget {
         child: Center(
           child: Text(
             data,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 20,
             ),
           ),
         ),

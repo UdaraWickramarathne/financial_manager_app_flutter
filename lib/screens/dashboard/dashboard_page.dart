@@ -3,6 +3,9 @@ import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
 import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/screens/goals/goal_page.dart';
+import 'package:financial_app/screens/notification/notification_page.dart';
+import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -11,90 +14,110 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         scrolledUnderElevation: 0,
         elevation: 0,
         leading: const Padding(
           padding: EdgeInsets.only(left: 30),
           child: Icon(Icons.grid_view_rounded),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: Icon(Icons.notifications),
+            padding: const EdgeInsets.only(right: 15),
+            child: IconButton(
+              icon: const Icon(
+                Icons.notifications,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(CustomPageRoute(
+                  page: const NotificationPage(),
+                ));
+              },
+            ),
           ),
         ],
+        centerTitle: true,
         title: const Center(
           child: Text(
-            'Home',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            'Dashboard',
+            style: TextStyle(fontSize: 20),
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           children: [
             const SizedBox(height: 20),
             const VisaCard(),
-            const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const SizedBox(height: 20),
+            const Row(
               children: [
-                const Text(
+                Text(
                   "Services",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: const Text('See All'),
-                ),
               ],
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ServicesIcon(
-                  onPressed: () {},
-                  backgroundColor: Colors.blue[100],
-                  text: 'Transcations',
-                  icon: Icons.monetization_on_outlined,
-                  foregroundColor: Colors.blue,
-                ),
-                ServicesIcon(
-                    onPressed: () {},
-                    backgroundColor: const Color.fromARGB(255, 251, 187, 251),
-                    text: 'Report',
-                    icon: Icons.file_copy_outlined,
-                    foregroundColor: const Color.fromARGB(255, 255, 98, 255)),
-                ServicesIcon(
-                  onPressed: () {},
-                  backgroundColor: const Color.fromARGB(255, 251, 218, 187),
-                  text: 'Reminders',
-                  icon: Icons.alarm,
-                  foregroundColor: const Color.fromARGB(255, 253, 159, 71),
-                ),
-                ServicesIcon(
-                  onPressed: () {},
-                  backgroundColor: const Color.fromARGB(255, 187, 251, 190),
-                  text: 'Goals',
-                  icon: Icons.stairs_outlined,
-                  foregroundColor: const Color.fromARGB(255, 56, 250, 66),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ServicesIcon(
+                          onPressed: () {},
+                          backgroundColor: Colors.blue[100],
+                          text: 'Transcations',
+                          icon: Icons.monetization_on_outlined,
+                          foregroundColor: Colors.blue,
+                        ),
+                        const SizedBox(width: 10),
+                        ServicesIcon(
+                          onPressed: () {},
+                          backgroundColor:
+                              const Color.fromARGB(255, 251, 187, 251),
+                          text: 'Reports',
+                          icon: Icons.file_copy_outlined,
+                          foregroundColor:
+                              const Color.fromARGB(255, 255, 98, 255),
+                        ),
+                        const SizedBox(width: 10),
+                        ServicesIcon(
+                          onPressed: () {},
+                          backgroundColor:
+                              const Color.fromARGB(255, 251, 218, 187),
+                          text: 'Reminders',
+                          icon: Icons.alarm,
+                          foregroundColor:
+                              const Color.fromARGB(255, 253, 159, 71),
+                        ),
+                        const SizedBox(width: 10),
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const GoalPage(),
+                            ));
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 187, 251, 190),
+                          text: 'Goals',
+                          icon: Icons.stairs_outlined,
+                          foregroundColor:
+                              const Color.fromARGB(255, 56, 250, 66),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -6,7 +6,7 @@ import 'package:financial_app/components/clickble_textfield.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/services/navigators.dart';
 
-import '../../../components/login_singup_button.dart';
+import '../../../components/simple_button.dart';
 
 class AccountInfoScreen extends StatefulWidget {
   const AccountInfoScreen({super.key});
@@ -167,6 +167,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               const SizedBox(height: 10),
               // InputField for name
               InputField(
+                isReadOnly: false,
                 controller: nameController,
                 isObsecure: false,
                 prefixIcon: Icons.supervised_user_circle,
@@ -176,6 +177,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               ),
               const SizedBox(height: 10),
               InputField(
+                isReadOnly: false,
                 controller: emailController,
                 isObsecure: false,
                 prefixIcon: Icons.email,
@@ -185,6 +187,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               ),
               const SizedBox(height: 10),
               InputField(
+                isReadOnly: false,
                 controller: phoneController,
                 isObsecure: false,
                 prefixIcon: Icons.phone,
@@ -252,12 +255,37 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     : () {},
               ),
               const SizedBox(height: 10),
-              const SizedBox(height: 50),
-
-              if (isEditing) ...[
-                Column(
+              InputField(
+                  isReadOnly: false,
+                  controller: emailController,
+                  isObsecure: false,
+                  prefixIcon: Icons.library_books,
+                  label: 'Bio',
+                  suffixIcon: null),
+              const SizedBox(height: 80),
+              SimpleButton(
+                data: 'Save',
+                onPressed: () {},
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () {
+                  profileNavigatorKey.currentState!
+                      .pushNamed('/reset_password');
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    LoginSingupButton(
+                    Icon(Icons.lock_reset, color: Colors.blue),
+                    SizedBox(width: 15),
+                    Text(
+                      'Reset Password',
+                      style: TextStyle(
+                        color: Colors.blue,
+                      ),
+                    ),
+
+                    SimpleButton(
                       data: 'Save',
                       onPressed: _saveChanges,
                     ),
@@ -299,11 +327,10 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           ),
                         ),
                       ],
-                    ),
-                    // Space between the Row and the Save button
+                    ), // Space between the Row and the Save button
                   ],
                 ),
-              ],
+              ),
               const SizedBox(height: 20),
             ],
           ),

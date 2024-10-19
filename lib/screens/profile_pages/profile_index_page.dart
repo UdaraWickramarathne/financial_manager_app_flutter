@@ -1,4 +1,4 @@
-import 'package:financial_app/screens/profile_pages/account_info/accountInfo_page.dart';
+import 'package:financial_app/screens/profile_pages/account_info/accountinfo_page.dart';
 import 'package:financial_app/screens/profile_pages/account_info/reset_password.dart';
 import 'package:financial_app/screens/profile_pages/profile_page.dart';
 import 'package:financial_app/services/navigators.dart';

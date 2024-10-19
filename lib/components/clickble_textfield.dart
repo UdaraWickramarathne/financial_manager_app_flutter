@@ -4,14 +4,14 @@ class ClickbleTextfield extends StatefulWidget {
   final IconData? prefixIcon;
   final String label;
   final TextEditingController? controller;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const ClickbleTextfield({
     super.key,
     required this.prefixIcon,
     required this.label,
     required this.controller,
-    required this.onTap,
+    this.onTap,
   });
 
   @override
@@ -34,7 +34,7 @@ class _ClickbleTextfieldState extends State<ClickbleTextfield> {
         ),
         labelText: widget.label,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
         ),
         floatingLabelBehavior: FloatingLabelBehavior.never,

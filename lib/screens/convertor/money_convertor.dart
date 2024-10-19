@@ -67,49 +67,50 @@ class _MoneyConverorState extends State<MoneyConveror> {
   String exchangeRateMessage = '';
 
   Map<String, String> currencyFlags = {
-    'USD': 'https://flagcdn.com/us.svg', // United States Dollar
-    'SGD': 'https://flagcdn.com/sg.svg', // Singapore Dollar
-    'EUR': 'https://flagcdn.com/eu.svg', // Euro
-    'JPY': 'https://flagcdn.com/jp.svg', // Japanese Yen
-    'GBP': 'https://flagcdn.com/gb.svg', // British Pound Sterling
-    'AUD': 'https://flagcdn.com/au.svg', // Australian Dollar
-    'LKR': 'https://flagcdn.com/lk.svg', // Sri Lankan Rupee
-    'CAD': 'https://flagcdn.com/ca.svg', // Canadian Dollar
-    'CHF': 'https://flagcdn.com/ch.svg', // Swiss Franc
-    'CNY': 'https://flagcdn.com/cn.svg', // Chinese Yuan
-    'INR': 'https://flagcdn.com/in.svg', // Indian Rupee
-    'NZD': 'https://flagcdn.com/nz.svg', // New Zealand Dollar
-    'MXN': 'https://flagcdn.com/mx.svg', // Mexican Peso
-    'HKD': 'https://flagcdn.com/hk.svg', // Hong Kong Dollar
-    'SEK': 'https://flagcdn.com/se.svg', // Swedish Krona
-    'NOK': 'https://flagcdn.com/no.svg', // Norwegian Krone
-    'RUB': 'https://flagcdn.com/ru.svg', // Russian Ruble
-    'ZAR': 'https://flagcdn.com/za.svg', // South African Rand
-    'BRL': 'https://flagcdn.com/br.svg', // Brazilian Real
-    'IDR': 'https://flagcdn.com/id.svg', // Indonesian Rupiah
-    'MYR': 'https://flagcdn.com/my.svg', // Malaysian Ringgit
-    'PHP': 'https://flagcdn.com/ph.svg', // Philippine Peso
-    'THB': 'https://flagcdn.com/th.svg', // Thai Baht
-    'VND': 'https://flagcdn.com/vn.svg', // Vietnamese Dong
-    'DKK': 'https://flagcdn.com/dk.svg', // Danish Krone
-    'PLN': 'https://flagcdn.com/pl.svg', // Polish Zloty
-    'HUF': 'https://flagcdn.com/hu.svg', // Hungarian Forint
-    'CZK': 'https://flagcdn.com/cz.svg', // Czech Koruna
-    'ILS': 'https://flagcdn.com/il.svg', // Israeli New Shekel
-    'AED': 'https://flagcdn.com/ae.svg', // United Arab Emirates Dirham
-    'SAR': 'https://flagcdn.com/sa.svg', // Saudi Riyal
-    'TRY': 'https://flagcdn.com/tr.svg', // Turkish Lira
-    'PKR': 'https://flagcdn.com/pk.svg', // Pakistani Rupee
-    'NGN': 'https://flagcdn.com/ng.svg', // Nigerian Naira
-    'KES': 'https://flagcdn.com/ke.svg', // Kenyan Shilling
-    'CLP': 'https://flagcdn.com/cl.svg', // Chilean Peso
-    'COP': 'https://flagcdn.com/co.svg', // Colombian Peso
-    'PEN': 'https://flagcdn.com/pe.svg', // Peruvian Sol
-    'MAD': 'https://flagcdn.com/ma.svg', // Moroccan Dirham
-    'DOP': 'https://flagcdn.com/do.svg', // Dominican Peso
-    'GTQ': 'https://flagcdn.com/gt.svg', // Guatemalan Quetzal
-    'PAB': 'https://flagcdn.com/pa.svg', // Panamanian Balboa
+    'USD': 'https://flagcdn.com/w320/us.png', // United States Dollar
+    'SGD': 'https://flagcdn.com/w320/sg.png', // Singapore Dollar
+    'EUR': 'https://flagcdn.com/w320/eu.png', // Euro
+    'JPY': 'https://flagcdn.com/w320/jp.png', // Japanese Yen
+    'GBP': 'https://flagcdn.com/w320/gb.png', // British Pound Sterling
+    'AUD': 'https://flagcdn.com/w320/au.png', // Australian Dollar
+    'LKR': 'https://flagcdn.com/w320/lk.png', // Sri Lankan Rupee
+    'CAD': 'https://flagcdn.com/w320/ca.png', // Canadian Dollar
+    'CHF': 'https://flagcdn.com/w320/ch.png', // Swiss Franc
+    'CNY': 'https://flagcdn.com/w320/cn.png', // Chinese Yuan
+    'INR': 'https://flagcdn.com/w320/in.png', // Indian Rupee
+    'NZD': 'https://flagcdn.com/w320/nz.png', // New Zealand Dollar
+    'MXN': 'https://flagcdn.com/w320/mx.png', // Mexican Peso
+    'HKD': 'https://flagcdn.com/w320/hk.png', // Hong Kong Dollar
+    'SEK': 'https://flagcdn.com/w320/se.png', // Swedish Krona
+    'NOK': 'https://flagcdn.com/w320/no.png', // Norwegian Krone
+    'RUB': 'https://flagcdn.com/w320/ru.png', // Russian Ruble
+    'ZAR': 'https://flagcdn.com/w320/za.png', // South African Rand
+    'BRL': 'https://flagcdn.com/w320/br.png', // Brazilian Real
+    'IDR': 'https://flagcdn.com/w320/id.png', // Indonesian Rupiah
+    'MYR': 'https://flagcdn.com/w320/my.png', // Malaysian Ringgit
+    'PHP': 'https://flagcdn.com/w320/ph.png', // Philippine Peso
+    'THB': 'https://flagcdn.com/w320/th.png', // Thai Baht
+    'VND': 'https://flagcdn.com/w320/vn.png', // Vietnamese Dong
+    'DKK': 'https://flagcdn.com/w320/dk.png', // Danish Krone
+    'PLN': 'https://flagcdn.com/w320/pl.png', // Polish Zloty
+    'HUF': 'https://flagcdn.com/w320/hu.png', // Hungarian Forint
+    'CZK': 'https://flagcdn.com/w320/cz.png', // Czech Koruna
+    'ILS': 'https://flagcdn.com/w320/il.png', // Israeli New Shekel
+    'AED': 'https://flagcdn.com/w320/ae.png', // United Arab Emirates Dirham
+    'SAR': 'https://flagcdn.com/w320/sa.png', // Saudi Riyal
+    'TRY': 'https://flagcdn.com/w320/tr.png', // Turkish Lira
+    'PKR': 'https://flagcdn.com/w320/pk.png', // Pakistani Rupee
+    'NGN': 'https://flagcdn.com/w320/ng.png', // Nigerian Naira
+    'KES': 'https://flagcdn.com/w320/ke.png', // Kenyan Shilling
+    'CLP': 'https://flagcdn.com/w320/cl.png', // Chilean Peso
+    'COP': 'https://flagcdn.com/w320/co.png', // Colombian Peso
+    'PEN': 'https://flagcdn.com/w320/pe.png', // Peruvian Sol
+    'MAD': 'https://flagcdn.com/w320/ma.png', // Moroccan Dirham
+    'DOP': 'https://flagcdn.com/w320/do.png', // Dominican Peso
+    'GTQ': 'https://flagcdn.com/w320/gt.png', // Guatemalan Quetzal
+    'PAB': 'https://flagcdn.com/w320/pa.png', // Panamanian Balboa
   };
+
 
   Future<void> convertCurrency() async {
     String from = fromCurrency!;
@@ -164,17 +165,12 @@ class _MoneyConverorState extends State<MoneyConveror> {
                 Expanded(
                   child: Row(
                     children: [
-                      if (fromCurrency != 'LKR')
-                        SvgPicture.network(
-                          currencyFlags[fromCurrency]!,
-                          width: 30,
-                          height: 30,
-                        )
-                      else
-                        Image.asset(
-                          'assets/flags/lk.png',
-                          height: 30.0,
-                        ),
+                      Image.network(
+                        currencyFlags[fromCurrency]!,
+                        width: 30,
+                        height: 30,
+                      ),
+
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton<String>(
@@ -266,17 +262,11 @@ class _MoneyConverorState extends State<MoneyConveror> {
                 Expanded(
                   child: Row(
                     children: [
-                      if (toCurrency != 'LKR')
-                        SvgPicture.network(
-                          currencyFlags[toCurrency]!,
-                          width: 30,
-                          height: 30,
-                        )
-                      else
-                        Image.asset(
-                          'assets/flags/lk.png',
-                          height: 30.0,
-                        ),
+                      Image.network(
+                        currencyFlags[toCurrency]!,
+                        width: 30,
+                        height: 30,
+                      ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton<String>(

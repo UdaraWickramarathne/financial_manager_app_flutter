@@ -111,7 +111,6 @@ class _MoneyConverorState extends State<MoneyConveror> {
     'PAB': 'https://flagcdn.com/w320/pa.png', // Panamanian Balboa
   };
 
-
   Future<void> convertCurrency() async {
     String from = fromCurrency!;
     String to = toCurrency!;
@@ -170,7 +169,6 @@ class _MoneyConverorState extends State<MoneyConveror> {
                         width: 30,
                         height: 30,
                       ),
-
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton<String>(
@@ -218,10 +216,9 @@ class _MoneyConverorState extends State<MoneyConveror> {
             Center(
               child: Row(
                 children: [
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey[400],
+                  const Expanded(
+                    child: Divider(
+                      color: Colors.grey,
                     ),
                   ),
                   const SizedBox(width: 5),
@@ -247,10 +244,9 @@ class _MoneyConverorState extends State<MoneyConveror> {
                     ),
                   ),
                   const SizedBox(width: 5),
-                  Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey[400],
+                  const Expanded(
+                    child: Divider(
+                      color: Colors.grey,
                     ),
                   ),
                 ],

@@ -73,7 +73,7 @@ class _MoneyConverorState extends State<MoneyConveror> {
     'JPY': 'https://flagcdn.com/jp.svg', // Japanese Yen
     'GBP': 'https://flagcdn.com/gb.svg', // British Pound Sterling
     'AUD': 'https://flagcdn.com/au.svg', // Australian Dollar
-    'LKR': 'https://flagcdn.com/w320/lk.png', // Sri Lankan Rupee
+    'LKR': 'https://flagcdn.com/lk.svg', // Sri Lankan Rupee
     'CAD': 'https://flagcdn.com/ca.svg', // Canadian Dollar
     'CHF': 'https://flagcdn.com/ch.svg', // Swiss Franc
     'CNY': 'https://flagcdn.com/cn.svg', // Chinese Yuan
@@ -164,17 +164,16 @@ class _MoneyConverorState extends State<MoneyConveror> {
                 Expanded(
                   child: Row(
                     children: [
-                      if (currencyFlags[fromCurrency]!.endsWith('.svg'))
+                      if (fromCurrency != 'LKR')
                         SvgPicture.network(
                           currencyFlags[fromCurrency]!,
                           width: 30,
                           height: 30,
                         )
                       else
-                        Image.network(
-                          currencyFlags[fromCurrency]!,
-                          width: 30,
-                          height: 30,
+                        Image.asset(
+                          'assets/flags/lk.png',
+                          height: 30.0,
                         ),
                       const SizedBox(width: 10),
                       Expanded(
@@ -267,17 +266,16 @@ class _MoneyConverorState extends State<MoneyConveror> {
                 Expanded(
                   child: Row(
                     children: [
-                      if (currencyFlags[toCurrency]!.endsWith('.svg'))
+                      if (toCurrency != 'LKR')
                         SvgPicture.network(
                           currencyFlags[toCurrency]!,
                           width: 30,
                           height: 30,
                         )
                       else
-                        Image.network(
-                          currencyFlags[toCurrency]!,
-                          width: 30,
-                          height: 30,
+                        Image.asset(
+                          'assets/flags/lk.png',
+                          height: 30.0,
                         ),
                       const SizedBox(width: 10),
                       Expanded(

@@ -1,4 +1,4 @@
-import 'package:financial_app/screens/convertor/money_converor.dart';
+import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/screens/payment_pages/bill_payment_page.dart';
 import 'package:financial_app/screens/payment_pages/types_of_bill/electricity_bill.dart';
@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home:  MoneyConveror(),
+      home: const HomePage(),
     );
   }
 }

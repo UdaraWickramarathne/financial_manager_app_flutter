@@ -276,9 +276,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.lock_reset, color: Colors.blue),
-                    SizedBox(width: 15),
-                    Text(
+                    const Icon(Icons.lock_reset, color: Colors.blue),
+                    const SizedBox(width: 15),
+                    const Text(
                       'Reset Password',
                       style: TextStyle(
                         color: Colors.blue,

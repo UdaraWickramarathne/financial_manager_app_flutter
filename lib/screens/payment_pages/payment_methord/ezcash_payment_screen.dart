@@ -6,7 +6,8 @@ class EzCashPaymentScreen extends StatelessWidget {
   final String accountNumber;
   final String amount;
 
-  EzCashPaymentScreen({required this.accountNumber, required this.amount});
+  const EzCashPaymentScreen(
+      {super.key, required this.accountNumber, required this.amount});
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,8 @@ class PaymentMethodScreen extends StatelessWidget {
   final String accountNumber;
   final String amount;
 
-  PaymentMethodScreen({required this.accountNumber, required this.amount});
+  const PaymentMethodScreen(
+      {super.key, required this.accountNumber, required this.amount});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,8 @@ class PaymentMethodScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Center( // Center the content
+      body: Center(
+        // Center the content
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -47,7 +49,8 @@ class PaymentMethodScreen extends StatelessWidget {
                 icon: const Icon(Icons.credit_card), // Icon for card payment
                 label: const Text('Pay with Card'),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   textStyle: const TextStyle(fontSize: 16),
                 ),
               ),
@@ -64,7 +67,8 @@ class PaymentMethodScreen extends StatelessWidget {
                 icon: const Icon(Icons.money), // Icon for eZ Cash payment
                 label: const Text('Pay with eZ Cash'),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   textStyle: const TextStyle(fontSize: 16),
                 ),
               ),

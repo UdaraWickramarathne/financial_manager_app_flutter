@@ -73,7 +73,7 @@ class _MoneyConverorState extends State<MoneyConveror> {
     'JPY': 'https://flagcdn.com/jp.svg', // Japanese Yen
     'GBP': 'https://flagcdn.com/gb.svg', // British Pound Sterling
     'AUD': 'https://flagcdn.com/au.svg', // Australian Dollar
-    'LKR': 'https://flagcdn.com/lkr.svg', // Sri Lankan Rupee
+    'LKR': 'https://flagcdn.com/lk.svg', // Sri Lankan Rupee
     'CAD': 'https://flagcdn.com/ca.svg', // Canadian Dollar
     'CHF': 'https://flagcdn.com/ch.svg', // Swiss Franc
     'CNY': 'https://flagcdn.com/cn.svg', // Chinese Yuan

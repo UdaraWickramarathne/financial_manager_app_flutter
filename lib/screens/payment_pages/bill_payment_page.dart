@@ -10,6 +10,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
 }
 
 class BillPayScreen extends StatelessWidget {
+  const BillPayScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +75,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => WaterBillScreen(),
+                    builder: (context) => const WaterBillScreen(),
                   ),
                 );
               },
@@ -154,7 +158,12 @@ class OptionCard extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
-  OptionCard({required this.color, required this.icon, required this.title, required this.onTap});
+  const OptionCard(
+      {super.key,
+      required this.color,
+      required this.icon,
+      required this.title,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {

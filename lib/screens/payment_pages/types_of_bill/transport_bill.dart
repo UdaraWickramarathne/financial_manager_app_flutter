@@ -16,7 +16,7 @@ class _TransportScreenState extends State<TransportScreen> {
   final TextEditingController travelDateController = TextEditingController();
   final TextEditingController paymentDateController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
-  bool _isPaymentDateEditable = false;
+  final bool _isPaymentDateEditable = false;
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _TransportScreenState extends State<TransportScreen> {
             'Transport Payment',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 30,
+              fontSize: 20,
             ),
           ),
         ),

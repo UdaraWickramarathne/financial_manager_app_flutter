@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:financial_app/data/keys.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,60 +66,58 @@ class _MoneyConverorState extends State<MoneyConveror> {
 
   String exchangeRateMessage = '';
 
-  String apiKey = '4ca289872e90aedce136c233';
-
   Map<String, String> currencyFlags = {
-    'USD': 'https://flagcdn.com/us.svg',   // United States Dollar
-    'SGD': 'https://flagcdn.com/sg.svg',   // Singapore Dollar
-    'EUR': 'https://flagcdn.com/eu.svg',   // Euro
-    'JPY': 'https://flagcdn.com/jp.svg',   // Japanese Yen
-    'GBP': 'https://flagcdn.com/gb.svg',   // British Pound Sterling
-    'AUD': 'https://flagcdn.com/au.svg',   // Australian Dollar
-    'LKR': 'https://flagcdn.com/lkr.svg',   // Sri Lankan Rupee
-    'CAD': 'https://flagcdn.com/ca.svg',   // Canadian Dollar
-    'CHF': 'https://flagcdn.com/ch.svg',   // Swiss Franc
-    'CNY': 'https://flagcdn.com/cn.svg',   // Chinese Yuan
-    'INR': 'https://flagcdn.com/in.svg',   // Indian Rupee
-    'NZD': 'https://flagcdn.com/nz.svg',   // New Zealand Dollar
-    'MXN': 'https://flagcdn.com/mx.svg',   // Mexican Peso
-    'HKD': 'https://flagcdn.com/hk.svg',   // Hong Kong Dollar
-    'SEK': 'https://flagcdn.com/se.svg',   // Swedish Krona
-    'NOK': 'https://flagcdn.com/no.svg',   // Norwegian Krone
-    'RUB': 'https://flagcdn.com/ru.svg',   // Russian Ruble
-    'ZAR': 'https://flagcdn.com/za.svg',   // South African Rand
-    'BRL': 'https://flagcdn.com/br.svg',   // Brazilian Real
-    'IDR': 'https://flagcdn.com/id.svg',   // Indonesian Rupiah
-    'MYR': 'https://flagcdn.com/my.svg',   // Malaysian Ringgit
-    'PHP': 'https://flagcdn.com/ph.svg',   // Philippine Peso
-    'THB': 'https://flagcdn.com/th.svg',   // Thai Baht
-    'VND': 'https://flagcdn.com/vn.svg',   // Vietnamese Dong
-    'DKK': 'https://flagcdn.com/dk.svg',   // Danish Krone
-    'PLN': 'https://flagcdn.com/pl.svg',   // Polish Zloty
-    'HUF': 'https://flagcdn.com/hu.svg',   // Hungarian Forint
-    'CZK': 'https://flagcdn.com/cz.svg',   // Czech Koruna
-    'ILS': 'https://flagcdn.com/il.svg',   // Israeli New Shekel
-    'AED': 'https://flagcdn.com/ae.svg',   // United Arab Emirates Dirham
-    'SAR': 'https://flagcdn.com/sa.svg',   // Saudi Riyal
-    'TRY': 'https://flagcdn.com/tr.svg',   // Turkish Lira
-    'PKR': 'https://flagcdn.com/pk.svg',   // Pakistani Rupee
-    'NGN': 'https://flagcdn.com/ng.svg',   // Nigerian Naira
-    'KES': 'https://flagcdn.com/ke.svg',   // Kenyan Shilling
-    'CLP': 'https://flagcdn.com/cl.svg',   // Chilean Peso
-    'COP': 'https://flagcdn.com/co.svg',   // Colombian Peso
-    'PEN': 'https://flagcdn.com/pe.svg',   // Peruvian Sol
-    'MAD': 'https://flagcdn.com/ma.svg',   // Moroccan Dirham
-    'DOP': 'https://flagcdn.com/do.svg',   // Dominican Peso
-    'GTQ': 'https://flagcdn.com/gt.svg',   // Guatemalan Quetzal
-    'PAB': 'https://flagcdn.com/pa.svg',   // Panamanian Balboa
+    'USD': 'https://flagcdn.com/us.svg', // United States Dollar
+    'SGD': 'https://flagcdn.com/sg.svg', // Singapore Dollar
+    'EUR': 'https://flagcdn.com/eu.svg', // Euro
+    'JPY': 'https://flagcdn.com/jp.svg', // Japanese Yen
+    'GBP': 'https://flagcdn.com/gb.svg', // British Pound Sterling
+    'AUD': 'https://flagcdn.com/au.svg', // Australian Dollar
+    'LKR': 'https://flagcdn.com/lkr.svg', // Sri Lankan Rupee
+    'CAD': 'https://flagcdn.com/ca.svg', // Canadian Dollar
+    'CHF': 'https://flagcdn.com/ch.svg', // Swiss Franc
+    'CNY': 'https://flagcdn.com/cn.svg', // Chinese Yuan
+    'INR': 'https://flagcdn.com/in.svg', // Indian Rupee
+    'NZD': 'https://flagcdn.com/nz.svg', // New Zealand Dollar
+    'MXN': 'https://flagcdn.com/mx.svg', // Mexican Peso
+    'HKD': 'https://flagcdn.com/hk.svg', // Hong Kong Dollar
+    'SEK': 'https://flagcdn.com/se.svg', // Swedish Krona
+    'NOK': 'https://flagcdn.com/no.svg', // Norwegian Krone
+    'RUB': 'https://flagcdn.com/ru.svg', // Russian Ruble
+    'ZAR': 'https://flagcdn.com/za.svg', // South African Rand
+    'BRL': 'https://flagcdn.com/br.svg', // Brazilian Real
+    'IDR': 'https://flagcdn.com/id.svg', // Indonesian Rupiah
+    'MYR': 'https://flagcdn.com/my.svg', // Malaysian Ringgit
+    'PHP': 'https://flagcdn.com/ph.svg', // Philippine Peso
+    'THB': 'https://flagcdn.com/th.svg', // Thai Baht
+    'VND': 'https://flagcdn.com/vn.svg', // Vietnamese Dong
+    'DKK': 'https://flagcdn.com/dk.svg', // Danish Krone
+    'PLN': 'https://flagcdn.com/pl.svg', // Polish Zloty
+    'HUF': 'https://flagcdn.com/hu.svg', // Hungarian Forint
+    'CZK': 'https://flagcdn.com/cz.svg', // Czech Koruna
+    'ILS': 'https://flagcdn.com/il.svg', // Israeli New Shekel
+    'AED': 'https://flagcdn.com/ae.svg', // United Arab Emirates Dirham
+    'SAR': 'https://flagcdn.com/sa.svg', // Saudi Riyal
+    'TRY': 'https://flagcdn.com/tr.svg', // Turkish Lira
+    'PKR': 'https://flagcdn.com/pk.svg', // Pakistani Rupee
+    'NGN': 'https://flagcdn.com/ng.svg', // Nigerian Naira
+    'KES': 'https://flagcdn.com/ke.svg', // Kenyan Shilling
+    'CLP': 'https://flagcdn.com/cl.svg', // Chilean Peso
+    'COP': 'https://flagcdn.com/co.svg', // Colombian Peso
+    'PEN': 'https://flagcdn.com/pe.svg', // Peruvian Sol
+    'MAD': 'https://flagcdn.com/ma.svg', // Moroccan Dirham
+    'DOP': 'https://flagcdn.com/do.svg', // Dominican Peso
+    'GTQ': 'https://flagcdn.com/gt.svg', // Guatemalan Quetzal
+    'PAB': 'https://flagcdn.com/pa.svg', // Panamanian Balboa
   };
-
 
   Future<void> convertCurrency() async {
     String from = fromCurrency!;
     String to = toCurrency!;
     double amount = double.parse(amountController.text);
 
-    String url = 'https://v6.exchangerate-api.com/v6/$apiKey/pair/$from/$to/$amount';
+    String url =
+        'https://v6.exchangerate-api.com/v6/$CONVERTOR_API_KEY/pair/$from/$to/$amount';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -151,7 +150,7 @@ class _MoneyConverorState extends State<MoneyConveror> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
             const Text(
@@ -180,7 +179,8 @@ class _MoneyConverorState extends State<MoneyConveror> {
                               fromCurrency = newValue;
                             });
                           },
-                          items: currencies.map<DropdownMenuItem<String>>((String value) {
+                          items: currencies
+                              .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -195,9 +195,17 @@ class _MoneyConverorState extends State<MoneyConveror> {
                 Expanded(
                   child: TextField(
                     controller: amountController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       labelText: 'Amount',
+                      labelStyle: const TextStyle(color: Colors.grey),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF456EFE), width: 2.0),
+                      ),
                     ),
                     keyboardType: TextInputType.number,
                   ),
@@ -236,7 +244,6 @@ class _MoneyConverorState extends State<MoneyConveror> {
                       },
                     ),
                   ),
-
                   const SizedBox(width: 5),
                   Expanded(
                     child: Container(
@@ -268,7 +275,8 @@ class _MoneyConverorState extends State<MoneyConveror> {
                               toCurrency = newValue;
                             });
                           },
-                          items: currencies.map<DropdownMenuItem<String>>((String value) {
+                          items: currencies
+                              .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
@@ -282,10 +290,12 @@ class _MoneyConverorState extends State<MoneyConveror> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 12),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.primary),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
                       convertedAmount.toStringAsFixed(2),
@@ -303,7 +313,8 @@ class _MoneyConverorState extends State<MoneyConveror> {
             ),
             Text(
               exchangeRateMessage,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold , color: Colors.red),
+              style: const TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
             ),
             const SizedBox(height: 20),
             const SizedBox(height: 20),

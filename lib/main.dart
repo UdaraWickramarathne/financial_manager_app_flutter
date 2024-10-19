@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home: const HomePage(),
+      home: const MoneyConveror(),
     );
   }
 }

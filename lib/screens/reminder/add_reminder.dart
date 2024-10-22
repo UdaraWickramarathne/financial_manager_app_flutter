@@ -17,7 +17,6 @@ class _AddReminderState extends State<AddReminder> {
   String repeat = 'Once';
   final List<String> repeatOptions = ['Once', 'Daily', 'Weekly', 'Monthly'];
 
-  // Function to select date
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -32,7 +31,6 @@ class _AddReminderState extends State<AddReminder> {
     }
   }
 
-  // Function to select time
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -94,13 +92,12 @@ class _AddReminderState extends State<AddReminder> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                prefixIcon: const Icon(Icons.description), // Icon for Description
-                hintText: 'Enter task description', // Optional hint text
+                prefixIcon: const Icon(Icons.description),
+                hintText: 'Enter task description',
               ),
             ),
             const SizedBox(height: 16.0),
 
-            // Date and Time Pickers with static labels
             Row(
               children: [
                 Expanded(
@@ -125,7 +122,7 @@ class _AddReminderState extends State<AddReminder> {
                             children: [
                               const Padding(
                                 padding: EdgeInsets.only(left: 10.0),
-                                child: Icon(Icons.calendar_today), // Icon for Date
+                                child: Icon(Icons.calendar_today),
                               ),
                               const SizedBox(width: 10.0),
                               Expanded(
@@ -167,7 +164,7 @@ class _AddReminderState extends State<AddReminder> {
                             children: [
                               const Padding(
                                 padding: EdgeInsets.only(left: 10.0),
-                                child: Icon(Icons.access_time), // Icon for Time
+                                child: Icon(Icons.access_time),
                               ),
                               const SizedBox(width: 10.0),
                               Expanded(
@@ -189,8 +186,6 @@ class _AddReminderState extends State<AddReminder> {
               ],
             ),
             const SizedBox(height: 16.0),
-
-            // Repeat Dropdown with static label
             const Text(
               'Repeat',
               style: TextStyle(fontSize: 16.0),
@@ -201,7 +196,7 @@ class _AddReminderState extends State<AddReminder> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                prefixIcon: const Icon(Icons.repeat), // Icon for Repeat
+                prefixIcon: const Icon(Icons.repeat),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButtonFormField<String>(
@@ -227,7 +222,6 @@ class _AddReminderState extends State<AddReminder> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Handle Cancel action
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
@@ -240,14 +234,11 @@ class _AddReminderState extends State<AddReminder> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Handle Create action
                       if (taskController.text.isNotEmpty &&
                           selectedDate != null &&
                           selectedTime != null) {
-                        // You can add task saving logic here
                         print('Task Created');
                       } else {
-                        // Show a warning if required fields are empty
                         if (kDebugMode) {
                           print('Please complete the task details.');
                         }

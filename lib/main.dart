@@ -1,3 +1,4 @@
+
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/goals/add_goal_page.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
@@ -8,11 +9,14 @@ import 'package:financial_app/screens/profile_pages/account_info/accountInfo_pag
 import 'package:financial_app/screens/profile_pages/account_info/reset_password.dart';
 import 'package:financial_app/screens/profile_pages/settings/settings_page.dart';
 import 'package:financial_app/screens/reminder/add_reminder.dart';
+
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(
@@ -58,6 +62,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightMode,
+      localizationsDelegates: const [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        MonthYearPickerLocalizations.delegate,
+      ],
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
       home: const AddReminder(),

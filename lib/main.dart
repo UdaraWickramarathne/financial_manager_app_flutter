@@ -1,14 +1,11 @@
-import 'package:financial_app/screens/convertor/money_convertor.dart';
-import 'package:financial_app/screens/home/home_page.dart';
-import 'package:financial_app/screens/payment_pages/bill_payment_page.dart';
-import 'package:financial_app/screens/payment_pages/types_of_bill/electricity_bill.dart';
-import 'package:financial_app/screens/profile_pages/account_info/accountInfo_page.dart';
-import 'package:financial_app/screens/profile_pages/account_info/reset_password.dart';
+import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(
@@ -54,9 +51,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightMode,
+      localizationsDelegates: const [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        MonthYearPickerLocalizations.delegate,
+      ],
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home: const MoneyConveror(),
+      home: const AnalysisPage(),
     );
   }
 }

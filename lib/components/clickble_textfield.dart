@@ -22,15 +22,14 @@ class _ClickbleTextfieldState extends State<ClickbleTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      style: const TextStyle(color: Color.fromARGB(255, 102, 138, 160)),
       controller: widget.controller,
       decoration: InputDecoration(
         labelStyle: const TextStyle(color: Color.fromARGB(255, 145, 145, 145)),
         filled: true,
-        fillColor: const Color.fromARGB(255, 221, 240, 255),
+        fillColor: Theme.of(context).colorScheme.primary,
         prefixIcon: Icon(
           widget.prefixIcon,
-          color: const Color.fromARGB(255, 102, 138, 160),
+          color: const Color(0xFF0e1633),
         ),
         labelText: widget.label,
         border: OutlineInputBorder(

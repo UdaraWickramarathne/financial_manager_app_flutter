@@ -3,6 +3,7 @@ import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
 import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
 import 'package:financial_app/screens/notification/notification_page.dart';
 import 'package:financial_app/services/custom_route.dart';
@@ -79,7 +80,11 @@ class Dashboard extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         ServicesIcon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AnalysisPage(),
+                            ));
+                          },
                           backgroundColor:
                               const Color.fromARGB(255, 251, 187, 251),
                           text: 'Reports',

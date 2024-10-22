@@ -27,18 +27,19 @@ class BillPayScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bill Pay'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // Handle back button action
-            Navigator.pop(context);
-          },
+        scrolledUnderElevation: 0,
+        title: const Center(
+          child: Text(
+            'Bill Payment',
+            style: TextStyle(fontSize: 22),
+          ),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: GridView.count(
+          mainAxisSpacing: 15,
+          crossAxisSpacing: 15,
           crossAxisCount: 2,
           children: [
             OptionCard(

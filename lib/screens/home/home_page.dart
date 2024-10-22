@@ -1,7 +1,6 @@
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
-import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
-import 'package:financial_app/screens/transactions/transaction_index_page.dart';
+import 'package:financial_app/screens/profile_pages/profile_page.dart';
 import 'package:financial_app/screens/transactions/transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:transitioned_indexed_stack/transitioned_indexed_stack.dart';
@@ -31,8 +30,8 @@ class _HomePageState extends State<HomePage> {
         duration: const Duration(milliseconds: 200),
         children: const [
           Dashboard(),
-          ProfileIndexPage(),
-          TransactionIndexPage(),
+          ProfilePage(),
+          TransactionPage(),
           MoneyConveror(),
         ],
       ),

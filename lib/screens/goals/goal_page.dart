@@ -1,4 +1,5 @@
 import 'package:financial_app/components/goal_card.dart';
+import 'package:financial_app/screens/goals/add_goal_page.dart';
 import 'package:flutter/material.dart';
 
 class GoalPage extends StatefulWidget {
@@ -33,7 +34,17 @@ class _GoalPageState extends State<GoalPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddGoalPage(),
+              ));
+        },
+        backgroundColor: const Color(0xFF456EFE),
+        shape: const CircleBorder(),
+        elevation: 0,
+        child: const Icon(Icons.add),
       ),
       body: const Padding(
           padding: EdgeInsets.all(25),

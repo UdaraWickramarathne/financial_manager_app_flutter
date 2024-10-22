@@ -1,4 +1,3 @@
-import 'package:financial_app/screens/profile_pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -17,88 +16,82 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
   Widget build(BuildContext context) {
     final String currentDate = DateFormat('MMMM d, y').format(DateTime.now());
 
-    return WillPopScope(
-      onWillPop: () async {
-        if (!_isAgreed) {
-          return await _showConfirmationDialog(context) ?? false;
-        }
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Privacy Policy'),
-          backgroundColor: Colors.teal,
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Privacy Policy for Financial Manager App',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-              // Display the current date
-              Text(
-                'Effective Date: $currentDate',
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              _buildSectionTitle('1. Introduction'),
-              const Text(
-                'Welcome to Financial Manager App! We respect your privacy and are committed to protecting your personal information.',
-              ),
-              const SizedBox(height: 16),
-
-              if (!_isExpanded) _buildInitialContent(),
-
-              if (_isExpanded) _buildFullContent(),
-
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _isExpanded = !_isExpanded;
-                  });
-                },
-                child: Text(_isExpanded ? 'See Less' : 'See More'),
-              ),
-              const SizedBox(height: 32),
-
-              Row(
-                children: [
-                  Checkbox(
-                    value: _isAgreed,
-                    onChanged: (value) {
-                      setState(() {
-                        _isAgreed = value ?? false;
-                      });
-                    },
-                  ),
-                  const Text('I agree to the Privacy Policy'),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _isAgreed
-                      ? () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfilePage()),
-                            (Route<dynamic> route) => false,
-                          );
-                        }
-                      : null, // Disable button if not agreed
-                  child: const Text('Proceed'),
-                ),
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF456EFE),
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          "Privacy Policy",
+          style: TextStyle(
+            fontSize: 20,
           ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Privacy Policy for Financial Manager App',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Display the current date
+            Text(
+              'Effective Date: $currentDate',
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 16),
+            _buildSectionTitle('1. Introduction'),
+            const Text(
+              'Welcome to Financial Manager App! We respect your privacy and are committed to protecting your personal information.',
+            ),
+            const SizedBox(height: 16),
+
+            if (!_isExpanded) _buildInitialContent(),
+
+            if (_isExpanded) _buildFullContent(),
+
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _isExpanded = !_isExpanded;
+                });
+              },
+              child: Text(_isExpanded ? 'See Less' : 'See More'),
+            ),
+            const SizedBox(height: 32),
+
+            Row(
+              children: [
+                Checkbox(
+                  value: _isAgreed,
+                  onChanged: (value) {
+                    setState(() {
+                      _isAgreed = value ?? false;
+                    });
+                  },
+                ),
+                const Text('I agree to the Privacy Policy'),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: ElevatedButton(
+                onPressed: _isAgreed
+                    ? () {
+                        Navigator.pop(context);
+                      }
+                    : null, // Disable button if not agreed
+                child: const Text('Proceed'),
+              ),
+            ),
+          ],
         ),
       ),
     );

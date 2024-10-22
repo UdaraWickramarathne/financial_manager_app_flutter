@@ -5,6 +5,8 @@ class ElectricityBillScreen extends StatelessWidget {
   final TextEditingController accountNumberController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
 
+  ElectricityBillScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

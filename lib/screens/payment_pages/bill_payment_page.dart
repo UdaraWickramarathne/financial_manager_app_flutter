@@ -6,19 +6,23 @@ import 'package:financial_app/screens/payment_pages/types_of_bill/water_bill.dar
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: BillPayScreen(),
     );
   }
 }
 
 class BillPayScreen extends StatelessWidget {
+  const BillPayScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +62,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InternetBillScreen(),
+                    builder: (context) => const InternetBillScreen(),
                   ),
                 );
               },
@@ -71,7 +75,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => WaterBillScreen(),
+                    builder: (context) => const WaterBillScreen(),
                   ),
                 );
               },
@@ -154,7 +158,12 @@ class OptionCard extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
-  OptionCard({required this.color, required this.icon, required this.title, required this.onTap});
+  const OptionCard(
+      {super.key,
+      required this.color,
+      required this.icon,
+      required this.title,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {

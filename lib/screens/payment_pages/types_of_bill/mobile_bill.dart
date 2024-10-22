@@ -226,7 +226,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
               maxLength: 10, // Limit to 10 digits
               decoration: InputDecoration(
                 labelText: 'Mobile Number',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 prefixIcon: const Icon(Icons.phone),
                 errorText: _validateMobileNumber(accountNumberController.text)
                     ? null

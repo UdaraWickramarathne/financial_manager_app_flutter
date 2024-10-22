@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../payment_methord/payment_methord_screen.dart';
 
 class InternetBillScreen extends StatefulWidget {
+  const InternetBillScreen({super.key});
+
   @override
   _InternetBillScreenState createState() => _InternetBillScreenState();
 }

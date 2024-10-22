@@ -8,7 +8,8 @@ class CardPaymentScreen extends StatefulWidget {
   final String accountNumber;
   final String amount;
 
-  const CardPaymentScreen({required this.accountNumber, required this.amount});
+  const CardPaymentScreen(
+      {super.key, required this.accountNumber, required this.amount});
 
   @override
   _CardPaymentScreenState createState() => _CardPaymentScreenState();
@@ -424,7 +425,7 @@ class ExpiryDateInputFormatter extends TextInputFormatter {
     String formattedText = '';
     if (newText.length > 2) {
       formattedText =
-          newText.substring(0, 2) + '/' + newText.substring(2, newText.length);
+          '${newText.substring(0, 2)}/${newText.substring(2, newText.length)}';
     } else {
       formattedText = newText;
     }

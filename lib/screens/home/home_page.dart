@@ -1,4 +1,4 @@
-import 'package:financial_app/screens/convertor/money_converor.dart';
+import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_index_page.dart';
 import 'package:financial_app/screens/transactions/transaction_index_page.dart';
@@ -19,8 +19,8 @@ class _HomePageState extends State<HomePage> {
 
   final String _exchane = 'assets/icons/exchange.ico';
   final String _exchaneOut = 'assets/icons/exchange_out.ico';
-  final String _transaction = 'assets/icons/transaction.png';
-  final String _transactionOut = 'assets/icons/transaction_out.png';
+  final String _payment = 'assets/icons/payment.ico';
+  final String _paymentOut = 'assets/icons/payment_out.ico';
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
               child: IconButton(
                 icon: ImageIcon(
                   AssetImage(
-                    _currentIndex == 2 ? _transaction : _transactionOut,
+                    _currentIndex == 2 ? _paymentOut : _payment,
                   ),
                   size: 24,
                 ),

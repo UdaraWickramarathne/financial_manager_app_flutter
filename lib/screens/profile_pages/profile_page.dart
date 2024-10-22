@@ -1,4 +1,4 @@
-import 'package:financial_app/services/navigators.dart';
+import 'package:financial_app/screens/profile_pages/account_info/account_info_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -108,7 +108,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   text: 'Account Info',
                   iconColor: Colors.deepPurpleAccent,
                   onTap: () {
-                    profileNavigatorKey.currentState!.pushNamed('/profile');
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const AccountInfoScreen(),
+                    ));
                   },
                 ),
                 const SizedBox(height: 5),

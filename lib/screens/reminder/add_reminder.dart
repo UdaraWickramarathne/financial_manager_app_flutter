@@ -15,7 +15,13 @@ class _AddReminderState extends State<AddReminder> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   String repeat = 'Once';
-  final List<String> repeatOptions = ['Once', 'Daily', 'Weekly', 'Monthly'];
+  final List<String> repeatOptions = [
+    'Once',
+    'Never',
+    'Daily',
+    'Weekly',
+    'Monthly'
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -53,7 +59,7 @@ class _AddReminderState extends State<AddReminder> {
             'Add New Reminder',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 30,
+              fontSize: 22,
             ),
           ),
         ),
@@ -79,7 +85,6 @@ class _AddReminderState extends State<AddReminder> {
               ),
             ),
             const SizedBox(height: 16.0),
-
             const Text(
               'Description',
               style: TextStyle(fontSize: 16.0),
@@ -97,7 +102,6 @@ class _AddReminderState extends State<AddReminder> {
               ),
             ),
             const SizedBox(height: 16.0),
-
             Row(
               children: [
                 Expanded(
@@ -130,7 +134,8 @@ class _AddReminderState extends State<AddReminder> {
                                   child: Text(
                                     selectedDate == null
                                         ? 'Select Date'
-                                        : DateFormat('dd/MM/yyyy').format(selectedDate!),
+                                        : DateFormat('dd/MM/yyyy')
+                                            .format(selectedDate!),
                                   ),
                                 ),
                               ),
@@ -206,7 +211,8 @@ class _AddReminderState extends State<AddReminder> {
                       repeat = newValue!;
                     });
                   },
-                  items: repeatOptions.map<DropdownMenuItem<String>>((String value) {
+                  items: repeatOptions
+                      .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -216,7 +222,6 @@ class _AddReminderState extends State<AddReminder> {
               ),
             ),
             const SizedBox(height: 36.0),
-
             Row(
               children: [
                 Expanded(

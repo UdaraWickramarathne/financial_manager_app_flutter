@@ -58,7 +58,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home: const HomePage(),
+      home: OnboardingScreen(),
     );
   }
 }
+

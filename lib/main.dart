@@ -1,11 +1,11 @@
-import 'package:financial_app/screens/profile_pages/account_info/account_info_page.dart';
-import 'package:financial_app/screens/reports/reports.dart';
-import 'package:financial_app/screens/reports/reports_temp.dart';
+import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(
@@ -51,6 +51,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightMode,
+      localizationsDelegates: const [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        MonthYearPickerLocalizations.delegate,
+      ],
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
       home: const AnalysisPage(),

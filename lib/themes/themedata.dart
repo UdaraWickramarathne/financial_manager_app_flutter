@@ -4,11 +4,14 @@ ThemeData lightMode = ThemeData(
   fontFamily: 'Poppins',
   brightness: Brightness.light,
   datePickerTheme: const DatePickerThemeData(
+    headerBackgroundColor: Color(0xFF456EFE),
     cancelButtonStyle: ButtonStyle(
       foregroundColor: WidgetStatePropertyAll(
         Colors.black,
       ),
     ),
+    headerForegroundColor: Colors.white,
+    dividerColor: Color(0xFF456EFE),
     confirmButtonStyle: ButtonStyle(
       foregroundColor: WidgetStatePropertyAll(
         Colors.black,
@@ -26,6 +29,7 @@ ThemeData lightMode = ThemeData(
     surface: Colors.white,
     primary: Color(0xFFf1f4ff),
     secondary: Colors.white,
+    secondaryFixed: Colors.black,
   ),
   bottomAppBarTheme: BottomAppBarTheme(
     color: Colors.grey.shade200,
@@ -36,6 +40,9 @@ ThemeData darkMode = ThemeData(
   fontFamily: 'Poppins',
   brightness: Brightness.dark,
   datePickerTheme: const DatePickerThemeData(
+    headerForegroundColor: Colors.white,
+    headerBackgroundColor: Color(0xFF456EFE),
+    dividerColor: Color(0xFF456EFE),
     cancelButtonStyle: ButtonStyle(
       foregroundColor: WidgetStatePropertyAll(
         Colors.white,
@@ -51,6 +58,7 @@ ThemeData darkMode = ThemeData(
     surface: const Color(0xFF111315),
     primary: const Color(0xFF292b2c),
     secondary: Colors.grey.shade800,
+    secondaryFixed: Colors.white,
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xFF111315),

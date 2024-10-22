@@ -1,5 +1,6 @@
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
+import 'package:financial_app/screens/payment_pages/bill_payment_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_page.dart';
 import 'package:financial_app/screens/transactions/transaction_page.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         children: const [
           Dashboard(),
           ProfilePage(),
-          TransactionPage(),
+          BillPayScreen(),
           MoneyConveror(),
         ],
       ),

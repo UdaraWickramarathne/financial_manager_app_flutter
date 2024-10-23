@@ -1,4 +1,4 @@
-import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/screens/onboard/onboarding_page.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -58,8 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home: OnboardingScreen(),
+      home: OnboardingPage(),
     );
   }
 }
-

@@ -1,4 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:financial_app/components/clickble_textfield.dart';
+import 'package:financial_app/components/input_field.dart';
+import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,42 +14,18 @@ class AddReminder extends StatefulWidget {
 class _AddReminderState extends State<AddReminder> {
   final TextEditingController taskController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController datecontroller = TextEditingController();
+  final TextEditingController timecontroller = TextEditingController();
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
-  String repeat = 'Once';
+  String? _selectedItem = 'Don\'t repeat';
   final List<String> repeatOptions = [
-    'Once',
-    'Never',
-    'Daily',
-    'Weekly',
-    'Monthly'
+    'Don\'t repeat',
+    'Everyday',
+    'Every week',
+    'Every month',
+    'Every year',
   ];
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (picked != null && picked != selectedTime) {
-      setState(() {
-        selectedTime = picked;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,199 +42,191 @@ class _AddReminderState extends State<AddReminder> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(25),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Title Task',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            const SizedBox(height: 8.0),
-            TextField(
-              controller: taskController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                prefixIcon: const Icon(Icons.task),
-                hintText: 'Enter task title',
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            const Text(
-              'Description',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            const SizedBox(height: 8.0),
-            TextField(
-              controller: descriptionController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                prefixIcon: const Icon(Icons.description),
-                hintText: 'Enter task description',
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Select Date',
-                        style: TextStyle(fontSize: 16.0),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Title Task',
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8.0),
+                    InputField(
+                      isObsecure: false,
+                      controller: taskController,
+                      isReadOnly: false,
+                      label: 'Add  Task Name..',
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'Description',
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8.0),
+                    TextField(
+                      controller: descriptionController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Add Description..',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
+                        ),
+                        fillColor: Theme.of(context).colorScheme.surfaceDim,
+                        filled: true,
+                        hintStyle: const TextStyle(
+                          color: Color(0xFF626262),
+                          fontWeight: FontWeight.w400,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Color(0xFF456EFE), width: 1.0),
+                        ),
                       ),
-                      const SizedBox(height: 8.0),
-                      GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                    ),
+                    const SizedBox(height: 16.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Icon(Icons.calendar_today),
+                              const Text(
+                                'Date',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(width: 10.0),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    selectedDate == null
-                                        ? 'Select Date'
-                                        : DateFormat('dd/MM/yyyy')
-                                            .format(selectedDate!),
-                                  ),
-                                ),
+                              const SizedBox(height: 8.0),
+                              ClickbleTextfield(
+                                prefixIcon: Icons.calendar_month,
+                                label: 'Select Date',
+                                controller: datecontroller,
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(2099),
+                                  );
+                                  if (pickedDate != null) {
+                                    setState(() {
+                                      datecontroller.text =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(pickedDate);
+                                    });
+                                  }
+                                },
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Select Time',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                      const SizedBox(height: 8.0),
-                      GestureDetector(
-                        onTap: () => _selectTime(context),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                        const SizedBox(width: 16.0),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 10.0),
-                                child: Icon(Icons.access_time),
+                              const Text(
+                                'Time',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(width: 10.0),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    selectedTime == null
-                                        ? 'Select Time'
-                                        : selectedTime!.format(context),
-                                  ),
-                                ),
+                              const SizedBox(height: 8.0),
+                              ClickbleTextfield(
+                                prefixIcon: Icons.access_time,
+                                label: 'Select Time',
+                                controller: timecontroller,
+                                onTap: () async {
+                                  final TimeOfDay? picked =
+                                      await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  );
+                                  if (picked != null) {
+                                    setState(() {
+                                      timecontroller.text =
+                                          picked.format(context);
+                                    });
+                                  }
+                                },
                               ),
                             ],
                           ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'Repeat',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            const Text(
-              'Repeat',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            const SizedBox(height: 8.0),
-            InputDecorator(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                prefixIcon: const Icon(Icons.repeat),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButtonFormField<String>(
-                  value: repeat,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      repeat = newValue!;
-                    });
-                  },
-                  items: repeatOptions
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 36.0),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
                     ),
-                    child: const Text('Cancel'),
-                  ),
+                    const SizedBox(height: 8.0),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField<String>(
+                        elevation: 2,
+                        value: _selectedItem,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondaryFixed,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedItem = newValue!;
+                          });
+                        },
+                        items: repeatOptions
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(value),
+                            ),
+                          );
+                        }).toList(),
+                        decoration: InputDecoration(
+                          labelStyle: const TextStyle(
+                              color: Color.fromARGB(255, 145, 145, 145)),
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.surfaceDim,
+                          prefixIcon: const Icon(
+                            Icons.repeat,
+                            color: Color(0xFF0e1633),
+                          ),
+                          labelText: "Repeat",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                        ),
+                        dropdownColor: Theme.of(context).colorScheme.primary,
+                        menuMaxHeight: 200,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    )
+                  ],
                 ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (taskController.text.isNotEmpty &&
-                          selectedDate != null &&
-                          selectedTime != null) {
-                        print('Task Created');
-                      } else {
-                        if (kDebugMode) {
-                          print('Please complete the task details.');
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                    ),
-                    child: const Text('Create'),
-                  ),
-                ),
-              ],
+              ),
             ),
+            SimpleButton(
+              data: 'Create',
+              onPressed: () {},
+            )
           ],
         ),
       ),

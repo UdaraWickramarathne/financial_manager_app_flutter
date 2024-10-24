@@ -52,7 +52,7 @@ class _UpdatePopupCardState extends State<UpdatePopupCard> {
             return CustomRectTween(begin: begin, end: end);
           },
           child: Material(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             elevation: 2,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),

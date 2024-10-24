@@ -55,7 +55,7 @@ class _InputFieldState extends State<InputField> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFF456EFE), width: 2.0),
+          borderSide: const BorderSide(color: Color(0xFF456EFE), width: 1.0),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
@@ -66,7 +66,7 @@ class _InputFieldState extends State<InputField> {
         ),
         labelStyle: const TextStyle(color: Color(0xFF626262)),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
+        fillColor: Theme.of(context).colorScheme.surfaceDim,
         prefixIcon: widget.prefixIcon != null
             ? Icon(
                 widget.prefixIcon,

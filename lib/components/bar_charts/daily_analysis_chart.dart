@@ -51,7 +51,7 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surfaceDim,
             borderRadius: BorderRadius.circular(25)),
         height: 350,
         child: Column(

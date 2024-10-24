@@ -19,7 +19,7 @@ class _ChoiceBoxState extends State<ChoiceBox> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.surfaceDim,
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(

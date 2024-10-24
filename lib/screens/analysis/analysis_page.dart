@@ -65,8 +65,9 @@ class _AnalysisPageState extends State<AnalysisPage>
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   decoration: const BoxDecoration(
                     color: Color(0xFF456EFE),
-                    borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(30)),
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(30),
+                    ),
                   ),
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +132,7 @@ class _AnalysisPageState extends State<AnalysisPage>
                       decoration: BoxDecoration(
                         color: Theme.of(context)
                             .colorScheme
-                            .primary, // Background color of the whole tab bar
+                            .surfaceDim, // Background color of the whole tab bar
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: TabBar(

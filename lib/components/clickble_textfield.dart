@@ -26,7 +26,7 @@ class _ClickbleTextfieldState extends State<ClickbleTextfield> {
       decoration: InputDecoration(
         labelStyle: const TextStyle(color: Color.fromARGB(255, 145, 145, 145)),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
+        fillColor: Theme.of(context).colorScheme.surfaceDim,
         prefixIcon: Icon(
           widget.prefixIcon,
           color: const Color(0xFF0e1633),

@@ -18,7 +18,7 @@ class DashedButton extends StatelessWidget {
       borderType: BorderType.RRect,
       radius: const Radius.circular(15),
       strokeWidth: 1.5,
-      color: Theme.of(context).colorScheme.secondary,
+      color: Colors.grey,
       padding: EdgeInsets.zero, // Remove padding here
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15), // Match the border radius
@@ -36,14 +36,16 @@ class DashedButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon,
-                  color:
-                      const Color.fromARGB(255, 0, 0, 0)), // Adjust icon color
+              Icon(
+                icon,
+                color: Theme.of(context).colorScheme.secondaryFixed,
+              ), // Adjust icon color
               const SizedBox(width: 5),
               Text(
                 text,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0)), // Text color
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondaryFixed,
+                ),
               ),
             ],
           ),

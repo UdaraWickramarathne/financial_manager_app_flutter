@@ -5,18 +5,8 @@ ThemeData lightMode = ThemeData(
   brightness: Brightness.light,
   datePickerTheme: const DatePickerThemeData(
     headerBackgroundColor: Color(0xFF456EFE),
-    cancelButtonStyle: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(
-        Colors.black,
-      ),
-    ),
     headerForegroundColor: Colors.white,
     dividerColor: Color(0xFF456EFE),
-    confirmButtonStyle: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(
-        Colors.black,
-      ),
-    ),
   ),
   appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
@@ -27,7 +17,8 @@ ThemeData lightMode = ThemeData(
       )),
   colorScheme: const ColorScheme.light(
     surface: Colors.white,
-    primary: Color(0xFFf1f4ff),
+    surfaceDim: Color(0xFFf1f4ff),
+    primary: Color(0xFF456EFE),
     secondary: Colors.white,
     secondaryFixed: Colors.black,
   ),
@@ -43,20 +34,11 @@ ThemeData darkMode = ThemeData(
     headerForegroundColor: Colors.white,
     headerBackgroundColor: Color(0xFF456EFE),
     dividerColor: Color(0xFF456EFE),
-    cancelButtonStyle: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(
-        Colors.white,
-      ),
-    ),
-    confirmButtonStyle: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(
-        Colors.white,
-      ),
-    ),
   ),
   colorScheme: ColorScheme.dark(
     surface: const Color(0xFF111315),
-    primary: const Color(0xFF292b2c),
+    primary: const Color(0xFF456EFE),
+    surfaceDim: const Color(0xFF292b2c),
     secondary: Colors.grey.shade800,
     secondaryFixed: Colors.white,
   ),

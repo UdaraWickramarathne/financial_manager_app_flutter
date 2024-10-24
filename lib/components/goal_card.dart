@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class GoalCard extends StatelessWidget {
+class GoalCard extends StatefulWidget {
   final String id;
 
   const GoalCard({
@@ -15,10 +15,43 @@ class GoalCard extends StatelessWidget {
   });
 
   @override
+  State<GoalCard> createState() => _GoalCardState();
+}
+
+class _GoalCardState extends State<GoalCard>
+    with SingleTickerProviderStateMixin {
+  double _borderRadius = 15.0; // Default border radius
+  late final SlidableController _slidableController;
+
+  @override
+  void initState() {
+    super.initState();
+    _slidableController = SlidableController(this);
+    _slidableController.animation.addListener(() {
+      if (_slidableController.animation.value > 0) {
+        setState(() {
+          _borderRadius = 0.0;
+        });
+      } else {
+        setState(() {
+          _borderRadius = 15.0;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _slidableController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Slidable(
+        controller: _slidableController,
         endActionPane: ActionPane(
           motion: const StretchMotion(),
           children: [
@@ -35,11 +68,10 @@ class GoalCard extends StatelessWidget {
         ),
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).push(HeroDialogRoute(
-              builder: (context) {
-                return const GoalDetailsCard();
-              },
-            ));
+            showDialog(
+              context: context,
+              builder: (context) => const GoalDetailsCard(),
+            );
           },
           child: Row(
             children: [
@@ -47,22 +79,18 @@ class GoalCard extends StatelessWidget {
                 child: IntrinsicHeight(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.05), // Shadow color
-                          spreadRadius: 1, // Spread radius of the shadow
-                          blurRadius: 10, // Blur effect
-                          offset: Offset(0,
-                              7), // Horizontal: 0, Vertical: 5 (bottom shadow)
-                        ),
-                      ],
+                      color: Theme.of(context).colorScheme.surfaceDim,
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(15),
+                        bottomLeft: const Radius.circular(15),
+                        topRight: Radius.circular(_borderRadius),
+                        bottomRight: Radius.circular(_borderRadius),
+                      ),
                     ),
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(15),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -138,7 +166,7 @@ class GoalCard extends StatelessWidget {
                             children: [
                               const Text('Rs.1200'),
                               Hero(
-                                tag: 'update$id',
+                                tag: 'update${widget.id}',
                                 createRectTween: (begin, end) {
                                   return CustomRectTween(
                                       begin: begin, end: end);
@@ -148,7 +176,7 @@ class GoalCard extends StatelessWidget {
                                     Navigator.of(context).push(HeroDialogRoute(
                                       builder: (context) {
                                         return UpdatePopupCard(
-                                          id: id,
+                                          id: widget.id,
                                           targetAmount: 2000,
                                           deadLine: '2024-04-01',
                                           notAchived: 3000,
@@ -157,9 +185,10 @@ class GoalCard extends StatelessWidget {
                                     ));
                                   },
                                   style: ButtonStyle(
-                                    backgroundColor: WidgetStateProperty.all(
-                                        const Color.fromARGB(
-                                            255, 219, 228, 255)),
+                                    backgroundColor:
+                                        WidgetStateProperty.all<Color>(
+                                      const Color.fromARGB(255, 219, 228, 255),
+                                    ),
                                     padding:
                                         WidgetStateProperty.all<EdgeInsets>(
                                       const EdgeInsets.only(

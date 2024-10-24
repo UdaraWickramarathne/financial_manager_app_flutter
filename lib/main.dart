@@ -1,5 +1,5 @@
-
 import 'package:financial_app/screens/analysis/analysis_page.dart';
+import 'package:financial_app/screens/budget/budget_page.dart';
 import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/screens/onboard/onboarding_page.dart';
 import 'package:financial_app/screens/reminder/add_reminder.dart';
@@ -63,8 +63,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home: const HomePage(),
-
+      home: const AddReminder(),
     );
   }
 }

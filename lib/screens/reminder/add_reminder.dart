@@ -214,7 +214,7 @@ class _AddReminderState extends State<AddReminder> {
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                         ),
-                        dropdownColor: Theme.of(context).colorScheme.primary,
+                        dropdownColor: Theme.of(context).colorScheme.surfaceDim,
                         menuMaxHeight: 200,
                         borderRadius: BorderRadius.circular(15),
                       ),

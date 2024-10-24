@@ -128,9 +128,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             .shrinkWrap, // Shrink to fit content
                       ),
                       onPressed: () {
-                        _controller.jumpToPage(3); // Jump to last page
+                        _controller.jumpToPage(3); //Jump to last page
                       },
-                      child: const Text('Skip'),
+                      child: const Text(
+                        'Skip',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                     SmoothPageIndicator(
                       onDotClicked: (index) {
@@ -151,6 +156,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(18),
+                        backgroundColor: Colors.white,
                       ),
                       onPressed: () {
                         int nextPage = currentPage + 1;

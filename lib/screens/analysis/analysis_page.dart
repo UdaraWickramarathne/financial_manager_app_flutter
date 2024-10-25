@@ -130,14 +130,14 @@ class _AnalysisPageState extends State<AnalysisPage>
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceDim, // Background color of the whole tab bar
+                        color: Theme.of(context).colorScheme.surfaceDim,
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: TabBar(
                         controller: _tabController,
                         dividerHeight: 0,
+                        overlayColor:
+                            const WidgetStatePropertyAll(Colors.transparent),
                         labelColor: Colors.white,
                         unselectedLabelColor: Colors.grey,
                         indicator: BoxDecoration(

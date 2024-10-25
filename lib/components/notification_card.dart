@@ -14,7 +14,7 @@ class NotificationCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10),
       color: notification['isRead']
           ? Theme.of(context).colorScheme.surface
-          : Theme.of(context).colorScheme.primary,
+          : Theme.of(context).colorScheme.surfaceDim,
       child: ListTile(
         title: Text(
           notification['title']!,

@@ -1,11 +1,15 @@
 import 'package:financial_app/components/dropdown_button.dart';
+import 'package:financial_app/components/reminder_card.dart';
 import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/screens/analysis/analysis_page.dart';
+import 'package:financial_app/screens/budget/budget_page.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
 import 'package:financial_app/screens/notification/notification_page.dart';
+import 'package:financial_app/screens/reminder/reminder_page.dart';
+import 'package:financial_app/screens/transactions/transactions_page.dart';
 import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
 
@@ -72,7 +76,11 @@ class Dashboard extends StatelessWidget {
                     child: Row(
                       children: [
                         ServicesIcon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TransactionsPage(),
+                            ));
+                          },
                           backgroundColor: Colors.blue[100],
                           text: 'Transcations',
                           icon: Icons.monetization_on_outlined,
@@ -94,7 +102,11 @@ class Dashboard extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         ServicesIcon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ReminderPage(),
+                            ));
+                          },
                           backgroundColor:
                               const Color.fromARGB(255, 251, 218, 187),
                           text: 'Reminders',
@@ -115,6 +127,20 @@ class Dashboard extends StatelessWidget {
                           icon: Icons.stairs_outlined,
                           foregroundColor:
                               const Color.fromARGB(255, 56, 250, 66),
+                        ),
+                        const SizedBox(width: 10),
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const BudgetPage(),
+                            ));
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 246, 187, 251),
+                          text: 'Budget',
+                          icon: Icons.account_balance_wallet,
+                          foregroundColor:
+                              const Color.fromARGB(255, 146, 56, 250),
                         ),
                       ],
                     ),
@@ -139,7 +165,7 @@ class Dashboard extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: transactions.length,
+                itemCount: 5,
                 itemBuilder: (context, index) {
                   final transaction = transactions[index];
                   return TransactionTile(

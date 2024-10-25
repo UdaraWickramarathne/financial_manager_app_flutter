@@ -2,7 +2,7 @@ import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:financial_app/screens/payment_pages/bill_payment_page.dart';
 import 'package:financial_app/screens/profile_pages/profile_page.dart';
-import 'package:financial_app/screens/transactions/transaction_page.dart';
+import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
 import 'package:transitioned_indexed_stack/transitioned_indexed_stack.dart';
 
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const TransactionPage(),
+                      builder: (context) => const TransactionTypePage(),
                     ));
               },
               backgroundColor: const Color(0xFF456EFE),

@@ -1,4 +1,7 @@
-import 'package:financial_app/screens/reminder/reminder_page.dart';
+import 'package:financial_app/screens/analysis/analysis_page.dart';
+import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/screens/profile_pages/account_info/account_info_page.dart';
+import 'package:financial_app/screens/reminder/add_reminder.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +61,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
-      home: const ReminderPage(),
+      home: const HomePage(),
     );
   }
 }

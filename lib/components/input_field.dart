@@ -37,6 +37,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor: Colors.blue,
       onTap: widget.onTap,
       style: const TextStyle(
         fontSize: 16,
@@ -70,7 +71,7 @@ class _InputFieldState extends State<InputField> {
         prefixIcon: widget.prefixIcon != null
             ? Icon(
                 widget.prefixIcon,
-                color: const Color(0xFF1b2c66),
+                color: const Color(0xFF456EFE),
               )
             : null,
         labelText: widget.label,

@@ -27,6 +27,51 @@ class _AddReminderState extends State<AddReminder> {
     'Every year',
   ];
 
+  void _showTimePicker(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              surface: Theme.of(context).colorScheme.surface,
+              primary: const Color(0xFF456EFE),
+              onSurface: Theme.of(context).colorScheme.secondaryFixed,
+              secondary: const Color(0xFF456EFE),
+              onSecondary: Colors.white,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFF456EFE), // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      setState(() {
+        timecontroller.text = picked.format(context);
+      });
+    }
+  }
+
+  void _showDatePicker(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2099),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        datecontroller.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,21 +156,7 @@ class _AddReminderState extends State<AddReminder> {
                                 prefixIcon: Icons.calendar_month,
                                 label: 'Select Date',
                                 controller: datecontroller,
-                                onTap: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime(2099),
-                                  );
-                                  if (pickedDate != null) {
-                                    setState(() {
-                                      datecontroller.text =
-                                          DateFormat('yyyy-MM-dd')
-                                              .format(pickedDate);
-                                    });
-                                  }
-                                },
+                                onTap: () => _showDatePicker(context),
                               ),
                             ],
                           ),
@@ -146,19 +177,7 @@ class _AddReminderState extends State<AddReminder> {
                                 prefixIcon: Icons.access_time,
                                 label: 'Select Time',
                                 controller: timecontroller,
-                                onTap: () async {
-                                  final TimeOfDay? picked =
-                                      await showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now(),
-                                  );
-                                  if (picked != null) {
-                                    setState(() {
-                                      timecontroller.text =
-                                          picked.format(context);
-                                    });
-                                  }
-                                },
+                                onTap: () => _showTimePicker(context),
                               ),
                             ],
                           ),
@@ -205,7 +224,7 @@ class _AddReminderState extends State<AddReminder> {
                           fillColor: Theme.of(context).colorScheme.surfaceDim,
                           prefixIcon: const Icon(
                             Icons.repeat,
-                            color: Color(0xFF0e1633),
+                            color: Color(0xFF456EFE),
                           ),
                           labelText: "Repeat",
                           border: OutlineInputBorder(

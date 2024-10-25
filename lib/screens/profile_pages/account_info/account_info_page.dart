@@ -17,8 +17,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
   final TextEditingController birthdateController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
 
   File? _image;
   final ImagePicker _picker = ImagePicker();
@@ -26,7 +26,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   String originalName = 'Anura kumara';
   String originalEmail = 'anurakumara@gmail.com';
   String originalPhone = '07111111111';
-  String originalGender = '';
+  String originalGender = 'Select Gender';
   String originalBirthdate = '';
 
   @override
@@ -52,6 +52,37 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
     setState(() {
       genderController.text = value;
     });
+  }
+
+  void _showGenderPicker() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Select Gender'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                ListTile(
+                  title: const Text('Male'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _selectGender('Male');
+                  },
+                ),
+                ListTile(
+                  title: const Text('Female'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _selectGender('Female');
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -116,68 +147,36 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       isReadOnly: false,
                       controller: nameController,
                       isObsecure: false,
-                      prefixIcon: Icons.supervised_user_circle,
+                      prefixIcon: Icons.person,
                       label: 'Name',
-                      suffixIcon: null,
                     ),
                     const SizedBox(height: 20),
                     InputField(
                       isReadOnly: false,
                       controller: emailController,
                       isObsecure: false,
-                      prefixIcon: Icons.email,
                       label: 'Email',
-                      suffixIcon: null,
+                      prefixIcon: Icons.email,
                     ),
                     const SizedBox(height: 20),
                     InputField(
                       isReadOnly: false,
                       controller: phoneController,
                       isObsecure: false,
-                      prefixIcon: Icons.phone,
                       label: 'Phone Number',
-                      suffixIcon: null,
+                      prefixIcon: Icons.phone,
                     ),
                     const SizedBox(height: 20),
                     ClickbleTextfield(
-                      prefixIcon: Icons.transgender,
                       label: 'Select Gender',
                       controller: genderController,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Select Gender'),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    ListTile(
-                                      title: const Text('Male'),
-                                      onTap: () {
-                                        Navigator.of(context).pop();
-                                        _selectGender('Male');
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: const Text('Female'),
-                                      onTap: () {
-                                        Navigator.of(context).pop();
-                                        _selectGender('Female');
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
+                      onTap: _showGenderPicker,
+                      prefixIcon: Icons.transgender,
                     ),
                     const SizedBox(height: 20),
                     ClickbleTextfield(
-                      prefixIcon: Icons.date_range,
                       label: 'Select Birth Date',
+                      prefixIcon: Icons.calendar_month,
                       controller: birthdateController,
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(

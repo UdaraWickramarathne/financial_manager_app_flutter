@@ -1,17 +1,17 @@
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/components/transaction_type_tile.dart';
-import 'package:financial_app/screens/expense/add_expense_page.dart';
-import 'package:financial_app/screens/income/add_income_page.dart';
+import 'package:financial_app/screens/transactions/add_expense_page.dart';
+import 'package:financial_app/screens/transactions/add_income_page.dart';
 import 'package:flutter/material.dart';
 
-class TransactionPage extends StatefulWidget {
-  const TransactionPage({super.key});
+class TransactionTypePage extends StatefulWidget {
+  const TransactionTypePage({super.key});
 
   @override
-  State<TransactionPage> createState() => _TransactionPageState();
+  State<TransactionTypePage> createState() => _TransactionTypePageState();
 }
 
-class _TransactionPageState extends State<TransactionPage> {
+class _TransactionTypePageState extends State<TransactionTypePage> {
   String _selectedType = 'Expense';
 
   @override

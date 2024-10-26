@@ -48,7 +48,10 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: const Color(0xFF456EFE),
               shape: const CircleBorder(),
               elevation: 0,
-              child: const Icon(Icons.add),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             )
           : null,
       extendBody: true,

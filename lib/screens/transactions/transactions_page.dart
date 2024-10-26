@@ -10,6 +10,7 @@ class TransactionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
         title: const Text(
@@ -43,7 +44,7 @@ class TransactionsPage extends StatelessWidget {
               icon: transaction.icon,
               iconColor: transaction.iconColor,
               title: transaction.title,
-              description: transaction.description,
+              category: transaction.category,
               price: transaction.price,
               date: transaction.date,
               isIncome: transaction.isIncome,

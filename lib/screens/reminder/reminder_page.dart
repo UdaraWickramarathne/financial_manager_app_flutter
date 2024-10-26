@@ -1,7 +1,6 @@
 import 'package:financial_app/components/reminder_card.dart';
 import 'package:financial_app/screens/reminder/add_reminder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 
@@ -12,34 +11,8 @@ class ReminderPage extends StatefulWidget {
   State<ReminderPage> createState() => _ReminderPageState();
 }
 
-class _ReminderPageState extends State<ReminderPage>
-    with SingleTickerProviderStateMixin {
+class _ReminderPageState extends State<ReminderPage> {
   DateTime selectedDate = DateTime.now();
-  double _borderRadius = 15.0;
-  late final SlidableController _slidableController;
-
-  @override
-  void initState() {
-    super.initState();
-    _slidableController = SlidableController(this);
-    _slidableController.animation.addListener(() {
-      if (_slidableController.animation.value > 0) {
-        setState(() {
-          _borderRadius = 0.0;
-        });
-      } else {
-        setState(() {
-          _borderRadius = 15.0;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _slidableController.dispose();
-    super.dispose();
-  }
 
   Future<void> _selectMonthYear(BuildContext context) async {
     final DateTime? picked = await showMonthYearPicker(

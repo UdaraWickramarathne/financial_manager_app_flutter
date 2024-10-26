@@ -6,13 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class UpdatePopupCard extends StatefulWidget {
+class GoalUpdatePopupCard extends StatefulWidget {
   String id;
   double targetAmount;
   String deadLine;
   double notAchived;
 
-  UpdatePopupCard({
+  GoalUpdatePopupCard({
     super.key,
     required this.id,
     required this.targetAmount,
@@ -21,10 +21,10 @@ class UpdatePopupCard extends StatefulWidget {
   });
 
   @override
-  State<UpdatePopupCard> createState() => _UpdatePopupCardState();
+  State<GoalUpdatePopupCard> createState() => _GoalUpdatePopupCardState();
 }
 
-class _UpdatePopupCardState extends State<UpdatePopupCard> {
+class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
   final TextEditingController amountController = TextEditingController();
 
   final TextEditingController targetController = TextEditingController();

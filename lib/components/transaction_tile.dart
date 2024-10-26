@@ -5,7 +5,7 @@ class TransactionTile extends StatelessWidget {
   final IconData? icon;
   final Color? iconColor;
   final String title;
-  final String description;
+  final String category;
   final String price;
   final String date;
   final bool isIncome;
@@ -16,7 +16,7 @@ class TransactionTile extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     required this.title,
-    required this.description,
+    required this.category,
     required this.price,
     required this.date,
     required this.isIncome,
@@ -42,7 +42,7 @@ class TransactionTile extends StatelessWidget {
                     color: boxColor,
                   ),
                   child: Icon(
-                    Icons.electric_bolt_outlined,
+                    icon,
                     color: iconColor,
                   ),
                 ),
@@ -57,7 +57,7 @@ class TransactionTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      description,
+                      category,
                       style: const TextStyle(
                         color: Colors.grey,
                       ),

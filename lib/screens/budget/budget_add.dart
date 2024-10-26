@@ -1,3 +1,5 @@
+import 'package:financial_app/components/input_field.dart';
+import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 
 class BudgetAdd extends StatefulWidget {
@@ -8,150 +10,111 @@ class BudgetAdd extends StatefulWidget {
 }
 
 class _BudgetAddState extends State<BudgetAdd> {
-  String? selectedIcon;
-  String? selectedFrequency;
-  String? selectedSavingMethod;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
+  final TextEditingController typeController = TextEditingController();
 
-  final List<String> frequencies = ['Daily', 'Weekly', 'Monthly'];
-  final List<String> savingMethods = ['Bank', 'Cash', 'Investment'];
-
-  final List<IconData> iconList = [
-    Icons.emoji_objects,
-    Icons.local_grocery_store,
-    Icons.fastfood,
-    Icons.pets,
-    Icons.trending_up,
-    Icons.savings,
-    Icons.airplane_ticket,
-    Icons.home,
-    Icons.car_repair,
-    Icons.shopping_cart,
-    Icons.library_books,
-    Icons.movie,
-    Icons.music_note,
-    Icons.gamepad,
-    Icons.camera_alt,
-    Icons.palette,
-    Icons.book,
-    Icons.build,
-    Icons.fitness_center,
-    Icons.spa,
-    Icons.cake,
-    Icons.casino,
-    Icons.local_florist,
-    Icons.access_alarm,
-    Icons.local_hospital,
-    Icons.security,
-    Icons.nature,
-    Icons.work,
-    Icons.person,
-    Icons.monetization_on,
-    Icons.pets,
-    Icons.school,
-    Icons.language,
-    Icons.cast_for_education,
-    Icons.travel_explore,
-    Icons.trending_flat,
-    Icons.wallet,
-    Icons.assessment,
-    Icons.share,
-    Icons.lightbulb,
-    Icons.notifications,
-    Icons.people,
-    Icons.radar,
-    Icons.screenshot,
-    Icons.thumb_up,
-    Icons.access_time,
-    Icons.build_circle,
+  String? _selectedItem;
+  final List<String> repeatOptions = [
+    'Weekly',
+    'Monthly',
   ];
 
-  void _selectIcon() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Icon'),
-          content: SizedBox(
-            width: double.maxFinite,
-            height: 400,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 1.0,
-              ),
-              itemCount: iconList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedIcon = iconList[index].toString();
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(iconList[index], color: Colors.white),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
+  String? selectedCategory;
+
+  IconData? selectedIcon;
+
+  final List<Map<String, String>> expenseCategories = [
+    {'name': 'Food', 'icon': '🍎'},
+    {'name': 'Sport', 'icon': '🏀'},
+    {'name': 'Health', 'icon': '💊'},
+    {'name': 'Transport', 'icon': '🚌'},
+    {'name': 'Shopping', 'icon': '🛍️'},
+    {'name': 'Kids', 'icon': '🧸'},
+    {'name': 'Entertainment', 'icon': '🎮'},
+    {'name': 'Other', 'icon': '🔍'},
+  ];
+
+  void selectIcon(String? type) {
+    switch (type) {
+      case 'Food':
+        selectedIcon = Icons.fastfood;
+        break;
+      case 'Sport':
+        selectedIcon = Icons.sports_basketball;
+        break;
+      case 'Health':
+        selectedIcon = Icons.health_and_safety;
+        break;
+      case 'Transport':
+        selectedIcon = Icons.directions_car;
+        break;
+      case 'Shopping':
+        selectedIcon = Icons.shopping_cart;
+        break;
+      case 'Kids':
+        selectedIcon = Icons.child_care;
+        break;
+      case 'Entertainment':
+        selectedIcon = Icons.theaters;
+        break;
+      case 'Other':
+        selectedIcon = Icons.category;
+        break;
+      default:
+        selectedIcon = Icons.category;
+    }
   }
 
-  void _selectFrequency() {
+  void showExpenseTypes() {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
-          title: const Text('Select Budget Frequency'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: frequencies.map((frequency) {
-                return ListTile(
-                  title: Text(frequency),
-                  onTap: () {
-                    setState(() {
-                      selectedFrequency = frequency;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                );
-              }).toList(),
+          title: const Text(
+            'Select Expense Type',
+            style: TextStyle(
+              fontSize: 25,
             ),
           ),
-        );
-      },
-    );
-  }
-
-  void _selectSavingMethod() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Saving Method'),
           content: SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: savingMethods.map((method) {
-                return ListTile(
-                  title: Text(method),
-                  onTap: () {
-                    setState(() {
-                      selectedSavingMethod = method;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                );
-              }).toList(),
+              children: [
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: expenseCategories.map((category) {
+                    return ChoiceChip(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      label: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(category['icon'] ?? ''),
+                            const SizedBox(width: 6),
+                            Text(category['name'] ?? ''),
+                          ],
+                        ),
+                      ),
+                      selected: selectedCategory == category['name'],
+                      onSelected: (selected) {
+                        setState(() {
+                          if (selected) {
+                            selectedCategory = category['name'];
+                            typeController.text = category['name']!;
+                            selectIcon(selectedCategory);
+                            Navigator.of(context).pop(); // Dismiss dialog
+                          }
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
           ),
         );
@@ -163,174 +126,139 @@ class _BudgetAddState extends State<BudgetAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Budget'),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        scrolledUnderElevation: 0,
+        elevation: 0,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 30),
+          ),
+        ],
+        centerTitle: true,
+        title: const Center(
+          child: Text(
+            'Add New Budget',
+            style: TextStyle(fontSize: 20),
+          ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'Name',
-                labelStyle: TextStyle(color: Colors.white),
-                hintText: 'Write budget name',
-                hintStyle: TextStyle(color: Colors.grey),
-                filled: true,
-                fillColor: Colors.grey,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: _selectIcon,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      selectedIcon == null ? Icons.emoji_objects : Icons.check,
-                      color: Colors.lightBlueAccent,
+                    const Text(
+                      ' BUDGET NAME',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
                     ),
-                    const SizedBox(width: 10),
-                    Text(
-                      selectedIcon ?? 'Select icon for budget',
-                      style: const TextStyle(color: Colors.white),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isObsecure: false,
+                      controller: nameController,
+                      isReadOnly: false,
+                      label: 'Add budget name',
                     ),
-                    const Spacer(),
-                    const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' AMOUNT',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isReadOnly: false,
+                      isObsecure: false,
+                      label: '0.00',
+                      suffixIcon: TextButton(
+                        onPressed: () {
+                          amountController.text = '';
+                        },
+                        child: const Text('Clear'),
+                      ),
+                      prefixText: 'Rs.',
+                      controller: amountController,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' TIME PERIOD',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButtonFormField<String>(
+                        elevation: 2,
+                        hint: const Text('Select Time Period'),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondaryFixed,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedItem = newValue!;
+                          });
+                        },
+                        items: repeatOptions
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(value),
+                            ),
+                          );
+                        }).toList(),
+                        decoration: InputDecoration(
+                          labelStyle: const TextStyle(
+                              color: Color.fromARGB(255, 145, 145, 145)),
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.surfaceDim,
+                          prefixIcon: const Icon(
+                            Icons.repeat,
+                            color: Color(0xFF456EFE),
+                          ),
+                          labelText: "Repeat",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                        ),
+                        dropdownColor: Theme.of(context).colorScheme.surfaceDim,
+                        menuMaxHeight: 200,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' EXPENSE CATEGORY',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isObsecure: false,
+                      controller: typeController,
+                      prefixIcon: selectedIcon,
+                      isReadOnly: true,
+                      label: 'Select Expense Category',
+                      suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
+                      onTap: showExpenseTypes,
+                    ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            const TextField(
-              style: TextStyle(color: Colors.white),
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Budget',
-                labelStyle: TextStyle(color: Colors.white),
-                hintText: 'Set amount for budget',
-                hintStyle: TextStyle(color: Colors.grey),
-                filled: true,
-                fillColor: Colors.grey,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const TextField(
-              style: TextStyle(color: Colors.white),
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Amount',
-                labelStyle: TextStyle(color: Colors.white),
-                hintText: 'Set amount for budget',
-                hintStyle: TextStyle(color: Colors.grey),
-                filled: true,
-                fillColor: Colors.grey,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: 'Description',
-                labelStyle: TextStyle(color: Colors.white),
-                hintText: 'Add a description for budget',
-                hintStyle: TextStyle(color: Colors.grey),
-                filled: true,
-                fillColor: Colors.grey,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: _selectFrequency,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.repeat, color: Colors.lightBlueAccent),
-                    const SizedBox(width: 10),
-                    Text(
-                      selectedFrequency ?? 'Select budget frequency',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const Spacer(),
-                    const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: _selectSavingMethod,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.account_balance_wallet, color: Colors.lightBlueAccent),
-                    const SizedBox(width: 10),
-                    Text(
-                      selectedSavingMethod ?? 'Select saving method',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const Spacer(),
-                    const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 80),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+            SimpleButton(
+              data: 'Create Budget',
               onPressed: () {},
-              child: const Text(
-                'Create Budget',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
+            )
           ],
         ),
       ),

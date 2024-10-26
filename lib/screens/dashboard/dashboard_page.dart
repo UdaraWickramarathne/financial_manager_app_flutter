@@ -1,5 +1,4 @@
 import 'package:financial_app/components/dropdown_button.dart';
-import 'package:financial_app/components/reminder_card.dart';
 import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
@@ -173,7 +172,7 @@ class Dashboard extends StatelessWidget {
                     icon: transaction.icon,
                     iconColor: transaction.iconColor,
                     title: transaction.title,
-                    description: transaction.description,
+                    category: transaction.category,
                     price: transaction.price,
                     date: transaction.date,
                     isIncome: transaction.isIncome,

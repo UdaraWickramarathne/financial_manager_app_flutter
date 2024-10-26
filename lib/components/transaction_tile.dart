@@ -31,7 +31,6 @@ class TransactionTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // For icon and  description
             Row(
               children: [
                 Container(

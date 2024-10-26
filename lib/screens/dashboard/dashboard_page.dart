@@ -11,6 +11,7 @@ import 'package:financial_app/screens/reminder/reminder_page.dart';
 import 'package:financial_app/screens/transactions/transactions_page.dart';
 import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -18,41 +19,69 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 30),
-          child: Icon(Icons.grid_view_rounded),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: IconButton(
-              icon: const Icon(
-                Icons.notifications,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(CustomPageRoute(
-                  page: const NotificationPage(),
-                ));
-              },
-            ),
-          ),
-        ],
-        centerTitle: true,
-        title: const Center(
-          child: Text(
-            'Dashboard',
-            style: TextStyle(fontSize: 20),
-          ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0.0),
+        child: AppBar(
+          scrolledUnderElevation: 0,
+          elevation: 0,
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Lottie.asset(
+                        'assets/onboard/dashboard_animation.json',
+                        width: 140,
+                      ),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Good Morning,'),
+                          Text(
+                            'Anura Kumara',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(''),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(CustomPageRoute(
+                          page: const NotificationPage(),
+                        ));
+                      },
+                      child: const Icon(
+                        Icons.notifications,
+                        size: 30,
+                      ),
+                    ),
+                    const Text(''),
+                    const Text(''),
+                    const Text(''),
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
             const VisaCard(),
             const SizedBox(height: 20),
             const Row(
@@ -85,7 +114,6 @@ class Dashboard extends StatelessWidget {
                           icon: Icons.monetization_on_outlined,
                           foregroundColor: Colors.blue,
                         ),
-                        const SizedBox(width: 10),
                         ServicesIcon(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -99,7 +127,6 @@ class Dashboard extends StatelessWidget {
                           foregroundColor:
                               const Color.fromARGB(255, 255, 98, 255),
                         ),
-                        const SizedBox(width: 10),
                         ServicesIcon(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -113,7 +140,6 @@ class Dashboard extends StatelessWidget {
                           foregroundColor:
                               const Color.fromARGB(255, 253, 159, 71),
                         ),
-                        const SizedBox(width: 10),
                         ServicesIcon(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -127,7 +153,6 @@ class Dashboard extends StatelessWidget {
                           foregroundColor:
                               const Color.fromARGB(255, 56, 250, 66),
                         ),
-                        const SizedBox(width: 10),
                         ServicesIcon(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -164,7 +189,8 @@ class Dashboard extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: 5,
+                shrinkWrap: true,
+                itemCount: 4,
                 itemBuilder: (context, index) {
                   final transaction = transactions[index];
                   return TransactionTile(

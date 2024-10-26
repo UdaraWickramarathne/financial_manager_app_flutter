@@ -46,11 +46,19 @@ class _AnalysisPageState extends State<AnalysisPage>
       appBar: AppBar(
         backgroundColor: const Color(0xFF456EFE),
         elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
+        ),
         centerTitle: true,
         title: const Text(
           "Analysis",
           style: TextStyle(
             fontSize: 20,
+            color: Colors.white,
           ),
         ),
       ),

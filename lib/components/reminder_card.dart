@@ -67,7 +67,7 @@ class _ReminderCardState extends State<ReminderCard>
               height: 15,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFF8fa8fe),
+                color: Color.fromARGB(179, 69, 109, 254),
               ),
             ),
             const SizedBox(width: 20),

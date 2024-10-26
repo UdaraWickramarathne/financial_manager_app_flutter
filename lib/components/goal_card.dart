@@ -1,5 +1,5 @@
 import 'package:financial_app/components/goal_details_popupcard.dart';
-import 'package:financial_app/components/update_popup_card.dart';
+import 'package:financial_app/components/goal_update_popup_card.dart';
 import 'package:financial_app/services/custom_rect_tween.dart';
 import 'package:financial_app/services/hero_dialog_route.dart';
 import 'package:flutter/material.dart';
@@ -175,7 +175,7 @@ class _GoalCardState extends State<GoalCard>
                                   onPressed: () {
                                     Navigator.of(context).push(HeroDialogRoute(
                                       builder: (context) {
-                                        return UpdatePopupCard(
+                                        return GoalUpdatePopupCard(
                                           id: widget.id,
                                           targetAmount: 2000,
                                           deadLine: '2024-04-01',

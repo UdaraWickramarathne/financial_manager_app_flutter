@@ -241,6 +241,7 @@ class _AnalysisPageState extends State<AnalysisPage>
                                             ),
                                             child: CupertinoDatePicker(
                                               initialDateTime: startDate,
+                                              maximumDate: DateTime.now(),
                                               mode:
                                                   CupertinoDatePickerMode.date,
                                               backgroundColor:
@@ -307,6 +308,7 @@ class _AnalysisPageState extends State<AnalysisPage>
                                             ),
                                             child: CupertinoDatePicker(
                                               initialDateTime: endDate,
+                                              maximumDate: DateTime.now(),
                                               mode:
                                                   CupertinoDatePickerMode.date,
                                               backgroundColor:

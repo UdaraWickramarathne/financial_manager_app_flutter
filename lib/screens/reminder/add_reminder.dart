@@ -18,9 +18,8 @@ class _AddReminderState extends State<AddReminder> {
   final TextEditingController timecontroller = TextEditingController();
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
-  String? _selectedItem = 'Don\'t repeat';
+  String? _selectedItem = 'Everyday';
   final List<String> repeatOptions = [
-    'Don\'t repeat',
     'Everyday',
     'Every week',
     'Every month',
@@ -196,7 +195,7 @@ class _AddReminderState extends State<AddReminder> {
                     DropdownButtonHideUnderline(
                       child: DropdownButtonFormField<String>(
                         elevation: 2,
-                        value: _selectedItem,
+                        hint: const Text('Select Repeat Frequancy'),
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.secondaryFixed,

@@ -6,7 +6,12 @@ class ProfileOption extends StatelessWidget {
   final Color? iconColor;
   final Function()? onTap;
 
-  const ProfileOption({super.key, required this.icon, required this.text, this.iconColor, required this.onTap});
+  const ProfileOption(
+      {super.key,
+      required this.icon,
+      required this.text,
+      this.iconColor,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {

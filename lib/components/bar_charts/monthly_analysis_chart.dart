@@ -105,7 +105,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                             height: 300,
                             child: YearPicker(
                               firstDate: DateTime(DateTime.now().year - 100, 1),
-                              lastDate: DateTime(DateTime.now().year + 100, 1),
+                              lastDate: DateTime.now(),
                               selectedDate: selectedYear,
                               onChanged: (DateTime dateTime) {
                                 setState(() {
@@ -160,7 +160,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                   child: Text(
                     'Jul-Dec',
                     style: TextStyle(
-                      color: isJanJunSelected ? Colors.black : Colors.white,
+                      color: isJanJunSelected ? Colors.grey : Colors.white,
                     ),
                   ),
                 ),

@@ -45,7 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ' Create your account and make every penny count!',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.black,
+                  color: Colors.grey,
                 ),
               ),
               const SizedBox(height: 80),

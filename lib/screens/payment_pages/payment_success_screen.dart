@@ -1,58 +1,212 @@
+import 'dart:typed_data';
+
+import 'package:financial_app/components/simple_button.dart';
+
 import 'package:flutter/material.dart';
 
-class PaymentSuccessScreen extends StatelessWidget {
+import 'package:screenshot/screenshot.dart';
+
+class PaymentSuccessScreen extends StatefulWidget {
   final String accountNumber;
   final String amount;
 
-  const PaymentSuccessScreen({
+  PaymentSuccessScreen({
     super.key,
     required this.accountNumber,
     required this.amount,
   });
 
   @override
+  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+}
+
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+  final ScreenshotController screenshotController = ScreenshotController();
+
+  void showBottomDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Mobile Bill',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 5),
+              const Text(
+                '1******6196',
+                style: TextStyle(
+                  color: Color(0xFFA4A9AE),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                    color: const Color(0xFFddf8f0),
+                    borderRadius: BorderRadius.circular(10)),
+                child: const Text.rich(
+                  TextSpan(
+                    text: 'Transaction Status: ', // Regular text
+                    style: TextStyle(
+                      color: Color(0xFF13c999),
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Paid', // Bold text
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text.rich(
+                TextSpan(
+                  text: 'Rs', // Regular text
+                  style: TextStyle(fontSize: 30),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: '5000.00', // Bold text
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Transaction ID:',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Text('TXN123456789'),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Divider(
+                color: Color(0xFFebf1f5),
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Date',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Text('2024/10/25'),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Divider(
+                color: Color(0xFFebf1f5),
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Time',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Text('06:25 PM'),
+                ],
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () {},
+                child: const Text('Take Screenshot'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment Success'),
-        automaticallyImplyLeading: false, // Disable back button
+        scrolledUnderElevation: 0,
+        title: const Center(
+          child: Text(
+            'Confirmation',
+            style: TextStyle(fontSize: 22),
+          ),
+        ),
       ),
-      body: Center( // Use Center widget here
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.check_circle_outline, color: Colors.green, size: 100),
-              const SizedBox(height: 30),
+              const SizedBox(height: 15),
               const Text(
                 'Payment Successful!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF456EFE),
+                ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
-              Text(
-                'Account Number: $accountNumber',
-                style: const TextStyle(fontSize: 18),
+              const SizedBox(height: 15),
+              const Text(
+                'Thank you! Your payment was processed successfully.',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey,
+                ),
                 textAlign: TextAlign.center,
               ),
-              Text(
-                'Amount Paid: \$$amount',
-                style: const TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
+              const SizedBox(height: 80),
+              Image.asset(
+                'assets/images/success.png',
+                width: 300,
               ),
-              const SizedBox(height: 40),
-              ElevatedButton(
+              const Spacer(),
+              TextButton(
+                onPressed: () => showBottomDialog(context),
+                child: const Text('View Receipt'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SimpleButton(
+                data: 'Done',
                 onPressed: () {
-                  // Navigate back to the bill screen or reset the flow
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                  textStyle: const TextStyle(fontSize: 16),
-                ),
-                child: const Text('Done'),
-              ),
+              )
             ],
           ),
         ),

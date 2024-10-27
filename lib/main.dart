@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         GlobalMaterialLocalizations.delegate,
         MonthYearPickerLocalizations.delegate,
       ],
-      home: PaymentSuccessScreen(
+      home: const PaymentSuccessScreen(
         accountNumber: '2',
         amount: '3000',
       ),

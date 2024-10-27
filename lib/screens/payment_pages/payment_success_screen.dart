@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:financial_app/components/simple_button.dart';
-
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:screenshot/screenshot.dart';
 
@@ -10,7 +11,7 @@ class PaymentSuccessScreen extends StatefulWidget {
   final String accountNumber;
   final String amount;
 
-  PaymentSuccessScreen({
+  const PaymentSuccessScreen({
     super.key,
     required this.accountNumber,
     required this.amount,
@@ -22,6 +23,35 @@ class PaymentSuccessScreen extends StatefulWidget {
 
 class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   final ScreenshotController screenshotController = ScreenshotController();
+  Future<void> captureAndSaveScreenshot() async {
+    // Request storage permission
+    var status = await Permission.storage.request();
+    if (!status.isGranted) {
+      print("Storage permission is not granted.");
+      return;
+    }
+
+    // Capture the screenshot
+    screenshotController.capture().then((Uint8List? image) async {
+      if (image != null) {
+        // Save the screenshot to the gallery
+        final result = await ImageGallerySaver.saveImage(image,
+            quality: 80,
+            name: "screenshot_${DateTime.now().millisecondsSinceEpoch}");
+        if (result["isSuccess"]) {
+          print("Screenshot saved to gallery!");
+        } else {
+          print("Failed to save screenshot.");
+        }
+      }
+    }).catchError((error) {
+      print("Error capturing screenshot: $error");
+    });
+  }
+
+  Future<void> saveImage(Uint8List bytes) async {
+    final name = 'screenshot_${DateTime.now()}';
+  }
 
   void showBottomDialog(BuildContext context) {
     showModalBottomSheet(
@@ -33,43 +63,61 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
       ),
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Mobile Bill',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+        return Screenshot(
+          controller: screenshotController,
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Mobile Bill',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              const Text(
-                '1******6196',
-                style: TextStyle(
-                  color: Color(0xFFA4A9AE),
+                const SizedBox(height: 5),
+                const Text(
+                  '1******6196',
+                  style: TextStyle(
+                    color: Color(0xFFA4A9AE),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                    color: const Color(0xFFddf8f0),
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Text.rich(
-                  TextSpan(
-                    text: 'Transaction Status: ', // Regular text
-                    style: TextStyle(
-                      color: Color(0xFF13c999),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFddf8f0),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const Text.rich(
+                    TextSpan(
+                      text: 'Transaction Status: ', // Regular text
+                      style: TextStyle(
+                        color: Color(0xFF13c999),
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Paid', // Bold text
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text.rich(
+                  TextSpan(
+                    text: 'Rs', // Regular text
+                    style: TextStyle(fontSize: 30),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Paid', // Bold text
+                        text: '5000.00', // Bold text
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -77,75 +125,72 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              const Text.rich(
-                TextSpan(
-                  text: 'Rs', // Regular text
-                  style: TextStyle(fontSize: 30),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: '5000.00', // Bold text
+                const SizedBox(height: 30),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Transaction ID:',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
                       ),
                     ),
+                    Text('TXN123456789'),
                   ],
                 ),
-              ),
-              const SizedBox(height: 30),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Transaction ID:',
-                    style: TextStyle(
-                      color: Colors.grey,
+                const SizedBox(height: 10),
+                const Divider(
+                  color: Color(0xFFebf1f5),
+                ),
+                const SizedBox(height: 10),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Date',
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  Text('TXN123456789'),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Divider(
-                color: Color(0xFFebf1f5),
-              ),
-              const SizedBox(height: 10),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Date',
-                    style: TextStyle(
-                      color: Colors.grey,
+                    Text('2024/10/25'),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                const Divider(
+                  color: Color(0xFFebf1f5),
+                ),
+                const SizedBox(height: 10),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Time',
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  Text('2024/10/25'),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Divider(
-                color: Color(0xFFebf1f5),
-              ),
-              const SizedBox(height: 10),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Time',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Text('06:25 PM'),
-                ],
-              ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Take Screenshot'),
-              ),
-            ],
+                    Text('06:25 PM'),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () async {
+                    await screenshotController.capture().then(
+                      (bytes) {
+                        if (bytes != null) {
+                          saveImage(bytes);
+                        }
+                      },
+                    ).catchError(
+                      (error) {
+                        debugPrint(error);
+                      },
+                    );
+                  },
+                  child: const Text('Take Screenshot'),
+                ),
+              ],
+            ),
           ),
         );
       },

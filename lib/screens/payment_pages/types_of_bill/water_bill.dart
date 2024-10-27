@@ -16,18 +16,20 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        flexibleSpace: Container(
-          alignment: Alignment.center,
-          child: const Text(
+        elevation: 0,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 30),
+          ),
+        ],
+        centerTitle: true,
+        title: const Center(
+          child: Text(
             'Water Bill Payment',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30,
-            ),
+            style: TextStyle(fontSize: 20),
           ),
         ),
       ),
-
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

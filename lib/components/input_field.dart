@@ -26,7 +26,7 @@ class InputField extends StatefulWidget {
     this.inputFormat,
     required this.isReadOnly,
     this.onTap,
-    this.prefixText,
+    this.prefixText, String? errorText,
   });
 
   @override

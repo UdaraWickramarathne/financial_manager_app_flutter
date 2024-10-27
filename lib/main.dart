@@ -1,6 +1,5 @@
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
-
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/themes/themedata.dart';

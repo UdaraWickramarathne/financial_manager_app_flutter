@@ -1,7 +1,10 @@
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/screens/auth/signup_page.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,7 +22,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text(AppLocalizations.of(context).translate('login_account')),
+      //   actions: [
+      //     DropdownButton<Locale>(
+      //       value: languageProvider.locale,
+      //       onChanged: (Locale? newLocale) {
+      //         if (newLocale != null) {
+      //           languageProvider.setLocale(newLocale);
+      //         }
+      //       },
+      //       items: const [
+      //         DropdownMenuItem(value: Locale('en'), child: Text('English')),
+      //         DropdownMenuItem(value: Locale('sl'), child: Text('සිංහල')),
+      //       ],
+      //     ),
+      //   ],
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: SingleChildScrollView(
@@ -27,18 +49,18 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox(height: 80),
-              const Text(
-                'Login Account',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context).translate('login_account'),
+                style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w900,
                     color: Color(0xFF446efe)),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Welcome back you\'ve \nbeen missed!',
+              Text(
+                AppLocalizations.of(context).translate('welcome_back'),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey,
@@ -49,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
               InputField(
                 isReadOnly: false,
                 isObsecure: false,
-                label: 'Email',
+                label: AppLocalizations.of(context).translate('email'),
                 suffixIcon: null,
                 controller: emailController,
               ),
@@ -58,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isReadOnly: false,
                 controller: passwordController,
                 isObsecure: !_isPasswordVisible,
-                label: 'Password',
+                label: AppLocalizations.of(context).translate('password'),
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -84,28 +106,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         },
                       ),
-                      const Text('Remember Me'),
+                      Text(AppLocalizations.of(context)
+                          .translate('remember_me')),
                     ],
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Color(0xFF446efe)),
+                    child: Text(
+                      AppLocalizations.of(context).translate('forgot_password'),
+                      style: const TextStyle(color: Color(0xFF446efe)),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 160),
               SimpleButton(
-                data: 'Login',
+                data: AppLocalizations.of(context).translate('login'),
                 onPressed: () {},
               ),
               const SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account?"),
+                  Text(AppLocalizations.of(context).translate('no_account')),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -113,9 +136,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           MaterialPageRoute(
                               builder: (c) => const SignupScreen()));
                     },
-                    child: const Text(
-                      'Sign up',
-                      style: TextStyle(color: Color(0xFF446efe)),
+                    child: Text(
+                      AppLocalizations.of(context).translate('sign_up'),
+                      style: const TextStyle(color: Color(0xFF446efe)),
                     ),
                   ),
                 ],

@@ -9,7 +9,7 @@ class VisaCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: 350,
+          width: 365,
           height: 210,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),

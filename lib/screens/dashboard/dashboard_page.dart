@@ -40,9 +40,13 @@ class Dashboard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Lottie.asset(
-                        'assets/onboard/dashboard_animation.json',
-                        width: 120,
+                      Stack(
+                        children: [
+                          Lottie.asset(
+                            'assets/onboard/dashboard_animation.json',
+                            width: 120,
+                          ),
+                        ],
                       ),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:month_year_picker/month_year_picker.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class WeeklyAnalysisChart extends StatefulWidget {
   const WeeklyAnalysisChart({super.key});
@@ -20,39 +20,36 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
   }
 
   Future<void> _selectMonthYear(BuildContext context) async {
-    final DateTime? picked = await showMonthYearPicker(
+    final DateTime? pickedDate = await showMonthPicker(
+      monthPickerDialogSettings: MonthPickerDialogSettings(
+        dialogSettings: const PickerDialogSettings(
+          dialogRoundedCornersRadius: 15,
+        ),
+        headerSettings: const PickerHeaderSettings(
+          headerBackgroundColor: Color(0xFF456EFE),
+        ),
+        buttonsSettings: PickerButtonsSettings(
+          selectedMonthBackgroundColor: const Color(0xFF456EFE),
+          selectedMonthTextColor: Colors.white,
+          unselectedMonthsTextColor:
+              Theme.of(context).colorScheme.secondaryFixed,
+          currentMonthTextColor: Colors.green,
+          yearTextStyle: const TextStyle(
+            fontSize: 10,
+          ),
+        ),
+      ),
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: const Color(0xFF456EFE), // header background color
-              onPrimary: Colors.white, // header text color
-              onSurface: Theme.of(context)
-                  .colorScheme
-                  .secondaryFixed, // body text color
-              secondary: const Color(0xFF456EFE),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF456EFE), // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
+      lastDate: DateTime.now(),
+      firstDate: DateTime(2000),
     );
-    if (picked != null && picked != selectedDate) {
+    if (pickedDate != null) {
       setState(() {
-        year = picked.year;
-        selectedDate = picked;
+        selectedDate = pickedDate;
+        year = pickedDate.year;
         weeks.clear();
-        weeks = _getWeeksOfMonth(picked);
-
+        weeks = _getWeeksOfMonth(pickedDate);
         //return weeks of month
         print('year $year');
         print(weeks.map((week) => Text(week)).toList());
@@ -98,7 +95,7 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surfaceDim,
             borderRadius: BorderRadius.circular(25)),
         height: 350,
         child: Column(

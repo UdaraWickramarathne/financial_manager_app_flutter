@@ -43,149 +43,150 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              children: [
-                Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    GestureDetector(
-                      onTap: _pickImage,
-                      child: CircleAvatar(
-                        radius: 80,
-                        backgroundImage:
-                            _image != null ? FileImage(_image!) : null,
-                        child: _image == null
-                            ? const Icon(
-                                Icons.person,
-                                size: 80,
-                              )
-                            : null,
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(25),
+              child: Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      GestureDetector(
+                        onTap: _pickImage,
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundImage:
+                              _image != null ? FileImage(_image!) : null,
+                          child: _image == null
+                              ? const Icon(
+                                  Icons.person,
+                                  size: 80,
+                                )
+                              : null,
+                        ),
                       ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.lightBlueAccent,
+                      Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.lightBlueAccent,
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.white),
+                          onPressed: _pickImage,
+                          iconSize: 20,
+                        ),
                       ),
-                      child: IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.white),
-                        onPressed: _pickImage,
-                        iconSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Anura Kumara',
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    ],
                   ),
-                ),
-                const SizedBox(height: 5),
-                const Text(
-                  'anurakumara@gmail.com',
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Anura Kumara',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 5),
+                  const Text(
+                    'anurakumara@gmail.com',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(20),
-              children: [
-                ProfileOption(
-                  icon: Icons.account_circle_outlined,
-                  text: 'Account Info',
-                  iconColor: Colors.deepPurpleAccent,
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const AccountInfoScreen(),
-                    ));
-                  },
-                ),
-                const SizedBox(height: 5),
-                ProfileOption(
-                  icon: Icons.privacy_tip_outlined,
-                  text: 'Privacy Policy',
-                  iconColor: Colors.blueGrey,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PrivacyPolicyScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 5),
-                ProfileOption(
-                  icon: Icons.settings_outlined,
-                  text: 'Settings',
-                  iconColor: Colors.blue,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 5),
-                ProfileOption(
-                  icon: Icons.star_rate_outlined,
-                  text: 'Rate App',
-                  iconColor: const Color(0xFFFFD700),
-                  onTap: () {
-                    RatingDialog.showRatingDialog(context, _userRating);
-                  },
-                ),
-                const SizedBox(height: 5),
-                ProfileOption(
-                  icon: Icons.logout,
-                  text: 'Logout',
-                  iconColor: Colors.red,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("Logout"),
-                          content:
-                              const Text("Are you sure you want to logout?"),
-                          actions: [
-                            TextButton(
-                              child: const Text("Cancel"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text("Logout"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(20),
+                children: [
+                  ProfileOption(
+                    icon: Icons.account_circle_outlined,
+                    text: 'Account Info',
+                    iconColor: Colors.deepPurpleAccent,
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AccountInfoScreen(),
+                      ));
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  ProfileOption(
+                    icon: Icons.privacy_tip_outlined,
+                    text: 'Privacy Policy',
+                    iconColor: Colors.blueGrey,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PrivacyPolicyScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  ProfileOption(
+                    icon: Icons.settings_outlined,
+                    text: 'Settings',
+                    iconColor: Colors.blue,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  ProfileOption(
+                    icon: Icons.star_rate_outlined,
+                    text: 'Rate App',
+                    iconColor: const Color(0xFFFFD700),
+                    onTap: () {
+                      RatingDialog.showRatingDialog(context, _userRating);
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  ProfileOption(
+                    icon: Icons.logout,
+                    text: 'Logout',
+                    iconColor: Colors.red,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Logout"),
+                            content:
+                                const Text("Are you sure you want to logout?"),
+                            actions: [
+                              TextButton(
+                                child: const Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: const Text("Logout"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

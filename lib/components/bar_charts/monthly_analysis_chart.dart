@@ -66,7 +66,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.surfaceDim,
           borderRadius: BorderRadius.circular(25),
         ),
         height: 350,
@@ -80,12 +80,6 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                     if (!isJanJunSelected) _toggleButtons();
                   },
                   style: ButtonStyle(
-                    side: const WidgetStatePropertyAll(
-                      BorderSide(
-                        color: Color(0xFF456EFE),
-                        width: 1.0,
-                      ),
-                    ),
                     backgroundColor: WidgetStatePropertyAll(
                         isJanJunSelected ? const Color(0xFF456EFE) : null),
                     padding: const WidgetStatePropertyAll(EdgeInsets.all(6)),
@@ -95,7 +89,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                   child: Text(
                     'Jan-Jun',
                     style: TextStyle(
-                      color: isJanJunSelected ? Colors.white : Colors.black,
+                      color: isJanJunSelected ? Colors.white : Colors.grey,
                     ),
                   ),
                 ),
@@ -111,7 +105,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                             height: 300,
                             child: YearPicker(
                               firstDate: DateTime(DateTime.now().year - 100, 1),
-                              lastDate: DateTime(DateTime.now().year + 100, 1),
+                              lastDate: DateTime.now(),
                               selectedDate: selectedYear,
                               onChanged: (DateTime dateTime) {
                                 setState(() {
@@ -157,12 +151,6 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                     if (isJanJunSelected) _toggleButtons();
                   },
                   style: ButtonStyle(
-                    side: const WidgetStatePropertyAll(
-                      BorderSide(
-                        color: Color(0xFF456EFE),
-                        width: 1.0,
-                      ),
-                    ),
                     backgroundColor: WidgetStatePropertyAll(
                         isJanJunSelected ? null : const Color(0xFF456EFE)),
                     padding: const WidgetStatePropertyAll(EdgeInsets.all(6)),
@@ -172,7 +160,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                   child: Text(
                     'Jul-Dec',
                     style: TextStyle(
-                      color: isJanJunSelected ? Colors.black : Colors.white,
+                      color: isJanJunSelected ? Colors.grey : Colors.white,
                     ),
                   ),
                 ),

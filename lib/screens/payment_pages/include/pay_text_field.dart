@@ -1,5 +1,7 @@
+import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../payment_methord/payment_methord_screen.dart';
 
 class DateSelection extends StatefulWidget {
@@ -59,49 +61,76 @@ class _DateSelectionState extends State<DateSelection> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 40),
-        TextField(
+        InputField(
+          isObsecure: false,
           controller: accountNumberController,
-          decoration: const InputDecoration(
-            labelText: 'Account Number',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.account_circle),
-          ),
+          isReadOnly: false,
+          prefixIcon: Icons.account_circle,
           keyboardType: TextInputType.number,
+          label: 'Account Number',
         ),
         const SizedBox(height: 16),
-        TextField(
+        InputField(
+          isReadOnly: false,
+          isObsecure: false,
+          prefixIcon: Icons.money,
+          label: '0.00',
+          suffixIcon: TextButton(
+            onPressed: () {
+              amountController.text = '';
+            },
+            child: const Text('Clear'),
+          ),
+          prefixText: 'Rs.',
           controller: amountController,
-          decoration: const InputDecoration(
-            labelText: 'Amount',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.money),
-          ),
           keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 16),
-        TextField(
-          controller: dueDateController,
-          decoration: const InputDecoration(
-            labelText: 'Due Date',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.calendar_today),
+        InputField(
+          isReadOnly: true,
+          isObsecure: false,
+          label: 'Due Date',
+          prefixIcon: Icons.date_range,
+          suffixIcon: IconButton(
+            onPressed: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+              );
+
+              if (pickedDate != null) {
+                dueDateController.text =
+                    DateFormat('yyyy-MM-dd').format(pickedDate);
+              }
+            },
+            icon: const Icon(Icons.edit),
           ),
-          readOnly: true,
-          onTap: () => _selectDueDate(context),
+          controller: dueDateController,
         ),
         const SizedBox(height: 16),
-        TextField(
-          controller: paymentDateController,
-          decoration: InputDecoration(
-            labelText: 'Date of Payment',
-            border: const OutlineInputBorder(),
-            prefixIcon: const Icon(Icons.calendar_today),
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => _selectPaymentDate(context),
-            ),
+        InputField(
+          isReadOnly: true,
+          isObsecure: false,
+          prefixIcon: Icons.date_range,
+          suffixIcon: IconButton(
+            onPressed: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+              );
+
+              if (pickedDate != null) {
+                paymentDateController.text =
+                    DateFormat('yyyy-MM-dd').format(pickedDate);
+              }
+            },
+            icon: const Icon(Icons.edit),
           ),
-          readOnly: true,
+          controller: paymentDateController,
         ),
         const SizedBox(height: 96),
         SimpleButton(

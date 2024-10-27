@@ -46,11 +46,19 @@ class _AnalysisPageState extends State<AnalysisPage>
       appBar: AppBar(
         backgroundColor: const Color(0xFF456EFE),
         elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
+        ),
         centerTitle: true,
         title: const Text(
           "Analysis",
           style: TextStyle(
             fontSize: 20,
+            color: Colors.white,
           ),
         ),
       ),
@@ -65,8 +73,9 @@ class _AnalysisPageState extends State<AnalysisPage>
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   decoration: const BoxDecoration(
                     color: Color(0xFF456EFE),
-                    borderRadius:
-                        BorderRadius.vertical(bottom: Radius.circular(30)),
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(30),
+                    ),
                   ),
                   child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,14 +138,14 @@ class _AnalysisPageState extends State<AnalysisPage>
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary, // Background color of the whole tab bar
+                        color: Theme.of(context).colorScheme.surfaceDim,
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: TabBar(
                         controller: _tabController,
                         dividerHeight: 0,
+                        overlayColor:
+                            const WidgetStatePropertyAll(Colors.transparent),
                         labelColor: Colors.white,
                         unselectedLabelColor: Colors.grey,
                         indicator: BoxDecoration(
@@ -240,6 +249,7 @@ class _AnalysisPageState extends State<AnalysisPage>
                                             ),
                                             child: CupertinoDatePicker(
                                               initialDateTime: startDate,
+                                              maximumDate: DateTime.now(),
                                               mode:
                                                   CupertinoDatePickerMode.date,
                                               backgroundColor:
@@ -306,6 +316,7 @@ class _AnalysisPageState extends State<AnalysisPage>
                                             ),
                                             child: CupertinoDatePicker(
                                               initialDateTime: endDate,
+                                              maximumDate: DateTime.now(),
                                               mode:
                                                   CupertinoDatePickerMode.date,
                                               backgroundColor:

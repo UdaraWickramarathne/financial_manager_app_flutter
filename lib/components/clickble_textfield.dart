@@ -8,7 +8,7 @@ class ClickbleTextfield extends StatefulWidget {
 
   const ClickbleTextfield({
     super.key,
-    required this.prefixIcon,
+    this.prefixIcon,
     required this.label,
     required this.controller,
     this.onTap,
@@ -24,13 +24,17 @@ class _ClickbleTextfieldState extends State<ClickbleTextfield> {
     return TextField(
       controller: widget.controller,
       decoration: InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
         labelStyle: const TextStyle(color: Color.fromARGB(255, 145, 145, 145)),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
-        prefixIcon: Icon(
-          widget.prefixIcon,
-          color: const Color(0xFF0e1633),
-        ),
+        fillColor: Theme.of(context).colorScheme.surfaceDim,
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(
+                widget.prefixIcon,
+                color: const Color(0xFF456EFE),
+              )
+            : null,
         labelText: widget.label,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),

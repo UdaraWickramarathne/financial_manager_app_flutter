@@ -22,7 +22,7 @@ class ServicesIcon extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(15),
       ),
       width: 100,

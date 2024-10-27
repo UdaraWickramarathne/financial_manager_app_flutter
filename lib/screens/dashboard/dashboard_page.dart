@@ -3,10 +3,15 @@ import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/visa_card.dart';
 import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/screens/analysis/analysis_page.dart';
+import 'package:financial_app/screens/budget/budget_page.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
 import 'package:financial_app/screens/notification/notification_page.dart';
+import 'package:financial_app/screens/reminder/reminder_page.dart';
+import 'package:financial_app/screens/transactions/transactions_page.dart';
 import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -14,41 +19,72 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 30),
-          child: Icon(Icons.grid_view_rounded),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: IconButton(
-              icon: const Icon(
-                Icons.notifications,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(CustomPageRoute(
-                  page: const NotificationPage(),
-                ));
-              },
-            ),
-          ),
-        ],
-        centerTitle: true,
-        title: const Center(
-          child: Text(
-            'Dashboard',
-            style: TextStyle(fontSize: 20),
-          ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0.0),
+        child: AppBar(
+          scrolledUnderElevation: 0,
+          elevation: 0,
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          Lottie.asset(
+                            'assets/onboard/dashboard_animation.json',
+                            width: 120,
+                          ),
+                        ],
+                      ),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Good Morning,'),
+                          Text(
+                            'Anura Kumara',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(''),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(CustomPageRoute(
+                          page: const NotificationPage(),
+                        ));
+                      },
+                      child: const Icon(
+                        Icons.notifications,
+                        size: 30,
+                      ),
+                    ),
+                    const Text(''),
+                    const Text(''),
+                    const Text(''),
+                  ],
+                )
+              ],
+            ),
             const VisaCard(),
             const SizedBox(height: 20),
             const Row(
@@ -71,15 +107,22 @@ class Dashboard extends StatelessWidget {
                     child: Row(
                       children: [
                         ServicesIcon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TransactionsPage(),
+                            ));
+                          },
                           backgroundColor: Colors.blue[100],
                           text: 'Transcations',
                           icon: Icons.monetization_on_outlined,
                           foregroundColor: Colors.blue,
                         ),
-                        const SizedBox(width: 10),
                         ServicesIcon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AnalysisPage(),
+                            ));
+                          },
                           backgroundColor:
                               const Color.fromARGB(255, 251, 187, 251),
                           text: 'Reports',
@@ -87,9 +130,12 @@ class Dashboard extends StatelessWidget {
                           foregroundColor:
                               const Color.fromARGB(255, 255, 98, 255),
                         ),
-                        const SizedBox(width: 10),
                         ServicesIcon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ReminderPage(),
+                            ));
+                          },
                           backgroundColor:
                               const Color.fromARGB(255, 251, 218, 187),
                           text: 'Reminders',
@@ -97,7 +143,6 @@ class Dashboard extends StatelessWidget {
                           foregroundColor:
                               const Color.fromARGB(255, 253, 159, 71),
                         ),
-                        const SizedBox(width: 10),
                         ServicesIcon(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -110,6 +155,19 @@ class Dashboard extends StatelessWidget {
                           icon: Icons.stairs_outlined,
                           foregroundColor:
                               const Color.fromARGB(255, 56, 250, 66),
+                        ),
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const BudgetPage(),
+                            ));
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 246, 187, 251),
+                          text: 'Budget',
+                          icon: Icons.account_balance_wallet,
+                          foregroundColor:
+                              const Color.fromARGB(255, 146, 56, 250),
                         ),
                       ],
                     ),
@@ -134,7 +192,8 @@ class Dashboard extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: transactions.length,
+                shrinkWrap: true,
+                itemCount: 4,
                 itemBuilder: (context, index) {
                   final transaction = transactions[index];
                   return TransactionTile(
@@ -142,7 +201,7 @@ class Dashboard extends StatelessWidget {
                     icon: transaction.icon,
                     iconColor: transaction.iconColor,
                     title: transaction.title,
-                    description: transaction.description,
+                    category: transaction.category,
                     price: transaction.price,
                     date: transaction.date,
                     isIncome: transaction.isIncome,

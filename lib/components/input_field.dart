@@ -26,7 +26,7 @@ class InputField extends StatefulWidget {
     this.inputFormat,
     required this.isReadOnly,
     this.onTap,
-    this.prefixText,
+    this.prefixText, String? errorText,
   });
 
   @override
@@ -37,6 +37,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      cursorColor: Colors.blue,
       onTap: widget.onTap,
       style: const TextStyle(
         fontSize: 16,
@@ -55,7 +56,7 @@ class _InputFieldState extends State<InputField> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFF456EFE), width: 2.0),
+          borderSide: const BorderSide(color: Color(0xFF456EFE), width: 1.0),
         ),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
@@ -66,11 +67,11 @@ class _InputFieldState extends State<InputField> {
         ),
         labelStyle: const TextStyle(color: Color(0xFF626262)),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
+        fillColor: Theme.of(context).colorScheme.surfaceDim,
         prefixIcon: widget.prefixIcon != null
             ? Icon(
                 widget.prefixIcon,
-                color: const Color(0xFF1b2c66),
+                color: const Color(0xFF456EFE),
               )
             : null,
         labelText: widget.label,

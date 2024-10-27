@@ -9,15 +9,15 @@ class VisaCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: 350,
+          width: 365,
           height: 210,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             gradient: const LinearGradient(
               colors: [
+                Color(0xFF456EFE), // Dark blue
                 Color.fromARGB(255, 73, 164, 238), // Light blue
                 Color.fromARGB(255, 38, 128, 198), // Medium blue
-                Color(0xFF456EFE), // Dark blue
               ],
               begin: AlignmentDirectional(-1, 1),
               end: AlignmentDirectional(1, -1),

@@ -14,29 +14,81 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isHome = true;
   int _currentIndex = 0;
 
   final String _exchane = 'assets/icons/exchange.ico';
   final String _exchaneOut = 'assets/icons/exchange_out.ico';
   final String _payment = 'assets/icons/payment.ico';
   final String _paymentOut = 'assets/icons/payment_out.ico';
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FadeIndexedStack(
-        index: _currentIndex,
-        curve: Curves.easeInOut,
-        duration: const Duration(milliseconds: 200),
-        children: const [
-          Dashboard(),
-          ProfilePage(),
-          BillPayScreen(),
-          MoneyConveror(),
+      // key: _scaffoldKey,
+      // drawer: Drawer(
+      //   child: Column(
+      //     children: [
+      //       DrawerHeader(
+      //         child: CircleAvatar(
+      //           radius: 60.0,
+      //           backgroundImage: AssetImage('assets/images/anura.jpg'),
+      //         ),
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.home),
+      //         title: Text('C A R D S'),
+      //       ),
+      //       ListTile(
+      //         leading: Icon(Icons.home),
+      //         title: Text('S E T T I N G S'),
+      //       ),
+      //       Spacer(),
+      //       ListTile(
+      //         leading: Icon(Icons.logout),
+      //         title: Text('L O G O U T'),
+      //       ),
+      //     ],
+      //   ),
+      // ),
+      body: Stack(
+        children: [
+          FadeIndexedStack(
+            index: _currentIndex,
+            curve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 200),
+            children: [
+              Dashboard(),
+              const ProfilePage(),
+              const BillPayScreen(),
+              const MoneyConveror(),
+            ],
+          ),
+          // if (_currentIndex == 0)
+          //   Align(
+          //     alignment: const AlignmentDirectional(-0.92, -0.92),
+          //     child: GestureDetector(
+          //       onTap: () {
+          //         _scaffoldKey.currentState?.openDrawer();
+          //       },
+          //       child: Container(
+          //         decoration: BoxDecoration(
+          //           shape: BoxShape.circle,
+          //           border: Border.all(
+          //             color: Theme.of(context).colorScheme.surface,
+          //             width: 2.0,
+          //           ),
+          //         ),
+          //         child: const CircleAvatar(
+          //           radius: 20.0,
+          //           backgroundImage: AssetImage('assets/images/anura.jpg'),
+          //         ),
+          //       ),
+          //     ),
+          //   )
         ],
       ),
-      floatingActionButton: isHome
+      floatingActionButton: _currentIndex == 0
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(
@@ -76,7 +128,6 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   setState(() {
-                    isHome = true;
                     _currentIndex = 0;
                   });
                 },
@@ -85,7 +136,7 @@ class _HomePageState extends State<HomePage> {
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.linear,
-              left: isHome ? 100.0 : 115.0,
+              left: _currentIndex == 0 ? 100.0 : 115.0,
               top: 0.0,
               bottom: 0.0,
               child: IconButton(
@@ -95,7 +146,6 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   setState(() {
-                    isHome = false;
                     _currentIndex = 1;
                   });
                 },
@@ -104,7 +154,7 @@ class _HomePageState extends State<HomePage> {
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.linear,
-              right: isHome ? 100.0 : 115.0,
+              right: _currentIndex == 0 ? 100.0 : 115.0,
               top: 0.0,
               bottom: 0.0,
               child: IconButton(
@@ -117,7 +167,6 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   setState(() {
-                    isHome = false;
                     _currentIndex = 2;
                   });
                 },
@@ -138,7 +187,6 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   setState(() {
-                    isHome = false;
                     _currentIndex = 3;
                   });
                 },

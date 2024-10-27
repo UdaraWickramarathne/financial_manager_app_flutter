@@ -1,5 +1,8 @@
+import 'package:financial_app/language/language_provider.dart';
+import 'package:financial_app/screens/auth/login_page.dart';
+
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/home/home_page.dart';
-import 'package:financial_app/screens/payment_pages/payment_success_screen.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +12,17 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => LanguageProvider(),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -49,16 +57,34 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
     var materialApp = MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
+      locale: languageProvider.locale,
+      supportedLocales: const [
+        Locale('en', ''), // English
+        Locale('sl', ''), // Sinhala
+      ],
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         MonthYearPickerLocalizations.delegate,
       ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        if (locale == null) {
+          return supportedLocales.first;
+        }
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
       home: HomePage(),
     );
     return materialApp;

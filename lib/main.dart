@@ -1,4 +1,6 @@
 import 'package:financial_app/screens/payment_pages/payment_success_screen.dart';
+import 'package:financial_app/screens/payment_pages/types_of_bill/internet_bill.dart';
+import 'package:financial_app/screens/payment_pages/types_of_bill/mobile_bill.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -58,10 +60,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         GlobalMaterialLocalizations.delegate,
         MonthYearPickerLocalizations.delegate,
       ],
-      home: const PaymentSuccessScreen(
-        accountNumber: '2',
-        amount: '3000',
-      ),
+      home: const MobileBillScreen(),
     );
     return materialApp;
   }

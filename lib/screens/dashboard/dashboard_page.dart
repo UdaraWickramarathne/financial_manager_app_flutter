@@ -27,7 +27,7 @@ class Dashboard extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             const SizedBox(height: 10),
@@ -42,7 +42,7 @@ class Dashboard extends StatelessWidget {
                     children: [
                       Lottie.asset(
                         'assets/onboard/dashboard_animation.json',
-                        width: 140,
+                        width: 120,
                       ),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +81,6 @@ class Dashboard extends StatelessWidget {
                 )
               ],
             ),
-            const SizedBox(height: 10),
             const VisaCard(),
             const SizedBox(height: 20),
             const Row(

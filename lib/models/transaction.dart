@@ -25,7 +25,7 @@ class Transaction {
 List<Transaction> transactions = [
   Transaction(
     title: 'COD BO 6',
-    category: 'Entertainment',
+    category: 'entertainment',
     price: '20000',
     date: '04 June',
     isIncome: false,
@@ -35,7 +35,7 @@ List<Transaction> transactions = [
   ),
   Transaction(
     title: 'Ice Cream',
-    category: 'Food',
+    category: 'food',
     price: '100',
     date: '04 June',
     isIncome: false,
@@ -45,7 +45,7 @@ List<Transaction> transactions = [
   ),
   Transaction(
     title: 'Grocery Shopping',
-    category: 'Food',
+    category: 'food',
     price: '1500',
     date: '01 October',
     isIncome: false,

@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class ServicesIcon extends StatelessWidget {
@@ -57,7 +58,7 @@ class ServicesIcon extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            text,
+            AppLocalizations.of(context).translate(text),
             style: const TextStyle(
               fontSize: 12,
             ),

@@ -1,4 +1,5 @@
 import 'package:financial_app/components/glass_effect_icon.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class BalanaceCard extends StatelessWidget {
@@ -23,7 +24,7 @@ class BalanaceCard extends StatelessWidget {
               end: AlignmentDirectional(1, -1),
             ),
           ),
-          child: const Padding(
+          child: Padding(
             padding: EdgeInsets.all(25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +35,8 @@ class BalanaceCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Total Balance',
+                          AppLocalizations.of(context)
+                              .translate('total_balance'),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -74,7 +76,7 @@ class BalanaceCard extends StatelessWidget {
                         GlassEffectIcon(icon: Icons.arrow_downward),
                         SizedBox(width: 5),
                         Text(
-                          'Income',
+                          AppLocalizations.of(context).translate('income'),
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -86,7 +88,7 @@ class BalanaceCard extends StatelessWidget {
                         GlassEffectIcon(icon: Icons.arrow_upward),
                         SizedBox(width: 5),
                         Text(
-                          'Expenses',
+                          AppLocalizations.of(context).translate('expenses'),
                           style: TextStyle(
                             color: Colors.white,
                           ),

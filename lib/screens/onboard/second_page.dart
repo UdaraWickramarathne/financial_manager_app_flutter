@@ -13,7 +13,7 @@ class SecondPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset(
-              'assets/onboard/boy.png',
+              'assets/onboard/working.png',
               height: 300,
             ),
             const Text(

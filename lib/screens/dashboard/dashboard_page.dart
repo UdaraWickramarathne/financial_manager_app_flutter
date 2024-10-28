@@ -16,6 +16,18 @@ import 'package:lottie/lottie.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
+  String getGreeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning,';
+    } else if (hour < 17) {
+      return 'Good Afternoon,';
+    } else if (hour < 20) {
+      return 'Good Evening,';
+    } else {
+      return 'Good Night,';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +61,10 @@ class Dashboard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Good Morning,'),
+                          Text(getGreeting()),
                           Text(
                             'Anura Kumara',
                             style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../../components/input_field.dart';
 import '../payment_methord/payment_methord_screen.dart'; // For date formatting
 
 class TransportScreen extends StatefulWidget {
@@ -16,57 +17,30 @@ class _TransportScreenState extends State<TransportScreen> {
   final TextEditingController travelDateController = TextEditingController();
   final TextEditingController paymentDateController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
-  final bool _isPaymentDateEditable = false;
 
   @override
   void initState() {
     super.initState();
-    // Set the payment date to the current date
     paymentDateController.text =
         DateFormat('MM/dd/yyyy').format(DateTime.now());
   }
-
-  Future<void> _selectTravelDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        travelDateController.text = DateFormat('MM/dd/yyyy').format(picked);
-      });
-    }
-  }
-
-  Future<void> _selectPaymentDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      setState(() {
-        paymentDateController.text = DateFormat('MM/dd/yyyy').format(picked);
-      });
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        flexibleSpace: Container(
-          alignment: Alignment.center,
-          child: const Text(
+        elevation: 0,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 30),
+          ),
+        ],
+        centerTitle: true,
+        title: const Center(
+          child: Text(
             'Transport Payment',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
+            style: TextStyle(fontSize: 20),
           ),
         ),
       ),
@@ -86,67 +60,86 @@ class _TransportScreenState extends State<TransportScreen> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
-
-            // Input field for "From" location
-            TextField(
+            InputField(
+              isObsecure: false,
               controller: fromController,
-              decoration: const InputDecoration(
-                labelText: 'From',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.location_on),
-              ),
+              isReadOnly: false,
+              prefixIcon: Icons.location_on,
               keyboardType: TextInputType.text,
+              label: 'From',
             ),
             const SizedBox(height: 16),
-
-            // Input field for "To" location
-            TextField(
+            InputField(
+              isObsecure: false,
               controller: toController,
-              decoration: const InputDecoration(
-                labelText: 'To',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.location_on),
-              ),
+              isReadOnly: false,
+              prefixIcon: Icons.location_on,
               keyboardType: TextInputType.text,
+              label: 'To',
             ),
             const SizedBox(height: 16),
-
-            // Input field for amount
-            TextField(
-              controller: amountController,
-              decoration: const InputDecoration(
-                labelText: 'Amount',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.money),
+            InputField(
+              isReadOnly: false,
+              isObsecure: false,
+              prefixIcon: Icons.money,
+              label: 'Amount',
+              suffixIcon: TextButton(
+                onPressed: () {
+                  amountController.text = '';
+                },
+                child: const Text('Clear'),
               ),
+              prefixText: 'Rs.',
+              controller: amountController,
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
+            InputField(
+              isReadOnly: true,
+              isObsecure: false,
+              label: 'Travel Date',
+              prefixIcon: Icons.calendar_today,
+              suffixIcon: IconButton(
+                onPressed: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
 
-            // Travel Date
-            TextField(
-              controller: travelDateController,
-              decoration: const InputDecoration(
-                labelText: 'Travel Date',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.calendar_today),
+                  if (pickedDate != null) {
+                    travelDateController.text =
+                        DateFormat('yyyy-MM-dd').format(pickedDate);
+                  }
+                },
+                icon: const Icon(Icons.edit),
               ),
-              readOnly: true,
-              onTap: () => _selectTravelDate(context),
+              controller: travelDateController,
             ),
             const SizedBox(height: 16),
-            TextField(
-              controller: paymentDateController,
-              decoration: InputDecoration(
-                labelText: 'Date of Payment',
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.calendar_today),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => _selectPaymentDate(context),
-                ),
+            InputField(
+              isReadOnly: true,
+              isObsecure: false,
+              label: 'Date of Payment',
+              prefixIcon: Icons.date_range,
+              suffixIcon: IconButton(
+                onPressed: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime.now(),
+                  );
+
+                  if (pickedDate != null) {
+                    paymentDateController.text =
+                        DateFormat('yyyy-MM-dd').format(pickedDate);
+                  }
+                },
+                icon: const Icon(Icons.edit),
               ),
-              readOnly: true,
+              controller: paymentDateController,
             ),
             const SizedBox(height: 16),
             SimpleButton(

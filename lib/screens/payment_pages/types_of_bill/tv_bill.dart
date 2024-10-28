@@ -23,10 +23,10 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
   void initState() {
     super.initState();
     paymentDateController.text =
-        DateTime.now().toLocal().toString().split(' ')[0];
+    DateTime.now().toLocal().toString().split(' ')[0];
   }
 
-  final List<String> billers = ['SLT Mobitel', 'Dialog Broadband', 'Lankabell'];
+  final List<String> billers = ['Peo TV', 'Dialog TV'];
 
   String? selectedBiller;
 
@@ -83,8 +83,8 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
               const SizedBox(height: 40),
               const CircleAvatar(
                 radius: 50,
-                backgroundColor: Colors.purple,
-                child: Icon(Icons.wifi, size: 50, color: Colors.white),
+                backgroundColor: Colors.grey,
+                child: Icon(Icons.tv, size: 50, color: Colors.white),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -103,7 +103,7 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
                 isObsecure: false,
                 controller: accountNumberController,
                 isReadOnly: false,
-                prefixIcon: Icons.account_circle,
+                prefixIcon: Icons.tv,
                 keyboardType: TextInputType.number,
                 label: 'Account Number',
               ),

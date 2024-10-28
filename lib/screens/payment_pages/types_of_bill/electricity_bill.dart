@@ -24,34 +24,6 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
         DateTime.now().toLocal().toString().split(' ')[0];
   }
 
-  Future<void> _selectDueDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        dueDateController.text = picked.toLocal().toString().split(' ')[0];
-      });
-    }
-  }
-
-  Future<void> _selectPaymentDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      setState(() {
-        paymentDateController.text = picked.toLocal().toString().split(' ')[0];
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +38,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
         centerTitle: true,
         title: const Center(
           child: Text(
-            'Electricity Bill',
+            'Electricity Bill Payment',
             style: TextStyle(fontSize: 20),
           ),
         ),
@@ -108,7 +80,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                       isReadOnly: false,
                       isObsecure: false,
                       prefixIcon: Icons.money,
-                      label: '0.00',
+                      label: 'Amount',
                       suffixIcon: TextButton(
                         onPressed: () {
                           amountController.text = '';

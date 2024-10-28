@@ -13,7 +13,7 @@ class ThirdPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset(
-              'assets/onboard/boy.png',
+              'assets/onboard/analyze.png',
               height: 300,
             ),
             const Text(

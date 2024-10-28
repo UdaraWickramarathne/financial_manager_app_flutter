@@ -13,7 +13,7 @@ class FirstPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset(
-              'assets/onboard/boy.png',
+              'assets/onboard/girl.png',
               height: 300,
             ),
             const Text(

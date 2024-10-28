@@ -1,10 +1,8 @@
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/screens/auth/signup_page.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,26 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final languageProvider =
-        Provider.of<LanguageProvider>(context, listen: false);
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(AppLocalizations.of(context).translate('login_account')),
-      //   actions: [
-      //     DropdownButton<Locale>(
-      //       value: languageProvider.locale,
-      //       onChanged: (Locale? newLocale) {
-      //         if (newLocale != null) {
-      //           languageProvider.setLocale(newLocale);
-      //         }
-      //       },
-      //       items: const [
-      //         DropdownMenuItem(value: Locale('en'), child: Text('English')),
-      //         DropdownMenuItem(value: Locale('sl'), child: Text('සිංහල')),
-      //       ],
-      //     ),
-      //   ],
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: SingleChildScrollView(

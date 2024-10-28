@@ -28,7 +28,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
         .toIso8601String()
         .replaceAll('.', '-')
         .replaceAll(':', '-');
-    final name = 'screenshot_${time}';
+    final name = 'screenshot_$time';
     await Permission.storage.request();
     final result = await ImageGallerySaver.saveImage(bytes, name: name);
     debugPrint('result: $result');

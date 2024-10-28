@@ -13,6 +13,7 @@ class InputField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormat;
   final bool isReadOnly;
   final VoidCallback? onTap;
+  final void Function(String)? onChanged;
 
   const InputField({
     super.key,
@@ -26,7 +27,8 @@ class InputField extends StatefulWidget {
     this.inputFormat,
     required this.isReadOnly,
     this.onTap,
-    this.prefixText, String? errorText,
+    this.prefixText,
+    this.onChanged,
   });
 
   @override
@@ -42,6 +44,7 @@ class _InputFieldState extends State<InputField> {
       style: const TextStyle(
         fontSize: 16,
       ),
+      onChanged: widget.onChanged,
       controller: widget.controller,
       obscureText: widget.isObsecure,
       textAlignVertical: TextAlignVertical.center,

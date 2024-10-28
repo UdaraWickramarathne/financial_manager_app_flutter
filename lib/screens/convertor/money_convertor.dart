@@ -291,7 +291,7 @@ class _MoneyConverorState extends State<MoneyConveror> {
                         vertical: 16, horizontal: 12),
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: Theme.of(context).colorScheme.primary),
+                          color: Theme.of(context).colorScheme.surfaceDim),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(

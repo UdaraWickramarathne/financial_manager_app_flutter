@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ElectricityBillScreen extends StatefulWidget {
-  ElectricityBillScreen({super.key});
+  const ElectricityBillScreen({super.key});
 
   @override
   State<ElectricityBillScreen> createState() => _ElectricityBillScreenState();

@@ -138,7 +138,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
             const SizedBox(height: 40),
             const CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.red,
               child: Icon(Icons.phone_android, size: 50, color: Colors.white),
             ),
             const SizedBox(height: 20),

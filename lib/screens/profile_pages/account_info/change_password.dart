@@ -1,16 +1,17 @@
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/input_field.dart';
 import '../../../components/simple_button.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ChangePasswordState extends State<ChangePassword> {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -24,22 +25,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
         title: const Text(
           'Change Password',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(fontSize: 22),
         ),
         centerTitle: true,
+        elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
             const SizedBox(height: 20),
@@ -101,9 +95,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 40),
+            const Spacer(),
             SimpleButton(
-              data: 'Save',
+              data: 'Change Password',
               onPressed: () {},
             ),
           ],

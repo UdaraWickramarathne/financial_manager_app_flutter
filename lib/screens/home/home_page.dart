@@ -40,53 +40,79 @@ class _HomePageState extends State<HomePage> {
                 backgroundImage: AssetImage('assets/images/anura.jpg'),
               ),
             ),
-            const SizedBox(height: 30),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('ACCOUNT INFO'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AccountInfoScreen(),
-                ));
-              },
-            ),
-            const SizedBox(height: 10),
-            ListTile(
-              leading: const Icon(Icons.privacy_tip),
-              title: const Text('PRIVACY POLICY'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const PrivacyPolicyScreen(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('SETTINGS'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SettingsScreen(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            const ListTile(
-              leading: Icon(Icons.star_rate),
-              title: Text('RATE APP'),
-            ),
-            const Spacer(),
-            const ListTile(
-              leading: Icon(Icons.power_settings_new),
-              title: Text('LOG OUT'),
-            ),
+            const SizedBox(height: 40),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: const Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text('ACCOUNT INFO'),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const AccountInfoScreen(),
+                        ));
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ListTile(
+                      leading: const Icon(Icons.privacy_tip),
+                      title: const Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text('PRIVACY POLICY'),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PrivacyPolicyScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ListTile(
+                      leading: const Icon(Icons.settings),
+                      title: const Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text('SETTINGS'),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    const ListTile(
+                      leading: Icon(Icons.star_rate),
+                      title: Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text('RATE APP'),
+                      ),
+                    ),
+                    const Spacer(),
+                    const ListTile(
+                      leading: Icon(Icons.power_settings_new),
+                      title: Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text('LOGOUT'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

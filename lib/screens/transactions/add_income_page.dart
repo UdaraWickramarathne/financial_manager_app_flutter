@@ -15,11 +15,9 @@ class AddIncomePage extends StatefulWidget {
 
 class _AddIncomePageState extends State<AddIncomePage> {
   final TextEditingController typeController = TextEditingController();
-
   final TextEditingController amountController = TextEditingController();
-
   final TextEditingController dateController = TextEditingController();
-  final TextEditingController noteController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   FilePickerResult? result;
   late PlatformFile file;
@@ -216,6 +214,19 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         icon: const Icon(Icons.date_range),
                       ),
                       controller: dateController,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' DESCRIPTION',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isObsecure: false,
+                      controller: descriptionController,
+                      isReadOnly: false,
+                      label: 'Add a note or description',
                     ),
                     const SizedBox(height: 20),
                     const Text(

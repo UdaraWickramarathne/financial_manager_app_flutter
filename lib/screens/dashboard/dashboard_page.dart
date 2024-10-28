@@ -1,7 +1,7 @@
 import 'package:financial_app/components/dropdown_button.dart';
 import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
-import 'package:financial_app/components/visa_card.dart';
+import 'package:financial_app/components/balance_card.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/screens/budget/budget_page.dart';
@@ -85,7 +85,7 @@ class Dashboard extends StatelessWidget {
                 )
               ],
             ),
-            const VisaCard(),
+            const BalanaceCard(),
             const SizedBox(height: 20),
             const Row(
               children: [

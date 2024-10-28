@@ -1,8 +1,8 @@
 import 'package:financial_app/components/glass_effect_icon.dart';
 import 'package:flutter/material.dart';
 
-class VisaCard extends StatelessWidget {
-  const VisaCard({super.key});
+class BalanaceCard extends StatelessWidget {
+  const BalanaceCard({super.key});
 
   @override
   Widget build(BuildContext context) {

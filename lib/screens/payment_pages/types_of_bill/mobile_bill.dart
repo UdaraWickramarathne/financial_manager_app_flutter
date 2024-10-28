@@ -188,9 +188,6 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
               prefixIcon: Icons.mobile_friendly,
               keyboardType: TextInputType.number,
               label: 'Mobile Number',
-              errorText: _validateMobileNumber(accountNumberController.text)
-                  ? null
-                  : 'Invalid number',
             ),
             const SizedBox(height: 16),
             InputField(

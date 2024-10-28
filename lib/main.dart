@@ -2,6 +2,7 @@ import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/screens/payment_pages/types_of_bill/water_bill.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
         return supportedLocales.first;
       },
-      home: HomePage(),
+      home: const WaterBillScreen(),
     );
     return materialApp;
   }

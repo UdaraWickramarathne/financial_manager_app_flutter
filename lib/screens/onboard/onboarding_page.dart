@@ -1,9 +1,11 @@
 import 'dart:ui';
+import 'package:financial_app/screens/auth/login_page.dart';
 import 'package:financial_app/screens/onboard/first_page.dart';
 import 'package:financial_app/screens/onboard/fourth_page.dart';
 import 'package:financial_app/screens/onboard/second_page.dart';
 import 'package:financial_app/screens/onboard/third_pgae.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -25,6 +27,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
         currentPage = _controller.page?.round() ?? 0;
       });
     });
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Color(0xFF456EFE),
+    ));
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
+    super.dispose();
   }
 
   @override
@@ -165,6 +178,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             nextPage,
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
+                          );
+                        } else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
                           );
                         }
                       },

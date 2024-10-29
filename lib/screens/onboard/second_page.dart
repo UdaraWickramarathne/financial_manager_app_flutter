@@ -12,9 +12,20 @@ class SecondPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Image.asset(
-              'assets/onboard/working.png',
-              height: 300,
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                begin: Alignment(0.7, 0),
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.black,
+                  Colors.transparent,
+                ],
+              ).createShader(bounds),
+              blendMode: BlendMode.dstIn,
+              child: Image.asset(
+                'assets/onboard/working.png',
+                height: 300,
+              ),
             ),
             const Text(
               'Set Your Financial Goals',

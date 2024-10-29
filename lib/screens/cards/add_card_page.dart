@@ -18,7 +18,7 @@ class _AddCardPageState extends State<AddCardPage> {
   final _cvvController = TextEditingController();
   final _nameController = TextEditingController();
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
-  FlipCardController _cardController = FlipCardController();
+  final FlipCardController _cardController = FlipCardController();
 
   void _flipCard() {
     cardKey.currentState!.toggleCard();

@@ -1,7 +1,9 @@
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/auth/signup_page.dart';
 import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -101,7 +103,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 160),
               SimpleButton(
                 data: AppLocalizations.of(context).translate('login'),
-                onPressed: () {},
+                onPressed: () {
+                  globalNavigatorKey.currentState!
+                      .pushReplacement(MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ));
+                },
               ),
               const SizedBox(height: 5),
               Row(

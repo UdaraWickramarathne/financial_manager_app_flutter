@@ -1,6 +1,7 @@
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/screens/payment_pages/payment_methord/payment_methord_screen.dart';
+
+import 'package:financial_app/screens/payment_pages/payment_methord/show_payment_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -146,33 +147,38 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
             SimpleButton(
               data: 'Pay Bill',
               onPressed: () {
-                if (accountNumberController.text.isNotEmpty &&
-                    amountController.text.isNotEmpty) {
-                  // Add your payment processing logic here
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentMethodScreen(
-                        accountNumber: accountNumberController.text,
-                        amount: amountController.text,
-                      ),
-                    ),
-                  );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Error'),
-                      content: const Text('Please fill in all fields'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => const PaymentMethodSheet(),
+                );
+                // if (accountNumberController.text.isNotEmpty &&
+                //     amountController.text.isNotEmpty) {
+                //   // Add your payment processing logic here
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => PaymentMethodScreen(
+                //         accountNumber: accountNumberController.text,
+                //         amount: amountController.text,
+                //       ),
+                //     ),
+                //   );
+                // } else {
+                //   showDialog(
+                //     context: context,
+                //     builder: (context) => AlertDialog(
+                //       title: const Text('Error'),
+                //       content: const Text('Please fill in all fields'),
+                //       actions: [
+                //         TextButton(
+                //           onPressed: () => Navigator.pop(context),
+                //           child: const Text('OK'),
+                //         ),
+                //       ],
+                //     ),
+                //   );
+                // }
               },
             ),
           ],

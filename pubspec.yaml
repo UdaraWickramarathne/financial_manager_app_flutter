@@ -127,6 +127,7 @@ flutter:
   - assets/
   - assets/icons/
   - assets/lang/
+  - assets/payments/
   - assets/flags/
   - assets/images/
   - assets/onboard/

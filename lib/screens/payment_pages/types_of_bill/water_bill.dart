@@ -3,8 +3,6 @@ import 'package:intl/intl.dart';
 
 import '../../../components/input_field.dart';
 import '../../../components/simple_button.dart';
-import '../payment_methord/payment_methord_screen.dart';
-
 
 class WaterBillScreen extends StatefulWidget {
   const WaterBillScreen({super.key});
@@ -49,8 +47,7 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
                     const CircleAvatar(
                       radius: 80,
                       backgroundColor: Colors.orangeAccent,
-                      child:
-                      Icon(Icons.water, size: 50, color: Colors.white),
+                      child: Icon(Icons.water, size: 50, color: Colors.white),
                     ),
                     const SizedBox(height: 40),
                     const Text(
@@ -144,15 +141,6 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
                 if (accountNumberController.text.isNotEmpty &&
                     amountController.text.isNotEmpty) {
                   // Add your payment processing logic here
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentMethodScreen(
-                        accountNumber: accountNumberController.text,
-                        amount: amountController.text,
-                      ),
-                    ),
-                  );
                 } else {
                   showDialog(
                     context: context,

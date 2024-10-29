@@ -1,8 +1,8 @@
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
-import 'package:financial_app/screens/auth/login_page.dart';
-import 'package:financial_app/screens/onboard/onboarding_page.dart';
+import 'package:financial_app/screens/home/home_page.dart';
+
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +73,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         }
         return supportedLocales.first;
       },
-      home: const LoginScreen(),
+      home: const HomePage(),
     );
     return app;
   }

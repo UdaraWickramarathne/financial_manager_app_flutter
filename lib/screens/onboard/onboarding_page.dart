@@ -22,21 +22,23 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   void initState() {
     super.initState();
+
     _controller.addListener(() {
       setState(() {
         currentPage = _controller.page?.round() ?? 0;
       });
     });
+
+    // Set initial status bar style.
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color(0xFF456EFE),
+      statusBarIconBrightness: Brightness.light,
     ));
   }
 
   @override
   void dispose() {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    ));
+    _controller.dispose();
     super.dispose();
   }
 

@@ -1,7 +1,6 @@
 import 'package:financial_app/screens/payment_pages/types_of_bill/electricity_bill.dart';
 import 'package:financial_app/screens/payment_pages/types_of_bill/internet_bill.dart';
 import 'package:financial_app/screens/payment_pages/types_of_bill/mobile_bill.dart';
-import 'package:financial_app/screens/payment_pages/types_of_bill/transport_bill.dart';
 import 'package:financial_app/screens/payment_pages/types_of_bill/water_bill.dart';
 import 'package:flutter/material.dart';
 
@@ -44,20 +43,20 @@ class BillPayScreen extends StatelessWidget {
           children: [
             OptionCard(
               color: Colors.blue,
-              icon: Icons.flash_on,
+              icon: const Icon(Icons.flash_on, size: 50, color: Colors.white),
               title: 'Electricity',
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
+                    builder: (context) => const ElectricityBillScreen(),
                   ),
                 );
               },
             ),
             OptionCard(
               color: Colors.purple,
-              icon: Icons.wifi,
+              icon: const Icon(Icons.wifi, size: 50, color: Colors.white),
               title: 'Internet',
               onTap: () {
                 Navigator.push(
@@ -70,7 +69,7 @@ class BillPayScreen extends StatelessWidget {
             ),
             OptionCard(
               color: Colors.orangeAccent,
-              icon: Icons.water,
+              icon: const Icon(Icons.water, size: 50, color: Colors.white),
               title: 'Water',
               onTap: () {
                 Navigator.push(
@@ -82,21 +81,9 @@ class BillPayScreen extends StatelessWidget {
               },
             ),
             OptionCard(
-              color: Colors.green,
-              icon: Icons.directions_bus,
-              title: 'Transport',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TransportScreen(),
-                  ),
-                );
-              },
-            ),
-            OptionCard(
               color: Colors.red,
-              icon: Icons.phone_iphone,
+              icon:
+                  const Icon(Icons.phone_iphone, size: 50, color: Colors.white),
               title: 'Mobile',
               onTap: () {
                 Navigator.push(
@@ -109,39 +96,27 @@ class BillPayScreen extends StatelessWidget {
             ),
             OptionCard(
               color: Colors.grey,
-              icon: Icons.tv,
+              icon: const Icon(Icons.tv, size: 50, color: Colors.white),
               title: 'TV',
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
-                  ),
-                );
-              },
-            ),
-            OptionCard(
-              color: Colors.teal,
-              icon: Icons.shield,
-              title: 'Insurance',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
+                    builder: (context) => const ElectricityBillScreen(),
                   ),
                 );
               },
             ),
             OptionCard(
               color: Colors.cyan,
-              icon: Icons.more_horiz,
-              title: 'Other',
+              icon: const ImageIcon(AssetImage('assets/icons/scan.ico'),
+                  size: 50, color: Colors.white),
+              title: 'Scan & Pay',
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
+                    builder: (context) => const ElectricityBillScreen(),
                   ),
                 );
               },
@@ -155,9 +130,9 @@ class BillPayScreen extends StatelessWidget {
 
 class OptionCard extends StatelessWidget {
   final Color color;
-  final IconData icon;
   final String title;
   final VoidCallback onTap;
+  final Widget icon;
 
   const OptionCard(
       {super.key,
@@ -179,7 +154,7 @@ class OptionCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 50, color: Colors.white),
+              icon,
               const SizedBox(height: 10),
               Text(
                 title,

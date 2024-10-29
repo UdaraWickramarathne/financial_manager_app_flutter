@@ -74,6 +74,11 @@ dependencies:
   image_gallery_saver: ^2.0.3
   permission_handler: ^11.3.1
 
+  #for flip effect
+  flip_card: ^0.7.0
+
+
+
 
 
 
@@ -83,9 +88,13 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider:
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  #for change app icon
+  flutter_launcher_icons: ^0.14.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -96,6 +105,14 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
+  adaptive_icon_foreground: "assets/logo_adaptive.png"
+  adaptive_icon_background: "#FFFFFF"
+
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -110,6 +127,7 @@ flutter:
   - assets/
   - assets/icons/
   - assets/lang/
+  - assets/payments/
   - assets/flags/
   - assets/images/
   - assets/onboard/

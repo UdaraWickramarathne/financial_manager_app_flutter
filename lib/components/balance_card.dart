@@ -1,8 +1,9 @@
 import 'package:financial_app/components/glass_effect_icon.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
-class VisaCard extends StatelessWidget {
-  const VisaCard({super.key});
+class BalanaceCard extends StatelessWidget {
+  const BalanaceCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +24,8 @@ class VisaCard extends StatelessWidget {
               end: AlignmentDirectional(1, -1),
             ),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(25),
+          child: Padding(
+            padding: const EdgeInsets.all(25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -34,19 +35,20 @@ class VisaCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Total Balance',
-                          style: TextStyle(
+                          AppLocalizations.of(context)
+                              .translate('total_balance'),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.keyboard_arrow_down_outlined,
                           color: Color.fromARGB(206, 255, 255, 255),
                         )
                       ],
                     ),
-                    Text(
+                    const Text(
                       '\u00B7\u00B7\u00B7',
                       style: TextStyle(
                         color: Colors.white,
@@ -56,8 +58,8 @@ class VisaCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 5),
-                Text(
+                const SizedBox(height: 5),
+                const Text(
                   '\$3,257.00',
                   style: TextStyle(
                     color: Colors.white,
@@ -65,17 +67,17 @@ class VisaCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 45),
+                const SizedBox(height: 45),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        GlassEffectIcon(icon: Icons.arrow_downward),
-                        SizedBox(width: 5),
+                        const GlassEffectIcon(icon: Icons.arrow_downward),
+                        const SizedBox(width: 5),
                         Text(
-                          'Income',
-                          style: TextStyle(
+                          AppLocalizations.of(context).translate('income'),
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
@@ -83,11 +85,11 @@ class VisaCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        GlassEffectIcon(icon: Icons.arrow_upward),
-                        SizedBox(width: 5),
+                        const GlassEffectIcon(icon: Icons.arrow_upward),
+                        const SizedBox(width: 5),
                         Text(
-                          'Expenses',
-                          style: TextStyle(
+                          AppLocalizations.of(context).translate('expenses'),
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
@@ -95,7 +97,7 @@ class VisaCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(

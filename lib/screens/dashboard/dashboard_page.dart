@@ -1,7 +1,8 @@
 import 'package:financial_app/components/dropdown_button.dart';
 import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/transaction_tile.dart';
-import 'package:financial_app/components/visa_card.dart';
+import 'package:financial_app/components/balance_card.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/screens/budget/budget_page.dart';
@@ -15,6 +16,18 @@ import 'package:lottie/lottie.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
+  String getGreeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning,';
+    } else if (hour < 17) {
+      return 'Good Afternoon,';
+    } else if (hour < 20) {
+      return 'Good Evening,';
+    } else {
+      return 'Good Night,';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,18 +61,18 @@ class Dashboard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Column(
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Good Morning,'),
-                          Text(
+                          Text(getGreeting()),
+                          const Text(
                             'Anura Kumara',
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(''),
+                          const Text(''),
                         ],
                       ),
                     ],
@@ -85,13 +98,13 @@ class Dashboard extends StatelessWidget {
                 )
               ],
             ),
-            const VisaCard(),
+            const BalanaceCard(),
             const SizedBox(height: 20),
-            const Row(
+            Row(
               children: [
                 Text(
-                  "Services",
-                  style: TextStyle(
+                  AppLocalizations.of(context).translate('services'),
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -113,7 +126,7 @@ class Dashboard extends StatelessWidget {
                             ));
                           },
                           backgroundColor: Colors.blue[100],
-                          text: 'Transcations',
+                          text: 'transactions',
                           icon: Icons.monetization_on_outlined,
                           foregroundColor: Colors.blue,
                         ),
@@ -125,7 +138,7 @@ class Dashboard extends StatelessWidget {
                           },
                           backgroundColor:
                               const Color.fromARGB(255, 251, 187, 251),
-                          text: 'Reports',
+                          text: 'reports',
                           icon: Icons.file_copy_outlined,
                           foregroundColor:
                               const Color.fromARGB(255, 255, 98, 255),
@@ -151,7 +164,7 @@ class Dashboard extends StatelessWidget {
                           },
                           backgroundColor:
                               const Color.fromARGB(255, 187, 251, 190),
-                          text: 'Goals',
+                          text: 'goals',
                           icon: Icons.stairs_outlined,
                           foregroundColor:
                               const Color.fromARGB(255, 56, 250, 66),
@@ -164,7 +177,7 @@ class Dashboard extends StatelessWidget {
                           },
                           backgroundColor:
                               const Color.fromARGB(255, 246, 187, 251),
-                          text: 'Budget',
+                          text: 'budget',
                           icon: Icons.account_balance_wallet,
                           foregroundColor:
                               const Color.fromARGB(255, 146, 56, 250),
@@ -176,17 +189,17 @@ class Dashboard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Recent History",
-                  style: TextStyle(
+                  AppLocalizations.of(context).translate('recent_history'),
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                ChoiceBox(),
+                const ChoiceBox(),
               ],
             ),
             const SizedBox(height: 20),

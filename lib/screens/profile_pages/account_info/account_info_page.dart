@@ -110,7 +110,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                           radius: 80,
                           backgroundImage: _image != null
                               ? FileImage(_image!)
-                              : const AssetImage('assets/profile.jpg')
+                              : const AssetImage('assets/images/anura.jpg')
                                   as ImageProvider,
                         ),
                         Positioned(

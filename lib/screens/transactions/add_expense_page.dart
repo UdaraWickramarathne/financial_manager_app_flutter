@@ -15,11 +15,9 @@ class AddExpensePage extends StatefulWidget {
 
 class _AddExpensePageState extends State<AddExpensePage> {
   final TextEditingController typeController = TextEditingController();
-
   final TextEditingController amountController = TextEditingController();
-
   final TextEditingController dateController = TextEditingController();
-  final TextEditingController noteController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   FilePickerResult? result;
   late PlatformFile file;
@@ -151,6 +149,14 @@ class _AddExpensePageState extends State<AddExpensePage> {
           'Add Expense',
           style: TextStyle(fontSize: 22),
         ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: ImageIcon(
+              AssetImage('assets/icons/scan.ico'),
+            ),
+          )
+        ],
         centerTitle: true,
         elevation: 0,
       ),
@@ -227,6 +233,19 @@ class _AddExpensePageState extends State<AddExpensePage> {
                         icon: const Icon(Icons.date_range),
                       ),
                       controller: dateController,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      ' DESCRIPTION',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+                    InputField(
+                      isObsecure: false,
+                      controller: descriptionController,
+                      isReadOnly: false,
+                      label: 'Add a note or description',
                     ),
                     const SizedBox(height: 20),
                     const Text(

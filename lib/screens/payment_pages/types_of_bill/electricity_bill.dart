@@ -1,12 +1,12 @@
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/screens/payment_pages/include/pay_text_field.dart';
-import 'package:financial_app/screens/payment_pages/payment_methord/payment_methord_screen.dart';
+
+import 'package:financial_app/screens/payment_pages/payment_methord/show_payment_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ElectricityBillScreen extends StatefulWidget {
-  ElectricityBillScreen({super.key});
+  const ElectricityBillScreen({super.key});
 
   @override
   State<ElectricityBillScreen> createState() => _ElectricityBillScreenState();
@@ -25,34 +25,6 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
         DateTime.now().toLocal().toString().split(' ')[0];
   }
 
-  Future<void> _selectDueDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        dueDateController.text = picked.toLocal().toString().split(' ')[0];
-      });
-    }
-  }
-
-  Future<void> _selectPaymentDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      setState(() {
-        paymentDateController.text = picked.toLocal().toString().split(' ')[0];
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +39,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
         centerTitle: true,
         title: const Center(
           child: Text(
-            'Electricity Bill',
+            'Electricity Bill Payment',
             style: TextStyle(fontSize: 20),
           ),
         ),
@@ -109,7 +81,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                       isReadOnly: false,
                       isObsecure: false,
                       prefixIcon: Icons.money,
-                      label: '0.00',
+                      label: 'Amount',
                       suffixIcon: TextButton(
                         onPressed: () {
                           amountController.text = '';
@@ -175,33 +147,38 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
             SimpleButton(
               data: 'Pay Bill',
               onPressed: () {
-                if (accountNumberController.text.isNotEmpty &&
-                    amountController.text.isNotEmpty) {
-                  // Add your payment processing logic here
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentMethodScreen(
-                        accountNumber: accountNumberController.text,
-                        amount: amountController.text,
-                      ),
-                    ),
-                  );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Error'),
-                      content: const Text('Please fill in all fields'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => const PaymentMethodSheet(),
+                );
+                // if (accountNumberController.text.isNotEmpty &&
+                //     amountController.text.isNotEmpty) {
+                //   // Add your payment processing logic here
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => PaymentMethodScreen(
+                //         accountNumber: accountNumberController.text,
+                //         amount: amountController.text,
+                //       ),
+                //     ),
+                //   );
+                // } else {
+                //   showDialog(
+                //     context: context,
+                //     builder: (context) => AlertDialog(
+                //       title: const Text('Error'),
+                //       content: const Text('Please fill in all fields'),
+                //       actions: [
+                //         TextButton(
+                //           onPressed: () => Navigator.pop(context),
+                //           child: const Text('OK'),
+                //         ),
+                //       ],
+                //     ),
+                //   );
+                // }
               },
             ),
           ],

@@ -1,5 +1,5 @@
 import 'package:financial_app/components/budget_card.dart';
-import 'package:financial_app/components/visa_card.dart';
+import 'package:financial_app/components/balance_card.dart';
 import 'package:flutter/material.dart';
 import 'budget_add.dart';
 
@@ -31,10 +31,10 @@ class _BudgetPageState extends State<BudgetPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
-            const VisaCard(),
+            const BalanaceCard(),
             const SizedBox(height: 24),
             Container(
               padding: const EdgeInsets.symmetric(

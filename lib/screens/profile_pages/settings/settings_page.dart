@@ -1,3 +1,5 @@
+import 'package:financial_app/language/language_provider.dart';
+import 'package:financial_app/screens/profile_pages/account_info/change_password.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,141 +18,216 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool pinCode = false;
   String pinNumber = '';
 
-  void _onPinChange(String value) {
-    if (value.length <= 4) {
-      setState(() {
-        pinNumber = value;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final languageProvider =
+        Provider.of<LanguageProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text(
+          'Settings',
+          style: TextStyle(fontSize: 22),
+        ),
+        centerTitle: true,
+        elevation: 0,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          ListTile(
-            leading: Icon(
-              isDarkMode ? Icons.dark_mode : Icons.light_mode,
-              color: Colors.blue,
-            ),
-            title: const Text('Dark Mode'),
-            trailing: IconButton(
-              icon: Icon(isDarkMode ? Icons.toggle_on : Icons.toggle_off),
-              color: Colors.blue,
-              onPressed: () {
-                setState(() {
-                  themeProvider.toggleTheme(!isDarkMode);
-                });
-              },
+          const Text(
+            'ACCOUNT',
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
           ),
-          ListTile(
-            leading: Icon(
-              pinCode ? Icons.lock : Icons.lock_open,
-              color: Colors.blue,
+          const SizedBox(height: 5),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
+              borderRadius: BorderRadius.circular(15),
             ),
-            title: const Text('PIN Code'),
-            trailing: IconButton(
-              icon: Icon(pinCode ? Icons.toggle_on : Icons.toggle_off),
-              color: Colors.blue,
-              onPressed: () {
-                setState(() {
-                  pinCode = !pinCode;
-                });
-              },
-            ),
-          ),
-          if (pinCode)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Enter PIN',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'PIN (4 digits)',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.blue,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.blueAccent,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                    maxLength: 4,
-                    onChanged: _onPinChange,
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Save PIN functionality
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: const Text(
-                      'Save PIN',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ],
+            child: ListTile(
+              leading: const Icon(
+                Icons.key,
+                size: 26,
               ),
-            ),
-          ListTile(
-            leading: const Icon(Icons.help_outline),
-            title: const Text('Help / Support'),
-            onTap: () {
-              // Handle Help / Support tap
-            },
-          ),
-          ListTile(
-            title: const Text('Language'),
-            trailing: DropdownButton<String>(
-              value: 'English',
-              items: const [
-                DropdownMenuItem(value: 'English', child: Text('English')),
-                DropdownMenuItem(value: 'Spanish', child: Text('Spanish')),
-              ],
-              onChanged: (String? value) {
-                // Handle language change
+              title: const Text(
+                'Change Password',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ChangePassword(),
+                    ));
               },
             ),
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(child: Text('v1.10.0')),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Divider(color: Colors.grey),
           ),
+          const Text(
+            'APPEARENCE',
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              leading: Icon(
+                isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                size: 26,
+              ),
+              title: const Text(
+                'Dark Mode',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              trailing: Transform.scale(
+                scale: 0.7,
+                child: Switch(
+                  value: isDarkMode,
+                  onChanged: (value) {
+                    themeProvider.toggleTheme(!isDarkMode);
+                  },
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              leading: const Icon(
+                Icons.language,
+                size: 26,
+              ),
+              title: const Text(
+                'Language',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              trailing: DropdownButtonHideUnderline(
+                child: DropdownButton<Locale>(
+                  elevation: 6,
+                  value: languageProvider.locale,
+                  items: const [
+                    DropdownMenuItem(
+                        value: Locale('en'), child: Text('English')),
+                    DropdownMenuItem(value: Locale('sl'), child: Text('සිංහල')),
+                  ],
+                  onChanged: (Locale? value) {
+                    if (value != null) {
+                      languageProvider.setLocale(value);
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Divider(color: Colors.grey),
+          ),
+          const Text(
+            'SECURITY',
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              leading: Icon(
+                pinCode ? Icons.lock : Icons.lock_open,
+                size: 26,
+              ),
+              title: const Text(
+                'PIN Code',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              trailing: Transform.scale(
+                scale: 0.7,
+                child: Switch(
+                  value: pinCode,
+                  onChanged: (value) {
+                    setState(() {
+                      pinCode = value;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Divider(color: Colors.grey),
+          ),
+          const Text(
+            'APP INFORMATION',
+            style: TextStyle(
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              leading: const Icon(
+                Icons.help_outline,
+                size: 26,
+              ),
+              title: const Text(
+                'Help & Support',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              onTap: () {
+                // Handle Help / Support tap
+              },
+            ),
+          ),
+          const SizedBox(height: 80),
+          const Center(
+              child: Text(
+            'v1.0.0',
+            style: TextStyle(fontSize: 16),
+          )),
         ],
       ),
     );

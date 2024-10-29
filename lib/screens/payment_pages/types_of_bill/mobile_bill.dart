@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../components/clickble_textfield.dart';
 import '../../../components/input_field.dart';
-import '../payment_methord/payment_methord_screen.dart';
 
 class MobileBillScreen extends StatefulWidget {
   const MobileBillScreen({super.key});
@@ -131,149 +130,145 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
-            const SizedBox(height: 40),
-            const CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.blue,
-              child: Icon(Icons.phone_android, size: 50, color: Colors.white),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Enter Your Payment Details',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 30),
-            ClickbleTextfield(
-              prefixIcon: Icons.cell_tower,
-              controller: selectBillerController,
-              label: 'Select Biller',
-              onTap: () => _showBillerSelectionDialog(),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Checkbox(
-                  value: _isPostpaidSelected,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _isPostpaidSelected = true;
-                      _isPrepaidSelected = false;
-                    });
-                  },
-                ),
-                const Text('Postpaid'),
-                const SizedBox(width: 20),
-                Checkbox(
-                  value: _isPrepaidSelected,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _isPrepaidSelected = true;
-                      _isPostpaidSelected = false;
-                    });
-                  },
-                ),
-                const Text('Prepaid'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            InputField(
-              isObsecure: false,
-              controller: accountNumberController,
-              isReadOnly: false,
-              prefixIcon: Icons.mobile_friendly,
-              keyboardType: TextInputType.number,
-              label: 'Mobile Number',
-              errorText: _validateMobileNumber(accountNumberController.text)
-                  ? null
-                  : 'Invalid number',
-            ),
-            const SizedBox(height: 16),
-            InputField(
-              isReadOnly: false,
-              isObsecure: false,
-              prefixIcon: Icons.money,
-              label: 'Amount',
-              suffixIcon: TextButton(
-                onPressed: () {
-                  amountController.text = '';
-                },
-                child: const Text('Clear'),
-              ),
-              prefixText: 'Rs.',
-              controller: amountController,
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 16),
-            if (_isPostpaidSelected) ...[
-              InputField(
-                isReadOnly: true,
-                isObsecure: false,
-                label: 'Due Date',
-                prefixIcon: Icons.date_range,
-                suffixIcon: IconButton(
-                  onPressed: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
-                    );
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 40),
+                    const CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.red,
+                      child: Icon(Icons.phone_android,
+                          size: 50, color: Colors.white),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Enter Your Payment Details',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 30),
+                    ClickbleTextfield(
+                      prefixIcon: Icons.cell_tower,
+                      controller: selectBillerController,
+                      label: 'Select Biller',
+                      onTap: () => _showBillerSelectionDialog(),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          value: _isPostpaidSelected,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isPostpaidSelected = true;
+                              _isPrepaidSelected = false;
+                            });
+                          },
+                        ),
+                        const Text('Postpaid'),
+                        const SizedBox(width: 20),
+                        Checkbox(
+                          value: _isPrepaidSelected,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isPrepaidSelected = true;
+                              _isPostpaidSelected = false;
+                            });
+                          },
+                        ),
+                        const Text('Prepaid'),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    InputField(
+                      isObsecure: false,
+                      controller: accountNumberController,
+                      isReadOnly: false,
+                      prefixIcon: Icons.mobile_friendly,
+                      keyboardType: TextInputType.number,
+                      label: 'Mobile Number',
+                    ),
+                    const SizedBox(height: 16),
+                    InputField(
+                      isReadOnly: false,
+                      isObsecure: false,
+                      prefixIcon: Icons.money,
+                      label: 'Amount',
+                      suffixIcon: TextButton(
+                        onPressed: () {
+                          amountController.text = '';
+                        },
+                        child: const Text('Clear'),
+                      ),
+                      prefixText: 'Rs.',
+                      controller: amountController,
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 16),
+                    if (_isPostpaidSelected) ...[
+                      InputField(
+                        isReadOnly: true,
+                        isObsecure: false,
+                        label: 'Due Date',
+                        prefixIcon: Icons.date_range,
+                        suffixIcon: IconButton(
+                          onPressed: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                            );
 
-                    if (pickedDate != null) {
-                      dueDateController.text =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
-                    }
-                  },
-                  icon: const Icon(Icons.edit),
-                ),
-                controller: dueDateController,
-              ),
-              const SizedBox(height: 16),
-            ],
-            InputField(
-              isReadOnly: true,
-              isObsecure: false,
-              label: 'Date of Payment',
-              prefixIcon: Icons.date_range,
-              suffixIcon: IconButton(
-                onPressed: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                  );
+                            if (pickedDate != null) {
+                              dueDateController.text =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                            }
+                          },
+                          icon: const Icon(Icons.edit),
+                        ),
+                        controller: dueDateController,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    InputField(
+                      isReadOnly: true,
+                      isObsecure: false,
+                      label: 'Date of Payment',
+                      prefixIcon: Icons.date_range,
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
 
-                  if (pickedDate != null) {
-                    paymentDateController.text =
-                        DateFormat('yyyy-MM-dd').format(pickedDate);
-                  }
-                },
-                icon: const Icon(Icons.edit),
+                          if (pickedDate != null) {
+                            paymentDateController.text =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                          }
+                        },
+                        icon: const Icon(Icons.edit),
+                      ),
+                      controller: paymentDateController,
+                    ),
+                  ],
+                ),
               ),
-              controller: paymentDateController,
             ),
-            const SizedBox(height: 96),
             SimpleButton(
               data: 'Pay Bill',
               onPressed: () {
                 // Validate all inputs
-                if (_validateInputs()) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentMethodScreen(
-                        accountNumber: accountNumberController.text,
-                        amount: amountController.text,
-                      ),
-                    ),
-                  );
-                }
+                if (_validateInputs()) {}
               },
             ),
           ],

@@ -5,7 +5,7 @@
     
 
     <application
-        android:label="financial_app"
+        android:label="Adopt A Wallet"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         

@@ -65,14 +65,14 @@ class Dashboard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(getGreeting()),
-                          Text(
+                          const Text(
                             'Anura Kumara',
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(''),
+                          const Text(''),
                         ],
                       ),
                     ],
@@ -194,12 +194,12 @@ class Dashboard extends StatelessWidget {
               children: [
                 Text(
                   AppLocalizations.of(context).translate('recent_history'),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                ChoiceBox(),
+                const ChoiceBox(),
               ],
             ),
             const SizedBox(height: 20),

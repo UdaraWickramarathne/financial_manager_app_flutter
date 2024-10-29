@@ -12,9 +12,20 @@ class FourthPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Image.asset(
-              'assets/onboard/getstart.png',
-              height: 300,
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                begin: Alignment(0.5, 0),
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.black,
+                  Colors.transparent,
+                ],
+              ).createShader(bounds),
+              blendMode: BlendMode.dstIn,
+              child: Image.asset(
+                'assets/onboard/getstart.png',
+                height: 300,
+              ),
             ),
             const Text(
               'Get Started',

@@ -50,7 +50,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
+                    builder: (context) => const ElectricityBillScreen(),
                   ),
                 );
               },
@@ -115,7 +115,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
+                    builder: (context) => const ElectricityBillScreen(),
                   ),
                 );
               },
@@ -128,7 +128,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
+                    builder: (context) => const ElectricityBillScreen(),
                   ),
                 );
               },
@@ -141,7 +141,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ElectricityBillScreen(),
+                    builder: (context) => const ElectricityBillScreen(),
                   ),
                 );
               },

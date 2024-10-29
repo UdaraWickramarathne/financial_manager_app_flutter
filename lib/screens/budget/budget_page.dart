@@ -31,7 +31,7 @@ class _BudgetPageState extends State<BudgetPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
             const BalanaceCard(),

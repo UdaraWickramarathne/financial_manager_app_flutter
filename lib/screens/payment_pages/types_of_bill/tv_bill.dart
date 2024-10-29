@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../components/clickble_textfield.dart';
 import '../../../components/input_field.dart';
-import '../payment_methord/payment_methord_screen.dart';
 
 class InternetBillScreen extends StatefulWidget {
   const InternetBillScreen({super.key});
@@ -23,7 +22,7 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
   void initState() {
     super.initState();
     paymentDateController.text =
-    DateTime.now().toLocal().toString().split(' ')[0];
+        DateTime.now().toLocal().toString().split(' ')[0];
   }
 
   final List<String> billers = ['Peo TV', 'Dialog TV'];
@@ -178,15 +177,6 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
                   if (accountNumberController.text.isNotEmpty &&
                       amountController.text.isNotEmpty) {
                     // Add your payment processing logic here
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentMethodScreen(
-                          accountNumber: accountNumberController.text,
-                          amount: amountController.text,
-                        ),
-                      ),
-                    );
                   } else {
                     showDialog(
                       context: context,

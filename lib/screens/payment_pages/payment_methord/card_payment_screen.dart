@@ -1,7 +1,7 @@
+import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
 import '../payment_success_screen.dart';
 
 class CardPaymentScreen extends StatefulWidget {
@@ -20,14 +20,14 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   final TextEditingController cardNumberController = TextEditingController();
   final TextEditingController expiryDateController = TextEditingController();
   final TextEditingController cvvController = TextEditingController();
-  late Timer _timer;
-  int _start = 90;
+  final TextEditingController nameController = TextEditingController();
+
   bool saveCard = false;
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+
     cardNumberController.addListener(_updateCardType);
   }
 
@@ -57,25 +57,6 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   void saveCardDetails(String cardNumber, String expiryDate, String cvv) {
     // Add logging for debugging purposes
     print('Card details saved: $cardNumber, $expiryDate, $cvv');
-  }
-
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_start == 0) {
-        _timer.cancel();
-        Navigator.of(context).pop();
-      } else {
-        setState(() {
-          _start--;
-        });
-      }
-    });
-  }
-
-  String getTimerText() {
-    int minutes = _start ~/ 60;
-    int seconds = _start % 60;
-    return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 
   bool _isExpiryDateValid(String expiryDate) {
@@ -191,7 +172,6 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
 
   @override
   void dispose() {
-    _timer.cancel();
     cardNumberController
         .removeListener(_updateCardType); // Remove listener on dispose
     cardNumberController.dispose();
@@ -204,61 +184,108 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Card Payment'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        scrolledUnderElevation: 0,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: ImageIcon(
+              AssetImage('assets/icons/scan.ico'),
+            ),
+          )
+        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          left: 25,
+          right: 25,
+          bottom: 25,
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildAmountDisplay(),
-            const SizedBox(height: 26),
             const Text(
               'Enter Card Details',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.blue,
               ),
             ),
-            const SizedBox(height: 16),
-            Center(
-              child: Card(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+            const SizedBox(height: 20),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    right: 10,
+                    left: 10,
+                    bottom: 30,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.surfaceDim,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 16),
                       _buildCardTypeSelection(),
+                      const SizedBox(height: 16),
+                      InputField(
+                        isObsecure: false,
+                        controller: nameController,
+                        isReadOnly: false,
+                        label: 'Card Holder Name',
+                        inputFormat: [
+                          LengthLimitingTextInputFormatter(16),
+                        ],
+                      ),
                       const SizedBox(height: 20),
-                      _buildTextField(
-                          'Card Number', cardNumberController, Colors.orange,
-                          isCardNumber: true),
+                      InputField(
+                        isObsecure: false,
+                        controller: cardNumberController,
+                        isReadOnly: false,
+                        label: 'Card Number',
+                        keyboardType: TextInputType.number,
+                        inputFormat: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(16),
+                          CardNumberInputFormatter(),
+                        ],
+                      ),
                       const SizedBox(height: 20),
                       Row(
                         children: [
                           Expanded(
-                              child: _buildTextField('Expiry Date',
-                                  expiryDateController, Colors.green,
-                                  isExpiryDate: true)),
-                          const SizedBox(width: 16),
+                            child: InputField(
+                              isObsecure: false,
+                              controller: expiryDateController,
+                              isReadOnly: false,
+                              label: 'Expire Date',
+                              keyboardType: TextInputType.number,
+                              inputFormat: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(4),
+                                ExpiryDateInputFormatter(),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 20),
                           Expanded(
-                              child: _buildTextField(
-                                  'CVV', cvvController, Colors.red)),
+                            child: InputField(
+                              isObsecure: false,
+                              controller: cvvController,
+                              isReadOnly: false,
+                              keyboardType: TextInputType.number,
+                              label: 'CVV',
+                              inputFormat: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(3),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
                           Checkbox(
@@ -278,26 +305,17 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                           const Text('Save Card Details'),
                         ],
                       ),
-                      const SizedBox(height: 26),
-                      SimpleButton(
-                        data: 'Continue',
-                        onPressed:
-                            _onContinuePressed, // Update to use the validation method
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Time left: ${getTimerText()}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                        ),
-                      ),
+                      const SizedBox(height: 30),
+                      _buildAmountDisplay(),
                     ],
                   ),
                 ),
               ),
             ),
+            SimpleButton(
+              data: 'Pay Now',
+              onPressed: () {},
+            )
           ],
         ),
       ),
@@ -306,7 +324,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
 
   Widget _buildCardTypeSelection() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildCardRadio('Visa'),
         const SizedBox(width: 20),
@@ -332,51 +350,6 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
     );
   }
 
-  Widget _buildTextField(
-      String label, TextEditingController controller, Color borderColor,
-      {bool isCardNumber = false,
-      bool isExpiryDate = false,
-      bool isCVV = false}) {
-    return TextField(
-      controller: controller,
-      keyboardType: isCardNumber || isExpiryDate || isCVV
-          ? TextInputType.number
-          : TextInputType.number,
-      inputFormatters: isCardNumber
-          ? [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(16),
-              CardNumberInputFormatter(),
-            ]
-          : isExpiryDate
-              ? [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(4),
-                  ExpiryDateInputFormatter(),
-                ]
-              : isCVV
-                  ? [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(3),
-                    ]
-                  : [],
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: borderColor),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: borderColor),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: borderColor, width: 2),
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-      ),
-    );
-  }
-
   Widget _buildAmountDisplay() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -384,16 +357,18 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
         const Text(
           'Amount: ',
           style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.lightBlueAccent),
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
         ),
         Text(
           '\$${widget.amount}',
           style: const TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.lightBlueAccent),
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
         ),
       ],
     );

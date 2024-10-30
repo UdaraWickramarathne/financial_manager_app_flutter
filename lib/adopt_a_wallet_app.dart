@@ -31,16 +31,16 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     shakeDetector = ShakeDetector.autoStart(
       onPhoneShake: () {
         BetterFeedback.of(context).show((UserFeedback feedback) async {
-          // final screenshotFilePath =
-          //     await writeImageToStorage(feedback.screenshot);
-          // final Email email = Email(
-          //   body: feedback.text,
-          //   subject: 'App Feedback',
-          //   recipients: ['adoptabook.devnet@gmail.com'],
-          //   attachmentPaths: [screenshotFilePath],
-          //   isHTML: false,
-          // );
-          // await FlutterEmailSender.send(email);
+          final screenshotFilePath =
+              await writeImageToStorage(feedback.screenshot);
+          final Email email = Email(
+            body: feedback.text,
+            subject: 'App Feedback',
+            recipients: ['adoptawallet.devnet@gmail.com'],
+            attachmentPaths: [screenshotFilePath],
+            isHTML: false,
+          );
+          await FlutterEmailSender.send(email);
         });
       },
       minimumShakeCount: 3,

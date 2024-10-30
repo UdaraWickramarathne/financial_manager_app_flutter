@@ -3,6 +3,8 @@ import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/services/feedback_repository.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:shake/shake.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
@@ -28,7 +30,18 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     WidgetsBinding.instance.addObserver(this);
     shakeDetector = ShakeDetector.autoStart(
       onPhoneShake: () {
-        BetterFeedback.of(context).show((UserFeedback feedback) {});
+        BetterFeedback.of(context).show((UserFeedback feedback) async {
+          // final screenshotFilePath =
+          //     await writeImageToStorage(feedback.screenshot);
+          // final Email email = Email(
+          //   body: feedback.text,
+          //   subject: 'App Feedback',
+          //   recipients: ['adoptabook.devnet@gmail.com'],
+          //   attachmentPaths: [screenshotFilePath],
+          //   isHTML: false,
+          // );
+          // await FlutterEmailSender.send(email);
+        });
       },
       minimumShakeCount: 3,
       shakeSlopTimeMS: 500,

@@ -1,4 +1,3 @@
-import 'package:feedback/feedback.dart';
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:financial_app/screens/payment_pages/bill_payment_page.dart';

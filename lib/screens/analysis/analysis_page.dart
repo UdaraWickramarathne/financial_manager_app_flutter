@@ -130,67 +130,74 @@ class _AnalysisPageState extends State<AnalysisPage>
                   ),
                 ),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: DefaultTabController(
-                    animationDuration: const Duration(milliseconds: 600),
-                    length: 4, // Number of tabs
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceDim,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: TabBar(
-                        controller: _tabController,
-                        dividerHeight: 0,
-                        overlayColor:
-                            const WidgetStatePropertyAll(Colors.transparent),
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.grey,
-                        indicator: BoxDecoration(
-                          color: const Color(
-                              0xFF456EFE), // Color of the selected tab
-                          borderRadius: BorderRadius.circular(
-                              30.0), // Rounded corners for selected tab
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(25.0),
+                        child: DefaultTabController(
+                          animationDuration: const Duration(milliseconds: 600),
+                          length: 4, // Number of tabs
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surfaceDim,
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: TabBar(
+                              controller: _tabController,
+                              dividerHeight: 0,
+                              overlayColor:
+                                  const WidgetStatePropertyAll(Colors.transparent),
+                              labelColor: Colors.white,
+                              unselectedLabelColor: Colors.grey,
+                              indicator: BoxDecoration(
+                                color: const Color(
+                                    0xFF456EFE), // Color of the selected tab
+                                borderRadius: BorderRadius.circular(
+                                    30.0), // Rounded corners for selected tab
+                              ),
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              tabs: const [
+                                Expanded(
+
+                                  child: Tab(text: "Daily"),
+                                ),
+                                Expanded(
+
+                                  child: Tab(text: "Weekly"),
+                                ),
+                                Expanded(
+
+                                  child: Tab(text: "Monthly"),
+                                ),
+                                Expanded(
+
+                                  child: Tab(text: "Year"),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        tabs: const [
-                          SizedBox(
-                            width: 80,
-                            child: Tab(text: "Daily"),
-                          ),
-                          SizedBox(
-                            width: 80,
-                            child: Tab(text: "Weekly"),
-                          ),
-                          SizedBox(
-                            width: 80,
-                            child: Tab(text: "Monthly"),
-                          ),
-                          SizedBox(
-                            width: 80,
-                            child: Tab(text: "Year"),
-                          ),
-                        ],
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 350,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [
-                      DailyAnalysisChart(),
-                      WeeklyAnalysisChart(),
-                      MonthlyAnalysisChart(),
-                      YearlyAnalysisChart(),
+                      SizedBox(
+                        height: 350,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: const [
+                            DailyAnalysisChart(),
+                            WeeklyAnalysisChart(),
+                            MonthlyAnalysisChart(),
+                            YearlyAnalysisChart(),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
+
                 Padding(
-                  padding: const EdgeInsets.all(25.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Column(
                     children: [
                       const Row(

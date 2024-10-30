@@ -1,8 +1,9 @@
+import 'package:feedback/feedback.dart';
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/home/home_page.dart';
-
+import 'package:shake/shake.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,20 @@ class AdoptAWalletApp extends StatefulWidget {
 
 class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     with WidgetsBindingObserver {
+  late ShakeDetector shakeDetector;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    shakeDetector = ShakeDetector.autoStart(
+      onPhoneShake: () {
+        BetterFeedback.of(context).show((UserFeedback feedback) {});
+      },
+      minimumShakeCount: 3,
+      shakeSlopTimeMS: 500,
+      shakeCountResetTime: 3000,
+      shakeThresholdGravity: 2.7,
+    );
   }
 
   @override
@@ -38,6 +49,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    shakeDetector.stopListening();
     super.dispose();
   }
 

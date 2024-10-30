@@ -1,3 +1,4 @@
+import 'package:feedback/feedback.dart';
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:financial_app/screens/payment_pages/bill_payment_page.dart';
@@ -99,6 +100,13 @@ class _HomePageState extends State<HomePage> {
                       title: Padding(
                         padding: EdgeInsets.only(left: 15),
                         child: Text('RATE APP'),
+                      ),
+                    ),
+                    const ListTile(
+                      leading: Icon(Icons.feedback),
+                      title: Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Text('FEEDBACK'),
                       ),
                     ),
                     const Spacer(),

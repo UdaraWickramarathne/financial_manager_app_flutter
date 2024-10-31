@@ -1,0 +1,230 @@
+import 'package:financial_app/components/dropdown_button.dart';
+import 'package:financial_app/components/services_icon.dart';
+import 'package:financial_app/components/transaction_tile.dart';
+import 'package:financial_app/components/balance_card.dart';
+import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/screens/analysis/analysis_page.dart';
+import 'package:financial_app/screens/budget/budget_page.dart';
+import 'package:financial_app/screens/goals/goal_page.dart';
+import 'package:financial_app/screens/notification/notification_page.dart';
+import 'package:financial_app/screens/reminder/reminder_page.dart';
+import 'package:financial_app/screens/transactions/transactions_page.dart';
+import 'package:financial_app/services/custom_route.dart';
+import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+
+class Dashboard extends StatelessWidget {
+  const Dashboard({super.key});
+  String getGreeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning,';
+    } else if (hour < 17) {
+      return 'Good Afternoon,';
+    } else if (hour < 20) {
+      return 'Good Evening,';
+    } else {
+      return 'Good Night,';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0.0),
+        child: AppBar(
+          scrolledUnderElevation: 0,
+          elevation: 0,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          Lottie.asset(
+                            'assets/onboard/dashboard_animation.json',
+                            width: 120,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(getGreeting()),
+                          const Text(
+                            'Anura Kumara',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Text(''),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(CustomPageRoute(
+                          page: const NotificationPage(),
+                        ));
+                      },
+                      child: const Icon(
+                        Icons.notifications,
+                        size: 30,
+                      ),
+                    ),
+                    const Text(''),
+                    const Text(''),
+                    const Text(''),
+                  ],
+                )
+              ],
+            ),
+            const BalanaceCard(),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text(
+                  AppLocalizations.of(context).translate('services'),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TransactionsPage(),
+                            ));
+                          },
+                          backgroundColor: Colors.blue[100],
+                          text: 'transactions',
+                          icon: Icons.monetization_on_outlined,
+                          foregroundColor: Colors.blue,
+                        ),
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AnalysisPage(),
+                            ));
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 251, 187, 251),
+                          text: 'reports',
+                          icon: Icons.file_copy_outlined,
+                          foregroundColor:
+                              const Color.fromARGB(255, 255, 98, 255),
+                        ),
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ReminderPage(),
+                            ));
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 251, 218, 187),
+                          text: 'Reminders',
+                          icon: Icons.alarm,
+                          foregroundColor:
+                              const Color.fromARGB(255, 253, 159, 71),
+                        ),
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const GoalPage(),
+                            ));
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 187, 251, 190),
+                          text: 'goals',
+                          icon: Icons.stairs_outlined,
+                          foregroundColor:
+                              const Color.fromARGB(255, 56, 250, 66),
+                        ),
+                        ServicesIcon(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const BudgetPage(),
+                            ));
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 246, 187, 251),
+                          text: 'budget',
+                          icon: Icons.account_balance_wallet,
+                          foregroundColor:
+                              const Color.fromARGB(255, 146, 56, 250),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context).translate('recent_history'),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const ChoiceBox(),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  final transaction = transactions[index];
+                  return TransactionTile(
+                    boxColor: transaction.boxColor,
+                    icon: transaction.icon,
+                    iconColor: transaction.iconColor,
+                    title: transaction.title,
+                    category: transaction.category,
+                    price: transaction.price,
+                    date: transaction.date,
+                    isIncome: transaction.isIncome,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

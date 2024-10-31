@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class PaymentOption extends StatefulWidget {
-  bool isVisa;
-  String name;
-  String number;
-  bool isSelected;
+  final bool isVisa;
+  final String name;
+  final String number;
+  final bool isSelected;
 
-  PaymentOption({
+  const PaymentOption({
     super.key,
     required this.isSelected,
     required this.name,

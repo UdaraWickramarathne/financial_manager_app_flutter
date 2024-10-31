@@ -129,28 +129,27 @@ class _HomePageState extends State<HomePage> {
               MoneyConveror(),
             ],
           ),
-          if (_currentIndex == 0)
-            Align(
-              alignment: const AlignmentDirectional(-0.92, -0.92),
-              child: GestureDetector(
-                onTap: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.surface,
-                      width: 2.0,
-                    ),
-                  ),
-                  child: const CircleAvatar(
-                    radius: 20.0,
-                    backgroundImage: AssetImage('assets/images/anura.jpg'),
+          Align(
+            alignment: const AlignmentDirectional(-0.92, -0.92),
+            child: GestureDetector(
+              onTap: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.surface,
+                    width: 2.0,
                   ),
                 ),
+                child: const CircleAvatar(
+                  radius: 20.0,
+                  backgroundImage: AssetImage('assets/images/anura.jpg'),
+                ),
               ),
-            )
+            ),
+          )
         ],
       ),
       floatingActionButton: _currentIndex == 0

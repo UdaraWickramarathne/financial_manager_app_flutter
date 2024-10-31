@@ -8,7 +8,7 @@ class InternetBillScreen extends StatefulWidget {
   const InternetBillScreen({super.key});
 
   @override
-  _InternetBillScreenState createState() => _InternetBillScreenState();
+  State<InternetBillScreen> createState() => _InternetBillScreenState();
 }
 
 class _InternetBillScreenState extends State<InternetBillScreen> {

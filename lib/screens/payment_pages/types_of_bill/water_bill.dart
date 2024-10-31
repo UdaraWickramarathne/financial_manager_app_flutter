@@ -8,7 +8,7 @@ class WaterBillScreen extends StatefulWidget {
   const WaterBillScreen({super.key});
 
   @override
-  _WaterBillScreenState createState() => _WaterBillScreenState();
+  State<WaterBillScreen> createState() => _WaterBillScreenState();
 }
 
 class _WaterBillScreenState extends State<WaterBillScreen> {

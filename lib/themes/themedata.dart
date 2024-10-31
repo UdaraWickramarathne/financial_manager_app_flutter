@@ -1,3 +1,4 @@
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
@@ -53,4 +54,21 @@ ThemeData darkMode = ThemeData(
   bottomAppBarTheme: const BottomAppBarTheme(
     color: Color.fromARGB(255, 24, 26, 29),
   ),
+);
+
+var feedbackThemeData = FeedbackThemeData(
+  bottomSheetTextInputStyle: const TextStyle(
+    color: Colors.white,
+  ),
+  bottomSheetDescriptionStyle: const TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+  ),
+  feedbackSheetColor: const Color(0xFF111315),
+  drawColors: [
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.yellow,
+  ],
 );

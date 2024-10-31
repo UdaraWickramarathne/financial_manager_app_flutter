@@ -12,7 +12,7 @@ class CardPaymentScreen extends StatefulWidget {
       {super.key, required this.accountNumber, required this.amount});
 
   @override
-  _CardPaymentScreenState createState() => _CardPaymentScreenState();
+  State<CardPaymentScreen> createState() => _CardPaymentScreenState();
 }
 
 class _CardPaymentScreenState extends State<CardPaymentScreen> {

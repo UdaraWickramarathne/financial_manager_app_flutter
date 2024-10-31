@@ -1,10 +1,13 @@
 import 'package:feedback/feedback.dart';
+import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
-import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
+import 'package:financial_app/screens/auth/signup_page.dart';
 
 import 'package:financial_app/services/feedback_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:shake/shake.dart';
 import 'package:financial_app/themes/themedata.dart';
@@ -69,6 +72,8 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
 
   @override
   Widget build(BuildContext context) {
+    var authRepository = AuthRepository();
+
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
     var app = MaterialApp(
@@ -99,8 +104,18 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         }
         return supportedLocales.first;
       },
-      home: const HomePage(),
+      home: const SignupScreen(),
     );
-    return app;
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => authRepository,
+        ),
+        RepositoryProvider(
+          create: (context) => AuthBloc(authRepository),
+        ),
+      ],
+      child: app,
+    );
   }
 }

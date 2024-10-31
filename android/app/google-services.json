@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "226464748993",
+    "project_id": "adoptawallet",
+    "storage_bucket": "adoptawallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226464748993:android:b5fc5d196a113c1be9cb40",
+        "android_client_info": {
+          "package_name": "com.example.financial_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA56xyOQx5PLiAxGVfmhmXmtgHKPWeJUos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

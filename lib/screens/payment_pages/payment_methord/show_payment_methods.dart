@@ -13,12 +13,12 @@ class PaymentMethodSheet extends StatelessWidget {
         padding: const EdgeInsets.all(25),
         child: Column(
           children: [
-            Expanded(
+            const Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Row(
+                    Row(
                       children: [
                         Text(
                           'Choose payment method',
@@ -27,7 +27,7 @@ class PaymentMethodSheet extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     PaymentOption(
                       isSelected: true,
                       name: 'Udara Wick',

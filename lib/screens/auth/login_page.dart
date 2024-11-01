@@ -1,12 +1,15 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:financial_app/blocs/auth/auth_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/auth/signup_page.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,8 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
 
-  TextEditingController? emailController;
-  TextEditingController? passwordController;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  Color emailBorderColor = Colors.transparent;
+  Color passwordBorderColor = Colors.transparent;
+
+  late AuthBloc authBloc;
 
   @override
   void didChangeDependencies() {
@@ -42,125 +49,200 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    authBloc = RepositoryProvider.of<AuthBloc>(context);
+    super.initState();
+  }
+
+  void showErrorSnackBar(String error) {
+    CustomSnackBar.show(context,
+        title: 'On Snap!', message: error, contentType: ContentType.failure);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(height: 80),
-                    Text(
-                      AppLocalizations.of(context).translate('login_account'),
-                      style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFF446efe)),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      AppLocalizations.of(context).translate('welcome_back'),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    const SizedBox(height: 20),
-                    InputField(
-                      isReadOnly: false,
-                      isObsecure: false,
-                      label: AppLocalizations.of(context).translate('email'),
-                      suffixIcon: null,
-                      controller: emailController,
-                    ),
-                    const SizedBox(height: 20),
-                    InputField(
-                      isReadOnly: false,
-                      controller: passwordController,
-                      isObsecure: !_isPasswordVisible,
-                      label: AppLocalizations.of(context).translate('password'),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                        icon: Icon(_isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: _rememberMe,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _rememberMe = value ?? false;
-                                });
-                              },
-                            ),
-                            Text(AppLocalizations.of(context)
-                                .translate('remember_me')),
-                          ],
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            AppLocalizations.of(context)
-                                .translate('forgot_password'),
-                            style: const TextStyle(color: Color(0xFF446efe)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 160),
-                  ],
-                ),
-              ),
-            ),
-            SimpleButton(
-              data: AppLocalizations.of(context).translate('login'),
-              onPressed: () {
-                globalNavigatorKey.currentState!
-                    .pushReplacement(MaterialPageRoute(
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            Navigator.pop(context); // Pop the loading animation
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
                   builder: (context) => const HomePage(),
                 ));
+          } else if (state is AuthError) {
+            Navigator.pop(context);
+            showErrorSnackBar(state.message);
+          } else if (state is AuthLoading) {
+            //show loading animation
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               },
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(AppLocalizations.of(context).translate('no_account')),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (c) => const SignupScreen()));
-                  },
-                  child: Text(
-                    AppLocalizations.of(context).translate('sign_up'),
-                    style: const TextStyle(color: Color(0xFF446efe)),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(25),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(height: 80),
+                      Text(
+                        AppLocalizations.of(context).translate('login_account'),
+                        style: const TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w900,
+                            color: Color(0xFF446efe)),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        AppLocalizations.of(context).translate('welcome_back'),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      const SizedBox(height: 20),
+                      InputField(
+                        isReadOnly: false,
+                        isObsecure: false,
+                        label: AppLocalizations.of(context).translate('email'),
+                        suffixIcon: null,
+                        controller: emailController,
+                        borderColor: emailBorderColor,
+                      ),
+                      const SizedBox(height: 20),
+                      InputField(
+                        isReadOnly: false,
+                        controller: passwordController,
+                        isObsecure: !_isPasswordVisible,
+                        borderColor: passwordBorderColor,
+                        label:
+                            AppLocalizations.of(context).translate('password'),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                          icon: Icon(_isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _rememberMe,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _rememberMe = value ?? false;
+                                  });
+                                },
+                              ),
+                              Text(AppLocalizations.of(context)
+                                  .translate('remember_me')),
+                            ],
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              AppLocalizations.of(context)
+                                  .translate('forgot_password'),
+                              style: const TextStyle(color: Color(0xFF446efe)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 160),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ],
+              ),
+              SimpleButton(
+                data: AppLocalizations.of(context).translate('login'),
+                onPressed: () {
+                  final email = emailController.text;
+                  final password = passwordController.text;
+                  if (_validateInputs(email, password)) {
+                    authBloc.add(
+                        AuthSignInRequest(email: email, password: password));
+                  }
+                },
+              ),
+              const SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(AppLocalizations.of(context).translate('no_account')),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (c) => const SignupScreen()));
+                    },
+                    child: Text(
+                      AppLocalizations.of(context).translate('sign_up'),
+                      style: const TextStyle(color: Color(0xFF446efe)),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  bool _validateInputs(String email, String password) {
+    setState(() {
+      emailBorderColor = Colors.transparent;
+      passwordBorderColor = Colors.transparent;
+    });
+    if (email.isEmpty) {
+      setState(() {
+        emailBorderColor = Colors.red;
+      });
+      showErrorSnackBar('An email address is required to continue.');
+      return false;
+    } else if (!isValidEmail(email)) {
+      setState(() {
+        emailBorderColor = Colors.red;
+      });
+      showErrorSnackBar(
+          'Please enter a valid email address (e.g., example@domain.com).');
+      return false;
+    } else if (password.isEmpty) {
+      setState(() {
+        passwordBorderColor = Colors.red;
+      });
+      showErrorSnackBar('A password is required to continue.');
+      return false;
+    }
+    return true;
+  }
+
+  bool isValidEmail(String email) {
+    String emailPattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+    RegExp regex = RegExp(emailPattern);
+    return regex.hasMatch(email);
   }
 }

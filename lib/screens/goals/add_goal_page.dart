@@ -19,11 +19,6 @@ class _AddGoalPageState extends State<AddGoalPage> {
   String enteredDate = '';
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

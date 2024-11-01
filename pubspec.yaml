@@ -51,7 +51,7 @@ dependencies:
 
   #for currency convertor
   http: ^0.13.3
-  flutter_svg: ^1.0.0
+  flutter_svg: ^2.0.9
 
   #for analysis page creations
   fl_chart: ^0.69.0
@@ -91,11 +91,16 @@ dependencies:
   #bloc
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
+  bloc: ^8.1.4
   
-
-  #others
-  cupertino_icons: ^1.0.8
+  #for inject repos
   provider: ^6.1.2
+  
+  #icons
+  cupertino_icons: ^1.0.8
+
+  #for custom snackbar
+  awesome_snackbar_content: ^0.1.4
   
 
 

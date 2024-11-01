@@ -1,22 +1,14 @@
-import 'package:flutter/material.dart';
-
 class Transaction {
-  final Color? boxColor;
-  final IconData? icon;
-  final Color? iconColor;
   final String title;
   final String category;
-  final String price;
+  final double amount;
   final String date;
   final bool isIncome;
 
   Transaction({
-    this.boxColor,
-    this.icon,
-    this.iconColor,
     required this.title,
     required this.category,
-    required this.price,
+    required this.amount,
     required this.date,
     required this.isIncome,
   });
@@ -25,122 +17,72 @@ class Transaction {
 List<Transaction> transactions = [
   Transaction(
     title: 'COD BO 6',
-    category: 'entertainment',
-    price: '20000',
-    date: '04 June',
+    category: 'Entertainment',
+    amount: 20000,
+    date: '2024-06-04', // '04 June' => '2024-06-04'
     isIncome: false,
-    boxColor: Colors.green.shade200,
-    icon: Icons.theaters,
-    iconColor: Colors.green.shade900,
   ),
   Transaction(
     title: 'Ice Cream',
-    category: 'food',
-    price: '100',
-    date: '04 June',
+    category: 'Food',
+    amount: 100,
+    date: '2024-06-04',
     isIncome: false,
-    boxColor: Colors.purple.shade200,
-    icon: Icons.fastfood,
-    iconColor: Colors.purple.shade900,
   ),
   Transaction(
     title: 'Grocery Shopping',
-    category: 'food',
-    price: '1500',
-    date: '01 October',
+    category: 'Food',
+    amount: 1500,
+    date: '2024-10-01', // '01 October' => '2024-10-01'
     isIncome: false,
-    boxColor: Colors.green.shade200,
-    icon: Icons.fastfood,
-    iconColor: Colors.green.shade900,
   ),
   Transaction(
     title: 'Gym Membership',
     category: 'Health',
-    price: '3000',
-    date: '05 October',
+    amount: 3000,
+    date: '2024-10-05', // '05 October' => '2024-10-05'
     isIncome: false,
-    boxColor: Colors.blue.shade200,
-    icon: Icons.health_and_safety,
-    iconColor: Colors.blue.shade900,
   ),
   Transaction(
     title: 'Bus Fare',
     category: 'Transport',
-    price: '250',
-    date: '06 October',
+    amount: 250,
+    date: '2024-10-06', // '06 October' => '2024-10-06'
     isIncome: false,
-    boxColor: Colors.orange.shade200,
-    icon: Icons.directions_bus,
-    iconColor: Colors.orange.shade900,
   ),
   Transaction(
     title: 'Concert Tickets',
     category: 'Entertainment',
-    price: '4000',
-    date: '10 October',
+    amount: 4000,
+    date: '2024-10-10', // '10 October' => '2024-10-10'
     isIncome: false,
-    boxColor: Colors.purple.shade200,
-    icon: Icons.theaters,
-    iconColor: Colors.purple.shade900,
   ),
   Transaction(
     title: 'Children’s Toys',
     category: 'Kids',
-    price: '800',
-    date: '12 October',
+    amount: 80,
+    date: '2024-10-12', // '12 October' => '2024-10-12'
     isIncome: false,
-    boxColor: Colors.red.shade200,
-    icon: Icons.child_care,
-    iconColor: Colors.red.shade900,
   ),
   Transaction(
     title: 'Shopping Spree',
     category: 'Shopping',
-    price: '2500',
-    date: '15 October',
+    amount: 2500,
+    date: '2024-10-15', // '15 October' => '2024-10-15'
     isIncome: false,
-    boxColor: Colors.pink.shade200,
-    icon: Icons.shopping_cart,
-    iconColor: Colors.pink.shade900,
   ),
   Transaction(
     title: 'Salary Received',
     category: 'Income',
-    price: '50000',
-    date: '20 October',
+    amount: 50000,
+    date: '2024-10-20', // '20 October' => '2024-10-20'
     isIncome: true,
-    boxColor: Colors.lightGreen.shade200,
-    icon: Icons.monetization_on,
-    iconColor: Colors.lightGreen.shade900,
   ),
   Transaction(
     title: 'Dinner Out',
     category: 'Food',
-    price: '1200',
-    date: '22 October',
+    amount: 1200,
+    date: '2024-10-22', // '22 October' => '2024-10-22'
     isIncome: false,
-    boxColor: Colors.cyan.shade200,
-    icon: Icons.fastfood,
-    iconColor: Colors.cyan.shade900,
-  ),
-  Transaction(
-    title: 'Car Insurance',
-    category: 'Transport',
-    price: '6000',
-    date: '25 October',
-    isIncome: false,
-    boxColor: Colors.teal.shade200,
-    icon: Icons.directions_car,
-    iconColor: Colors.teal.shade900,
-  ),
-  Transaction(
-    title: 'Book Sale',
-    category: 'Other',
-    price: '2000',
-    date: '30 October',
-    isIncome: true,
-    boxColor: Colors.brown.shade200,
-    icon: Icons.category,
-    iconColor: Colors.brown.shade900,
   ),
 ];

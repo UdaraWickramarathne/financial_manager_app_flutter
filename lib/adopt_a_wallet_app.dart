@@ -4,7 +4,7 @@ import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
-import 'package:financial_app/screens/auth/signup_page.dart';
+import 'package:financial_app/screens/home/home_page.dart';
 
 import 'package:financial_app/services/feedback_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -104,7 +104,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         }
         return supportedLocales.first;
       },
-      home: const SignupScreen(),
+      home: const HomePage(),
     );
     return MultiRepositoryProvider(
       providers: [

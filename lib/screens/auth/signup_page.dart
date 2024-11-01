@@ -1,7 +1,8 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,11 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController conformPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
+  Color emailBorderColor = Colors.transparent;
+  Color nameBorderColor = Colors.transparent;
+  Color passwordBorderColor = Colors.transparent;
+  Color confirmPasswordBorderColor = Colors.transparent;
+
   late AuthBloc authBloc;
 
   @override
@@ -32,19 +38,39 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
+    conformPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
+            Navigator.pop(context);
+            showSuccessSnakBar();
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomePage(),
+                  builder: (context) => const LoginScreen(),
                 ));
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+            Navigator.pop(context);
+            showErrorSnackBar(state.message);
+          } else if (state is AuthLoading) {
+            //show loading animation
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             );
           }
         },
@@ -79,11 +105,24 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 80),
                       // Full Name field
                       InputField(
-                          isReadOnly: false,
-                          controller: nameController,
-                          isObsecure: false,
-                          label: 'Full name',
-                          suffixIcon: null),
+                        isReadOnly: false,
+                        controller: nameController,
+                        isObsecure: false,
+                        label: 'Name',
+                        suffixIcon: null,
+                        onChanged: (text) {
+                          String formattedText = _capitalizeWords(text);
+                          if (formattedText != text) {
+                            nameController.value = TextEditingValue(
+                              text: formattedText,
+                              selection: TextSelection.collapsed(
+                                  offset: formattedText.length),
+                            );
+                          }
+                        },
+                        borderColor: nameBorderColor,
+                        textCapitalization: TextCapitalization.words,
+                      ),
                       const SizedBox(height: 25),
                       // Email field
                       InputField(
@@ -91,6 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           controller: emailController,
                           isObsecure: false,
                           label: 'Email',
+                          borderColor: emailBorderColor,
                           suffixIcon: null),
                       const SizedBox(height: 25),
                       // Password field
@@ -99,6 +139,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         isReadOnly: false,
                         controller: passwordController,
                         isObsecure: !_isPasswordVisible,
+                        borderColor: passwordBorderColor,
                         label: 'Password',
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -117,6 +158,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         isReadOnly: false,
                         controller: conformPasswordController,
                         isObsecure: !_isConfirmPasswordVisible,
+                        borderColor: confirmPasswordBorderColor,
                         label: 'Confirm Password',
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -142,11 +184,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   final email = emailController.text;
                   final name = nameController.text;
                   final password = passwordController.text;
+                  final confirmPassword = conformPasswordController.text;
 
-                  authBloc.add(
-                    AuthSignUpRequest(
-                        name: name, email: email, password: password),
-                  );
+                  if (_validateInputs(email, name, password, confirmPassword)) {
+                    authBloc.add(
+                      AuthSignUpRequest(
+                          name: name, email: email, password: password),
+                    );
+                  }
                 },
               ),
               const SizedBox(height: 10),
@@ -173,6 +218,84 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  bool _validateInputs(
+      String email, String name, String password, String confirmPassword) {
+    setState(() {
+      // Reset border colors
+      emailBorderColor = Colors.transparent;
+      nameBorderColor = Colors.transparent;
+      passwordBorderColor = Colors.transparent;
+      confirmPasswordBorderColor = Colors.transparent;
+    });
+    if (name.isEmpty) {
+      setState(() {
+        nameBorderColor = Colors.red;
+      });
+      showErrorSnackBar('A name is required to complete your sign-up.');
+      return false;
+    } else if (email.isEmpty) {
+      setState(() {
+        emailBorderColor = Colors.red;
+      });
+      showErrorSnackBar('An email address is required to continue.');
+      return false;
+    } else if (!isValidEmail(email)) {
+      setState(() {
+        emailBorderColor = Colors.red;
+      });
+      showErrorSnackBar(
+          'Please enter a valid email address (e.g., example@domain.com).');
+      return false;
+    } else if (password.isEmpty) {
+      setState(() {
+        passwordBorderColor = Colors.red;
+      });
+      showErrorSnackBar('A password is required to continue.');
+      return false;
+    } else if (confirmPassword.isEmpty) {
+      setState(() {
+        confirmPasswordBorderColor = Colors.red;
+      });
+      showErrorSnackBar('A confirm password is required to continue.');
+      return false;
+    } else if (password != confirmPassword) {
+      setState(() {
+        confirmPasswordBorderColor = Colors.red;
+      });
+      showErrorSnackBar('Passwords didn\'t match.');
+      return false;
+    }
+
+    return true;
+  }
+
+  bool isValidEmail(String email) {
+    String emailPattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+    RegExp regex = RegExp(emailPattern);
+    return regex.hasMatch(email);
+  }
+
+  void showErrorSnackBar(String error) {
+    CustomSnackBar.show(context,
+        title: 'On Snap!', message: error, contentType: ContentType.failure);
+  }
+
+  String _capitalizeWords(String text) {
+    return text.split(' ').map((word) {
+      if (word.isEmpty) return word;
+      return word[0].toUpperCase() + word.substring(1);
+    }).join(' ');
+  }
+
+  void showSuccessSnakBar() {
+    CustomSnackBar.show(
+      context,
+      title: 'You\'re In!!',
+      message: 'Your account has been created successfully.',
+      contentType: ContentType.success,
     );
   }
 }

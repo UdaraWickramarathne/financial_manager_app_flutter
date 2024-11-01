@@ -1,3 +1,4 @@
+import 'package:financial_app/repositories/auth/auth_result.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 abstract class BaseAuthRepository {
@@ -7,13 +8,13 @@ abstract class BaseAuthRepository {
 
   auth.User? get currentUser;
 
-  Future<auth.User?> signUp({
+  Future<AuthResult> signUp({
     required String name,
     required String email,
     required String password,
   });
 
-  Future<auth.User> signIn({
+  Future<AuthResult> signIn({
     required String email,
     required String password,
   });

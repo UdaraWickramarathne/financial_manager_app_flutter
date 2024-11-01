@@ -2,35 +2,43 @@ import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class BudgetUpdatePopup extends StatefulWidget {
+class TransactionUpdatePopUp extends StatefulWidget {
   String id;
   String titile;
-  double budgetAmount;
-  String? selectedPeriod = 'Weekly';
-  BudgetUpdatePopup({
-    super.key,
-    required this.titile,
-    required this.id,
-    required this.selectedPeriod,
-    required this.budgetAmount,
-  });
+  double amount;
+  String? selectedCategory;
+  final Color? iconColor;
+  final Color? containerColor;
+  final IconData? icon;
+  final bool isIncome;
+  String date;
+  TransactionUpdatePopUp(
+      {super.key,
+      required this.titile,
+      required this.id,
+      required this.selectedCategory,
+      required this.amount,
+      required this.iconColor,
+      required this.containerColor,
+      required this.icon,
+      required this.isIncome,
+      required this.date});
 
   @override
-  State<BudgetUpdatePopup> createState() => _BudgetUpdatePopupState();
+  State<TransactionUpdatePopUp> createState() => _TransactionUpdatePopUpState();
 }
 
-class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
+class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController targetController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
 
   FocusNode targetFocusNode = FocusNode();
-
-  final List<String> _items = ['Weekly', 'Monthly'];
-
+  late final List<String> _items;
   bool targetAmountIsReadOnly = true;
-
   bool isEditing = false;
   final TextEditingController _titleController = TextEditingController();
 
@@ -46,9 +54,30 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
   @override
   void initState() {
     super.initState();
-    targetController.text = widget.budgetAmount.toString();
-
+    targetController.text = widget.amount.toString();
     _titleController.text = widget.titile;
+    dateController.text = widget.date;
+    if (widget.isIncome) {
+      _items = [
+        'Salary',
+        'Business',
+        'Investment',
+        'Freelance',
+        'Gift',
+        'Other',
+      ];
+    } else {
+      _items = [
+        'Sport',
+        'Food',
+        'Health',
+        'Transport',
+        'Shopping',
+        'Kids',
+        'Entertainment',
+        'Other',
+      ];
+    }
   }
 
   @override
@@ -66,30 +95,49 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: _toggleEditing,
-                      child: isEditing
-                          ? TextField(
-                              textAlign: TextAlign.center,
-                              controller: _titleController,
-                              onSubmitted: (value) {
-                                _toggleEditing();
-                              },
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 25,
-                              ),
-                              autofocus: true,
-                            )
-                          : Text(
-                              widget.titile,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 25,
-                              ),
-                            ),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: widget.containerColor,
+                        ),
+                        child: Icon(
+                          widget.icon,
+                          color: widget.iconColor,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: _toggleEditing,
+                          child: isEditing
+                              ? TextField(
+                                  textAlign: TextAlign.center,
+                                  controller: _titleController,
+                                  onSubmitted: (value) {
+                                    _toggleEditing();
+                                  },
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 25,
+                                  ),
+                                  autofocus: true,
+                                )
+                              : Text(
+                                  widget.titile,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   const Divider(
@@ -99,7 +147,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const Text(
-                        'Budget Amount: ',
+                        'Amount: ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
@@ -142,13 +190,13 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Time Period: ',
+                        'Category: ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
@@ -167,7 +215,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                             style: const TextStyle(
                               color: Color.fromARGB(255, 126, 125, 125),
                             ),
-                            value: widget.selectedPeriod,
+                            value: widget.selectedCategory,
                             items: _items.map((String item) {
                               return DropdownMenuItem<String>(
                                 value: item,
@@ -176,7 +224,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                             }).toList(),
                             onChanged: (String? value) {
                               setState(() {
-                                widget.selectedPeriod = value;
+                                widget.selectedCategory = value;
                               });
                             },
                           ),
@@ -184,9 +232,53 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        'Deadline: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 42),
+                          child: InputFieldBottomBorder(
+                            textAlign: TextAlign.end,
+                            controller: dateController,
+                            isReadOnly: true,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
+
+                          if (pickedDate != null) {
+                            dateController.text =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                          }
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.only(bottom: 3, left: 3),
+                          child: Icon(
+                            Icons.calendar_month,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 50),
                   SimpleButton(
-                    data: 'Update Budget',
+                    data: 'Update',
                     onPressed: () {},
                   )
                 ],

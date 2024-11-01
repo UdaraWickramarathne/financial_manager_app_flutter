@@ -7,7 +7,7 @@ import 'dart:developer' as developer;
 
 class AuthRepository extends BaseAuthRepository {
   final auth.FirebaseAuth _firebaseAuth;
-  final CollectionReference _users =
+  final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('users');
 
   AuthRepository({auth.FirebaseAuth? firebaseAuth})
@@ -113,10 +113,10 @@ class AuthRepository extends BaseAuthRepository {
   }
 
   Future<void> _addUserIfNotExists(User newUser) async {
-    var doc = await _users.doc(newUser.userID).get();
+    var doc = await _usersCollection.doc(newUser.userID).get();
 
     if (!doc.exists) {
-      await _users.doc(newUser.userID).set(newUser.toJson());
+      await _usersCollection.doc(newUser.userID).set(newUser.toJson());
     }
   }
 }

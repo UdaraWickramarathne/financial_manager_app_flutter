@@ -220,22 +220,22 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  final transaction = transactions[index];
-                  return TransactionTile(
-                    title: transaction.title,
-                    category: transaction.category,
-                    amount: transaction.amount,
-                    date: transaction.date,
-                    isIncome: transaction.isIncome,
-                  );
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: ListView.builder(
+            //     shrinkWrap: true,
+            //     itemCount: 4,
+            //     itemBuilder: (context, index) {
+            //       final transaction = transactions[index];
+            //       return TransactionTile(
+            //         title: transaction.title,
+            //         category: transaction.category,
+            //         amount: transaction.amount,
+            //         date: transaction.date,
+            //         isIncome: transaction.isIncome,
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

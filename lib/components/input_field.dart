@@ -14,6 +14,8 @@ class InputField extends StatefulWidget {
   final bool isReadOnly;
   final VoidCallback? onTap;
   final void Function(String)? onChanged;
+  final Color borderColor;
+  final TextCapitalization textCapitalization;
 
   const InputField({
     super.key,
@@ -29,6 +31,8 @@ class InputField extends StatefulWidget {
     this.onTap,
     this.prefixText,
     this.onChanged,
+    this.borderColor = Colors.transparent,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   @override
@@ -51,11 +55,12 @@ class _InputFieldState extends State<InputField> {
       enabled: widget.enabled,
       keyboardType: widget.keyboardType,
       inputFormatters: widget.inputFormat,
+      textCapitalization: widget.textCapitalization,
       readOnly: widget.isReadOnly,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.transparent),
+          borderSide: BorderSide(color: widget.borderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

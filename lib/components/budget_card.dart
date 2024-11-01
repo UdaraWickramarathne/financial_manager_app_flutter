@@ -75,7 +75,7 @@ class _BudgetCardState extends State<BudgetCard>
           onTap: () {
             showDialog(
               context: context,
-              builder: (context) => UpdateBudgetPopup(
+              builder: (context) => BudgetUpdatePopup(
                 id: widget.id,
                 budgetAmount: widget.budgetAmount,
                 titile: widget.title,

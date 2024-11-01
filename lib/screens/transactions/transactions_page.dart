@@ -40,12 +40,9 @@ class TransactionsPage extends StatelessWidget {
           itemBuilder: (context, index) {
             final transaction = transactions[index];
             return TransactionTile(
-              boxColor: transaction.boxColor,
-              icon: transaction.icon,
-              iconColor: transaction.iconColor,
               title: transaction.title,
               category: transaction.category,
-              price: transaction.price,
+              amount: transaction.amount,
               date: transaction.date,
               isIncome: transaction.isIncome,
             );

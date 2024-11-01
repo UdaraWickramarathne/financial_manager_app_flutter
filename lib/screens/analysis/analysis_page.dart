@@ -147,8 +147,8 @@ class _AnalysisPageState extends State<AnalysisPage>
                             child: TabBar(
                               controller: _tabController,
                               dividerHeight: 0,
-                              overlayColor:
-                                  const WidgetStatePropertyAll(Colors.transparent),
+                              overlayColor: const WidgetStatePropertyAll(
+                                  Colors.transparent),
                               labelColor: Colors.white,
                               unselectedLabelColor: Colors.grey,
                               indicator: BoxDecoration(
@@ -160,19 +160,15 @@ class _AnalysisPageState extends State<AnalysisPage>
                               indicatorSize: TabBarIndicatorSize.tab,
                               tabs: const [
                                 Expanded(
-
                                   child: Tab(text: "Daily"),
                                 ),
                                 Expanded(
-
                                   child: Tab(text: "Weekly"),
                                 ),
                                 Expanded(
-
                                   child: Tab(text: "Monthly"),
                                 ),
                                 Expanded(
-
                                   child: Tab(text: "Year"),
                                 ),
                               ],
@@ -195,7 +191,6 @@ class _AnalysisPageState extends State<AnalysisPage>
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Column(

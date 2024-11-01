@@ -15,6 +15,11 @@ class _TransactionTypePageState extends State<TransactionTypePage> {
   String _selectedType = 'Expense';
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

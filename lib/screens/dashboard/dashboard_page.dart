@@ -4,6 +4,7 @@ import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/balance_card.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/screens/budget/budget_page.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
@@ -12,10 +13,17 @@ import 'package:financial_app/screens/reminder/reminder_page.dart';
 import 'package:financial_app/screens/transactions/transactions_page.dart';
 import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   String getGreeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -27,6 +35,14 @@ class Dashboard extends StatelessWidget {
     } else {
       return 'Good Night,';
     }
+  }
+
+  late AuthRepository _authRepository;
+
+  @override
+  void initState() {
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    super.initState();
   }
 
   @override
@@ -66,8 +82,9 @@ class Dashboard extends StatelessWidget {
                         children: [
                           Text(getGreeting()),
                           const Text(
-                            'Anura Kumara',
+                            'Anura',
                             style: TextStyle(
+                              letterSpacing: 2,
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
@@ -210,12 +227,9 @@ class Dashboard extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final transaction = transactions[index];
                   return TransactionTile(
-                    boxColor: transaction.boxColor,
-                    icon: transaction.icon,
-                    iconColor: transaction.iconColor,
                     title: transaction.title,
                     category: transaction.category,
-                    price: transaction.price,
+                    amount: transaction.amount,
                     date: transaction.date,
                     isIncome: transaction.isIncome,
                   );

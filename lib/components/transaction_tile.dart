@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:financial_app/components/transaction_update_popup.dart';
 import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import "dart:developer" as developer;
 
 class TransactionTile extends StatefulWidget {
   final String id;
@@ -11,6 +14,7 @@ class TransactionTile extends StatefulWidget {
   final double amount;
   final String date;
   final bool isIncome;
+  final Timestamp createdAt;
   final void Function(BuildContext)? deleteFunction;
 
   const TransactionTile({
@@ -18,6 +22,7 @@ class TransactionTile extends StatefulWidget {
     required this.title,
     required this.category,
     required this.amount,
+    required this.createdAt,
     required this.date,
     required this.isIncome,
     required this.id,
@@ -32,8 +37,21 @@ class _TransactionTileState extends State<TransactionTile> {
   String formatDate(String dateString) {
     DateTime date = DateTime.parse(dateString);
     String formattedDate = DateFormat("dd MMMM").format(date);
-
     return formattedDate;
+  }
+
+  late String title;
+  late String category;
+  late double amount;
+  late String date;
+
+  @override
+  void initState() {
+    super.initState();
+    title = widget.title;
+    category = widget.category;
+    amount = widget.amount;
+    date = widget.date;
   }
 
   @override
@@ -41,7 +59,7 @@ class _TransactionTileState extends State<TransactionTile> {
     final Color? containerColor;
     final Color? iconColor;
     final IconData? icon;
-    switch (widget.category) {
+    switch (category) {
       case 'Salary':
         iconColor = Colors.green[800]!;
         containerColor = Colors.green[100]!;
@@ -129,21 +147,31 @@ class _TransactionTileState extends State<TransactionTile> {
         ],
       ),
       child: GestureDetector(
-        onTap: () {
-          showDialog(
+        onTap: () async {
+          final updatedTransaction = await showDialog<Transaction>(
             context: context,
             builder: (context) => TransactionUpdatePopUp(
               titile: widget.title,
-              id: 'id',
+              id: widget.id,
               date: widget.date,
               selectedCategory: widget.category,
               amount: widget.amount,
               icon: icon,
+              createdAt: widget.createdAt,
               containerColor: containerColor,
               iconColor: iconColor,
               isIncome: widget.isIncome,
             ),
           );
+          if (updatedTransaction != null) {
+            developer.log(updatedTransaction.toString());
+            setState(() {
+              title = updatedTransaction.title;
+              amount = updatedTransaction.amount;
+              date = updatedTransaction.date;
+              category = updatedTransaction.category;
+            });
+          }
         },
         child: Card(
           elevation: 0,
@@ -171,14 +199,13 @@ class _TransactionTileState extends State<TransactionTile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.title,
+                          title,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          AppLocalizations.of(context)
-                              .translate(widget.category),
+                          AppLocalizations.of(context).translate(category),
                           style: const TextStyle(
                             color: Colors.grey,
                           ),
@@ -192,16 +219,14 @@ class _TransactionTileState extends State<TransactionTile> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      widget.isIncome
-                          ? '+\$${widget.amount}'
-                          : '-\$${widget.amount}',
+                      widget.isIncome ? '+\$$amount' : '-\$$amount',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: widget.isIncome ? Colors.green : Colors.red,
                       ),
                     ),
                     Text(
-                      formatDate(widget.date),
+                      formatDate(date),
                       style: const TextStyle(
                         color: Colors.grey,
                       ),

@@ -74,6 +74,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     return TransactionTile(
                       id: transaction.id,
                       title: transaction.title,
+                      createdAt: transaction.createdAt,
                       category: transaction.category,
                       amount: transaction.amount,
                       date: transaction.date,

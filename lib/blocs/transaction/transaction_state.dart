@@ -13,6 +13,8 @@ final class TransactionSuccess extends TransactionState {}
 
 final class TransactionLoading extends TransactionState {}
 
+final class TrnsactionUpdateSuccess extends TransactionState {}
+
 final class TransactionError extends TransactionState {
   final String message;
 

@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Transaction {
   String id;
   final String userID;
-  final String title;
-  final String category;
-  final double amount;
-  final String date;
+  String title;
+  String category;
+  double amount;
+  String date;
   final bool isIncome;
   final Timestamp createdAt;
 

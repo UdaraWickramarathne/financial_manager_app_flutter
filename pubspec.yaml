@@ -101,6 +101,9 @@ dependencies:
 
   #for custom snackbar
   awesome_snackbar_content: ^0.1.4
+
+  #for pull refresh
+  liquid_pull_to_refresh: ^3.0.1
   
 
 

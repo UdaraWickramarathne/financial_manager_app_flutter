@@ -189,7 +189,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (_validateInputs(email, name, password, confirmPassword)) {
                     authBloc.add(
                       AuthSignUpRequest(
-                          name: name, email: email, password: password),
+                        name: name,
+                        email: email,
+                        password: password,
+                      ),
                     );
                   }
                 },
@@ -279,8 +282,12 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void showErrorSnackBar(String error) {
-    CustomSnackBar.show(context,
-        title: 'On Snap!', message: error, contentType: ContentType.failure);
+    CustomSnackBar.show(
+      context,
+      title: 'On Snap!',
+      message: error,
+      contentType: ContentType.failure,
+    );
   }
 
   String _capitalizeWords(String text) {

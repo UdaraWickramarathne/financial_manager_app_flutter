@@ -1,8 +1,12 @@
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/components/transaction_type_tile.dart';
 import 'package:financial_app/screens/transactions/add_expense_page.dart';
 import 'package:financial_app/screens/transactions/add_income_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../repositories/auth/auth_repository.dart';
 
 class TransactionTypePage extends StatefulWidget {
   const TransactionTypePage({super.key});
@@ -13,10 +17,14 @@ class TransactionTypePage extends StatefulWidget {
 
 class _TransactionTypePageState extends State<TransactionTypePage> {
   String _selectedType = 'Expense';
+  late TransactionBloc _transactionBloc;
+  late AuthRepository _authRepository;
 
   @override
   void initState() {
     super.initState();
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
   }
 
   @override
@@ -28,6 +36,13 @@ class _TransactionTypePageState extends State<TransactionTypePage> {
             padding: EdgeInsets.only(right: 35),
           ),
         ],
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _transactionBloc
+                  .add(TransactionFetchEvent(userID: _authRepository.userID));
+            },
+            icon: const Icon(Icons.arrow_back)),
         title: const Center(
           child: Text(
             'Transaction',

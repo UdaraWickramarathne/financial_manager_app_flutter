@@ -11,6 +11,7 @@ class TransactionTile extends StatefulWidget {
   final double amount;
   final String date;
   final bool isIncome;
+  final void Function(BuildContext)? deleteFunction;
 
   const TransactionTile({
     super.key,
@@ -20,6 +21,7 @@ class TransactionTile extends StatefulWidget {
     required this.date,
     required this.isIncome,
     required this.id,
+    required this.deleteFunction,
   });
 
   @override
@@ -116,7 +118,7 @@ class _TransactionTileState extends State<TransactionTile> {
         motion: const StretchMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) {},
+            onPressed: widget.deleteFunction,
             icon: Icons.delete,
             backgroundColor: Colors.red.shade400,
             borderRadius: const BorderRadius.only(

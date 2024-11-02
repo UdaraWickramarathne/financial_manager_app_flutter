@@ -12,8 +12,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc(this._transactionRepository) : super(TransactionInitial()) {
     on<TransactionEvent>((event, emit) async {
       if (event is TransactionAddEvent) {
-        emit(TransactionLoading());
         try {
+          emit(TransactionLoading());
           await _transactionRepository.addTransaction(
               transaction: event.transaction);
           emit(TransactionSuccess());

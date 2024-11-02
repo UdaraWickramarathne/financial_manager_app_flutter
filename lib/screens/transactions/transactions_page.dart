@@ -78,6 +78,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       amount: transaction.amount,
                       date: transaction.date,
                       isIncome: transaction.isIncome,
+                      deleteFunction: (p0) {
+                        _transactionBloc.add(
+                          TransactionDelete(
+                            transactionID: transaction.id,
+                          ),
+                        );
+                        setState(() {
+                          state.transaction.removeAt(index);
+                        });
+                      },
                     );
                   },
                 );

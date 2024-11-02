@@ -11,8 +11,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   TransactionBloc(this._transactionRepository) : super(TransactionInitial()) {
     on<TransactionEvent>((event, emit) async {
-      emit(TransactionLoading());
       if (event is TransactionAddEvent) {
+        emit(TransactionLoading());
         try {
           await _transactionRepository.addTransaction(
               transaction: event.transaction);
@@ -22,6 +22,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         }
       }
       if (event is TransactionFetchEvent) {
+        emit(TransactionLoading());
         try {
           final transactions = await _transactionRepository.getTransactions(
               userID: event.userID);
@@ -29,6 +30,12 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         } catch (e) {
           emit(const TransactionError(message: 'Error occurred!'));
         }
+      }
+      if (event is TransactionDelete) {
+        try {
+          await _transactionRepository.deleteTransaction(
+              transactionID: event.transactionID);
+        } catch (e) {}
       }
     });
   }

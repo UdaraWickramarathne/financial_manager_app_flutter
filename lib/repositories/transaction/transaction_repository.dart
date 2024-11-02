@@ -21,9 +21,14 @@ class TransactionRepository extends BaseTransactionRepository {
   }
 
   @override
-  Future<void> deleteTransaction({required String userID}) {
-    // TODO: implement deleteTransaction
-    throw UnimplementedError();
+  Future<void> deleteTransaction({required String transactionID}) async {
+    try {
+      await _transactionsCollection.doc(transactionID).delete();
+      developer.log('transaction delete success');
+    } catch (e) {
+      developer.log('transaction deleting error');
+      rethrow;
+    }
   }
 
   @override
@@ -33,7 +38,7 @@ class TransactionRepository extends BaseTransactionRepository {
           .where('userID', isEqualTo: userID)
           .orderBy('createdAt', descending: true)
           .get();
-
+      developer.log('transaction get success');
       return querySnapshot.docs
           .map((doc) => Transaction.fromJson(doc.data()))
           .toList();
@@ -44,8 +49,5 @@ class TransactionRepository extends BaseTransactionRepository {
   }
 
   @override
-  Future<void> updateTransaction({required Transaction transaction}) {
-    // TODO: implement updateTransaction
-    throw UnimplementedError();
-  }
+  Future<void> updateTransaction({required String transactionID}) async {}
 }

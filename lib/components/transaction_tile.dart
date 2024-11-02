@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 class TransactionTile extends StatefulWidget {
+  final String id;
   final String title;
   final String category;
   final double amount;
@@ -18,6 +19,7 @@ class TransactionTile extends StatefulWidget {
     required this.amount,
     required this.date,
     required this.isIncome,
+    required this.id,
   });
 
   @override

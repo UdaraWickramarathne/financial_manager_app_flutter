@@ -8,7 +8,6 @@ import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +23,17 @@ class _AddExpensePageState extends State<AddExpensePage> {
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+
+  //focus nodes
+  final FocusNode amountFocusNode = FocusNode();
+  final FocusNode categoryFocusNode = FocusNode();
+  final FocusNode titleFocusNode = FocusNode();
+
+  //border colors
+  Color amountBorderColor = Colors.transparent;
+  Color categoryBorderColor = Colors.transparent;
+  Color titleBorderColor = Colors.transparent;
 
   FilePickerResult? result;
   late PlatformFile file;
@@ -32,7 +41,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
   IconData? selectedIcon;
 
+  //transaction repo
   late TransactionBloc _transactionBloc;
+
+  //transaction bloc
   late AuthRepository _authRepository;
 
   final List<Map<String, String>> expenseCategories = [
@@ -87,6 +99,14 @@ class _AddExpensePageState extends State<AddExpensePage> {
     } else {
       // User canceled the picker
     }
+  }
+
+  @override
+  void dispose() {
+    amountFocusNode.dispose();
+    categoryFocusNode.dispose();
+    titleFocusNode.dispose();
+    super.dispose();
   }
 
   void showExpenseTypes() {
@@ -208,6 +228,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       InputField(
                         isReadOnly: false,
                         isObsecure: false,
+                        borderColor: amountBorderColor,
+                        focusNode: amountFocusNode,
                         label: '0.00',
                         suffixIcon: TextButton(
                           onPressed: () {
@@ -229,7 +251,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       InputField(
                         isObsecure: false,
                         controller: categoryController,
+                        borderColor: categoryBorderColor,
                         prefixIcon: selectedIcon,
+                        focusNode: categoryFocusNode,
                         isReadOnly: true,
                         label: 'Select Category',
                         suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
@@ -265,16 +289,18 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       ),
                       const SizedBox(height: 20),
                       const Text(
-                        ' DESCRIPTION',
+                        ' TITLE',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                       const SizedBox(height: 10),
                       InputField(
                         isObsecure: false,
-                        controller: descriptionController,
+                        controller: titleController,
+                        borderColor: titleBorderColor,
+                        focusNode: titleFocusNode,
                         isReadOnly: false,
-                        label: 'Add a note or description',
+                        label: 'Add a title',
                       ),
                       const SizedBox(height: 20),
                       const Text(
@@ -305,19 +331,29 @@ class _AddExpensePageState extends State<AddExpensePage> {
               SimpleButton(
                 data: 'Save',
                 onPressed: () {
-                  _transactionBloc.add(
-                    TransactionAddEvent(
-                      transaction: Transaction(
-                        userID: _authRepository.userID,
-                        title: descriptionController.text,
-                        category: categoryController.text,
-                        amount: double.parse(amountController.text),
-                        date: dateController.text,
-                        isIncome: false,
-                        createdAt: Timestamp.now(),
+                  amountFocusNode.unfocus();
+                  categoryFocusNode.unfocus();
+                  titleFocusNode.unfocus();
+
+                  final amount = amountController.text;
+                  final category = categoryController.text;
+                  final title = titleController.text;
+
+                  if (_validateInputs(amount, category, title)) {
+                    _transactionBloc.add(
+                      TransactionAddEvent(
+                        transaction: Transaction(
+                          userID: _authRepository.userID,
+                          title: title,
+                          category: category,
+                          amount: double.parse(amount),
+                          date: dateController.text,
+                          isIncome: false,
+                          createdAt: Timestamp.now(),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
               ),
             ],
@@ -336,13 +372,50 @@ class _AddExpensePageState extends State<AddExpensePage> {
     );
   }
 
+  void showErrorSnackBar(String error) {
+    CustomSnackBar.show(
+      context,
+      title: 'On Snap!',
+      message: error,
+      contentType: ContentType.failure,
+    );
+  }
+
   void _clearInputFields() {
     amountController.text = '';
     dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
     categoryController.text = '';
-    descriptionController.text = '';
+    titleController.text = '';
     setState(() {
       selectIcon('default');
     });
+  }
+
+  bool _validateInputs(String amount, String category, String description) {
+    setState(() {
+      amountBorderColor = Colors.transparent;
+      categoryBorderColor = Colors.transparent;
+      titleBorderColor = Colors.transparent;
+    });
+    if (amount.isEmpty) {
+      setState(() {
+        amountBorderColor = Colors.red;
+      });
+      showErrorSnackBar('Please enter a valid amount.');
+      return false;
+    } else if (category.isEmpty) {
+      setState(() {
+        categoryBorderColor = Colors.red;
+      });
+      showErrorSnackBar('Please select an expense category.');
+      return false;
+    } else if (description.isEmpty) {
+      setState(() {
+        titleBorderColor = Colors.red;
+      });
+      showErrorSnackBar('Please enter a title for the transaction.');
+      return false;
+    }
+    return true;
   }
 }

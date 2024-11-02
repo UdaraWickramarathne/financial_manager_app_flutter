@@ -5,7 +5,7 @@ abstract class BaseTransactionRepository {
 
   Future<List<Transaction>> getTransactions({required String userID});
 
-  Future<void> deleteTransaction({required String userID});
+  Future<void> deleteTransaction({required String transactionID});
 
-  Future<void> updateTransaction({required Transaction transaction});
+  Future<void> updateTransaction({required String transactionID});
 }

@@ -16,6 +16,7 @@ class InputField extends StatefulWidget {
   final void Function(String)? onChanged;
   final Color borderColor;
   final TextCapitalization textCapitalization;
+  final FocusNode? focusNode;
 
   const InputField({
     super.key,
@@ -33,6 +34,7 @@ class InputField extends StatefulWidget {
     this.onChanged,
     this.borderColor = Colors.transparent,
     this.textCapitalization = TextCapitalization.none,
+    this.focusNode,
   });
 
   @override
@@ -48,6 +50,7 @@ class _InputFieldState extends State<InputField> {
       style: const TextStyle(
         fontSize: 16,
       ),
+      focusNode: widget.focusNode,
       onChanged: widget.onChanged,
       controller: widget.controller,
       obscureText: widget.isObsecure,

@@ -1,9 +1,7 @@
 import 'package:financial_app/components/dropdown_button.dart';
 import 'package:financial_app/components/services_icon.dart';
-import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/components/balance_card.dart';
 import 'package:financial_app/language/transalation.dart';
-import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/screens/budget/budget_page.dart';
@@ -220,22 +218,22 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  final transaction = transactions[index];
-                  return TransactionTile(
-                    title: transaction.title,
-                    category: transaction.category,
-                    amount: transaction.amount,
-                    date: transaction.date,
-                    isIncome: transaction.isIncome,
-                  );
-                },
-              ),
-            ),
+            // Expanded(
+            //   child: ListView.builder(
+            //     shrinkWrap: true,
+            //     itemCount: 4,
+            //     itemBuilder: (context, index) {
+            //       final transaction = transactions[index];
+            //       return TransactionTile(
+            //         title: transaction.title,
+            //         category: transaction.category,
+            //         amount: transaction.amount,
+            //         date: transaction.date,
+            //         isIncome: transaction.isIncome,
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
@@ -15,17 +20,20 @@ class TransactionUpdatePopUp extends StatefulWidget {
   final IconData? icon;
   final bool isIncome;
   String date;
-  TransactionUpdatePopUp(
-      {super.key,
-      required this.titile,
-      required this.id,
-      required this.selectedCategory,
-      required this.amount,
-      required this.iconColor,
-      required this.containerColor,
-      required this.icon,
-      required this.isIncome,
-      required this.date});
+  final Timestamp createdAt;
+  TransactionUpdatePopUp({
+    super.key,
+    required this.titile,
+    required this.id,
+    required this.selectedCategory,
+    required this.amount,
+    required this.iconColor,
+    required this.containerColor,
+    required this.icon,
+    required this.isIncome,
+    required this.date,
+    required this.createdAt,
+  });
 
   @override
   State<TransactionUpdatePopUp> createState() => _TransactionUpdatePopUpState();
@@ -33,29 +41,33 @@ class TransactionUpdatePopUp extends StatefulWidget {
 
 class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
   final TextEditingController amountController = TextEditingController();
-  final TextEditingController targetController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
 
   FocusNode targetFocusNode = FocusNode();
   late final List<String> _items;
   bool targetAmountIsReadOnly = true;
   bool isEditing = false;
-  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+
+  late TransactionBloc _transactionBloc;
+  late AuthRepository _authRepository;
 
   void _toggleEditing() {
     setState(() {
       isEditing = !isEditing;
       if (!isEditing) {
-        widget.titile = _titleController.text;
+        widget.titile = titleController.text;
       }
     });
   }
 
   @override
   void initState() {
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
     super.initState();
-    targetController.text = widget.amount.toString();
-    _titleController.text = widget.titile;
+    amountController.text = widget.amount.toString();
+    titleController.text = widget.titile;
     dateController.text = widget.date;
     if (widget.isIncome) {
       _items = [
@@ -118,7 +130,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                           child: isEditing
                               ? TextField(
                                   textAlign: TextAlign.center,
-                                  controller: _titleController,
+                                  controller: titleController,
                                   onSubmitted: (value) {
                                     _toggleEditing();
                                   },
@@ -159,7 +171,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                           child: InputFieldBottomBorder(
                             prefixText: 'LKR',
                             textAlign: TextAlign.end,
-                            controller: targetController,
+                            controller: amountController,
                             focusNode: targetFocusNode,
                             isReadOnly: targetAmountIsReadOnly,
                             keyboardType: const TextInputType.numberWithOptions(
@@ -236,7 +248,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const Text(
-                        'Deadline: ',
+                        'Date: ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
@@ -279,7 +291,31 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                   const SizedBox(height: 50),
                   SimpleButton(
                     data: 'Update',
-                    onPressed: () {},
+                    onPressed: () {
+                      final amount = amountController.text;
+                      final category = widget.selectedCategory;
+                      final date = dateController.text;
+                      final title = titleController.text;
+
+                      final transaction = Transaction(
+                          userID: _authRepository.userID,
+                          id: widget.id,
+                          title: title,
+                          category: category!,
+                          amount: double.parse(amount),
+                          date: date,
+                          isIncome: widget.isIncome,
+                          createdAt: widget.createdAt);
+
+                      _transactionBloc.add(
+                        TransactionUpdateEvent(
+                          transactionID: widget.id,
+                          transaction: transaction,
+                        ),
+                      );
+
+                      Navigator.of(context).pop(transaction);
+                    },
                   )
                 ],
               ),
@@ -288,13 +324,5 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    targetController.dispose();
-    amountController.dispose();
-    _titleController.dispose();
-    super.dispose();
   }
 }

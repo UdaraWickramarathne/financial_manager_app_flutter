@@ -25,7 +25,7 @@ class TransactionUpdatePopUp extends StatefulWidget {
       required this.containerColor,
       required this.icon,
       required this.isIncome,
-      required this.date});
+      required this.date,});
 
   @override
   State<TransactionUpdatePopUp> createState() => _TransactionUpdatePopUpState();
@@ -279,7 +279,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                   const SizedBox(height: 50),
                   SimpleButton(
                     data: 'Update',
-                    onPressed: () {},
+                    onPressed: (){},
                   )
                 ],
               ),

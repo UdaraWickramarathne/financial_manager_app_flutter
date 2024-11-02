@@ -49,5 +49,12 @@ class TransactionRepository extends BaseTransactionRepository {
   }
 
   @override
-  Future<void> updateTransaction({required String transactionID}) async {}
+   Future<void> updateTransaction({required String transactionID,required Transaction transaction}) async {
+    try {
+      await _transactionsCollection.doc(transactionID).set(transaction.toJson(),SetOptions(merge: true));
+      developer.log('transaction updated');
+    } catch (e) {
+      developer.log('transaction fail ${e.toString()}');
+    }
+  }
 }

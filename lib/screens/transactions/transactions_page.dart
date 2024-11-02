@@ -80,7 +80,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       isIncome: transaction.isIncome,
                       deleteFunction: (p0) {
                         _transactionBloc.add(
-                          TransactionDelete(
+                          TransactionDeleteEvent(
                             transactionID: transaction.id,
                           ),
                         );

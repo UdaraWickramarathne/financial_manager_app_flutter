@@ -31,10 +31,17 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionError(message: 'Error occurred!'));
         }
       }
-      if (event is TransactionDelete) {
+      if (event is TransactionDeleteEvent) {
         try {
           await _transactionRepository.deleteTransaction(
               transactionID: event.transactionID);
+        } catch (e) {
+          emit(const TransactionError(message: 'Error occurred!'));
+        }
+      }
+      if(event is TransactionUpdateEvent){
+        try {
+          await _transactionRepository.updateTransaction(transactionID: event.transactionID,transaction: event.transaction);
         } catch (e) {
           emit(const TransactionError(message: 'Error occurred!'));
         }

@@ -25,11 +25,21 @@ class TransactionFetchEvent extends TransactionEvent {
   List<Object> get props => [userID];
 }
 
-class TransactionDelete extends TransactionEvent {
+class TransactionDeleteEvent extends TransactionEvent {
   final String transactionID;
 
-  const TransactionDelete({required this.transactionID});
+  const TransactionDeleteEvent({required this.transactionID});
 
   @override
   List<Object> get props => [transactionID];
+}
+
+class TransactionUpdateEvent extends TransactionEvent{
+  final String transactionID;
+  final Transaction transaction;
+
+  const TransactionUpdateEvent({required this.transactionID, required this.transaction});
+
+  @override
+  List<Object> get props => [transactionID,transaction];
 }

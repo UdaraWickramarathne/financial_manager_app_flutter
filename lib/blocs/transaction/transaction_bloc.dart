@@ -35,7 +35,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         try {
           await _transactionRepository.deleteTransaction(
               transactionID: event.transactionID);
-        } catch (e) {}
+        } catch (e) {
+          emit(const TransactionError(message: 'Error occurred!'));
+        }
       }
     });
   }

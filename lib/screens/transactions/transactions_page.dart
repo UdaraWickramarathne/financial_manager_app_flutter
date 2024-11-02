@@ -85,13 +85,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             transactionID: transaction.id,
                           ),
                         );
-                        setState(() {
-                          state.transaction.removeAt(index);
-                        });
+                        _transactionBloc.add(TransactionFetchEvent(
+                            userID: _authRepository.userID));
                       },
                     );
                   },
                 );
+              } else if (state is TransactionInitial) {
+                return const Center(child: Text('No transactions found.'));
               }
               return const Center(child: Text('No transactions found.'));
             },

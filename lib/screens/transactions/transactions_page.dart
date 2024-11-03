@@ -1,4 +1,6 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/transaction_tile.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
@@ -87,6 +89,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         );
                         _transactionBloc.add(TransactionFetchEvent(
                             userID: _authRepository.userID));
+                        showSuccessSnakBar();
                       },
                     );
                   },
@@ -99,6 +102,15 @@ class _TransactionsPageState extends State<TransactionsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void showSuccessSnakBar() {
+    CustomSnackBar.show(
+      context,
+      title: 'Deleted!!',
+      message: 'Your transaction has been deleted successfully.',
+      contentType: ContentType.success,
     );
   }
 }

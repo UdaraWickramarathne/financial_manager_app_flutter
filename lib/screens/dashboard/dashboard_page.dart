@@ -1,4 +1,6 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/dropdown_button.dart';
 import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/balance_card.dart';
@@ -84,9 +86,9 @@ class _DashboardState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(getGreeting()),
-                          const Text(
-                            'Anura',
-                            style: TextStyle(
+                          Text(
+                            _authRepository.user!.name,
+                            style: const TextStyle(
                               letterSpacing: 2,
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -252,6 +254,7 @@ class _DashboardState extends State<Dashboard> {
                             );
                             _transactionBloc.add(TransactionFetchEvent(
                                 userID: _authRepository.userID));
+                            showSuccessSnakBar();
                           },
                         );
                       },
@@ -264,6 +267,15 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
       ),
+    );
+  }
+
+  void showSuccessSnakBar() {
+    CustomSnackBar.show(
+      context,
+      title: 'Deleted!!',
+      message: 'Your transaction has been deleted successfully.',
+      contentType: ContentType.success,
     );
   }
 }

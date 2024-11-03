@@ -107,7 +107,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         }
         return supportedLocales.first;
       },
-      home: const HomePage(),
+      home: const LoginScreen(),
     );
     return MultiRepositoryProvider(
       providers: [

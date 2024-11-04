@@ -41,10 +41,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
   IconData? selectedIcon;
 
-  //transaction repo
+  //transaction bloc
   late TransactionBloc _transactionBloc;
 
-  //transaction bloc
+  //auth repo
   late AuthRepository _authRepository;
 
   final List<Map<String, String>> expenseCategories = [
@@ -207,6 +207,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
             Navigator.pop(context);
             showSuccessSnakBar();
             _clearInputFields();
+          } else if (state is TransactionError) {
+            Navigator.pop(context);
+            showErrorSnackBar(state.message);
           }
         },
         child: Padding(
@@ -237,7 +240,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           },
                           child: const Text('Clear'),
                         ),
-                        prefixText: 'Rs.',
+                        prefixText: 'Rs. ',
                         controller: amountController,
                         keyboardType: TextInputType.number,
                       ),
@@ -391,7 +394,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
     });
   }
 
-  bool _validateInputs(String amount, String category, String description) {
+  bool _validateInputs(String amount, String category, String title) {
     setState(() {
       amountBorderColor = Colors.transparent;
       categoryBorderColor = Colors.transparent;
@@ -409,7 +412,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
       });
       showErrorSnackBar('Please select an expense category.');
       return false;
-    } else if (description.isEmpty) {
+    } else if (title.isEmpty) {
       setState(() {
         titleBorderColor = Colors.red;
       });

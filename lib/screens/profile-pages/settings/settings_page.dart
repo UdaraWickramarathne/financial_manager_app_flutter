@@ -1,5 +1,5 @@
 import 'package:financial_app/language/language_provider.dart';
-import 'package:financial_app/screens/profile_pages/account_info/change_password.dart';
+import 'package:financial_app/screens/profile-pages/account_info/change_password.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

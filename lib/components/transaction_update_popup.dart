@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/models/transaction.dart';
@@ -12,7 +14,7 @@ import 'package:intl/intl.dart';
 // ignore: must_be_immutable
 class TransactionUpdatePopUp extends StatefulWidget {
   String id;
-  String titile;
+  String title;
   double amount;
   String? selectedCategory;
   final Color? iconColor;
@@ -23,7 +25,7 @@ class TransactionUpdatePopUp extends StatefulWidget {
   final Timestamp createdAt;
   TransactionUpdatePopUp({
     super.key,
-    required this.titile,
+    required this.title,
     required this.id,
     required this.selectedCategory,
     required this.amount,
@@ -56,7 +58,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
     setState(() {
       isEditing = !isEditing;
       if (!isEditing) {
-        widget.titile = titleController.text;
+        widget.title = titleController.text;
       }
     });
   }
@@ -67,7 +69,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
     _authRepository = RepositoryProvider.of<AuthRepository>(context);
     super.initState();
     amountController.text = widget.amount.toString();
-    titleController.text = widget.titile;
+    titleController.text = widget.title;
     dateController.text = widget.date;
     if (widget.isIncome) {
       _items = [
@@ -141,7 +143,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                                   autofocus: true,
                                 )
                               : Text(
-                                  widget.titile,
+                                  widget.title,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 25,
@@ -297,24 +299,27 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                       final date = dateController.text;
                       final title = titleController.text;
 
-                      final transaction = Transaction(
-                          userID: _authRepository.userID,
-                          id: widget.id,
-                          title: title,
-                          category: category!,
-                          amount: double.parse(amount),
-                          date: date,
-                          isIncome: widget.isIncome,
-                          createdAt: widget.createdAt);
+                      if (validateInputs(amount, title)) {
+                        final transaction = Transaction(
+                            userID: _authRepository.userID,
+                            id: widget.id,
+                            title: title,
+                            category: category!,
+                            amount: double.parse(amount),
+                            date: date,
+                            isIncome: widget.isIncome,
+                            createdAt: widget.createdAt);
 
-                      _transactionBloc.add(
-                        TransactionUpdateEvent(
-                          transactionID: widget.id,
-                          transaction: transaction,
-                        ),
-                      );
+                        _transactionBloc.add(
+                          TransactionUpdateEvent(
+                            transactionID: widget.id,
+                            transaction: transaction,
+                          ),
+                        );
 
-                      Navigator.of(context).pop(transaction);
+                        Navigator.of(context).pop(transaction);
+                        showSuccessSnakBar();
+                      }
                     },
                   )
                 ],
@@ -323,6 +328,35 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
           ),
         ),
       ),
+    );
+  }
+
+  bool validateInputs(String amount, String title) {
+    if (amount.isEmpty) {
+      showErrorSnackBar('Please enter a valid amount.');
+      return false;
+    } else if (title.isEmpty) {
+      showErrorSnackBar('Please enter a title for the transaction.');
+      return false;
+    }
+    return true;
+  }
+
+  void showErrorSnackBar(String error) {
+    CustomSnackBar.show(
+      context,
+      title: 'On Snap!',
+      message: error,
+      contentType: ContentType.failure,
+    );
+  }
+
+  void showSuccessSnakBar() {
+    CustomSnackBar.show(
+      context,
+      title: 'Successfully!!',
+      message: 'Transaction is updated!',
+      contentType: ContentType.success,
     );
   }
 }

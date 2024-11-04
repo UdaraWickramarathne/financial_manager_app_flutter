@@ -1,7 +1,7 @@
-import 'package:financial_app/screens/payment_pages/types_of_bill/electricity_bill.dart';
-import 'package:financial_app/screens/payment_pages/types_of_bill/internet_bill.dart';
-import 'package:financial_app/screens/payment_pages/types_of_bill/mobile_bill.dart';
-import 'package:financial_app/screens/payment_pages/types_of_bill/water_bill.dart';
+import 'package:financial_app/screens/paymen-pages/types_of_bill/electricity_bill.dart';
+import 'package:financial_app/screens/paymen-pages/types_of_bill/internet_bill.dart';
+import 'package:financial_app/screens/paymen-pages/types_of_bill/mobile_bill.dart';
+import 'package:financial_app/screens/paymen-pages/types_of_bill/water_bill.dart';
 import 'package:flutter/material.dart';
 
 void main() {

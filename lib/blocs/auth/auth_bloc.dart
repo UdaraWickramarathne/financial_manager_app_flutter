@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'dart:developer' as developer;
-
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -20,7 +19,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         if (result.user != null) {
           emit(AuthSuccess());
-          developer.log('Logging in');
+
+          developer.log('Signup success');
         } else {
           emit(AuthError(result.message ?? 'Signup Failed'));
         }
@@ -31,8 +31,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             email: event.email, password: event.password);
 
         if (result.user != null) {
+          final user =
+              await _authRepository.fetchUserData(_authRepository.userID);
+
+          _authRepository.setUser(user!);
           emit(AuthSuccess());
-          developer.log('Sign up');
+          developer.log('Sign in success!. Sign in as ${user.name}');
         } else {
           emit(AuthError(result.message ?? 'Sign In Failed'));
         }

@@ -1,7 +1,7 @@
-import 'package:financial_app/components/visa_master_cards/master_card_2.dart';
-import 'package:financial_app/components/visa_master_cards/master_card_3.dart';
-import 'package:financial_app/components/visa_master_cards/visa_card_1.dart';
-import 'package:financial_app/components/visa_master_cards/visa_card_2.dart';
+import 'package:financial_app/components/visa-master-cards/master_card_2.dart';
+import 'package:financial_app/components/visa-master-cards/master_card_3.dart';
+import 'package:financial_app/components/visa-master-cards/visa_card_1.dart';
+import 'package:financial_app/components/visa-master-cards/visa_card_2.dart';
 import 'package:financial_app/screens/cards/add_card_page.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

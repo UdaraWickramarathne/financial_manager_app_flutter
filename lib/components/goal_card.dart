@@ -1,17 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_app/components/goal_details_popupcard.dart';
 import 'package:financial_app/components/goal_update_popup_card.dart';
-import 'package:financial_app/services/custom_rect_tween.dart';
-import 'package:financial_app/services/hero_dialog_route.dart';
+import 'package:financial_app/models/goal.dart';
+import 'package:financial_app/services/icon_seletor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class GoalCard extends StatefulWidget {
   final String id;
+  final String title;
+  final String deadline;
+  final double currentAmount;
+  final double targetAmount;
+  final Timestamp createdAt;
+  final void Function(BuildContext)? deleteFunction;
 
   const GoalCard({
     super.key,
     required this.id,
+    required this.title,
+    required this.deadline,
+    required this.currentAmount,
+    required this.targetAmount,
+    required this.createdAt,
+    required this.deleteFunction,
   });
 
   @override
@@ -22,6 +36,10 @@ class _GoalCardState extends State<GoalCard>
     with SingleTickerProviderStateMixin {
   double _borderRadius = 15.0; // Default border radius
   late final SlidableController _slidableController;
+  late String title;
+  late double currentAmount;
+  late double targetAmount;
+  late String deadline;
 
   @override
   void initState() {
@@ -38,12 +56,50 @@ class _GoalCardState extends State<GoalCard>
         });
       }
     });
+    title = widget.title;
+    currentAmount = widget.currentAmount;
+    targetAmount = widget.targetAmount;
+    deadline = widget.deadline;
   }
 
   @override
   void dispose() {
     _slidableController.dispose();
     super.dispose();
+  }
+
+  bool isGoalComplete() {
+    return currentAmount >= targetAmount;
+  }
+
+  String getTimeRemaining() {
+    final DateTime today = DateTime.now();
+    final DateTime deadlineDateTime = DateTime.parse(deadline);
+    final Duration difference = deadlineDateTime.difference(today);
+    final int daysRemaining = difference.inDays;
+
+    if (daysRemaining > 30) {
+      // Calculate months and remaining days
+      final int months = (daysRemaining / 30).floor();
+      final int remainingDays = daysRemaining % 30;
+      return "$months month${months > 1 ? 's' : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''} left";
+    } else if (daysRemaining > 0) {
+      return "$daysRemaining day${daysRemaining > 1 ? 's' : ''} left";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} left";
+    } else if (difference.inMinutes > 0) {
+      return "${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} left";
+    } else {
+      return "Deadline has passed";
+    }
+  }
+
+  double getPercentage() {
+    double percentage = (currentAmount / targetAmount);
+    if (percentage > 1.0) {
+      return 1.0;
+    }
+    return percentage;
   }
 
   @override
@@ -56,7 +112,7 @@ class _GoalCardState extends State<GoalCard>
           motion: const StretchMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: widget.deleteFunction,
               icon: Icons.delete,
               backgroundColor: Colors.red.shade400,
               borderRadius: const BorderRadius.only(
@@ -79,7 +135,10 @@ class _GoalCardState extends State<GoalCard>
                 child: IntrinsicHeight(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceDim,
+                      color: isGoalComplete()
+                          ? Colors.green
+                              .shade100 // Change background color when complete
+                          : Theme.of(context).colorScheme.surfaceDim,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(15),
                         bottomLeft: const Radius.circular(15),
@@ -98,17 +157,28 @@ class _GoalCardState extends State<GoalCard>
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
-                                  color:
-                                      const Color.fromARGB(255, 219, 228, 255),
+                                  color: isGoalComplete()
+                                      ? Colors.green.shade200
+                                      : const Color.fromARGB(
+                                          255, 219, 228, 255),
                                 ),
-                                child: const Icon(
-                                  Icons.car_rental_sharp,
-                                  size: 50,
-                                  color: Color(0xFF456EFE),
-                                ),
+                                child: isGoalComplete()
+                                    ? Lottie.asset(
+                                        'assets/animations/goal-complete.json',
+                                        width: 50,
+                                        height: 50,
+                                      )
+                                    : Icon(
+                                        IconSeletor.getIconForTitle(
+                                            widget.title),
+                                        size: 50,
+                                        color: isGoalComplete()
+                                            ? Colors.green
+                                            : const Color(0xFF456EFE),
+                                      ),
                               ),
                               const SizedBox(width: 20),
-                              const Expanded(
+                              Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -117,30 +187,91 @@ class _GoalCardState extends State<GoalCard>
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'New Car',
+                                          title,
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
+                                            color: isGoalComplete()
+                                                ? Colors.black
+                                                : null,
                                           ),
                                         ),
                                         Text(
-                                          '25%',
+                                          '${(getPercentage() * 100).round()}%',
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
-                                            color: Color(0xFF456EFE),
+                                            color: isGoalComplete()
+                                                ? Colors.green
+                                                : const Color(0xFF456EFE),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Text(
-                                      '13 months left',
-                                      style: TextStyle(
+                                      getTimeRemaining(),
+                                      style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0xFFbabcbb),
+                                        color: Colors.grey,
                                       ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        if (!isGoalComplete()) {
+                                          final updatedGoal =
+                                              await showDialog<Goal?>(
+                                            context: context,
+                                            builder: (context) =>
+                                                GoalUpdatePopupCard(
+                                              id: widget.id,
+                                              targetAmount: widget.targetAmount,
+                                              deadLine: widget.deadline,
+                                              currentAmount:
+                                                  widget.currentAmount,
+                                              title: widget.title,
+                                              createdAt: widget.createdAt,
+                                            ),
+                                          );
+                                          if (updatedGoal != null) {
+                                            setState(() {
+                                              title = updatedGoal.title;
+                                              currentAmount =
+                                                  updatedGoal.currentAmount;
+                                              targetAmount =
+                                                  updatedGoal.targetAmount;
+                                              deadline = updatedGoal.deadline;
+                                            });
+                                          }
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                        padding:
+                                            WidgetStateProperty.all<EdgeInsets>(
+                                          const EdgeInsets.only(
+                                            right: 10,
+                                            top: 5,
+                                          ),
+                                        ),
+                                        minimumSize:
+                                            WidgetStateProperty.all(Size.zero),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                      child: isGoalComplete()
+                                          ? const Text(
+                                              'Goal Completed',
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                              ),
+                                            )
+                                          : const Text(
+                                              'Update Progress',
+                                              style: TextStyle(
+                                                color: Color(0xFF456EFE),
+                                              ),
+                                            ),
                                     ),
                                   ],
                                 ),
@@ -148,10 +279,11 @@ class _GoalCardState extends State<GoalCard>
                             ],
                           ),
                         ),
-                        const SizedBox(height: 5),
                         LinearPercentIndicator(
-                          percent: 0.4,
-                          progressColor: const Color(0xFF456EFE),
+                          percent: getPercentage(),
+                          progressColor: isGoalComplete()
+                              ? Colors.green
+                              : const Color(0xFF456EFE),
                           backgroundColor:
                               const Color.fromARGB(255, 219, 228, 255),
                           barRadius: const Radius.circular(20),
@@ -164,54 +296,18 @@ class _GoalCardState extends State<GoalCard>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Rs.1200'),
-                              Hero(
-                                tag: 'update${widget.id}',
-                                createRectTween: (begin, end) {
-                                  return CustomRectTween(
-                                      begin: begin, end: end);
-                                },
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(HeroDialogRoute(
-                                      builder: (context) {
-                                        return GoalUpdatePopupCard(
-                                          id: widget.id,
-                                          targetAmount: 2000,
-                                          deadLine: '2024-04-01',
-                                          notAchived: 3000,
-                                        );
-                                      },
-                                    ));
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStateProperty.all<Color>(
-                                      const Color.fromARGB(255, 219, 228, 255),
-                                    ),
-                                    padding:
-                                        WidgetStateProperty.all<EdgeInsets>(
-                                      const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 5,
-                                        bottom: 5,
-                                      ),
-                                    ),
-                                    minimumSize:
-                                        WidgetStateProperty.all(Size.zero),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  child: const Text(
-                                    'Update Progress',
-                                    style: TextStyle(
-                                      color: Color(0xFF456EFE),
-                                    ),
-                                  ),
+                              Text(
+                                'Rs.${currentAmount.toString()}',
+                                style: TextStyle(
+                                  color: isGoalComplete() ? Colors.black : null,
                                 ),
                               ),
-                              const Text('Rs.200000'),
+                              Text(
+                                'Rs.${targetAmount.toString()}',
+                                style: TextStyle(
+                                  color: isGoalComplete() ? Colors.black : null,
+                                ),
+                              ),
                             ],
                           ),
                         )

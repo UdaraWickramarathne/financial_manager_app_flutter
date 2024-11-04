@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 // ignore: must_be_immutable
 class TransactionUpdatePopUp extends StatefulWidget {
   String id;
-  String titile;
+  String title;
   double amount;
   String? selectedCategory;
   final Color? iconColor;
@@ -25,7 +25,7 @@ class TransactionUpdatePopUp extends StatefulWidget {
   final Timestamp createdAt;
   TransactionUpdatePopUp({
     super.key,
-    required this.titile,
+    required this.title,
     required this.id,
     required this.selectedCategory,
     required this.amount,
@@ -58,7 +58,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
     setState(() {
       isEditing = !isEditing;
       if (!isEditing) {
-        widget.titile = titleController.text;
+        widget.title = titleController.text;
       }
     });
   }
@@ -69,7 +69,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
     _authRepository = RepositoryProvider.of<AuthRepository>(context);
     super.initState();
     amountController.text = widget.amount.toString();
-    titleController.text = widget.titile;
+    titleController.text = widget.title;
     dateController.text = widget.date;
     if (widget.isIncome) {
       _items = [
@@ -143,7 +143,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
                                   autofocus: true,
                                 )
                               : Text(
-                                  widget.titile,
+                                  widget.title,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 25,

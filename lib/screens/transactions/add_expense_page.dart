@@ -41,10 +41,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
   IconData? selectedIcon;
 
-  //transaction repo
+  //transaction bloc
   late TransactionBloc _transactionBloc;
 
-  //transaction bloc
+  //auth repo
   late AuthRepository _authRepository;
 
   final List<Map<String, String>> expenseCategories = [
@@ -207,6 +207,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
             Navigator.pop(context);
             showSuccessSnakBar();
             _clearInputFields();
+          } else if (state is TransactionError) {
+            Navigator.pop(context);
+            showErrorSnackBar(state.message);
           }
         },
         child: Padding(

@@ -23,6 +23,14 @@ class AuthRepository extends BaseAuthRepository {
   @override
   String get userID => _firebaseAuth.currentUser?.uid ?? '';
 
+  User? _user;
+
+  User? get user => _user;
+
+  void setUser(User user) {
+    _user = user;
+  }
+
   //method for signUp user
 
   @override
@@ -118,5 +126,17 @@ class AuthRepository extends BaseAuthRepository {
     if (!doc.exists) {
       await _usersCollection.doc(newUser.userID).set(newUser.toJson());
     }
+  }
+
+  Future<User?> fetchUserData(String userID) async {
+    try {
+      DocumentSnapshot doc = await _usersCollection.doc(userID).get();
+      if (doc.exists) {
+        return User.fromJson(doc.data() as Map<String, dynamic>);
+      }
+    } catch (e) {
+      developer.log(e.toString());
+    }
+    return null;
   }
 }

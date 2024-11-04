@@ -1,7 +1,7 @@
-import 'package:financial_app/components/bar_charts/daily_analysis_chart.dart';
-import 'package:financial_app/components/bar_charts/monthly_analysis_chart.dart';
-import 'package:financial_app/components/bar_charts/weekly_analysis_chart.dart';
-import 'package:financial_app/components/bar_charts/yearly_analysis_chart.dart';
+import 'package:financial_app/components/bar-charts/daily_analysis_chart.dart';
+import 'package:financial_app/components/bar-charts/monthly_analysis_chart.dart';
+import 'package:financial_app/components/bar-charts/weekly_analysis_chart.dart';
+import 'package:financial_app/components/bar-charts/yearly_analysis_chart.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/services/generate_pdf.dart';
 import 'package:flutter/cupertino.dart';

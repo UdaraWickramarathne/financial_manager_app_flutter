@@ -1,10 +1,12 @@
 import 'package:feedback/feedback.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
+import 'package:financial_app/blocs/goal/goal_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
+import 'package:financial_app/repositories/goal-repository/goal_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
 import 'package:financial_app/screens/cards/add_card_page.dart';
@@ -79,6 +81,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
   Widget build(BuildContext context) {
     var authRepository = AuthRepository();
     var transactionRepository = TransactionRepository();
+    var goalRepository = GoalRepository();
 
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
@@ -121,11 +124,17 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           create: (context) => transactionRepository,
         ),
         RepositoryProvider(
+          create: (context) => goalRepository,
+        ),
+        RepositoryProvider(
           create: (context) => AuthBloc(authRepository),
         ),
         RepositoryProvider(
           create: (context) => TransactionBloc(transactionRepository),
         ),
+        RepositoryProvider(
+          create: (context) => GoalBloc(goalRepository),
+        )
       ],
       child: app,
     );

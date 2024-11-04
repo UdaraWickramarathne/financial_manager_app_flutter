@@ -142,6 +142,7 @@ Future<void> _speak(String text) async {
   await flutterTts.speak(text);
 }
 
+
 void _getImage() async {
   await _captureBothSides();
 }

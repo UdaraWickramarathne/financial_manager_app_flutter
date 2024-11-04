@@ -1,9 +1,15 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../components/custome_snackbar.dart';
 
 class AddCardPage extends StatefulWidget {
   const AddCardPage({super.key});
@@ -124,6 +130,96 @@ class _AddCardPageState extends State<AddCardPage> {
     );
   }
 
+  final ImagePicker _picker = ImagePicker();
+String? frontImagePath;
+String? backImagePath;
+
+final FlutterTts flutterTts = FlutterTts();
+
+Future<void> _speak(String text) async {
+  await flutterTts.setLanguage("en-US");
+  await flutterTts.setPitch(1.0);
+  await flutterTts.speak(text);
+}
+
+void _getImage() async {
+  await _captureBothSides();
+}
+
+Future<void> _captureBothSides() async {
+  final XFile? frontImage = await _picker.pickImage(source: ImageSource.camera);
+  if (frontImage == null) {
+    showErrorSnackBar('Front side image not captured. Please try again.');
+    return;
+  }
+  frontImagePath = frontImage.path;
+
+  //Future.delayed(const Duration(seconds: 1));
+  _speak('Now, capture the back side of the card.');
+
+  final XFile? backImage = await _picker.pickImage(source: ImageSource.camera);
+  if (backImage == null) {
+    showErrorSnackBar('Back side image not captured. Please try again.');
+    return;
+  }
+  backImagePath = backImage.path;
+
+  await _processBothCardImages(frontImagePath!, backImagePath!);
+}
+
+Future<void> _processBothCardImages(String frontImagePath, String backImagePath) async {
+  final InputImage frontInputImage = InputImage.fromFilePath(frontImagePath);
+  final InputImage backInputImage = InputImage.fromFilePath(backImagePath);
+  final textRecognizer = GoogleMlKit.vision.textRecognizer();
+
+  final RecognizedText recognizedFrontText = await textRecognizer.processImage(frontInputImage);
+  final RecognizedText recognizedBackText = await textRecognizer.processImage(backInputImage);
+
+  _extractDetailsFromImages(recognizedFrontText.text, recognizedBackText.text);
+}
+
+void _extractDetailsFromImages(String frontText, String backText) {
+  String? cardNumber;
+  String? expiryDate;
+  String? cvv;
+
+  final cardNumberRegex = RegExp(r'\b\d{4} \d{4} \d{4} \d{4}\b');
+  final cardNumberMatch = cardNumberRegex.firstMatch(frontText);
+  if (cardNumberMatch != null) {
+    cardNumber = cardNumberMatch.group(0);
+  }
+
+  final expiryDateRegex = RegExp(r'\b\d{2}/\d{2}\b');
+  final expiryDateMatch = expiryDateRegex.firstMatch(frontText);
+  if (expiryDateMatch != null) {
+    expiryDate = expiryDateMatch.group(0);
+  }
+
+  final cvvRegex = RegExp(r'\b\d{3}\b');
+  final cvvMatch = cvvRegex.firstMatch(backText);
+  if (cvvMatch != null) {
+    cvv = cvvMatch.group(0);
+  }
+
+  if (cardNumber != null && expiryDate != null && cvv != null) {
+    _populateCardFields(cardNumber, expiryDate, cvv);
+  } else {
+    showErrorSnackBar('Unable to extract all details. Please try again.');
+  }
+}
+
+void _populateCardFields(String? cardNumber, String? expiryDate, String? cvv) {
+  setState(() {
+    _cardNumberController.text = cardNumber ?? '';
+    _dateController.text = expiryDate ?? '';
+    _cvvController.text = cvv ?? '';
+  });
+}
+
+void showErrorSnackBar(String error) {
+  CustomSnackBar.show(context, title: 'Oh Snap!', message: error, contentType: ContentType.failure);
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,13 +231,16 @@ class _AddCardPageState extends State<AddCardPage> {
             style: TextStyle(fontSize: 22),
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: ImageIcon(
-              AssetImage('assets/icons/scan.ico'),
+            padding: const EdgeInsets.only(right: 20),
+            child: IconButton(
+            icon: const ImageIcon(
+            AssetImage('assets/icons/scan.ico'),
             ),
-          )
+              onPressed: _getImage,
+            ),
+          ),
         ],
       ),
       body: Padding(

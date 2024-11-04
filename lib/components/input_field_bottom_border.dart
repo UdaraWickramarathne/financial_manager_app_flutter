@@ -13,20 +13,21 @@ class InputFieldBottomBorder extends StatelessWidget {
   final TextAlign textAlign;
   final List<TextInputFormatter>? inputFormats;
   final FocusNode? focusNode;
-  const InputFieldBottomBorder({
-    super.key,
-    this.keyboardType,
-    this.prefixText,
-    this.suffixIcon,
-    this.onTap,
-    required this.controller,
-    required this.isReadOnly,
-    this.onChange,
-    this.fontSize,
-    this.textAlign = TextAlign.start,
-    this.inputFormats,
-    this.focusNode,
-  });
+  final Color borderColor;
+  const InputFieldBottomBorder(
+      {super.key,
+      this.keyboardType,
+      this.prefixText,
+      this.suffixIcon,
+      this.onTap,
+      required this.controller,
+      required this.isReadOnly,
+      this.onChange,
+      this.fontSize,
+      this.textAlign = TextAlign.start,
+      this.inputFormats,
+      this.focusNode,
+      this.borderColor = const Color(0xFFEFEFEF)});
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +51,9 @@ class InputFieldBottomBorder extends StatelessWidget {
         prefixStyle: TextStyle(
           fontSize: fontSize ?? 25,
         ),
-        enabledBorder: const UnderlineInputBorder(
+        enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Color(0xFFEFEFEF),
+            color: borderColor,
           ),
         ),
         focusedBorder: const UnderlineInputBorder(

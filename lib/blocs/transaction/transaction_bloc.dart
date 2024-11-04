@@ -26,7 +26,11 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         try {
           final transactions = await _transactionRepository.getTransactions(
               userID: event.userID);
-          emit(TransactionLoaded(transaction: transactions));
+          if (transactions.isNotEmpty) {
+            emit(TransactionLoaded(transaction: transactions));
+          } else {
+            emit(TransactionInitial());
+          }
         } catch (e) {
           emit(const TransactionError(message: 'Error occurred!'));
         }

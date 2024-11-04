@@ -73,7 +73,7 @@ class _InputFieldState extends State<InputField> {
             const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
         prefixText: widget.prefixText,
         prefixStyle: const TextStyle(
-          color: Color(0xFF0e1633),
+          color: Color(0xFF456EFE),
           fontSize: 16,
         ),
         labelStyle: const TextStyle(color: Color(0xFF626262)),

@@ -1,7 +1,7 @@
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 
-import 'package:financial_app/screens/payment_pages/payment_methord/show_payment_methods.dart';
+import 'package:financial_app/screens/paymen-pages/payment_methord/show_payment_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -121,6 +121,11 @@ class _TransactionTileState extends State<TransactionTile> {
         containerColor = Colors.green[100]!;
         icon = Icons.movie;
         break;
+      case 'Education':
+        iconColor = Colors.deepOrange[800]!;
+        containerColor = Colors.deepOrange[100]!;
+        icon = Icons.school;
+        break;
       case 'Other':
         iconColor = Colors.brown[800]!;
         containerColor = Colors.brown[100]!;

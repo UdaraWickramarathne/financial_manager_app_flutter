@@ -89,6 +89,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
         'Shopping',
         'Kids',
         'Entertainment',
+        'Education',
         'Other',
       ];
     }

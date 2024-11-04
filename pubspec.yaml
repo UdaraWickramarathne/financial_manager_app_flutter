@@ -105,6 +105,11 @@ dependencies:
   #for pull refresh
   liquid_pull_to_refresh: ^3.0.1
   
+  #for scan bill and card
+  camera:
+  google_ml_kit:
+  flutter_tts: ^3.4.2
+
 
 
 dev_dependencies:

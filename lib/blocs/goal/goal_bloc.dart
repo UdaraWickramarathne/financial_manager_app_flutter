@@ -38,9 +38,9 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
           emit(GoalUpdateLoading());
           await _goalRepository.updateGoal(
               goalID: event.goalID, goal: event.goal);
-          emit(GoalSuccess());
+          emit(GoalUpdateSuccess());
         } catch (e) {
-          emit(const GoalFetchError(message: 'Goal fetching error!'));
+          emit(const GoalUpdateError(message: 'Goal fetching error!'));
         }
       }
 

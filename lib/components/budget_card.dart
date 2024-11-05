@@ -78,7 +78,7 @@ class _BudgetCardState extends State<BudgetCard>
               builder: (context) => BudgetUpdatePopup(
                 id: widget.id,
                 budgetAmount: widget.budgetAmount,
-                titile: widget.title,
+                title: widget.title,
                 selectedPeriod: 'Weekly',
               ),
             );

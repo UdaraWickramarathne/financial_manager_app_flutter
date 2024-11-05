@@ -49,11 +49,12 @@ class _AddGoalPageState extends State<AddGoalPage> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _goalBloc.add(GoalFetchEvent(userID: _authRepository.userID));
-            },
-            icon: const Icon(Icons.arrow_back)),
+          onPressed: () {
+            Navigator.pop(context);
+            _goalBloc.add(GoalFetchEvent(userID: _authRepository.userID));
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: BlocListener<GoalBloc, GoalState>(
         listener: (context, state) {

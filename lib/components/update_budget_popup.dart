@@ -6,12 +6,12 @@ import 'package:flutter/services.dart';
 // ignore: must_be_immutable
 class BudgetUpdatePopup extends StatefulWidget {
   String id;
-  String titile;
+  String title;
   double budgetAmount;
   String? selectedPeriod = 'Weekly';
   BudgetUpdatePopup({
     super.key,
-    required this.titile,
+    required this.title,
     required this.id,
     required this.selectedPeriod,
     required this.budgetAmount,
@@ -30,7 +30,6 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
   final List<String> _items = ['Weekly', 'Monthly'];
 
   bool targetAmountIsReadOnly = true;
-
   bool isEditing = false;
   final TextEditingController _titleController = TextEditingController();
 
@@ -38,7 +37,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
     setState(() {
       isEditing = !isEditing;
       if (!isEditing) {
-        widget.titile = _titleController.text;
+        widget.title = _titleController.text;
       }
     });
   }
@@ -48,7 +47,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
     super.initState();
     targetController.text = widget.budgetAmount.toString();
 
-    _titleController.text = widget.titile;
+    _titleController.text = widget.title;
   }
 
   @override
@@ -83,7 +82,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                               autofocus: true,
                             )
                           : Text(
-                              widget.titile,
+                              widget.title,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 25,

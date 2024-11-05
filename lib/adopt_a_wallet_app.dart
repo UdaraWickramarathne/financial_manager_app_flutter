@@ -1,15 +1,16 @@
 import 'package:feedback/feedback.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/blocs/goal/goal_bloc.dart';
+import 'package:financial_app/blocs/reminder/reminder_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/repositories/goal-repository/goal_repository.dart';
+import 'package:financial_app/repositories/reminder/reminder_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
-import 'package:financial_app/screens/cards/add_card_page.dart';
 import 'package:financial_app/services/feedback_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -79,6 +80,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     var authRepository = AuthRepository();
     var transactionRepository = TransactionRepository();
     var goalRepository = GoalRepository();
+    var reminderRepository = ReminderRepository();
 
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
@@ -124,6 +126,9 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           create: (context) => goalRepository,
         ),
         RepositoryProvider(
+          create: (context) => reminderRepository,
+        ),
+        RepositoryProvider(
           create: (context) => AuthBloc(authRepository),
         ),
         RepositoryProvider(
@@ -131,7 +136,10 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         ),
         RepositoryProvider(
           create: (context) => GoalBloc(goalRepository),
-        )
+        ),
+        RepositoryProvider(
+          create: (context) => ReminderBloc(reminderRepository),
+        ),
       ],
       child: app,
     );

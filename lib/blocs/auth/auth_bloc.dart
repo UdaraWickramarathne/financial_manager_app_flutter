@@ -10,8 +10,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._authRepository) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
-      emit(AuthLoading());
       if (event is AuthSignUpRequest) {
+        emit(AuthLoading());
         final result = await _authRepository.signUp(
           email: event.email,
           password: event.password,
@@ -27,22 +27,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (event is AuthSignInRequest) {
+        emit(AuthLoading());
         final result = await _authRepository.signIn(
             email: event.email, password: event.password);
 
         if (result.user != null) {
-          final user =
+          final userDetails =
               await _authRepository.fetchUserData(_authRepository.userID);
 
-          _authRepository.setUser(user!);
+          _authRepository.setUser(userDetails!);
           emit(AuthSuccess());
-          developer.log('Sign in success!. Sign in as ${user.name}');
+          developer.log(
+              'Sign in success!. Sign in as ${_authRepository.user!.name}');
         } else {
           emit(AuthError(result.message ?? 'Sign In Failed'));
         }
       }
 
       if (event is AuthSignOutRequest) {
+        emit(AuthLoading());
         await _authRepository.signOut();
         emit(AuthSignOut());
         developer.log('Logging out');

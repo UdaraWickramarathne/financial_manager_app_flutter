@@ -11,7 +11,6 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/services/image_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -86,8 +85,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
         selectedIcon = Icons.theaters;
         break;
       case 'Education':
-      selectedIcon = Icons.school;
-      break;
+        selectedIcon = Icons.school;
+        break;
       case 'Other':
         selectedIcon = Icons.category;
         break;
@@ -180,8 +179,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
     super.initState();
   }
 
-final ImageScanner imageScanner = ImageScanner();
-  
+  final ImageScanner imageScanner = ImageScanner();
+
   // Existing controllers and other state variables...
 
   Future<void> _getImage() async {
@@ -195,7 +194,8 @@ final ImageScanner imageScanner = ImageScanner();
     imageScanner.parseReceiptText(text, _populateTransactionFields);
   }
 
-  void _populateTransactionFields(double? amount, String? category, String? date, String? description) {
+  void _populateTransactionFields(
+      double? amount, String? category, String? date, String? description) {
     amountController.text = amount?.toString() ?? '';
     categoryController.text = category ?? 'Uncategorized';
     dateController.text = date ?? '';

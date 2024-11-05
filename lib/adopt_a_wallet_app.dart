@@ -10,9 +10,6 @@ import 'package:financial_app/repositories/goal-repository/goal_repository.dart'
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
 import 'package:financial_app/screens/cards/add_card_page.dart';
-import 'package:financial_app/screens/home/home_page.dart';
-import 'package:financial_app/screens/onboard/onboarding_page.dart';
-import 'package:financial_app/screens/transactions/add_expense_page.dart';
 import 'package:financial_app/services/feedback_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -113,7 +110,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         }
         return supportedLocales.first;
       },
-      home: const AddCardPage(),
+      home: const LoginScreen(),
     );
     return MultiRepositoryProvider(
       providers: [

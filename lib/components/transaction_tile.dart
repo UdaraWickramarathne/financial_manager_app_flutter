@@ -156,11 +156,11 @@ class _TransactionTileState extends State<TransactionTile> {
           final updatedTransaction = await showDialog<Transaction>(
             context: context,
             builder: (context) => TransactionUpdatePopUp(
-              title: widget.title,
+              title: title,
               id: widget.id,
-              date: widget.date,
-              selectedCategory: widget.category,
-              amount: widget.amount,
+              date: date,
+              selectedCategory: category,
+              amount: amount,
               icon: icon,
               createdAt: widget.createdAt,
               containerColor: containerColor,

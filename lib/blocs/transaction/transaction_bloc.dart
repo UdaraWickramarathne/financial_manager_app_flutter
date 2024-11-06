@@ -29,7 +29,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           if (transactions.isNotEmpty) {
             emit(TransactionLoaded(transaction: transactions));
           } else {
-            emit(TransactionInitial());
+            emit(TransactionEmpty());
           }
         } catch (e) {
           emit(const TransactionError(message: 'Error occurred!'));
@@ -45,12 +45,16 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       }
       if (event is TransactionUpdateEvent) {
         try {
+          emit(TransactionUpdateLoading());
           await _transactionRepository.updateTransaction(
             transactionID: event.transactionID,
             transaction: event.transaction,
           );
+          await Future.delayed(const Duration(milliseconds: 500));
+          emit(TrnsactionUpdateSuccess());
         } catch (e) {
-          emit(const TransactionError(message: 'Error occurred!'));
+          await Future.delayed(const Duration(milliseconds: 500));
+          emit(const TransactionUpdateError(message: 'Error occurred!'));
         }
       }
     });

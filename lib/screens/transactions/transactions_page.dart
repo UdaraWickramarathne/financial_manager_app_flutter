@@ -65,6 +65,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: BlocBuilder<TransactionBloc, TransactionState>(
             bloc: _transactionBloc,
+            buildWhen: (previous, current) {
+              return current is TransactionLoading ||
+                  current is TransactionLoaded ||
+                  current is TransactionError ||
+                  current is TransactionEmpty;
+            },
             builder: (context, state) {
               if (state is TransactionLoading) {
                 return const Center(child: CircularProgressIndicator());
@@ -74,13 +80,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   itemBuilder: (context, index) {
                     final transaction = state.transaction[index];
                     return TransactionTile(
-                      id: transaction.id,
-                      title: transaction.title,
-                      createdAt: transaction.createdAt,
-                      category: transaction.category,
-                      amount: transaction.amount,
-                      date: transaction.date,
-                      isIncome: transaction.isIncome,
+                      transaction: transaction,
                       deleteFunction: (p0) {
                         _transactionBloc.add(
                           TransactionDeleteEvent(
@@ -94,7 +94,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     );
                   },
                 );
-              } else if (state is TransactionInitial) {
+              } else if (state is TransactionEmpty) {
                 return const Center(child: Text('No transactions found.'));
               }
               return const Center(child: Text('No transactions found.'));

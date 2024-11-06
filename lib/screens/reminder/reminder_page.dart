@@ -7,6 +7,7 @@ import 'package:financial_app/screens/reminder/add_reminder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 
 class ReminderPage extends StatefulWidget {
@@ -158,40 +159,48 @@ class _ReminderPageState extends State<ReminderPage> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: BlocBuilder<ReminderBloc, ReminderState>(
-              bloc: _reminderBloc,
-              buildWhen: (previous, current) {
-                return current is ReminderFetchLoading ||
-                    current is ReminderEmpty ||
-                    current is ReminderLoaded ||
-                    current is ReminderError;
+            child: LiquidPullToRefresh(
+              color: Theme.of(context).colorScheme.surface,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              onRefresh: () async {
+                _reminderBloc
+                    .add(ReminderFetchEvent(userID: _authRepository.userID));
               },
-              builder: (context, state) {
-                if (state is ReminderFetchLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ReminderLoaded) {
-                  return ListView.builder(
-                    itemCount: state.reminders.length,
-                    itemBuilder: (context, index) {
-                      final reminder = state.reminders[index];
-                      return ReminderCard(
-                        reminder: reminder,
-                        deleteFunction: (context) {
-                          _reminderBloc.add(
-                              ReminderDeleteEvent(reminderID: reminder.id));
-                          _reminderBloc.add(ReminderFetchEvent(
-                              userID: _authRepository.userID));
-                        },
-                      );
-                    },
-                  );
-                } else if (state is ReminderEmpty) {
+              child: BlocBuilder<ReminderBloc, ReminderState>(
+                bloc: _reminderBloc,
+                buildWhen: (previous, current) {
+                  return current is ReminderFetchLoading ||
+                      current is ReminderEmpty ||
+                      current is ReminderLoaded ||
+                      current is ReminderError;
+                },
+                builder: (context, state) {
+                  if (state is ReminderFetchLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ReminderLoaded) {
+                    return ListView.builder(
+                      itemCount: state.reminders.length,
+                      itemBuilder: (context, index) {
+                        final reminder = state.reminders[index];
+                        return ReminderCard(
+                          reminder: reminder,
+                          deleteFunction: (context) {
+                            _reminderBloc.add(
+                                ReminderDeleteEvent(reminderID: reminder.id));
+                            _reminderBloc.add(ReminderFetchEvent(
+                                userID: _authRepository.userID));
+                          },
+                        );
+                      },
+                    );
+                  } else if (state is ReminderEmpty) {
+                    return const Center(child: Text('No Reminders found.'));
+                  } else if (state is ReminderError) {
+                    return Center(child: Text(state.message));
+                  }
                   return const Center(child: Text('No Reminders found.'));
-                } else if (state is ReminderError) {
-                  return Center(child: Text(state.message));
-                }
-                return const Center(child: Text('No Reminders found.'));
-              },
+                },
+              ),
             ),
           )
         ],

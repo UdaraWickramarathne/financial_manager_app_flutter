@@ -11,7 +11,7 @@ class Transaction {
   final Timestamp createdAt;
 
   Transaction({
-    this.id = '',
+    String? id,
     required this.userID,
     required this.title,
     required this.category,
@@ -19,7 +19,7 @@ class Transaction {
     required this.date,
     required this.isIncome,
     required this.createdAt,
-  });
+  }) : id = id ?? '';
 
   toJson() => {
         'id': id,

@@ -52,7 +52,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           await FlutterEmailSender.send(email);
         });
       },
-      minimumShakeCount: 3,
+      minimumShakeCount: 2,
       shakeSlopTimeMS: 500,
       shakeCountResetTime: 3000,
       shakeThresholdGravity: 2.7,

@@ -13,7 +13,6 @@ import 'package:financial_app/screens/goals/goal_page.dart';
 import 'package:financial_app/screens/notification/notification_page.dart';
 import 'package:financial_app/screens/reminder/reminder_page.dart';
 import 'package:financial_app/screens/transactions/transactions_page.dart';
-import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';

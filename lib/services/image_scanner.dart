@@ -1,4 +1,4 @@
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -12,7 +12,7 @@ class ImageScanner {
   Future<void> processImage(
       String imagePath, Function(String) onTextParsed) async {
     final inputImage = InputImage.fromFilePath(imagePath);
-    final textRecognizer = GoogleMlKit.vision.textRecognizer();
+    final textRecognizer = TextRecognizer();
 
     try {
       final recognizedText = await textRecognizer.processImage(inputImage);

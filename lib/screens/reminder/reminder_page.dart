@@ -4,6 +4,7 @@ import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/reminder_card.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/reminder/add_reminder.dart';
+import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -189,8 +190,12 @@ class _ReminderPageState extends State<ReminderPage> {
                           deleteFunction: (context) {
                             _reminderBloc.add(
                                 ReminderDeleteEvent(reminderID: reminder.id));
-                            _reminderBloc.add(ReminderFetchEvent(
-                                userID: _authRepository.userID));
+                            _reminderBloc.add(
+                              ReminderFetchEvent(
+                                  userID: _authRepository.userID),
+                            );
+                            NotificationService.cancelReminderNotification(
+                                reminder.id.hashCode);
                           },
                         );
                       },
@@ -210,7 +215,7 @@ class _ReminderPageState extends State<ReminderPage> {
     );
   }
 
-    Future<void> requestNotificationPermission() async {
+  Future<void> requestNotificationPermission() async {
     PermissionStatus status = await Permission.notification.request();
 
     if (status.isDenied) {
@@ -244,7 +249,6 @@ class _ReminderPageState extends State<ReminderPage> {
       openAppSettings();
     }
   }
-
 
   void showErrorSnackBar(String error) {
     CustomSnackBar.show(

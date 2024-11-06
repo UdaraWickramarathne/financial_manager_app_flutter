@@ -3,6 +3,9 @@ import 'package:financial_app/models/reminder.dart';
 import 'package:financial_app/repositories/reminder/base_reminder_repository.dart';
 import 'dart:developer' as developer;
 
+import 'package:financial_app/services/notification_service.dart';
+import 'package:intl/intl.dart';
+
 class ReminderRepository extends BaseReminderRepository {
   final CollectionReference _reminderCollection =
       FirebaseFirestore.instance.collection('reminders');
@@ -13,6 +16,7 @@ class ReminderRepository extends BaseReminderRepository {
       final doc = _reminderCollection.doc();
       reminder.id = doc.id;
       await doc.set(reminder.toJson());
+      await scheduleReminderNotification(reminder);
       developer.log('goal add success');
     } catch (e) {
       developer.log('goal add error');
@@ -61,5 +65,27 @@ class ReminderRepository extends BaseReminderRepository {
       developer.log('reminder fail to update ${e.toString()}');
       rethrow;
     }
+  }
+
+  Future<void> scheduleReminderNotification(Reminder reminder) async {
+    DateTime selectedDate = DateTime.parse(reminder.date);
+    final DateFormat format = DateFormat.jm();
+    final DateTime selectedTime = format.parse(reminder.time);
+    // Combine date and time into a single DateTime object
+    DateTime reminderDateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+    developer.log(reminder.id.hashCode.toString());
+    await NotificationService.scheduleNotification(
+      reminder.id.hashCode, // Unique ID for the reminder, can be made dynamic
+      reminder.title, // Use task title as notification title
+      reminder.description, // Use description as notification body
+      reminderDateTime,
+      reminder.frequancy,
+    );
   }
 }

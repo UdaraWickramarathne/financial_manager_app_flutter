@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ReminderPage extends StatefulWidget {
   const ReminderPage({super.key});
@@ -88,6 +89,7 @@ class _ReminderPageState extends State<ReminderPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          requestNotificationPermission();
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -198,6 +200,42 @@ class _ReminderPageState extends State<ReminderPage> {
       ),
     );
   }
+
+    Future<void> requestNotificationPermission() async {
+    PermissionStatus status = await Permission.notification.request();
+
+    if (status.isDenied) {
+      // Permission denied. Show a dialog to ask the user to open app settings
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Permission Denied'),
+          content: const Text(
+            'Notification permission is required to send reminders. Please enable it in the app settings.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                openAppSettings(); // Open the app settings page
+              },
+              child: const Text('Go to Settings'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Just close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
+      );
+    } else if (status.isPermanentlyDenied) {
+      // The permission is permanently denied, guide the user to settings
+      openAppSettings();
+    }
+  }
+
 
   void showErrorSnackBar(String error) {
     CustomSnackBar.show(

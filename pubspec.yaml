@@ -111,7 +111,7 @@ dependencies:
   flutter_tts: ^3.4.2
 
   #for push notifications
-  flutter_local_notifications: ^18.0.0
+  flutter_local_notifications: 
   timezone: ^0.9.3
 
 

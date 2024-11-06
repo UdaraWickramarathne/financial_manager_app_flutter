@@ -9,14 +9,15 @@ class Goal {
   String deadline;
   final Timestamp createdAt;
 
-  Goal(
-      {this.id = '',
-      required this.userID,
-      required this.title,
-      required this.currentAmount,
-      required this.deadline,
-      required this.createdAt,
-      required this.targetAmount});
+  Goal({
+    String? id,
+    required this.userID,
+    required this.title,
+    required this.currentAmount,
+    required this.deadline,
+    required this.createdAt,
+    required this.targetAmount,
+  }) : id = id ?? '';
 
   toJson() => {
         'id': id,

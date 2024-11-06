@@ -41,10 +41,10 @@ class ReminderBloc extends Bloc<ReminderEvent, ReminderState> {
           emit(ReminderUpdateLoading());
           await _reminderRepository.updateReminder(
               reminderID: event.reminderID, reminder: event.reminder);
-          await Future.delayed(const Duration(seconds: 1));
+          await Future.delayed(const Duration(milliseconds: 500));
           emit(ReminderUpdateSuccess());
         } catch (e) {
-          await Future.delayed(const Duration(seconds: 1));
+          await Future.delayed(const Duration(milliseconds: 500));
           emit(
             const ReminderUpdateError(message: 'Error during updating'),
           );

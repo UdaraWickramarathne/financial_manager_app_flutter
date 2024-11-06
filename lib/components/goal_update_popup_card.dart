@@ -92,7 +92,7 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
               );
             },
           );
-        } else if (state is GoalSuccess) {
+        } else if (state is GoalUpdateSuccess) {
           Navigator.pop(context);
           Navigator.pop(context, updatedGoal);
           showSuccessSnakBar();

@@ -17,6 +17,7 @@ import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -104,9 +105,11 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute(
-                          page: const NotificationPage(),
-                        ));
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: const NotificationPage(),
+                                type: PageTransitionType.leftToRight));
                       },
                       child: const Icon(
                         Icons.notifications,
@@ -228,24 +231,22 @@ class _DashboardState extends State<Dashboard> {
             Expanded(
               child: BlocBuilder<TransactionBloc, TransactionState>(
                 bloc: _transactionBloc,
+                buildWhen: (previous, current) {
+                  return current is TransactionLoading ||
+                      current is TransactionLoaded ||
+                      current is TransactionError ||
+                      current is TransactionEmpty;
+                },
                 builder: (context, state) {
                   if (state is TransactionLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is TransactionLoaded) {
                     return ListView.builder(
-                      itemCount: state.transaction.length > 5
-                          ? 5
-                          : state.transaction.length,
+                      itemCount: state.transaction.length,
                       itemBuilder: (context, index) {
                         final transaction = state.transaction[index];
                         return TransactionTile(
-                          id: transaction.id,
-                          title: transaction.title,
-                          createdAt: transaction.createdAt,
-                          category: transaction.category,
-                          amount: transaction.amount,
-                          date: transaction.date,
-                          isIncome: transaction.isIncome,
+                          transaction: transaction,
                           deleteFunction: (p0) {
                             _transactionBloc.add(
                               TransactionDeleteEvent(
@@ -259,6 +260,8 @@ class _DashboardState extends State<Dashboard> {
                         );
                       },
                     );
+                  } else if (state is TransactionEmpty) {
+                    return const Center(child: Text('No transactions found.'));
                   }
                   return const Center(child: Text('No transactions found.'));
                 },

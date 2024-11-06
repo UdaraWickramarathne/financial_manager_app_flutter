@@ -159,16 +159,20 @@ class _AnalysisPageState extends State<AnalysisPage>
                               ),
                               indicatorSize: TabBarIndicatorSize.tab,
                               tabs: const [
-                                Expanded(
+                                SizedBox(
+                                  width: 80,
                                   child: Tab(text: "Daily"),
                                 ),
-                                Expanded(
+                                SizedBox(
+                                  width: 80,
                                   child: Tab(text: "Weekly"),
                                 ),
-                                Expanded(
+                                SizedBox(
+                                  width: 80,
                                   child: Tab(text: "Monthly"),
                                 ),
-                                Expanded(
+                                SizedBox(
+                                  width: 80,
                                   child: Tab(text: "Year"),
                                 ),
                               ],

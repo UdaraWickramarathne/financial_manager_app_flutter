@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:financial_app/components/transaction_update_popup.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/transaction.dart';
@@ -8,24 +7,12 @@ import 'package:intl/intl.dart';
 import "dart:developer" as developer;
 
 class TransactionTile extends StatefulWidget {
-  final String id;
-  final String title;
-  final String category;
-  final double amount;
-  final String date;
-  final bool isIncome;
-  final Timestamp createdAt;
+  final Transaction transaction;
   final void Function(BuildContext)? deleteFunction;
 
   const TransactionTile({
     super.key,
-    required this.title,
-    required this.category,
-    required this.amount,
-    required this.createdAt,
-    required this.date,
-    required this.isIncome,
-    required this.id,
+    required this.transaction,
     required this.deleteFunction,
   });
 
@@ -48,10 +35,10 @@ class _TransactionTileState extends State<TransactionTile> {
   @override
   void initState() {
     super.initState();
-    title = widget.title;
-    category = widget.category;
-    amount = widget.amount;
-    date = widget.date;
+    title = widget.transaction.title;
+    category = widget.transaction.category;
+    amount = widget.transaction.amount;
+    date = widget.transaction.date;
   }
 
   @override
@@ -153,19 +140,47 @@ class _TransactionTileState extends State<TransactionTile> {
       ),
       child: GestureDetector(
         onTap: () async {
-          final updatedTransaction = await showDialog<Transaction>(
+          // final updatedTransaction = await showDialog<Transaction>(
+          //   context: context,
+          //   builder: (context) => TransactionUpdatePopUp(
+          //     title: title,
+          //     id: widget.id,
+          //     date: date,
+          //     selectedCategory: category,
+          //     amount: amount,
+          //     icon: icon,
+          //     createdAt: widget.createdAt,
+          //     containerColor: containerColor,
+          //     iconColor: iconColor,
+          //     isIncome: widget.isIncome,
+          //   ),
+          // );
+          // if (updatedTransaction != null) {
+          //   developer.log(updatedTransaction.toString());
+          //   setState(() {
+          //     title = updatedTransaction.title;
+          //     amount = updatedTransaction.amount;
+          //     date = updatedTransaction.date;
+          //     category = updatedTransaction.category;
+          //   });
+          // }
+
+          final updatedTransaction = await showModalBottomSheet<Transaction>(
             context: context,
-            builder: (context) => TransactionUpdatePopUp(
-              title: title,
-              id: widget.id,
-              date: date,
-              selectedCategory: category,
-              amount: amount,
-              icon: icon,
-              createdAt: widget.createdAt,
-              containerColor: containerColor,
-              iconColor: iconColor,
-              isIncome: widget.isIncome,
+            isScrollControlled: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            builder: (context) => TransactionUpdatePopup(
+              transaction: Transaction(
+                  id: widget.transaction.id,
+                  userID: widget.transaction.userID,
+                  title: title,
+                  category: category,
+                  amount: amount,
+                  date: date,
+                  isIncome: widget.transaction.isIncome,
+                  createdAt: widget.transaction.createdAt),
             ),
           );
           if (updatedTransaction != null) {
@@ -224,10 +239,12 @@ class _TransactionTileState extends State<TransactionTile> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      widget.isIncome ? '+\$$amount' : '-\$$amount',
+                      widget.transaction.isIncome ? '+\$$amount' : '-\$$amount',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: widget.isIncome ? Colors.green : Colors.red,
+                        color: widget.transaction.isIncome
+                            ? Colors.green
+                            : Colors.red,
                       ),
                     ),
                     Text(

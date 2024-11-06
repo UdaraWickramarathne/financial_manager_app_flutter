@@ -7,6 +7,7 @@ import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/models/reminder.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
+import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,8 @@ class _AddReminderState extends State<AddReminder> {
 
   late ReminderBloc _reminderBloc;
   late AuthRepository _authRepository;
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
 
   String? _selectedItem;
   final List<String> repeatOptions = [
@@ -62,6 +65,7 @@ class _AddReminderState extends State<AddReminder> {
     );
     if (picked != null) {
       setState(() {
+        selectedTime = picked;
         timeController.text = picked.format(context);
       });
     }
@@ -76,8 +80,30 @@ class _AddReminderState extends State<AddReminder> {
     );
     if (pickedDate != null) {
       setState(() {
+        selectedDate = pickedDate;
         dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
       });
+    }
+  }
+
+  Future<void> scheduleReminderNotification() async {
+    if (selectedDate != null && selectedTime != null) {
+      // Combine date and time into a single DateTime object
+      DateTime reminderDateTime = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+        selectedTime!.hour,
+        selectedTime!.minute,
+      );
+
+      // Schedule the notification
+      await NotificationService.scheduleNotification(
+        1, // Unique ID for the reminder, can be made dynamic
+        titleController.text, // Use task title as notification title
+        descriptionController.text, // Use description as notification body
+        reminderDateTime,
+      );
     }
   }
 
@@ -126,6 +152,7 @@ class _AddReminderState extends State<AddReminder> {
             Navigator.pop(context);
             clearFields();
             showSuccessSnakBar();
+            scheduleReminderNotification();
           } else if (state is ReminderError) {
             Navigator.pop(context);
             showErrorSnackBar(state.message);

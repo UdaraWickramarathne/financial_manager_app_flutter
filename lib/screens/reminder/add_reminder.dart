@@ -33,6 +33,7 @@ class _AddReminderState extends State<AddReminder> {
   String? _selectedItem;
   final List<String> repeatOptions = [
     'Never',
+    'Every minute',  
     'Everyday',
     'Every week',
     'Every month',
@@ -87,25 +88,33 @@ class _AddReminderState extends State<AddReminder> {
   }
 
   Future<void> scheduleReminderNotification() async {
-    if (selectedDate != null && selectedTime != null) {
-      // Combine date and time into a single DateTime object
-      DateTime reminderDateTime = DateTime(
-        selectedDate!.year,
-        selectedDate!.month,
-        selectedDate!.day,
-        selectedTime!.hour,
-        selectedTime!.minute,
-      );
+  if (selectedDate != null && selectedTime != null && _selectedItem != null) {
+    // Combine date and time into a single DateTime object
+    DateTime reminderDateTime = DateTime(
+      selectedDate!.year,
+      selectedDate!.month,
+      selectedDate!.day,
+      selectedTime!.hour,
+      selectedTime!.minute,
+    );
 
-      // Schedule the notification
-      await NotificationService.scheduleNotification(
-        1, // Unique ID for the reminder, can be made dynamic
-        titleController.text, // Use task title as notification title
-        descriptionController.text, // Use description as notification body
-        reminderDateTime,
-      );
-    }
+int generateUniqueNotificationId() {
+  final id = DateTime.now().millisecondsSinceEpoch.remainder(100000);
+  print(id);
+  return id;
+}
+
+    // Schedule the notification with the selected repeat frequency
+    await NotificationService.scheduleNotification(
+      generateUniqueNotificationId(), // Unique ID for the reminder, can be made dynamic
+      titleController.text, // Use task title as notification title
+      descriptionController.text, // Use description as notification body
+      reminderDateTime,
+      _selectedItem!,
+    );
   }
+}
+
 
   @override
   void initState() {
@@ -150,9 +159,10 @@ class _AddReminderState extends State<AddReminder> {
             );
           } else if (state is ReminderSuccess) {
             Navigator.pop(context);
-            clearFields();
-            showSuccessSnakBar();
+
             scheduleReminderNotification();
+            showSuccessSnakBar();
+            clearFields();
           } else if (state is ReminderError) {
             Navigator.pop(context);
             showErrorSnackBar(state.message);

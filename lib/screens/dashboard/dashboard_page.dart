@@ -17,6 +17,7 @@ import 'package:financial_app/services/custom_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -104,9 +105,11 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(CustomPageRoute(
-                          page: const NotificationPage(),
-                        ));
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: const NotificationPage(),
+                                type: PageTransitionType.leftToRight));
                       },
                       child: const Icon(
                         Icons.notifications,

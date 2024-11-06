@@ -48,6 +48,7 @@ dependencies:
 
   #for smooth animations
   transitioned_indexed_stack: ^1.0.2
+  page_transition: ^2.1.0
 
   #for currency convertor
   http: ^0.13.3

@@ -7,7 +7,6 @@ import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/models/reminder.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
-import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -85,34 +84,6 @@ class _AddReminderState extends State<AddReminder> {
       });
     }
   }
-
-  // int generateUniqueNotificationId() {
-  //   final id = DateTime.now().millisecondsSinceEpoch.remainder(100000);
-  //   print(id);
-  //   return id;
-  // }
-
-  // Future<void> scheduleReminderNotification() async {
-  //   if (selectedDate != null && selectedTime != null && _selectedItem != null) {
-  //     // Combine date and time into a single DateTime object
-  //     DateTime reminderDateTime = DateTime(
-  //       selectedDate!.year,
-  //       selectedDate!.month,
-  //       selectedDate!.day,
-  //       selectedTime!.hour,
-  //       selectedTime!.minute,
-  //     );
-
-  //     // Schedule the notification with the selected repeat frequency
-  //     await NotificationService.scheduleNotification(
-  //       generateUniqueNotificationId(), // Unique ID for the reminder, can be made dynamic
-  //       titleController.text, // Use task title as notification title
-  //       descriptionController.text, // Use description as notification body
-  //       reminderDateTime,
-  //       _selectedItem!,
-  //     );
-  //   }
-  // }
 
   @override
   void initState() {

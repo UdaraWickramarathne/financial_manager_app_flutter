@@ -76,7 +76,6 @@ class _TransactionTileState extends State<TransactionTile> {
         iconColor = Colors.amber[800]!;
         containerColor = Colors.amber[100]!;
         icon = Icons.fastfood;
-
         break;
       case 'Sport':
         iconColor = Colors.yellow[800]!;

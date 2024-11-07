@@ -1,6 +1,9 @@
+import 'package:financial_app/blocs/budget/budget_bloc.dart';
 import 'package:financial_app/components/budget_card.dart';
 import 'package:financial_app/components/balance_card.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'budget_add.dart';
 
 class BudgetPage extends StatefulWidget {
@@ -11,6 +14,17 @@ class BudgetPage extends StatefulWidget {
 }
 
 class _BudgetPageState extends State<BudgetPage> {
+  late AuthRepository _authRepository;
+  late BudgetBloc _budgetBloc;
+
+  @override
+  void initState() {
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _budgetBloc = RepositoryProvider.of<BudgetBloc>(context);
+    _budgetBloc.add(BudgetFetchEvent(userID: _authRepository.userID));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,54 +125,44 @@ class _BudgetPageState extends State<BudgetPage> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BudgetCard(
-                      id: '1',
-                      title: 'Groceries',
-                      budgetAmount: 60000,
-                      spendAmount: 2000,
-                      icon: Icons.shopping_cart,
-                    ),
-                    BudgetCard(
-                      id: '1',
-                      title: 'Travels',
-                      budgetAmount: 60000,
-                      spendAmount: 2000,
-                      icon: Icons.directions_car,
-                    ),
-                    BudgetCard(
-                      id: '1',
-                      title: 'Entertainment',
-                      budgetAmount: 60000,
-                      spendAmount: 2000,
-                      icon: Icons.theaters,
-                    ),
-                    BudgetCard(
-                      id: '1',
-                      title: 'Rent',
-                      budgetAmount: 60000,
-                      spendAmount: 2000,
-                      icon: Icons.directions_car,
-                    ),
-                    BudgetCard(
-                      id: '1',
-                      title: 'Groceries',
-                      budgetAmount: 60000,
-                      spendAmount: 2000,
-                      icon: Icons.shopping_cart,
-                    ),
-                    BudgetCard(
-                      id: '1',
-                      title: 'Groceries',
-                      budgetAmount: 60000,
-                      spendAmount: 2000,
-                      icon: Icons.shopping_cart,
-                    ),
-                  ],
-                ),
+              child: BlocBuilder<BudgetBloc, BudgetState>(
+                bloc: _budgetBloc,
+                buildWhen: (previous, current) {
+                  return current is BudgetFetchError ||
+                      current is BudgetFetchLoading ||
+                      current is BudgetFetchLoaded ||
+                      current is BudgetsEmpty;
+                },
+                builder: (context, state) {
+                  if (state is BudgetFetchLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is BudgetFetchLoaded) {
+                    return ListView.builder(
+                      itemCount: state.budgets.length,
+                      itemBuilder: (context, index) {
+                        final budget = state.budgets[index];
+                        return BudgetCard(
+                          budget: budget,
+                          deleteFunction: (context) {
+                            _budgetBloc
+                                .add(BudgetDeleteEvent(budgetID: budget.id));
+
+                            _budgetBloc.add(BudgetFetchEvent(
+                                userID: _authRepository.userID));
+                          },
+                        );
+                      },
+                    );
+                  } else if (state is BudgetsEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Create budgets to track your expenses and reach your financial goals with ease.',
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }
+                  return const Center(child: Text('No Budgets found.'));
+                },
               ),
             ),
           ],

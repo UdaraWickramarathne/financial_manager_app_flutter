@@ -27,6 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   Color emailBorderColor = Colors.transparent;
   Color passwordBorderColor = Colors.transparent;
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
 
   late AuthBloc authBloc;
 
@@ -120,6 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         isObsecure: false,
                         label: AppLocalizations.of(context).translate('email'),
                         suffixIcon: null,
+                        focusNode: emailFocusNode,
                         controller: emailController,
                         borderColor: emailBorderColor,
                       ),
@@ -128,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         isReadOnly: false,
                         controller: passwordController,
                         isObsecure: !_isPasswordVisible,
+                        focusNode: passwordFocusNode,
                         borderColor: passwordBorderColor,
                         label:
                             AppLocalizations.of(context).translate('password'),
@@ -178,6 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
               SimpleButton(
                 data: AppLocalizations.of(context).translate('login'),
                 onPressed: () {
+                  emailFocusNode.unfocus();
+                  passwordFocusNode.unfocus();
+                  FocusScope.of(context).unfocus();
                   final email = emailController.text;
                   final password = passwordController.text;
                   if (_validateInputs(email, password)) {

@@ -6,16 +6,47 @@ import 'dart:developer' as developer;
 class TransactionRepository extends BaseTransactionRepository {
   final CollectionReference _transactionsCollection =
       FirebaseFirestore.instance.collection('transactions');
+  final CollectionReference _budgetsCollection =
+      FirebaseFirestore.instance.collection('budgets');
 
   @override
   Future<void> addTransaction({required Transaction transaction}) async {
     try {
-      final doc = _transactionsCollection.doc();
-      transaction.id = doc.id;
-      await doc.set(transaction.toJson());
-      developer.log('transaction add success');
+      // Start a Firestore batch
+      final batch = FirebaseFirestore.instance.batch();
+
+      // Create a new document reference for the transaction
+      final transactionDoc = _transactionsCollection.doc();
+      transaction.id = transactionDoc.id;
+
+      // Add the transaction to the batch
+      batch.set(transactionDoc, transaction.toJson());
+
+      // Check if a budget exists for the user and category
+      final budgetQuery = await _budgetsCollection
+          .where('userID', isEqualTo: transaction.userID)
+          .where('category', isEqualTo: transaction.category)
+          .limit(1)
+          .get();
+
+      if (budgetQuery.docs.isNotEmpty) {
+        final budgetDoc = budgetQuery.docs.first;
+        final budgetRef = budgetDoc.reference;
+
+        // Calculate the new currentAmount
+        final currentAmount = budgetDoc['currentAmount'] ?? 0.0;
+        final newCurrentAmount = currentAmount + transaction.amount;
+
+        // Update the budget's currentAmount in the batch
+        batch.update(budgetRef, {'currentAmount': newCurrentAmount});
+      }
+
+      // Commit the batch to apply all changes
+      await batch.commit();
+      developer.log('Transaction added and budget updated successfully.');
     } catch (e) {
-      developer.log('transaction adding error ${e.toString()}');
+      developer
+          .log('Error adding transaction and updating budget: ${e.toString()}');
       rethrow;
     }
   }

@@ -108,7 +108,12 @@ class _DashboardState extends State<Dashboard> {
                             context,
                             PageTransition(
                                 child: const NotificationPage(),
-                                type: PageTransitionType.leftToRight));
+                                duration: const Duration(milliseconds: 400),
+                                reverseDuration:
+                                    const Duration(milliseconds: 400),
+                                curve: Curves.elasticIn,
+                                opaque: true,
+                                type: PageTransitionType.rightToLeft));
                       },
                       child: const Icon(
                         Icons.notifications,

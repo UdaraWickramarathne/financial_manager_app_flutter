@@ -16,7 +16,7 @@ class ReminderRepository extends BaseReminderRepository {
       final doc = _reminderCollection.doc();
       reminder.id = doc.id;
       await doc.set(reminder.toJson());
-      await scheduleReminderNotification(reminder);
+      await scheduleReminderNotification(reminder: reminder);
       developer.log('goal add success');
     } catch (e) {
       developer.log('goal add error');
@@ -67,7 +67,9 @@ class ReminderRepository extends BaseReminderRepository {
     }
   }
 
-  Future<void> scheduleReminderNotification(Reminder reminder) async {
+  @override
+  Future<void> scheduleReminderNotification(
+      {required Reminder reminder}) async {
     DateTime selectedDate = DateTime.parse(reminder.date);
     final DateFormat format = DateFormat.jm();
     final DateTime selectedTime = format.parse(reminder.time);

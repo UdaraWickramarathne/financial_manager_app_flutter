@@ -9,4 +9,6 @@ abstract class BaseReminderRepository {
 
   Future<void> updateReminder(
       {required String reminderID, required Reminder reminder});
+
+  Future<void> scheduleReminderNotification({required Reminder reminder});
 }

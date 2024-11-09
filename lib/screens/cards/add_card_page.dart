@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
@@ -150,18 +151,21 @@ class _AddCardPageState extends State<AddCardPage> {
     final XFile? frontImage =
         await _picker.pickImage(source: ImageSource.camera);
     if (frontImage == null) {
-      showErrorSnackBar('Front side image not captured. Please try again.');
+      String message = AppLocalizations.of(context).translate('front_side_image_not_captured');
+      showErrorSnackBar(message);
       return;
     }
     frontImagePath = frontImage.path;
 
     //Future.delayed(const Duration(seconds: 1));
-    _speak('Now, capture the back side of the card.');
+     String message = AppLocalizations.of(context).translate('capture_back_side_of_card');
+    _speak(message);
 
     final XFile? backImage =
         await _picker.pickImage(source: ImageSource.camera);
     if (backImage == null) {
-      showErrorSnackBar('Back side image not captured. Please try again.');
+      String message = AppLocalizations.of(context).translate('back_side_image_not_captured');
+      showErrorSnackBar(message);
       return;
     }
     backImagePath = backImage.path;
@@ -210,7 +214,8 @@ class _AddCardPageState extends State<AddCardPage> {
     if (cardNumber != null && expiryDate != null && cvv != null) {
       _populateCardFields(cardNumber, expiryDate, cvv);
     } else {
-      showErrorSnackBar('Unable to extract all details. Please try again.');
+      String message = AppLocalizations.of(context).translate('unable_to_extract_details');
+      showErrorSnackBar(message);
     }
   }
 
@@ -233,10 +238,10 @@ class _AddCardPageState extends State<AddCardPage> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Add your Card',
-            style: TextStyle(fontSize: 22),
+            AppLocalizations.of(context).translate('add_your_card'),
+            style: const TextStyle(fontSize: 22),
           ),
         ),
         actions: [
@@ -270,7 +275,8 @@ class _AddCardPageState extends State<AddCardPage> {
                       isObsecure: false,
                       controller: _nameController,
                       isReadOnly: false,
-                      label: 'Card Holder Name',
+                      label: AppLocalizations.of(context)
+                          .translate('card_holder_name'),
                       onChanged: (p0) => setState(() {}),
                       inputFormat: [
                         LengthLimitingTextInputFormatter(16),
@@ -282,7 +288,8 @@ class _AddCardPageState extends State<AddCardPage> {
                       isObsecure: false,
                       controller: _cardNumberController,
                       isReadOnly: false,
-                      label: 'Card Number',
+                      label:
+                          AppLocalizations.of(context).translate('card_number'),
                       onChanged: (p0) => setState(() {}),
                       onTap: _flipBackward,
                       keyboardType: TextInputType.number,
@@ -301,7 +308,8 @@ class _AddCardPageState extends State<AddCardPage> {
                             controller: _dateController,
                             isReadOnly: false,
                             onChanged: (p0) => setState(() {}),
-                            label: 'Expire Date',
+                            label: AppLocalizations.of(context)
+                                .translate('expire_date'),
                             onTap: _flipBackward,
                             keyboardType: TextInputType.number,
                             inputFormat: [
@@ -319,7 +327,8 @@ class _AddCardPageState extends State<AddCardPage> {
                             isReadOnly: false,
                             onChanged: (p0) => setState(() {}),
                             keyboardType: TextInputType.number,
-                            label: 'CVV',
+                            label:
+                                AppLocalizations.of(context).translate('cvv'),
                             inputFormat: [
                               FilteringTextInputFormatter.digitsOnly,
                               LengthLimitingTextInputFormatter(3),
@@ -334,7 +343,7 @@ class _AddCardPageState extends State<AddCardPage> {
               ),
             ),
             SimpleButton(
-              data: 'Save Card',
+              data: 'save_card',
               onPressed: () {},
             )
           ],

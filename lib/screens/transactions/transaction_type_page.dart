@@ -1,6 +1,7 @@
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/components/transaction_type_tile.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/transactions/add_expense_page.dart';
 import 'package:financial_app/screens/transactions/add_income_page.dart';
 import 'package:flutter/material.dart';
@@ -43,10 +44,10 @@ class _TransactionTypePageState extends State<TransactionTypePage> {
                   .add(TransactionFetchEvent(userID: _authRepository.userID));
             },
             icon: const Icon(Icons.arrow_back)),
-        title: const Center(
+        title:  Center(
           child: Text(
-            'Transaction',
-            style: TextStyle(fontSize: 22),
+            AppLocalizations.of(context).translate('transaction'),
+            style: const TextStyle(fontSize: 22),
           ),
         ),
       ),
@@ -55,9 +56,9 @@ class _TransactionTypePageState extends State<TransactionTypePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Select your transaction type',
-              style: TextStyle(
+             Text(
+             AppLocalizations.of(context).translate('select_your_transaction_type'),
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
               ),

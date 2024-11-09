@@ -1,5 +1,6 @@
 import 'package:financial_app/components/payment_option.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/screens/paymen-pages/payment_methord/card_payment_screen.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethodSheet extends StatelessWidget {
@@ -91,8 +92,14 @@ class PaymentMethodSheet extends StatelessWidget {
             const SizedBox(height: 20),
             SimpleButton(
               data: 'Continue',
-              onPressed: () {},
-            )
+              onPressed: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CardPaymentScreen(accountNumber: '4554', amount: '500',)),
+          );
+          },
+          )
+
           ],
         ),
       ),

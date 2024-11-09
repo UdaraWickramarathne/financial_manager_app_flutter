@@ -1,4 +1,5 @@
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
@@ -6,6 +7,7 @@ import 'package:financial_app/screens/paymen-pages/bill_payment_page.dart';
 import 'package:financial_app/screens/profile-pages/account_info/account_info_page.dart';
 import 'package:financial_app/screens/profile-pages/privacy_policy/privacy_policy_page.dart';
 import 'package:financial_app/screens/cards/cards_page.dart';
+import 'package:financial_app/screens/profile-pages/rating/rating_dialog.dart';
 import 'package:financial_app/screens/profile-pages/settings/settings_page.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
@@ -79,9 +81,9 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       ListTile(
                         leading: const Icon(Icons.person),
-                        title: const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text('ACCOUNT INFO'),
+                        title:  Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(AppLocalizations.of(context).translate('account_info'),),
                         ),
                         onTap: () {
                           Navigator.pop(context);
@@ -93,9 +95,9 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
                       ListTile(
                         leading: const Icon(Icons.privacy_tip),
-                        title: const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text('PRIVACY POLICY'),
+                        title:  Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(AppLocalizations.of(context).translate('privacy_policy'),),
                         ),
                         onTap: () {
                           Navigator.pop(context);
@@ -110,9 +112,9 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
                       ListTile(
                         leading: const Icon(Icons.settings),
-                        title: const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text('SETTINGS'),
+                        title:  Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(AppLocalizations.of(context).translate('settings'),),
                         ),
                         onTap: () {
                           Navigator.pop(context);
@@ -125,12 +127,21 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      const ListTile(
-                        leading: Icon(Icons.star_rate),
+                       ListTile(
+                        leading: const Icon(Icons.star_rate),
                         title: Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text('RATE APP'),
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(AppLocalizations.of(context).translate('rate_app'),),
                         ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>  RatingDialog(),
+                            ),
+                          );
+                        },
                       ),
                       const Spacer(),
                       ListTile(
@@ -138,9 +149,9 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {
                           _authBloc.add(AuthSignOutRequest());
                         },
-                        title: const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Text('LOGOUT'),
+                        title:  Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(AppLocalizations.of(context).translate('logout'),),
                         ),
                       ),
                     ],

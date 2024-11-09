@@ -3,6 +3,7 @@ import 'package:financial_app/blocs/budget/budget_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -108,9 +109,9 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
-                          'Budget Amount: ',
-                          style: TextStyle(
+                         Text(
+                          AppLocalizations.of(context).translate('budget_amount_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
@@ -158,9 +159,9 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Time Period: ',
-                          style: TextStyle(
+                         Text(
+                          AppLocalizations.of(context).translate('time_period'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
@@ -212,7 +213,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                       ),
                     const SizedBox(height: 30),
                     SimpleButton(
-                      data: 'Update Budget',
+                      data: 'update budget',
                       onPressed: () {
                         setState(() {
                           errorMessage = '';

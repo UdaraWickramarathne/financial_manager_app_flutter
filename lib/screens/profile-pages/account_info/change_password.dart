@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/input_field.dart';
@@ -24,9 +25,9 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Change Password',
-          style: TextStyle(fontSize: 22),
+        title:  Text(
+          AppLocalizations.of(context).translate('change_password'),
+          style:const TextStyle(fontSize: 22),
         ),
         centerTitle: true,
         elevation: 0,
@@ -41,7 +42,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               controller: oldPasswordController,
               isObsecure: !_oldPasswordVisible,
               prefixIcon: Icons.lock,
-              label: 'Old Password',
+              label: AppLocalizations.of(context).translate('old_password'),
               suffixIcon: IconButton(
                 icon: Icon(
                   _oldPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -60,7 +61,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               controller: newPasswordController,
               isObsecure: !_newPasswordVisible,
               prefixIcon: Icons.lock,
-              label: 'New Password',
+              label:  AppLocalizations.of(context).translate('new_password'),
               suffixIcon: IconButton(
                 icon: Icon(
                   _newPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -79,7 +80,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               controller: confirmPasswordController,
               isObsecure: !_confirmPasswordVisible,
               prefixIcon: Icons.lock,
-              label: 'Confirm Password',
+              label: AppLocalizations.of(context).translate('confirm_password'),
               suffixIcon: IconButton(
                 icon: Icon(
                   _confirmPasswordVisible
@@ -96,7 +97,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             ),
             const Spacer(),
             SimpleButton(
-              data: 'Change Password',
+              data: 'change_password',
               onPressed: () {},
             ),
           ],

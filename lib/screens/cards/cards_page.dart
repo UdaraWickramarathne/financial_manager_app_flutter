@@ -2,6 +2,7 @@ import 'package:financial_app/components/visa-master-cards/master_card_2.dart';
 import 'package:financial_app/components/visa-master-cards/master_card_3.dart';
 import 'package:financial_app/components/visa-master-cards/visa_card_1.dart';
 import 'package:financial_app/components/visa-master-cards/visa_card_2.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/cards/add_card_page.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -20,10 +21,10 @@ class _CardsPageState extends State<CardsPage> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: const Center(
+        title:  Center(
           child: Text(
-            'My Cards',
-            style: TextStyle(fontSize: 22),
+            AppLocalizations.of(context).translate('my_cards'),
+            style: const TextStyle(fontSize: 22),
           ),
         ),
       ),
@@ -78,19 +79,19 @@ class _CardsPageState extends State<CardsPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Column(
+                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Add new Card',
-                            style: TextStyle(
+                            AppLocalizations.of(context).translate('add_new_card'),
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          Text(
-                            'Save time by adding your cards.',
-                            style: TextStyle(
+                           Text(
+                            AppLocalizations.of(context).translate('save_time_by_adding_cards'),
+                            style: const TextStyle(
                               color: Colors.grey,
                             ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
@@ -89,9 +90,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Profile',
-          style: TextStyle(fontSize: 22),
+        title: Text(
+          AppLocalizations.of(context).translate('my_profile'),
+          style: const TextStyle(fontSize: 22),
         ),
         centerTitle: true,
         elevation: 0,
@@ -148,14 +149,14 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       controller: nameController,
                       isObsecure: false,
                       prefixIcon: Icons.person,
-                      label: 'Name',
+                      label: AppLocalizations.of(context).translate('name'),
                     ),
                     const SizedBox(height: 20),
                     InputField(
                       isReadOnly: false,
                       controller: emailController,
                       isObsecure: false,
-                      label: 'Email',
+                      label: AppLocalizations.of(context).translate('email'),
                       prefixIcon: Icons.email,
                     ),
                     const SizedBox(height: 20),
@@ -163,19 +164,19 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       isReadOnly: false,
                       controller: phoneController,
                       isObsecure: false,
-                      label: 'Phone Number',
+                      label: AppLocalizations.of(context).translate('phone_number'),
                       prefixIcon: Icons.phone,
                     ),
                     const SizedBox(height: 20),
                     ClickbleTextfield(
-                      label: 'Select Gender',
+                      label: AppLocalizations.of(context).translate('select_gender'),
                       controller: genderController,
                       onTap: _showGenderPicker,
                       prefixIcon: Icons.transgender,
                     ),
                     const SizedBox(height: 20),
                     ClickbleTextfield(
-                      label: 'Select Birth Date',
+                      label: AppLocalizations.of(context).translate('select_birth_date'),
                       prefixIcon: Icons.calendar_month,
                       controller: birthdateController,
                       onTap: () async {
@@ -197,7 +198,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               ),
             ),
             SimpleButton(
-              data: 'Save',
+              data: 'save',
               onPressed: () {},
             ),
           ],

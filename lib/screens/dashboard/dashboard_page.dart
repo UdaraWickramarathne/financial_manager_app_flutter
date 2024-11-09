@@ -180,7 +180,7 @@ class _DashboardState extends State<Dashboard> {
                           },
                           backgroundColor:
                               const Color.fromARGB(255, 251, 218, 187),
-                          text: 'Reminders',
+                          text: 'reminders',
                           icon: Icons.alarm,
                           foregroundColor:
                               const Color.fromARGB(255, 253, 159, 71),
@@ -265,9 +265,9 @@ class _DashboardState extends State<Dashboard> {
                       },
                     );
                   } else if (state is TransactionEmpty) {
-                    return const Center(child: Text('No transactions found.'));
+                    return Center(child: Text(AppLocalizations.of(context).translate('no_transactions_found'),));
                   }
-                  return const Center(child: Text('No transactions found.'));
+                  return Center(child: Text(AppLocalizations.of(context).translate('no_transactions_found'),));
                 },
               ),
             )
@@ -281,7 +281,7 @@ class _DashboardState extends State<Dashboard> {
     CustomSnackBar.show(
       context,
       title: 'Deleted!!',
-      message: 'Your transaction has been deleted successfully.',
+      message: AppLocalizations.of(context).translate('transaction_deleted_successfully'),
       contentType: ContentType.success,
     );
   }

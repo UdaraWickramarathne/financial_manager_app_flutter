@@ -6,6 +6,7 @@ import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/dashed_border_button.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/services/image_scanner.dart';
@@ -120,9 +121,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text(
-            'Select Expense Type',
-            style: TextStyle(
+          title:  Text(
+            AppLocalizations.of(context).translate('select_expense_type'),
+            style: const TextStyle(
               fontSize: 25,
             ),
           ),
@@ -145,7 +146,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           children: [
                             Text(category['icon'] ?? ''),
                             const SizedBox(width: 6),
-                            Text(category['name'] ?? ''),
+                            Text (AppLocalizations.of(context).translate(category['name'] ?? '')),
                           ],
                         ),
                       ),
@@ -207,9 +208,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Add Expense',
-          style: TextStyle(fontSize: 22),
+        title:  Text(
+          AppLocalizations.of(context).translate('add_expense'),
+          style: const TextStyle(fontSize: 22),
         ),
         actions: [
           IconButton(
@@ -250,9 +251,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 15),
-                      const Text(
-                        ' AMOUNT',
-                        style: TextStyle(
+                       Text(
+                        AppLocalizations.of(context).translate('amount'),
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                       const SizedBox(height: 10),
@@ -266,16 +267,16 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           onPressed: () {
                             amountController.text = '';
                           },
-                          child: const Text('Clear'),
+                          child: Text (AppLocalizations.of(context).translate('clear')),
                         ),
                         prefixText: 'Rs. ',
                         controller: amountController,
                         keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: 20),
-                      const Text(
-                        ' TITLE',
-                        style: TextStyle(
+                       Text(
+                        AppLocalizations.of(context).translate('title'),
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                       const SizedBox(height: 10),
@@ -285,7 +286,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                         borderColor: titleBorderColor,
                         focusNode: titleFocusNode,
                         isReadOnly: false,
-                        label: 'Add a title',
+                        label:   AppLocalizations.of(context).translate('add_a_title'),
                       ),
                       const SizedBox(height: 20),
                       Row(
@@ -294,9 +295,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  ' EXPENSE TYPE',
-                                  style: TextStyle(
+                                 Text(
+                                  AppLocalizations.of(context).translate('expense_type'),
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey),
                                 ),
@@ -308,7 +309,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                                   prefixIcon: selectedIcon,
                                   focusNode: categoryFocusNode,
                                   isReadOnly: true,
-                                  label: 'eg: Food',
+                                  label: AppLocalizations.of(context).translate('eg_food'),
                                   suffixIcon: const Icon(
                                       Icons.keyboard_arrow_down_sharp),
                                   onTap: showExpenseTypes,
@@ -321,9 +322,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  ' DATE',
-                                  style: TextStyle(
+                                 Text(
+                                  AppLocalizations.of(context).translate('date'),
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey),
                                 ),
@@ -357,16 +358,16 @@ class _AddExpensePageState extends State<AddExpensePage> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      const Text(
-                        ' INVOICE(Optional)',
-                        style: TextStyle(
+                       Text(
+                        AppLocalizations.of(context).translate('invoice_optional'),
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                       const SizedBox(height: 10),
                       DashedButton(
                         onPressed: pickFile,
                         icon: Icons.add_circle,
-                        text: 'Add Invoice',
+                        text: AppLocalizations.of(context).translate('add_invoice'),
                       ),
                       const SizedBox(height: 10),
                       Center(
@@ -383,7 +384,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
               ),
               const SizedBox(height: 20),
               SimpleButton(
-                data: 'Save',
+                data: 'save',
                 onPressed: () {
                   amountFocusNode.unfocus();
                   categoryFocusNode.unfocus();
@@ -420,8 +421,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
   void showSuccessSnakBar() {
     CustomSnackBar.show(
       context,
-      title: 'Successfully!!',
-      message: 'Your transaction has been added successfully.',
+      title: AppLocalizations.of(context).translate('successfully'),
+      message: AppLocalizations.of(context).translate('transaction_added_successfully'),
       contentType: ContentType.success,
     );
   }
@@ -455,19 +456,22 @@ class _AddExpensePageState extends State<AddExpensePage> {
       setState(() {
         amountBorderColor = Colors.red;
       });
-      showErrorSnackBar('Please enter a valid amount.');
+      String message = AppLocalizations.of(context).translate('enter_valid_amount');
+      showErrorSnackBar(message);
       return false;
     } else if (category.isEmpty) {
       setState(() {
         categoryBorderColor = Colors.red;
       });
-      showErrorSnackBar('Please select an expense category.');
+      String message = AppLocalizations.of(context).translate('select_expense_category');
+      showErrorSnackBar(message);
       return false;
     } else if (title.isEmpty) {
       setState(() {
         titleBorderColor = Colors.red;
       });
-      showErrorSnackBar('Please enter a title for the transaction.');
+      String message = AppLocalizations.of(context).translate('enter_transaction_title');
+      showErrorSnackBar(message);
       return false;
     }
     return true;

@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/paymen-pages/types_of_bill/electricity_bill.dart';
 import 'package:financial_app/screens/paymen-pages/types_of_bill/internet_bill.dart';
 import 'package:financial_app/screens/paymen-pages/types_of_bill/mobile_bill.dart';
@@ -12,10 +13,10 @@ class BillPayScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Bill Payment',
-            style: TextStyle(fontSize: 22),
+            AppLocalizations.of(context).translate('bill_payment'),
+            style: const TextStyle(fontSize: 22),
           ),
         ),
       ),
@@ -29,7 +30,7 @@ class BillPayScreen extends StatelessWidget {
             OptionCard(
               color: Colors.blue,
               icon: const Icon(Icons.flash_on, size: 50, color: Colors.white),
-              title: 'Electricity',
+              title: 'electricity',
               onTap: () {
                 Navigator.push(
                   context,
@@ -42,7 +43,7 @@ class BillPayScreen extends StatelessWidget {
             OptionCard(
               color: Colors.purple,
               icon: const Icon(Icons.wifi, size: 50, color: Colors.white),
-              title: 'Internet',
+              title: 'internet',
               onTap: () {
                 Navigator.push(
                   context,
@@ -55,7 +56,7 @@ class BillPayScreen extends StatelessWidget {
             OptionCard(
               color: Colors.orangeAccent,
               icon: const Icon(Icons.water, size: 50, color: Colors.white),
-              title: 'Water',
+              title: 'water',
               onTap: () {
                 Navigator.push(
                   context,
@@ -69,7 +70,7 @@ class BillPayScreen extends StatelessWidget {
               color: Colors.red,
               icon:
                   const Icon(Icons.phone_iphone, size: 50, color: Colors.white),
-              title: 'Mobile',
+              title: 'mobile',
               onTap: () {
                 Navigator.push(
                   context,
@@ -82,7 +83,7 @@ class BillPayScreen extends StatelessWidget {
             OptionCard(
               color: Colors.grey,
               icon: const Icon(Icons.tv, size: 50, color: Colors.white),
-              title: 'TV',
+              title: 'tv',
               onTap: () {
                 Navigator.push(
                   context,
@@ -142,7 +143,7 @@ class OptionCard extends StatelessWidget {
               icon,
               const SizedBox(height: 10),
               Text(
-                title,
+                AppLocalizations.of(context).translate(title),
                 style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
             ],

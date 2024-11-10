@@ -11,4 +11,7 @@ abstract class BaseTransactionRepository {
       {required String transactionID, required Transaction transaction});
 
   Future<Map<String, double>> getTotalIncomeExpense({required String userID});
+
+  Future<Map<String, dynamic>> getWeeklyTotals(
+      {required String userID, required DateTime startDate});
 }

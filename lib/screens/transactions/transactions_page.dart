@@ -7,7 +7,6 @@ import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'dart:developer' as dev;
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({super.key});

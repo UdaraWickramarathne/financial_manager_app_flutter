@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as dev;
 
 class BalanaceCard extends StatefulWidget {
   const BalanaceCard({super.key});

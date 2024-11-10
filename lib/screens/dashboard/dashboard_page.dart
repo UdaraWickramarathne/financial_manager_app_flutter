@@ -19,7 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer' as dev;
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

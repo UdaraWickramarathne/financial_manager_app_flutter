@@ -1,7 +1,10 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/transaction/base_transaction_repository.dart';
 import 'dart:developer' as developer;
+
+import 'package:intl/intl.dart';
 
 class TransactionRepository extends BaseTransactionRepository {
   final CollectionReference _transactionsCollection =
@@ -140,6 +143,72 @@ class TransactionRepository extends BaseTransactionRepository {
         'totalIncome': 0.0,
         'totalExpense': 0.0,
       };
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getWeeklyTotals(
+      {required String userID, required DateTime startDate}) async {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    List<String> dateRange = List.generate(7, (index) {
+      return dateFormat.format(startDate.add(Duration(days: index)));
+    });
+
+    try {
+      // Initialize Firestore query
+      QuerySnapshot querySnapshot = await _transactionsCollection
+          .where('userID', isEqualTo: userID)
+          .where('date', whereIn: dateRange)
+          .get();
+
+      // Initialize a map to store daily income and expenses
+      Map<String, Map<String, double>> dailyTotals = {
+        for (var date in dateRange) date: {'income': 0.0, 'expense': 0.0}
+      };
+
+      for (var doc in querySnapshot.docs) {
+        Transaction transaction = Transaction.fromJson(doc.data());
+
+        // Ensure the transaction date is within the range
+        if (dailyTotals.containsKey(transaction.date)) {
+          if (transaction.isIncome) {
+            dailyTotals[transaction.date]!['income'] =
+                (dailyTotals[transaction.date]!['income'] ?? 0.0) +
+                    transaction.amount;
+          } else {
+            dailyTotals[transaction.date]!['expense'] =
+                (dailyTotals[transaction.date]!['expense'] ?? 0.0) +
+                    transaction.amount;
+          }
+        }
+      }
+
+      // Convert the daily totals to a list of maps
+      List<Map<String, dynamic>> weeklyTotals = dateRange.map((date) {
+        return {
+          'date': date,
+          'income': dailyTotals[date]!['income'],
+          'expense': dailyTotals[date]!['expense'],
+        };
+      }).toList();
+
+      // Calculate the highest value across both income and expense
+      double highestValue = 0.0;
+
+      for (var dailyTotal in weeklyTotals) {
+        highestValue = [
+          highestValue,
+          dailyTotal['income'],
+          dailyTotal['expense']
+        ].reduce((a, b) => a > b ? a : b);
+      }
+
+      return {
+        'weeklyTotals': weeklyTotals,
+        'highestValue': highestValue,
+      };
+    } catch (e) {
+      rethrow;
     }
   }
 }

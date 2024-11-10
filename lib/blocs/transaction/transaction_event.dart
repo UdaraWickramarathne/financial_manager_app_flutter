@@ -55,3 +55,16 @@ class TransactionUpdateEvent extends TransactionEvent {
   @override
   List<Object> get props => [transactionID, transaction];
 }
+
+class TransactionAnalysisDailyEvent extends TransactionEvent {
+  final String userID;
+  final DateTime dateTime;
+
+  const TransactionAnalysisDailyEvent({
+    required this.userID,
+    required this.dateTime,
+  });
+
+  @override
+  List<Object> get props => [userID, dateTime];
+}

@@ -1,10 +1,8 @@
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/screens/profile-pages/account_info/change_password.dart';
-import 'package:financial_app/services/sms_service.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

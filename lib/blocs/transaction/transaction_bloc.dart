@@ -77,6 +77,17 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionGetTotalError(message: 'Error occured'));
         }
       }
+      if (event is TransactionAnalysisDailyEvent) {
+        try {
+          emit(TransactionAnalysisDailyLoading());
+          await Future.delayed(const Duration(seconds: 1));
+          final result = await _transactionRepository.getWeeklyTotals(
+              userID: event.userID, startDate: event.dateTime);
+          emit(TransactionAnalysisDailyLoaded(weelkyTotals: result));
+        } catch (e) {
+          emit(const TransactionAnalysisDailyError(message: 'Error occured'));
+        }
+      }
     });
   }
 }

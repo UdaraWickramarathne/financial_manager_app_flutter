@@ -1,5 +1,8 @@
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class DailyAnalysisChart extends StatefulWidget {
@@ -15,6 +18,8 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
   DateTime selectedDate = DateTime.now();
   DateTime? _startOfWeek;
   DateTime? _endOfWeek;
+  late AuthRepository _authRepository;
+  late TransactionBloc _transactionBloc;
 
   List<int> yAxisValues = [];
 
@@ -41,15 +46,16 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
     _startOfWeek =
         selectedDate.subtract(Duration(days: selectedDate.weekday % 7));
     _endOfWeek = _startOfWeek!.add(const Duration(days: 6));
-    //return selected date range
-    print(
-        '${DateFormat('yyyy-MM-dd').format(_startOfWeek!)}  -  ${DateFormat('yyyy-MM-dd').format(_endOfWeek!)}');
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _transactionBloc.add(TransactionAnalysisDailyEvent(
+        userID: _authRepository.userID, dateTime: _startOfWeek!));
+    // print(
+    //     '${DateFormat('yyyy-MM-dd').format(_startOfWeek!)}  -  ${DateFormat('yyyy-MM-dd').format(_endOfWeek!)}');
   }
 
   @override
   Widget build(BuildContext context) {
-    //calculate y axix parts values
-    yAxisValues = divideIntoFourParts(10000);
     return Padding(
       padding: const EdgeInsets.all(25.0),
       child: Container(
@@ -97,133 +103,240 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: BarChart(
-                BarChartData(
-                  titlesData: FlTitlesData(
-                    show: true,
-                    rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return const Text('0');
-                            case int value when value == yAxisValues[0]:
-                              return Text(
-                                '${yAxisValues[0] % 1000 == 0 ? yAxisValues[0] ~/ 1000 : yAxisValues[0] / 1000}k',
-                              );
-                            case int value when value == yAxisValues[1]:
-                              return Text(
-                                '${yAxisValues[1] % 1000 == 0 ? yAxisValues[1] ~/ 1000 : yAxisValues[1] / 1000}k',
-                              );
-                            case int value when value == yAxisValues[2]:
-                              return Text(
-                                '${yAxisValues[2] % 1000 == 0 ? yAxisValues[2] ~/ 1000 : yAxisValues[2] / 1000}k',
-                              );
-                            case int value when value == yAxisValues[3]:
-                              return Text(
-                                '${yAxisValues[3] % 1000 == 0 ? yAxisValues[3] ~/ 1000 : yAxisValues[3] / 1000}k',
-                              );
-                            default:
-                              return const Text('');
-                          }
-                        },
-                        interval: 10,
-                        reservedSize: 28,
-                      ),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return const Text('Mon');
-                            case 1:
-                              return const Text('Tue');
-                            case 2:
-                              return const Text('Wed');
-                            case 3:
-                              return const Text('Thu');
-                            case 4:
-                              return const Text('Fri');
-                            case 5:
-                              return const Text('Sat');
-                            case 6:
-                              return const Text('Sun');
-                            default:
-                              return const Text('');
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  borderData: FlBorderData(show: false),
-                  gridData: const FlGridData(show: false),
-                  barGroups: [
-                    BarChartGroupData(
-                      x: 0,
-                      barRods: [
-                        BarChartRodData(toY: 3000, color: Colors.greenAccent),
-                        BarChartRodData(toY: 2600, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 1,
-                      barRods: [
-                        BarChartRodData(toY: 9000, color: Colors.greenAccent),
-                        BarChartRodData(toY: 7000, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 2,
-                      barRods: [
-                        BarChartRodData(toY: 6200, color: Colors.greenAccent),
-                        BarChartRodData(toY: 6544, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 3,
-                      barRods: [
-                        BarChartRodData(toY: 7500, color: Colors.greenAccent),
-                        BarChartRodData(toY: 0, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 4,
-                      barRods: [
-                        BarChartRodData(toY: 1500, color: Colors.greenAccent),
-                        BarChartRodData(toY: 8000, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 5,
-                      barRods: [
-                        BarChartRodData(toY: 0, color: Colors.greenAccent),
-                        BarChartRodData(toY: 6733, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 6,
-                      barRods: [
-                        BarChartRodData(toY: 1400, color: Colors.greenAccent),
-                        BarChartRodData(toY: 8000, color: Colors.redAccent)
-                      ],
-                    ),
-                  ],
-                ),
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                buildWhen: (previous, current) {
+                  return current is TransactionAnalysisDailyLoading ||
+                      current is TransactionAnalysisDailyLoaded ||
+                      current is TransactionAnalysisDailyError;
+                },
+                builder: (context, state) {
+                  if (state is TransactionAnalysisDailyLoaded) {
+                    double highestVal = state.weelkyTotals['highestValue'];
+                    yAxisValues = divideIntoFourParts(highestVal.toInt());
+                    List<Map<String, dynamic>> weeklyTotals =
+                        state.weelkyTotals['weeklyTotals'];
+                    var day1 = weeklyTotals[0];
+                    var day2 = weeklyTotals[1];
+                    var day3 = weeklyTotals[2];
+                    var day4 = weeklyTotals[3];
+                    var day5 = weeklyTotals[4];
+                    var day6 = weeklyTotals[5];
+                    var day7 = weeklyTotals[6];
+
+                    // Access income and expense for each day
+                    double day1Income = day1['income'];
+                    double day1Expense = day1['expense'];
+                    double day2Income = day2['income'];
+                    double day2Expense = day2['expense'];
+                    double day3Income = day3['income'];
+                    double day3Expense = day3['expense'];
+                    double day4Income = day4['income'];
+                    double day4Expense = day4['expense'];
+                    double day5Income = day5['income'];
+                    double day5Expense = day5['expense'];
+                    double day6Income = day6['income'];
+                    double day6Expense = day6['expense'];
+                    double day7Income = day7['income'];
+                    double day7Expense = day7['expense'];
+                    return buildBarChart(
+                      day1Income,
+                      day1Expense,
+                      day2Income,
+                      day2Expense,
+                      day3Income,
+                      day3Expense,
+                      day4Income,
+                      day4Expense,
+                      day5Income,
+                      day5Expense,
+                      day6Income,
+                      day6Expense,
+                      day7Income,
+                      day7Expense,
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  BarChart buildBarChart(
+    double day1Income,
+    double day1Expense,
+    double day2Income,
+    double day2Expense,
+    double day3Income,
+    double day3Expense,
+    double day4Income,
+    double day4Expense,
+    double day5Income,
+    double day5Expense,
+    double day6Income,
+    double day6Expense,
+    double day7Income,
+    double day7Expense,
+  ) {
+    return BarChart(
+      BarChartData(
+        titlesData: FlTitlesData(
+          show: true,
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: getTitlesOfY,
+              interval: 10,
+              reservedSize: 40,
+            ),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: getTitlesOfX,
+            ),
+          ),
+        ),
+        borderData: FlBorderData(show: false),
+        gridData: const FlGridData(show: false),
+        barGroups: [
+          BarChartGroupData(
+            x: 0,
+            barRods: [
+              BarChartRodData(
+                  toY: double.parse(day1Income.toStringAsFixed(2)),
+                  color: Colors.greenAccent),
+              BarChartRodData(
+                  toY: double.parse(day1Expense.toStringAsFixed(2)),
+                  color: Colors.redAccent)
+            ],
+          ),
+          BarChartGroupData(
+            x: 1,
+            barRods: [
+              BarChartRodData(
+                  toY: double.parse(day2Income.toStringAsFixed(2)),
+                  color: Colors.greenAccent),
+              BarChartRodData(
+                  toY: double.parse(day2Expense.toStringAsFixed(2)),
+                  color: Colors.redAccent)
+            ],
+          ),
+          BarChartGroupData(
+            x: 2,
+            barRods: [
+              BarChartRodData(
+                  toY: double.parse(day3Income.toStringAsFixed(2)),
+                  color: Colors.greenAccent),
+              BarChartRodData(
+                  toY: double.parse(day3Expense.toStringAsFixed(2)),
+                  color: Colors.redAccent)
+            ],
+          ),
+          BarChartGroupData(
+            x: 3,
+            barRods: [
+              BarChartRodData(
+                  toY: double.parse(day4Income.toStringAsFixed(2)),
+                  color: Colors.greenAccent),
+              BarChartRodData(
+                  toY: double.parse(day4Expense.toStringAsFixed(2)),
+                  color: Colors.redAccent)
+            ],
+          ),
+          BarChartGroupData(
+            x: 4,
+            barRods: [
+              BarChartRodData(
+                  toY: double.parse(day5Income.toStringAsFixed(2)),
+                  color: Colors.greenAccent),
+              BarChartRodData(
+                  toY: double.parse(day5Expense.toStringAsFixed(2)),
+                  color: Colors.redAccent)
+            ],
+          ),
+          BarChartGroupData(
+            x: 5,
+            barRods: [
+              BarChartRodData(
+                  toY: double.parse(day6Income.toStringAsFixed(2)),
+                  color: Colors.greenAccent),
+              BarChartRodData(
+                  toY: double.parse(day6Expense.toStringAsFixed(2)),
+                  color: Colors.redAccent)
+            ],
+          ),
+          BarChartGroupData(
+            x: 6,
+            barRods: [
+              BarChartRodData(
+                  toY: double.parse(day7Income.toStringAsFixed(2)),
+                  color: Colors.greenAccent),
+              BarChartRodData(
+                  toY: double.parse(day7Expense.toStringAsFixed(2)),
+                  color: Colors.redAccent)
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getTitlesOfX(value, meta) {
+    switch (value.toInt()) {
+      case 0:
+        return const Text('Mon');
+      case 1:
+        return const Text('Tue');
+      case 2:
+        return const Text('Wed');
+      case 3:
+        return const Text('Thu');
+      case 4:
+        return const Text('Fri');
+      case 5:
+        return const Text('Sat');
+      case 6:
+        return const Text('Sun');
+      default:
+        return const Text('');
+    }
+  }
+
+  Widget getTitlesOfY(value, meta) {
+    switch (value.toInt()) {
+      case 0:
+        return const Text('0');
+      case int value when value == yAxisValues[0]:
+        return Text(
+          '${yAxisValues[0] % 1000 == 0 ? yAxisValues[0] ~/ 1000 : yAxisValues[0] / 1000}k',
+        );
+      case int value when value == yAxisValues[1]:
+        return Text(
+          '${yAxisValues[1] % 1000 == 0 ? yAxisValues[1] ~/ 1000 : yAxisValues[1] / 1000}k',
+        );
+      case int value when value == yAxisValues[2]:
+        return Text(
+          '${yAxisValues[2] % 1000 == 0 ? yAxisValues[2] ~/ 1000 : yAxisValues[2] / 1000}k',
+        );
+      case int value when value == yAxisValues[3]:
+        return Text(
+          '${yAxisValues[3] % 1000 == 0 ? yAxisValues[3] ~/ 1000 : yAxisValues[3] / 1000}k',
+        );
+      default:
+        return const Text('');
+    }
   }
 
   // * Method for calculate Y axix AxisTitles

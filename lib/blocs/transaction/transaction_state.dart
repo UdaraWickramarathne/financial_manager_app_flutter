@@ -13,7 +13,11 @@ final class TransactionEmpty extends TransactionState {}
 
 final class TransactionSuccess extends TransactionState {}
 
+final class TransactionDeleteSuccess extends TransactionState {}
+
 final class TransactionLoading extends TransactionState {}
+
+final class TransactionFetchLoading extends TransactionState {}
 
 final class TransactionUpdateLoading extends TransactionState {}
 
@@ -38,7 +42,27 @@ final class TransactionUpdateError extends TransactionState {
 }
 
 final class TransactionLoaded extends TransactionState {
-  final List<Transaction> transaction;
+  final List<Transaction> transactions;
 
-  const TransactionLoaded({required this.transaction});
+  const TransactionLoaded({required this.transactions});
+}
+
+final class TransactionGetTotalLoading extends TransactionState {}
+
+final class TransactionGetTotalLoaded extends TransactionState {
+  final Map<String, double> totalIncomeExpense;
+
+  const TransactionGetTotalLoaded({required this.totalIncomeExpense});
+
+  @override
+  List<Object> get props => [totalIncomeExpense];
+}
+
+final class TransactionGetTotalError extends TransactionState {
+  final String message;
+
+  const TransactionGetTotalError({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }

@@ -7,6 +7,7 @@ import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'dart:developer' as dev;
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({super.key});
@@ -66,19 +67,19 @@ class _TransactionsPageState extends State<TransactionsPage> {
           child: BlocBuilder<TransactionBloc, TransactionState>(
             bloc: _transactionBloc,
             buildWhen: (previous, current) {
-              return current is TransactionLoading ||
+              return current is TransactionFetchLoading ||
                   current is TransactionLoaded ||
                   current is TransactionError ||
                   current is TransactionEmpty;
             },
             builder: (context, state) {
-              if (state is TransactionLoading) {
+              if (state is TransactionFetchLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is TransactionLoaded) {
                 return ListView.builder(
-                  itemCount: state.transaction.length,
+                  itemCount: state.transactions.length,
                   itemBuilder: (context, index) {
-                    final transaction = state.transaction[index];
+                    final transaction = state.transactions[index];
                     return TransactionTile(
                       transaction: transaction,
                       deleteFunction: (p0) {

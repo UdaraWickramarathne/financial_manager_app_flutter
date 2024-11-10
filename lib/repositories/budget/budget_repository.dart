@@ -97,7 +97,7 @@ class BudgetRepository extends BaseBudgetRepository {
       // Process weekly budgets
       for (var doc in weeklyBudgetsQuery.docs) {
         final lastReset = doc['lastReset'] as Timestamp;
-        final resetThreshold = lastReset.toDate().add(Duration(days: 7));
+        final resetThreshold = lastReset.toDate().add(const Duration(days: 7));
         if (currentTime.toDate().isAfter(resetThreshold)) {
           // Reset the budget
           batch.update(doc.reference, {
@@ -110,7 +110,7 @@ class BudgetRepository extends BaseBudgetRepository {
       // Process monthly budgets
       for (var doc in monthlyBudgetsQuery.docs) {
         final lastReset = doc['lastReset'] as Timestamp;
-        final resetThreshold = lastReset.toDate().add(Duration(days: 30));
+        final resetThreshold = lastReset.toDate().add(const Duration(days: 30));
         if (currentTime.toDate().isAfter(resetThreshold)) {
           // Reset the budget
           batch.update(doc.reference, {

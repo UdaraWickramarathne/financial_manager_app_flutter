@@ -8,6 +8,8 @@ class User {
   final String languagePreference;
   final String currencyPreference;
   final String profileImageURL;
+  double totalIncome;
+  double totalExpense;
 
   User({
     required this.userID,
@@ -17,6 +19,8 @@ class User {
     this.languagePreference = 'en',
     this.currencyPreference = 'LKR',
     this.profileImageURL = '',
+    this.totalIncome = 0.0,
+    this.totalExpense = 0.0,
   });
 
   toJson() => {

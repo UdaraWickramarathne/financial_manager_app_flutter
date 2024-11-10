@@ -1,8 +1,10 @@
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/screens/profile-pages/account_info/change_password.dart';
+import 'package:financial_app/services/sms_service.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -17,6 +19,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool rememberLoginDetails = false;
   bool pinCode = false;
   String pinNumber = '';
+
+  final bool _isListening = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // _loadListeningPreference();
+  }
+
+  // // Load the saved listening preference from SharedPreferences
+  // Future<void> _loadListeningPreference() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _isListening = prefs.getBool('isListening') ?? false;
+  //   });
+
+  //   // Start listening automatically if the saved preference is true
+  //   if (_isListening) {
+  //     SmsService.startListening();
+  //   }
+  // }
+
+  // // Toggle listening state and save it to SharedPreferences
+  // Future<void> _toggleListening(bool value) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _isListening = value;
+  //   });
+
+  //   await prefs.setBool('isListening', _isListening);
+
+  //   if (_isListening) {
+  //     SmsService.startListening();
+  //   } else {
+  //     // Optionally, add functionality to stop listening if needed
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +99,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 'Change Password',
                 style: TextStyle(
                   fontSize: 18,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ChangePassword(),
+                    ));
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              leading: const Icon(
+                Icons.timer,
+                size: 26,
+              ),
+              title: const Text(
+                'Realitime Tracking',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              trailing: Transform.scale(
+                scale: 0.7,
+                child: Switch(
+                  value: _isListening,
+                  onChanged: (value) {
+                    // _toggleListening(value);
+                  },
                 ),
               ),
               onTap: () {

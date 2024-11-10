@@ -92,4 +92,54 @@ class TransactionRepository extends BaseTransactionRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<Map<String, double>> getTotalIncomeExpense(
+      {required String userID}) async {
+    double totalIncome = 0.0;
+    double totalExpense = 0.0;
+
+    try {
+      // Get the start of the current month
+      DateTime now = DateTime.now();
+      DateTime startOfMonth = DateTime(now.year, now.month, 1);
+      Timestamp startOfMonthTimestamp = Timestamp.fromDate(startOfMonth);
+
+      // Calculate income for the current month
+      QuerySnapshot incomeSnapshot = await _transactionsCollection
+          .where('userID', isEqualTo: userID)
+          .where('isIncome', isEqualTo: true)
+          .where('createdAt', isGreaterThanOrEqualTo: startOfMonthTimestamp)
+          .get();
+
+      for (var doc in incomeSnapshot.docs) {
+        var transaction = Transaction.fromJson(doc.data());
+        totalIncome += transaction.amount;
+      }
+
+      // Calculate expense for the current month
+      QuerySnapshot expenseSnapshot = await _transactionsCollection
+          .where('userID', isEqualTo: userID)
+          .where('isIncome', isEqualTo: false)
+          .where('createdAt', isGreaterThanOrEqualTo: startOfMonthTimestamp)
+          .get();
+
+      for (var doc in expenseSnapshot.docs) {
+        var transaction = Transaction.fromJson(doc.data());
+        totalExpense += transaction.amount;
+      }
+
+      developer.log('Monthly transaction totals updated');
+      return {
+        'totalIncome': totalIncome,
+        'totalExpense': totalExpense,
+      };
+    } catch (e) {
+      developer.log('Error updating monthly transaction totals: $e');
+      return {
+        'totalIncome': 0.0,
+        'totalExpense': 0.0,
+      };
+    }
+  }
 }

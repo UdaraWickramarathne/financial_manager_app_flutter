@@ -14,6 +14,7 @@ import 'package:financial_app/repositories/reminder/reminder_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
 import 'package:financial_app/services/feedback_repository.dart';
+import 'package:financial_app/services/sms_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:shake/shake.dart';
@@ -84,6 +85,13 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     var goalRepository = GoalRepository();
     var reminderRepository = ReminderRepository();
     var budgetRepository = BudgetRepository();
+    var transactionBloc =
+        TransactionBloc(transactionRepository, authRepository);
+
+    var smsService = SmsService(
+      transactionBloc: transactionBloc,
+      authRepository: authRepository,
+    );
 
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
@@ -138,7 +146,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           create: (context) => AuthBloc(authRepository),
         ),
         RepositoryProvider(
-          create: (context) => TransactionBloc(transactionRepository),
+          create: (context) => transactionBloc,
         ),
         RepositoryProvider(
           create: (context) => GoalBloc(goalRepository),
@@ -148,7 +156,8 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         ),
         RepositoryProvider(
           create: (context) => BudgetBloc(budgetRepository),
-        )
+        ),
+        Provider(create: (context) => smsService),
       ],
       child: app,
     );

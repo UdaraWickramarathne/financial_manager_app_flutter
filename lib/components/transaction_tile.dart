@@ -139,31 +139,6 @@ class _TransactionTileState extends State<TransactionTile> {
       ),
       child: GestureDetector(
         onTap: () async {
-          // final updatedTransaction = await showDialog<Transaction>(
-          //   context: context,
-          //   builder: (context) => TransactionUpdatePopUp(
-          //     title: title,
-          //     id: widget.id,
-          //     date: date,
-          //     selectedCategory: category,
-          //     amount: amount,
-          //     icon: icon,
-          //     createdAt: widget.createdAt,
-          //     containerColor: containerColor,
-          //     iconColor: iconColor,
-          //     isIncome: widget.isIncome,
-          //   ),
-          // );
-          // if (updatedTransaction != null) {
-          //   developer.log(updatedTransaction.toString());
-          //   setState(() {
-          //     title = updatedTransaction.title;
-          //     amount = updatedTransaction.amount;
-          //     date = updatedTransaction.date;
-          //     category = updatedTransaction.category;
-          //   });
-          // }
-
           final updatedTransaction = await showModalBottomSheet<Transaction>(
             context: context,
             isScrollControlled: true,
@@ -218,7 +193,7 @@ class _TransactionTileState extends State<TransactionTile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          title,
+                          title.length > 10 ? title.substring(0, 10) : title,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),

@@ -224,52 +224,6 @@ class _AddIncomePageState extends State<AddIncomePage> {
                       ),
                       const SizedBox(height: 20),
                       const Text(
-                        ' INCOME TYPE',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 10),
-                      InputField(
-                        isObsecure: false,
-                        controller: categoryController,
-                        focusNode: categoryFocusNode,
-                        borderColor: categoryBorderColor,
-                        prefixIcon: selectedIcon,
-                        isReadOnly: true,
-                        label: 'Select Category',
-                        suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
-                        onTap: showIncomeTypes,
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        ' DATE',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 10),
-                      InputField(
-                        isReadOnly: true,
-                        isObsecure: false,
-                        suffixIcon: IconButton(
-                          onPressed: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now(),
-                            );
-
-                            if (pickedDate != null) {
-                              dateController.text =
-                                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                            }
-                          },
-                          icon: const Icon(Icons.date_range),
-                        ),
-                        controller: dateController,
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
                         ' TITLE',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
@@ -282,6 +236,75 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         borderColor: titleBorderColor,
                         isReadOnly: false,
                         label: 'Add a title',
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  ' INCOME TYPE',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                ),
+                                const SizedBox(height: 10),
+                                InputField(
+                                  isObsecure: false,
+                                  controller: categoryController,
+                                  focusNode: categoryFocusNode,
+                                  borderColor: categoryBorderColor,
+                                  prefixIcon: selectedIcon,
+                                  isReadOnly: true,
+                                  label: 'eg: Salary',
+                                  suffixIcon: const Icon(
+                                      Icons.keyboard_arrow_down_sharp),
+                                  onTap: showIncomeTypes,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  ' DATE',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                ),
+                                const SizedBox(height: 10),
+                                InputField(
+                                  isReadOnly: true,
+                                  isObsecure: false,
+                                  suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      DateTime? pickedDate =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1900),
+                                        lastDate: DateTime.now(),
+                                      );
+
+                                      if (pickedDate != null) {
+                                        dateController.text =
+                                            DateFormat('yyyy-MM-dd')
+                                                .format(pickedDate);
+                                      }
+                                    },
+                                    icon: const Icon(Icons.date_range),
+                                  ),
+                                  controller: dateController,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                       const SizedBox(height: 20),
                       const Text(

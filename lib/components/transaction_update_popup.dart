@@ -1,342 +1,463 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:file_picker/file_picker.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
-import 'package:financial_app/components/custome_snackbar.dart';
-import 'package:financial_app/components/input_field_bottom_border.dart';
+import 'package:financial_app/components/dashed_border_button.dart';
+import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/models/transaction.dart';
-import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-// ignore: must_be_immutable
-class TransactionUpdatePopUp extends StatefulWidget {
-  String id;
-  String title;
-  double amount;
-  String? selectedCategory;
-  final Color? iconColor;
-  final Color? containerColor;
-  final IconData? icon;
-  final bool isIncome;
-  String date;
-  final Timestamp createdAt;
-  TransactionUpdatePopUp({
-    super.key,
-    required this.title,
-    required this.id,
-    required this.selectedCategory,
-    required this.amount,
-    required this.iconColor,
-    required this.containerColor,
-    required this.icon,
-    required this.isIncome,
-    required this.date,
-    required this.createdAt,
-  });
+import 'custome_snackbar.dart';
+
+class TransactionUpdatePopup extends StatefulWidget {
+  final Transaction transaction;
+  const TransactionUpdatePopup({super.key, required this.transaction});
 
   @override
-  State<TransactionUpdatePopUp> createState() => _TransactionUpdatePopUpState();
+  State<TransactionUpdatePopup> createState() => _TransactionUpdatePopupState();
 }
 
-class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
+class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
+  final TextEditingController categoryController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
-
-  FocusNode targetFocusNode = FocusNode();
-  late final List<String> _items;
-  bool targetAmountIsReadOnly = true;
-  bool isEditing = false;
   final TextEditingController titleController = TextEditingController();
+  final FocusNode amountFocusNode = FocusNode();
+  final FocusNode categoryFocusNode = FocusNode();
+  final FocusNode titleFocusNode = FocusNode();
+  String? errorMessage;
+  Transaction? updatedTransaction;
 
+  //border colors
+  Color amountBorderColor = Colors.transparent;
+  Color categoryBorderColor = Colors.transparent;
+  Color titleBorderColor = Colors.transparent;
+
+  FilePickerResult? result;
+  late PlatformFile file;
+
+  //transaction bloc
   late TransactionBloc _transactionBloc;
-  late AuthRepository _authRepository;
 
-  void _toggleEditing() {
-    setState(() {
-      isEditing = !isEditing;
-      if (!isEditing) {
-        widget.title = titleController.text;
-      }
-    });
+  String? selectedCategory;
+  final List<Map<String, String>> expenseCategories = [
+    {'name': 'Food', 'icon': '🍎'},
+    {'name': 'Sport', 'icon': '🏀'},
+    {'name': 'Health', 'icon': '💊'},
+    {'name': 'Transport', 'icon': '🚌'},
+    {'name': 'Shopping', 'icon': '🛍️'},
+    {'name': 'Kids', 'icon': '🧸'},
+    {'name': 'Entertainment', 'icon': '🎮'},
+    {'name': 'Education', 'icon': '🎓'},
+    {'name': 'Other', 'icon': '🔍'},
+  ];
+
+  final List<Map<String, String>> incomeCategories = [
+    {'name': 'Salary', 'icon': '💼'},
+    {'name': 'Business', 'icon': '🏢'},
+    {'name': 'Investment', 'icon': '📈'},
+    {'name': 'Freelance', 'icon': '💻'},
+    {'name': 'Gift', 'icon': '🎁'},
+    {'name': 'Other', 'icon': '🔍'},
+  ];
+
+  IconData? selectedIcon;
+  void showCategories() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            widget.transaction.isIncome
+                ? 'Select Income Type'
+                : 'Select Expense Type',
+            style: const TextStyle(
+              fontSize: 25,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: widget.transaction.isIncome
+                      ? incomeCategories.map((category) {
+                          return ChoiceChip(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            label: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(category['icon'] ?? ''),
+                                  const SizedBox(width: 6),
+                                  Text(category['name'] ?? ''),
+                                ],
+                              ),
+                            ),
+                            selected: selectedCategory == category['name'],
+                            onSelected: (selected) {
+                              setState(() {
+                                if (selected) {
+                                  selectedCategory = category['name'];
+                                  categoryController.text = category['name']!;
+                                  selectIcon(selectedCategory);
+                                  Navigator.of(context).pop();
+                                }
+                              });
+                            },
+                          );
+                        }).toList()
+                      : expenseCategories.map((category) {
+                          return ChoiceChip(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            label: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(category['icon'] ?? ''),
+                                  const SizedBox(width: 6),
+                                  Text(category['name'] ?? ''),
+                                ],
+                              ),
+                            ),
+                            selected: selectedCategory == category['name'],
+                            onSelected: (selected) {
+                              setState(() {
+                                if (selected) {
+                                  selectedCategory = category['name'];
+                                  categoryController.text = category['name']!;
+                                  selectIcon(selectedCategory);
+                                  Navigator.of(context).pop();
+                                }
+                              });
+                            },
+                          );
+                        }).toList(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void selectIcon(String? type) {
+    switch (type) {
+      case 'Food':
+        selectedIcon = Icons.fastfood;
+        break;
+      case 'Sport':
+        selectedIcon = Icons.sports_basketball;
+        break;
+      case 'Health':
+        selectedIcon = Icons.health_and_safety;
+        break;
+      case 'Transport':
+        selectedIcon = Icons.directions_car;
+        break;
+      case 'Shopping':
+        selectedIcon = Icons.shopping_cart;
+        break;
+      case 'Kids':
+        selectedIcon = Icons.child_care;
+        break;
+      case 'Entertainment':
+        selectedIcon = Icons.theaters;
+        break;
+      case 'Education':
+        selectedIcon = Icons.school;
+        break;
+      case 'Salary':
+        selectedIcon = Icons.monetization_on;
+        break;
+      case 'Business':
+        selectedIcon = Icons.business;
+        break;
+      case 'Investment':
+        selectedIcon = Icons.show_chart;
+        break;
+      case 'Freelance':
+        selectedIcon = Icons.work;
+        break;
+      case 'Gift':
+        selectedIcon = Icons.card_giftcard;
+        break;
+      case 'Other':
+        selectedIcon = Icons.category;
+        break;
+      default:
+        selectedIcon = null;
+    }
+  }
+
+  void pickFile() async {
+    result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      setState(() {
+        file = result!.files.first;
+      });
+      // handle event
+    } else {
+      // User canceled the picker
+    }
   }
 
   @override
   void initState() {
     _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
-    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    amountController.text = widget.transaction.amount.toString();
+    titleController.text = widget.transaction.title;
+    categoryController.text = widget.transaction.category;
+    dateController.text = widget.transaction.date;
+    selectIcon(widget.transaction.category);
     super.initState();
-    amountController.text = widget.amount.toString();
-    titleController.text = widget.title;
-    dateController.text = widget.date;
-    if (widget.isIncome) {
-      _items = [
-        'Salary',
-        'Business',
-        'Investment',
-        'Freelance',
-        'Gift',
-        'Other',
-      ];
-    } else {
-      _items = [
-        'Sport',
-        'Food',
-        'Health',
-        'Transport',
-        'Shopping',
-        'Kids',
-        'Entertainment',
-        'Other',
-      ];
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return BlocListener<TransactionBloc, TransactionState>(
+      listener: (context, state) {
+        if (state is TransactionUpdateLoading) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          );
+        } else if (state is TrnsactionUpdateSuccess) {
+          Navigator.pop(context);
+          Navigator.pop(context, updatedTransaction);
+          showSuccessSnakBar();
+        } else if (state is TransactionUpdateError) {
+          Navigator.pop(context);
+          Navigator.pop(context);
+          showErrorSnackBar(state.message);
+        }
+      },
       child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Material(
-          color: Theme.of(context).colorScheme.surface,
-          elevation: 2,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
+        padding: const EdgeInsets.all(25.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 15),
+              const Text(
+                ' AMOUNT',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              InputField(
+                isReadOnly: false,
+                isObsecure: false,
+                borderColor: amountBorderColor,
+                focusNode: amountFocusNode,
+                label: '0.00',
+                suffixIcon: TextButton(
+                  onPressed: () {
+                    amountController.text = '';
+                  },
+                  child: const Text('Clear'),
+                ),
+                prefixText: 'Rs. ',
+                controller: amountController,
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                ' TITLE',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              InputField(
+                isObsecure: false,
+                controller: titleController,
+                borderColor: titleBorderColor,
+                focusNode: titleFocusNode,
+                isReadOnly: false,
+                label: 'Add a title',
+              ),
+              const SizedBox(height: 20),
+              Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: widget.containerColor,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          ' EXPENSE TYPE',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
-                        child: Icon(
-                          widget.icon,
-                          color: widget.iconColor,
+                        const SizedBox(height: 10),
+                        InputField(
+                          isObsecure: false,
+                          controller: categoryController,
+                          borderColor: categoryBorderColor,
+                          prefixIcon: selectedIcon,
+                          focusNode: categoryFocusNode,
+                          isReadOnly: true,
+                          label: 'eg: Food',
+                          suffixIcon:
+                              const Icon(Icons.keyboard_arrow_down_sharp),
+                          onTap: showCategories,
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: _toggleEditing,
-                          child: isEditing
-                              ? TextField(
-                                  textAlign: TextAlign.center,
-                                  controller: titleController,
-                                  onSubmitted: (value) {
-                                    _toggleEditing();
-                                  },
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 25,
-                                  ),
-                                  autofocus: true,
-                                )
-                              : Text(
-                                  widget.title,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 25,
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 20),
-                  const Divider(
-                    color: Colors.grey,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        'Amount: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                  const SizedBox(width: 16.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          ' DATE',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 48),
-                          child: InputFieldBottomBorder(
-                            prefixText: 'LKR',
-                            textAlign: TextAlign.end,
-                            controller: amountController,
-                            focusNode: targetFocusNode,
-                            isReadOnly: targetAmountIsReadOnly,
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            inputFormats: [
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d*\.?\d*')),
-                            ],
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            targetAmountIsReadOnly = !targetAmountIsReadOnly;
-                            if (!targetAmountIsReadOnly) {
-                              targetFocusNode.requestFocus();
-                            }
-                          });
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.only(bottom: 3, left: 3),
-                          child: Icon(
-                            Icons.edit,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Category: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Container(
-                        height: 30,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(context).colorScheme.surface,
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            elevation: 2,
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 126, 125, 125),
-                            ),
-                            value: widget.selectedCategory,
-                            items: _items.map((String item) {
-                              return DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(item),
+                        const SizedBox(height: 10),
+                        InputField(
+                          isReadOnly: true,
+                          isObsecure: false,
+                          suffixIcon: IconButton(
+                            onPressed: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime.now(),
                               );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              setState(() {
-                                widget.selectedCategory = value;
-                              });
+
+                              if (pickedDate != null) {
+                                dateController.text =
+                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                              }
                             },
+                            icon: const Icon(Icons.date_range),
                           ),
+                          controller: dateController,
                         ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        'Date: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 42),
-                          child: InputFieldBottomBorder(
-                            textAlign: TextAlign.end,
-                            controller: dateController,
-                            isReadOnly: true,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now(),
-                          );
-
-                          if (pickedDate != null) {
-                            dateController.text =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.only(bottom: 3, left: 3),
-                          child: Icon(
-                            Icons.calendar_month,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 50),
-                  SimpleButton(
-                    data: 'Update',
-                    onPressed: () {
-                      final amount = amountController.text;
-                      final category = widget.selectedCategory;
-                      final date = dateController.text;
-                      final title = titleController.text;
-
-                      if (validateInputs(amount, title)) {
-                        final transaction = Transaction(
-                            userID: _authRepository.userID,
-                            id: widget.id,
-                            title: title,
-                            category: category!,
-                            amount: double.parse(amount),
-                            date: date,
-                            isIncome: widget.isIncome,
-                            createdAt: widget.createdAt);
-
-                        _transactionBloc.add(
-                          TransactionUpdateEvent(
-                            transactionID: widget.id,
-                            transaction: transaction,
-                          ),
-                        );
-
-                        Navigator.of(context).pop(transaction);
-                        showSuccessSnakBar();
-                      }
-                    },
+                      ],
+                    ),
                   )
                 ],
               ),
-            ),
+              const SizedBox(height: 20),
+              const Text(
+                ' INVOICE(Optional)',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              DashedButton(
+                onPressed: pickFile,
+                icon: Icons.add_circle,
+                text: 'Add Invoice',
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: Text(
+                  result != null ? file.name : '',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              if (errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                )
+              else
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    '',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              const SizedBox(height: 20),
+              SimpleButton(
+                data: 'Save',
+                onPressed: () {
+                  amountFocusNode.unfocus();
+                  categoryFocusNode.unfocus();
+                  titleFocusNode.unfocus();
+
+                  final amount = amountController.text;
+                  final category = categoryController.text;
+                  final title = titleController.text;
+
+                  if (_validateInputs(amount, category, title)) {
+                    _transactionBloc.add(
+                      TransactionUpdateEvent(
+                        transactionID: widget.transaction.id,
+                        transaction: updatedTransaction = Transaction(
+                          userID: widget.transaction.userID,
+                          id: widget.transaction.id,
+                          title: title,
+                          category: category,
+                          amount: double.parse(amount),
+                          date: dateController.text,
+                          isIncome: widget.transaction.isIncome,
+                          createdAt: widget.transaction.createdAt,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  bool validateInputs(String amount, String title) {
+  bool _validateInputs(String amount, String category, String title) {
+    setState(() {
+      amountBorderColor = Colors.transparent;
+      categoryBorderColor = Colors.transparent;
+      titleBorderColor = Colors.transparent;
+      errorMessage = '';
+    });
     if (amount.isEmpty) {
-      showErrorSnackBar('Please enter a valid amount.');
+      setState(() {
+        amountBorderColor = Colors.red;
+        errorMessage = 'Please enter a valid amount.';
+      });
+      return false;
+    } else if (category.isEmpty) {
+      setState(() {
+        categoryBorderColor = Colors.red;
+        errorMessage = 'Please select an expense category.';
+      });
       return false;
     } else if (title.isEmpty) {
-      showErrorSnackBar('Please enter a title for the transaction.');
+      setState(() {
+        titleBorderColor = Colors.red;
+        errorMessage = 'Please enter a title for the transaction';
+      });
       return false;
     }
     return true;
@@ -355,7 +476,7 @@ class _TransactionUpdatePopUpState extends State<TransactionUpdatePopUp> {
     CustomSnackBar.show(
       context,
       title: 'Successfully!!',
-      message: 'Transaction is updated!',
+      message: 'Your transaction has been updated successfully.',
       contentType: ContentType.success,
     );
   }

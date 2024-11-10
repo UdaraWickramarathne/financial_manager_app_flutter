@@ -1,46 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Transaction {
-  String id;
+class Reminder {
   final String userID;
+  String id;
   String title;
-  String category;
-  double amount;
+  String description;
   String date;
-  final bool isIncome;
+  String time;
+  String frequancy;
   final Timestamp createdAt;
 
-  Transaction({
+  Reminder({
     String? id,
     required this.userID,
-    required this.title,
-    required this.category,
-    required this.amount,
-    required this.date,
-    required this.isIncome,
     required this.createdAt,
+    required this.date,
+    required this.description,
+    required this.frequancy,
+    required this.time,
+    required this.title,
   }) : id = id ?? '';
 
   toJson() => {
         'id': id,
         'userID': userID,
         'title': title,
-        'category': category,
-        'amount': amount,
+        'description': description,
         'date': date,
-        'isIncome': isIncome,
+        'time': time,
+        'frequency': frequancy,
         'createdAt': createdAt,
       };
 
-  factory Transaction.fromJson(dynamic json) {
-    return Transaction(
+  factory Reminder.fromJson(dynamic json) {
+    return Reminder(
       id: json['id'],
       userID: json['userID'],
       title: json['title'],
-      category: json['category'],
-      amount: json['amount'],
+      description: json['description'],
       date: json['date'],
-      isIncome: json['isIncome'],
+      time: json['time'],
+      frequancy: json['frequency'],
       createdAt: json['createdAt'],
     );
   }

@@ -48,6 +48,7 @@ dependencies:
 
   #for smooth animations
   transitioned_indexed_stack: ^1.0.2
+  page_transition: ^2.1.0
 
   #for currency convertor
   http: ^0.13.3
@@ -105,6 +106,19 @@ dependencies:
   #for pull refresh
   liquid_pull_to_refresh: ^3.0.1
   
+  #for scan bill and card
+  camera:
+  google_mlkit_text_recognition: ^0.14.0
+  flutter_tts: ^3.4.2
+
+  #for push notifications
+  flutter_local_notifications: 
+  timezone: ^0.9.3
+
+  #for realtime track
+  telephony: ^0.2.0
+  shared_preferences: ^2.3.3
+
 
 
 dev_dependencies:

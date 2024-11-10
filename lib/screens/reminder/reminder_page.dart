@@ -1,8 +1,16 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:financial_app/blocs/reminder/reminder_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/reminder_card.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/reminder/add_reminder.dart';
+import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ReminderPage extends StatefulWidget {
   const ReminderPage({super.key});
@@ -48,6 +56,17 @@ class _ReminderPageState extends State<ReminderPage> {
     }
   }
 
+  late AuthRepository _authRepository;
+  late ReminderBloc _reminderBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _reminderBloc = RepositoryProvider.of<ReminderBloc>(context);
+    _reminderBloc.add(ReminderFetchEvent(userID: _authRepository.userID));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +91,7 @@ class _ReminderPageState extends State<ReminderPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          requestNotificationPermission();
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -140,12 +160,102 @@ class _ReminderPageState extends State<ReminderPage> {
               ),
             ),
           ),
-          const SizedBox(height: 40),
-          const ReminderCard(),
-          const ReminderCard(),
-          const ReminderCard(),
+          const SizedBox(height: 20),
+          Expanded(
+            child: LiquidPullToRefresh(
+              color: Theme.of(context).colorScheme.surface,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              onRefresh: () async {
+                _reminderBloc
+                    .add(ReminderFetchEvent(userID: _authRepository.userID));
+              },
+              child: BlocBuilder<ReminderBloc, ReminderState>(
+                bloc: _reminderBloc,
+                buildWhen: (previous, current) {
+                  return current is ReminderFetchLoading ||
+                      current is ReminderEmpty ||
+                      current is ReminderLoaded ||
+                      current is ReminderError;
+                },
+                builder: (context, state) {
+                  if (state is ReminderFetchLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ReminderLoaded) {
+                    return ListView.builder(
+                      itemCount: state.reminders.length,
+                      itemBuilder: (context, index) {
+                        final reminder = state.reminders[index];
+                        return ReminderCard(
+                          reminder: reminder,
+                          deleteFunction: (context) {
+                            _reminderBloc.add(
+                                ReminderDeleteEvent(reminderID: reminder.id));
+                            _reminderBloc.add(
+                              ReminderFetchEvent(
+                                  userID: _authRepository.userID),
+                            );
+                            NotificationService.cancelReminderNotification(
+                                reminder.id.hashCode);
+                          },
+                        );
+                      },
+                    );
+                  } else if (state is ReminderEmpty) {
+                    return const Center(child: Text('No Reminders found.'));
+                  } else if (state is ReminderError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return const Center(child: Text('No Reminders found.'));
+                },
+              ),
+            ),
+          )
         ],
       ),
+    );
+  }
+
+  Future<void> requestNotificationPermission() async {
+    PermissionStatus status = await Permission.notification.request();
+
+    if (status.isDenied) {
+      // Permission denied. Show a dialog to ask the user to open app settings
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Permission Denied'),
+          content: const Text(
+            'Notification permission is required to send reminders. Please enable it in the app settings.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                openAppSettings(); // Open the app settings page
+              },
+              child: const Text('Go to Settings'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Just close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
+      );
+    } else if (status.isPermanentlyDenied) {
+      // The permission is permanently denied, guide the user to settings
+      openAppSettings();
+    }
+  }
+
+  void showErrorSnackBar(String error) {
+    CustomSnackBar.show(
+      context,
+      title: 'On Snap!',
+      message: error,
+      contentType: ContentType.failure,
     );
   }
 }

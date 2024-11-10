@@ -101,7 +101,7 @@ class _GoalPageState extends State<GoalPage> {
               } else if (state is GoalsEmpty) {
                 return const Center(child: Text('No goals found.'));
               }
-              return const Center(child: Text('No goals found return.'));
+              return const Center(child: Text('No goals found.'));
             },
           ),
         ),

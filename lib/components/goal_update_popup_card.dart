@@ -92,13 +92,13 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
               );
             },
           );
-        } else if (state is GoalSuccess) {
+        } else if (state is GoalUpdateSuccess) {
           Navigator.pop(context);
           Navigator.pop(context, updatedGoal);
           showSuccessSnakBar();
         } else if (state is GoalUpdateError) {
           Navigator.pop(context);
-          Navigator.pop(context, updatedGoal);
+          Navigator.pop(context);
           showErrorSnackBar(state.message);
         }
       },
@@ -330,23 +330,22 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                         }
                         final title = titleController.text;
                         final deadline = dateController.text;
-                        if (!_validateInputs(amount, targetAmount, title)) {
-                          return;
-                        }
-                        _goalBloc.add(
-                          GoalUpdateEvent(
-                            goalID: widget.id,
-                            goal: updatedGoal = Goal(
-                              userID: _authRepository.userID,
-                              title: title,
-                              currentAmount: widget.currentAmount + amount,
-                              deadline: deadline,
-                              createdAt: widget.createdAt,
-                              targetAmount: targetAmount,
-                              id: widget.id,
+                        if (_validateInputs(amount, targetAmount, title)) {
+                          _goalBloc.add(
+                            GoalUpdateEvent(
+                              goalID: widget.id,
+                              goal: updatedGoal = Goal(
+                                userID: _authRepository.userID,
+                                title: title,
+                                currentAmount: widget.currentAmount + amount,
+                                deadline: deadline,
+                                createdAt: widget.createdAt,
+                                targetAmount: targetAmount,
+                                id: widget.id,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       },
                     )
                   ],

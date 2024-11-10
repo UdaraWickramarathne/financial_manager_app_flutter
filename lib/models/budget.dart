@@ -1,43 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Goal {
+class Budget {
   String id;
   final String userID;
-  String title;
+  String category;
+  double amount;
   double currentAmount;
-  double targetAmount;
-  String deadline;
+  String timePeriod;
   final Timestamp createdAt;
+  final Timestamp lastReset;
 
-  Goal({
+  Budget({
     String? id,
     required this.userID,
-    required this.title,
+    required this.category,
+    required this.amount,
     required this.currentAmount,
-    required this.deadline,
+    required this.timePeriod,
     required this.createdAt,
-    required this.targetAmount,
+    required this.lastReset,
   }) : id = id ?? '';
 
   toJson() => {
         'id': id,
         'userID': userID,
-        'title': title,
+        'category': category,
+        'amount': amount,
         'currentAmount': currentAmount,
-        'targetAmount': targetAmount,
-        'date': deadline,
+        'timePeriod': timePeriod,
         'createdAt': createdAt,
+        'lastReset': lastReset,
       };
 
-  factory Goal.fromJson(dynamic json) {
-    return Goal(
+  factory Budget.fromJson(dynamic json) {
+    return Budget(
       id: json['id'],
       userID: json['userID'],
-      title: json['title'],
+      category: json['category'],
+      amount: json['amount'],
       currentAmount: json['currentAmount'],
-      targetAmount: json['targetAmount'],
-      deadline: json['date'],
+      timePeriod: json['timePeriod'],
       createdAt: json['createdAt'],
+      lastReset: json['lastReset'],
     );
   }
 }

@@ -27,11 +27,9 @@ class AuthRepository extends BaseAuthRepository {
 
   User? get user => _user;
 
-  void setUser(User user) {
+  void setUser(User? user) {
     _user = user;
   }
-
-  //method for signUp user
 
   @override
   Future<AuthResult> signUp(

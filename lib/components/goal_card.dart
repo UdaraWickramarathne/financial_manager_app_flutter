@@ -5,6 +5,7 @@ import 'package:financial_app/models/goal.dart';
 import 'package:financial_app/services/icon_seletor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -72,6 +73,12 @@ class _GoalCardState extends State<GoalCard>
     return currentAmount >= targetAmount;
   }
 
+  String getCreatedDate() {
+    final DateTime dateTime = widget.createdAt.toDate();
+    final String formattedDate = DateFormat('yyyy/MM/dd').format(dateTime);
+    return formattedDate;
+  }
+
   String getTimeRemaining() {
     final DateTime today = DateTime.now();
     final DateTime deadlineDateTime = DateTime.parse(deadline);
@@ -126,7 +133,14 @@ class _GoalCardState extends State<GoalCard>
           onTap: () {
             showDialog(
               context: context,
-              builder: (context) => const GoalDetailsCard(),
+              builder: (context) => GoalDetailsCard(
+                title: title,
+                currentAmount: currentAmount,
+                targetAmount: targetAmount,
+                percenatge: getPercentage(),
+                startDate: getCreatedDate(),
+                endDate: deadline,
+              ),
             );
           },
           child: Row(
@@ -226,11 +240,10 @@ class _GoalCardState extends State<GoalCard>
                                             builder: (context) =>
                                                 GoalUpdatePopupCard(
                                               id: widget.id,
-                                              targetAmount: widget.targetAmount,
-                                              deadLine: widget.deadline,
-                                              currentAmount:
-                                                  widget.currentAmount,
-                                              title: widget.title,
+                                              targetAmount: targetAmount,
+                                              deadLine: deadline,
+                                              currentAmount: currentAmount,
+                                              title: title,
                                               createdAt: widget.createdAt,
                                             ),
                                           );

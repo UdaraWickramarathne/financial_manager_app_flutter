@@ -1,15 +1,20 @@
 import 'package:feedback/feedback.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
+import 'package:financial_app/blocs/budget/budget_bloc.dart';
 import 'package:financial_app/blocs/goal/goal_bloc.dart';
+import 'package:financial_app/blocs/reminder/reminder_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
+import 'package:financial_app/repositories/budget/budget_repository.dart';
 import 'package:financial_app/repositories/goal-repository/goal_repository.dart';
+import 'package:financial_app/repositories/reminder/reminder_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
 import 'package:financial_app/services/feedback_repository.dart';
+import 'package:financial_app/services/sms_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:shake/shake.dart';
@@ -50,7 +55,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           await FlutterEmailSender.send(email);
         });
       },
-      minimumShakeCount: 3,
+      minimumShakeCount: 2,
       shakeSlopTimeMS: 500,
       shakeCountResetTime: 3000,
       shakeThresholdGravity: 2.7,
@@ -78,6 +83,15 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     var authRepository = AuthRepository();
     var transactionRepository = TransactionRepository();
     var goalRepository = GoalRepository();
+    var reminderRepository = ReminderRepository();
+    var budgetRepository = BudgetRepository();
+    var transactionBloc =
+        TransactionBloc(transactionRepository, authRepository);
+
+    var smsService = SmsService(
+      transactionBloc: transactionBloc,
+      authRepository: authRepository,
+    );
 
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
@@ -123,14 +137,27 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           create: (context) => goalRepository,
         ),
         RepositoryProvider(
+          create: (context) => reminderRepository,
+        ),
+        RepositoryProvider(
+          create: (context) => budgetRepository,
+        ),
+        RepositoryProvider(
           create: (context) => AuthBloc(authRepository),
         ),
         RepositoryProvider(
-          create: (context) => TransactionBloc(transactionRepository),
+          create: (context) => transactionBloc,
         ),
         RepositoryProvider(
           create: (context) => GoalBloc(goalRepository),
-        )
+        ),
+        RepositoryProvider(
+          create: (context) => ReminderBloc(reminderRepository),
+        ),
+        RepositoryProvider(
+          create: (context) => BudgetBloc(budgetRepository),
+        ),
+        Provider(create: (context) => smsService),
       ],
       child: app,
     );

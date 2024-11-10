@@ -27,6 +27,7 @@ class GoalRepository extends BaseGoalRepository {
       developer.log('goal delete success');
     } catch (e) {
       developer.log('goal delete error');
+      rethrow;
     }
   }
 
@@ -56,7 +57,7 @@ class GoalRepository extends BaseGoalRepository {
           .set(goal.toJson(), SetOptions(merge: true));
       developer.log('goal updated');
     } catch (e) {
-      developer.log('transaction fail ${e.toString()}');
+      developer.log('goal update fail ${e.toString()}');
       rethrow;
     }
   }

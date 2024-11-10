@@ -4,21 +4,6 @@ import 'package:financial_app/screens/paymen-pages/types_of_bill/mobile_bill.dar
 import 'package:financial_app/screens/paymen-pages/types_of_bill/water_bill.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: BillPayScreen(),
-    );
-  }
-}
-
 class BillPayScreen extends StatelessWidget {
   const BillPayScreen({super.key});
 

@@ -1,8 +1,18 @@
+import 'package:financial_app/components/reminder_update_popup.dart';
+import 'package:financial_app/models/reminder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 
 class ReminderCard extends StatefulWidget {
-  const ReminderCard({super.key});
+  final Reminder reminder;
+  final void Function(BuildContext)? deleteFunction;
+
+  const ReminderCard({
+    super.key,
+    required this.reminder,
+    required this.deleteFunction,
+  });
 
   @override
   State<ReminderCard> createState() => _ReminderCardState();
@@ -12,6 +22,11 @@ class _ReminderCardState extends State<ReminderCard>
     with SingleTickerProviderStateMixin {
   double _borderRadius = 15.0;
   late final SlidableController _slidableController;
+  late String title;
+  late String description;
+  late String date;
+  late String time;
+  late String frequancy;
 
   @override
   void initState() {
@@ -28,6 +43,11 @@ class _ReminderCardState extends State<ReminderCard>
         });
       }
     });
+    title = widget.reminder.title;
+    description = widget.reminder.description;
+    date = widget.reminder.date;
+    time = widget.reminder.time;
+    frequancy = widget.reminder.frequancy;
   }
 
   @override
@@ -50,7 +70,7 @@ class _ReminderCardState extends State<ReminderCard>
           motion: const StretchMotion(),
           children: [
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: widget.deleteFunction,
               icon: Icons.delete,
               backgroundColor: Colors.red.shade400,
               borderRadius: const BorderRadius.only(
@@ -71,20 +91,22 @@ class _ReminderCardState extends State<ReminderCard>
               ),
             ),
             const SizedBox(width: 20),
-            const Column(
+            Column(
               children: [
                 Text(
-                  '06',
-                  style: TextStyle(fontSize: 20),
+                  DateFormat('dd').format(DateTime.parse(date)),
+                  style: const TextStyle(fontSize: 20),
                 ),
-                Text('THU'),
+                Text(DateFormat('EEE')
+                    .format(DateTime.parse(date))
+                    .toUpperCase()),
               ],
             ),
             const SizedBox(width: 40),
             Expanded(
               child: Container(
                 width: double.infinity,
-                height: 90,
+                height: 100,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceDim,
                   borderRadius: BorderRadius.only(
@@ -94,8 +116,9 @@ class _ReminderCardState extends State<ReminderCard>
                     bottomRight: Radius.circular(_borderRadius),
                   ),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -103,27 +126,64 @@ class _ReminderCardState extends State<ReminderCard>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Yoga',
-                            style: TextStyle(
+                            title.length > 10 ? title.substring(0, 10) : title,
+                            style: const TextStyle(
                               fontSize: 18,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          Icon(
-                            Icons.notifications_outlined,
-                          )
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () async {
+                              final updatedreminder =
+                                  await showModalBottomSheet<Reminder>(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20)),
+                                ),
+                                builder: (context) {
+                                  return ReminderUpdatePopup(
+                                    reminder: Reminder(
+                                        userID: widget.reminder.userID,
+                                        createdAt: widget.reminder.createdAt,
+                                        id: widget.reminder.id,
+                                        date: date,
+                                        description: description,
+                                        frequancy: frequancy,
+                                        time: time,
+                                        title: title),
+                                  );
+                                },
+                              );
+                              if (updatedreminder != null) {
+                                setState(() {
+                                  title = updatedreminder.title;
+                                  description = updatedreminder.description;
+                                  date = updatedreminder.date;
+                                  time = updatedreminder.time;
+                                  frequancy = updatedreminder.frequancy;
+                                });
+                              }
+                            },
+                            icon: const Icon(Icons.settings),
+                          ),
                         ],
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '16:40',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                            time,
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.grey),
                           ),
-                          Text('Every week'),
+                          Text(
+                            frequancy,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
                         ],
                       )
                     ],

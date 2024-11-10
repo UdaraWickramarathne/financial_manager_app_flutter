@@ -209,6 +209,7 @@
     "transaction_updated_successfully": "Your transaction has been updated successfully.",
     "update": "Update",
     "reminder_updated": "Reminder is updated!",
-    "scan_and_pay": "Scan & Pay"
+    "scan_and_pay": "Scan & Pay",
+    "email_otp_verification": "Email OTP Verification"
   }
   

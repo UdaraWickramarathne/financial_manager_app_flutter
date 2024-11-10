@@ -119,6 +119,8 @@ dependencies:
   telephony: ^0.2.0
   shared_preferences: ^2.3.3
 
+  mailer: ^6.0.0
+
 
 
 dev_dependencies:

@@ -21,7 +21,7 @@ class _CardsPageState extends State<CardsPage> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title:  Center(
+        title: Center(
           child: Text(
             AppLocalizations.of(context).translate('my_cards'),
             style: const TextStyle(fontSize: 22),
@@ -79,23 +79,31 @@ class _CardsPageState extends State<CardsPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context).translate('add_new_card'),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)
+                                  .translate('add_new_card'),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                           Text(
-                            AppLocalizations.of(context).translate('save_time_by_adding_cards'),
-                            style: const TextStyle(
-                              color: Colors.grey,
+                            const SizedBox(height: 10),
+                            Text(
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              AppLocalizations.of(context)
+                                  .translate('save_time_by_adding_cards'),
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       IconButton(
                         style: ButtonStyle(

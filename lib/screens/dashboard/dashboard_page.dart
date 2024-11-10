@@ -13,10 +13,12 @@ import 'package:financial_app/screens/goals/goal_page.dart';
 import 'package:financial_app/screens/notification/notification_page.dart';
 import 'package:financial_app/screens/reminder/reminder_page.dart';
 import 'package:financial_app/screens/transactions/transactions_page.dart';
+import 'package:financial_app/services/sms_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -41,12 +43,15 @@ class _DashboardState extends State<Dashboard> {
 
   late TransactionBloc _transactionBloc;
   late AuthRepository _authRepository;
+  late SmsService _smsService;
 
   @override
   void initState() {
     _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
     _authRepository = RepositoryProvider.of<AuthRepository>(context);
     _transactionBloc.add(TransactionFetchEvent(userID: _authRepository.userID));
+    _smsService = Provider.of<SmsService>(context, listen: false);
+    _smsService.startListening();
     super.initState();
   }
 
@@ -236,22 +241,24 @@ class _DashboardState extends State<Dashboard> {
               child: BlocBuilder<TransactionBloc, TransactionState>(
                 bloc: _transactionBloc,
                 buildWhen: (previous, current) {
-                  return current is TransactionLoading ||
+                  return current is TransactionFetchLoading ||
                       current is TransactionLoaded ||
                       current is TransactionError ||
                       current is TransactionEmpty;
                 },
                 builder: (context, state) {
-                  if (state is TransactionLoading) {
+                  if (state is TransactionFetchLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is TransactionLoaded) {
                     return ListView.builder(
-                      itemCount: state.transaction.length,
+                      itemCount: state.transactions.length > 6
+                          ? 6
+                          : state.transactions.length,
                       itemBuilder: (context, index) {
-                        final transaction = state.transaction[index];
+                        final transaction = state.transactions[index];
                         return TransactionTile(
                           transaction: transaction,
-                          deleteFunction: (p0) {
+                          deleteFunction: (p0) async {
                             _transactionBloc.add(
                               TransactionDeleteEvent(
                                 transactionID: transaction.id,
@@ -259,6 +266,7 @@ class _DashboardState extends State<Dashboard> {
                             );
                             _transactionBloc.add(TransactionFetchEvent(
                                 userID: _authRepository.userID));
+
                             showSuccessSnakBar();
                           },
                         );

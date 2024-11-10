@@ -36,6 +36,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               await _authRepository.fetchUserData(_authRepository.userID);
 
           _authRepository.setUser(userDetails!);
+
+          Future.delayed(const Duration(milliseconds: 500));
           emit(AuthSuccess());
           developer.log(
               'Sign in success!. Sign in as ${_authRepository.user!.name}');

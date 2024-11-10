@@ -96,8 +96,7 @@ Future<void> generateAndShowPdf(
                     ),
                     alignment: pw.Alignment.centerRight,
                     padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text('Description',
-                        style: pw.TextStyle(font: ttfBold)),
+                    child: pw.Text('Title', style: pw.TextStyle(font: ttfBold)),
                   ),
                 ],
               ),
@@ -170,7 +169,7 @@ Future<void> generateAndShowPdf(
                     ),
                     alignment: pw.Alignment.centerRight,
                     padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text('Description',
+                    child: pw.Text('Title',
                         style: pw.TextStyle(
                             font: ttfBold, fontWeight: pw.FontWeight.bold)),
                   ),

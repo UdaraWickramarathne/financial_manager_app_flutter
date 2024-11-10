@@ -1,7 +1,10 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/transaction/base_transaction_repository.dart';
 import 'dart:developer' as developer;
+
+import 'package:intl/intl.dart';
 
 class TransactionRepository extends BaseTransactionRepository {
   final CollectionReference _transactionsCollection =
@@ -89,6 +92,122 @@ class TransactionRepository extends BaseTransactionRepository {
       developer.log('transaction updated');
     } catch (e) {
       developer.log('transaction fail ${e.toString()}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, double>> getTotalIncomeExpense(
+      {required String userID}) async {
+    double totalIncome = 0.0;
+    double totalExpense = 0.0;
+
+    try {
+      // Get the start of the current month
+      DateTime now = DateTime.now();
+      DateTime startOfMonth = DateTime(now.year, now.month, 1);
+      Timestamp startOfMonthTimestamp = Timestamp.fromDate(startOfMonth);
+
+      // Calculate income for the current month
+      QuerySnapshot incomeSnapshot = await _transactionsCollection
+          .where('userID', isEqualTo: userID)
+          .where('isIncome', isEqualTo: true)
+          .where('createdAt', isGreaterThanOrEqualTo: startOfMonthTimestamp)
+          .get();
+
+      for (var doc in incomeSnapshot.docs) {
+        var transaction = Transaction.fromJson(doc.data());
+        totalIncome += transaction.amount;
+      }
+
+      // Calculate expense for the current month
+      QuerySnapshot expenseSnapshot = await _transactionsCollection
+          .where('userID', isEqualTo: userID)
+          .where('isIncome', isEqualTo: false)
+          .where('createdAt', isGreaterThanOrEqualTo: startOfMonthTimestamp)
+          .get();
+
+      for (var doc in expenseSnapshot.docs) {
+        var transaction = Transaction.fromJson(doc.data());
+        totalExpense += transaction.amount;
+      }
+
+      developer.log('Monthly transaction totals updated');
+      return {
+        'totalIncome': totalIncome,
+        'totalExpense': totalExpense,
+      };
+    } catch (e) {
+      developer.log('Error updating monthly transaction totals: $e');
+      return {
+        'totalIncome': 0.0,
+        'totalExpense': 0.0,
+      };
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getWeeklyTotals(
+      {required String userID, required DateTime startDate}) async {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    List<String> dateRange = List.generate(7, (index) {
+      return dateFormat.format(startDate.add(Duration(days: index)));
+    });
+
+    try {
+      // Initialize Firestore query
+      QuerySnapshot querySnapshot = await _transactionsCollection
+          .where('userID', isEqualTo: userID)
+          .where('date', whereIn: dateRange)
+          .get();
+
+      // Initialize a map to store daily income and expenses
+      Map<String, Map<String, double>> dailyTotals = {
+        for (var date in dateRange) date: {'income': 0.0, 'expense': 0.0}
+      };
+
+      for (var doc in querySnapshot.docs) {
+        Transaction transaction = Transaction.fromJson(doc.data());
+
+        // Ensure the transaction date is within the range
+        if (dailyTotals.containsKey(transaction.date)) {
+          if (transaction.isIncome) {
+            dailyTotals[transaction.date]!['income'] =
+                (dailyTotals[transaction.date]!['income'] ?? 0.0) +
+                    transaction.amount;
+          } else {
+            dailyTotals[transaction.date]!['expense'] =
+                (dailyTotals[transaction.date]!['expense'] ?? 0.0) +
+                    transaction.amount;
+          }
+        }
+      }
+
+      // Convert the daily totals to a list of maps
+      List<Map<String, dynamic>> weeklyTotals = dateRange.map((date) {
+        return {
+          'date': date,
+          'income': dailyTotals[date]!['income'],
+          'expense': dailyTotals[date]!['expense'],
+        };
+      }).toList();
+
+      // Calculate the highest value across both income and expense
+      double highestValue = 0.0;
+
+      for (var dailyTotal in weeklyTotals) {
+        highestValue = [
+          highestValue,
+          dailyTotal['income'],
+          dailyTotal['expense']
+        ].reduce((a, b) => a > b ? a : b);
+      }
+
+      return {
+        'weeklyTotals': weeklyTotals,
+        'highestValue': highestValue,
+      };
+    } catch (e) {
       rethrow;
     }
   }

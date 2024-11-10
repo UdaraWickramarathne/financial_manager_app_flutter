@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:financial_app/data/keys.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -141,10 +142,10 @@ class _MoneyConverorState extends State<MoneyConveror> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
+        title:  Center(
           child: Text(
-            'Currency Converter',
-            style: TextStyle(fontSize: 22),
+            AppLocalizations.of(context).translate('currency_converter'),
+            style: const TextStyle(fontSize: 22),
           ),
         ),
       ),
@@ -152,9 +153,9 @@ class _MoneyConverorState extends State<MoneyConveror> {
         padding: const EdgeInsets.all(25.0),
         child: Column(
           children: [
-            const Text(
-              'Check live rates, set rate alerts, receive notifications and more.',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+             Text(
+              AppLocalizations.of(context).translate('live_rates_info'),
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -198,7 +199,7 @@ class _MoneyConverorState extends State<MoneyConveror> {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      labelText: 'Amount',
+                      labelText: AppLocalizations.of(context).translate('amount'),
                       labelStyle: const TextStyle(color: Colors.grey),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -304,9 +305,9 @@ class _MoneyConverorState extends State<MoneyConveror> {
             ),
             const SizedBox(height: 20),
             const SizedBox(height: 20),
-            const Text(
-              'Indicative Exchange Rate',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+             Text(
+              AppLocalizations.of(context).translate('indicative_exchange_rate'),
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
             Text(
               exchangeRateMessage,
@@ -316,7 +317,7 @@ class _MoneyConverorState extends State<MoneyConveror> {
             const SizedBox(height: 20),
             const SizedBox(height: 20),
             SimpleButton(
-              data: 'Convert',
+              data: 'convert',
               onPressed: () async {
                 await convertCurrency();
               },

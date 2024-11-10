@@ -5,6 +5,7 @@ import 'package:financial_app/components/clickble_textfield.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/reminder.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _AddReminderState extends State<AddReminder> {
   String? _selectedItem;
   final List<String> repeatOptions = [
     'Never',
-    'Every minute',
+    
     'Everyday',
     'Every week',
     'Every month',
@@ -97,10 +98,10 @@ class _AddReminderState extends State<AddReminder> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        title: const Center(
+        title:  Center(
           child: Text(
-            'Add New Reminder',
-            style: TextStyle(
+            AppLocalizations.of(context).translate('add_new_reminder'),
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 22,
             ),
@@ -144,9 +145,9 @@ class _AddReminderState extends State<AddReminder> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Title Task',
-                        style: TextStyle(
+                       Text(
+                        AppLocalizations.of(context).translate('title_task'),
+                        style: const TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8.0),
@@ -154,12 +155,12 @@ class _AddReminderState extends State<AddReminder> {
                         isObsecure: false,
                         controller: titleController,
                         isReadOnly: false,
-                        label: 'Add  Task Name..',
+                        label: AppLocalizations.of(context).translate('add_task_name'),
                       ),
                       const SizedBox(height: 16.0),
-                      const Text(
-                        'Description (Optional)',
-                        style: TextStyle(
+                       Text(
+                        AppLocalizations.of(context).translate('description_optional'),
+                        style: const TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8.0),
@@ -167,7 +168,7 @@ class _AddReminderState extends State<AddReminder> {
                         controller: descriptionController,
                         maxLines: 3,
                         decoration: InputDecoration(
-                          hintText: 'Add Description..',
+                          hintText: AppLocalizations.of(context).translate('add_description'),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
@@ -193,9 +194,9 @@ class _AddReminderState extends State<AddReminder> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Date',
-                                  style: TextStyle(
+                                 Text(
+                                  AppLocalizations.of(context).translate('date'),
+                                  style: const TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -215,9 +216,9 @@ class _AddReminderState extends State<AddReminder> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Time',
-                                  style: TextStyle(
+                                 Text(
+                                  AppLocalizations.of(context).translate('time'),
+                                  style: const TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -234,9 +235,9 @@ class _AddReminderState extends State<AddReminder> {
                         ],
                       ),
                       const SizedBox(height: 16.0),
-                      const Text(
-                        'Repeat',
-                        style: TextStyle(
+                       Text(
+                        AppLocalizations.of(context).translate('repeat'),
+                        style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -245,7 +246,7 @@ class _AddReminderState extends State<AddReminder> {
                       DropdownButtonHideUnderline(
                         child: DropdownButtonFormField<String>(
                           elevation: 2,
-                          hint: const Text('Select Repeat Frequancy'),
+                          hint: Text(AppLocalizations.of(context).translate('select_repeat_frequency'),),
                           style: TextStyle(
                             fontSize: 16,
                             color: Theme.of(context).colorScheme.secondaryFixed,
@@ -294,7 +295,7 @@ class _AddReminderState extends State<AddReminder> {
                 ),
               ),
               SimpleButton(
-                data: 'Create',
+                data: 'create',
                 onPressed: () {
                   final title = titleController.text;
                   final date = dateController.text;
@@ -325,8 +326,8 @@ class _AddReminderState extends State<AddReminder> {
   void showSuccessSnakBar() {
     CustomSnackBar.show(
       context,
-      title: 'Successfully!!',
-      message: 'Your reminder has been added successfully.',
+      title: AppLocalizations.of(context).translate('successfully'),
+      message: AppLocalizations.of(context).translate('reminder_added_successfully'),
       contentType: ContentType.success,
     );
   }
@@ -342,19 +343,23 @@ class _AddReminderState extends State<AddReminder> {
 
   bool validateFields() {
     if (titleController.text.isEmpty) {
-      showErrorSnackBar('Oops! Looks like your task lost its name.');
+      String message = AppLocalizations.of(context).translate('task_name_missing');
+      showErrorSnackBar(message);
       return false;
     }
     if (dateController.text.isEmpty) {
-      showErrorSnackBar('Date missing! Pick one!');
+      String message = AppLocalizations.of(context).translate('date_missing');
+      showErrorSnackBar(message);
       return false;
     }
     if (timeController.text.isEmpty) {
-      showErrorSnackBar('No time set? Pick a time!');
+      String message = AppLocalizations.of(context).translate('time_missing');
+      showErrorSnackBar(message);
       return false;
     }
     if (_selectedItem == null) {
-      showErrorSnackBar('Select a repeat frequency');
+      String message = AppLocalizations.of(context).translate('select_repeat_frequency');
+      showErrorSnackBar(message);
       return false;
     }
     return true;

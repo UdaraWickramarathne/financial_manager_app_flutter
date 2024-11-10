@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_app/components/goal_details_popupcard.dart';
 import 'package:financial_app/components/goal_update_popup_card.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/goal.dart';
 import 'package:financial_app/services/icon_seletor.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class _GoalCardState extends State<GoalCard>
     } else if (difference.inMinutes > 0) {
       return "${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} left";
     } else {
-      return "Deadline has passed";
+      return AppLocalizations.of(context).translate('deadline_passed');
     }
   }
 
@@ -273,15 +274,17 @@ class _GoalCardState extends State<GoalCard>
                                             MaterialTapTargetSize.shrinkWrap,
                                       ),
                                       child: isGoalComplete()
-                                          ? const Text(
-                                              'Goal Completed',
-                                              style: TextStyle(
+                                          ? Text(
+                                              AppLocalizations.of(context)
+                                                  .translate('goal_completed'),
+                                              style: const TextStyle(
                                                 color: Colors.green,
                                               ),
                                             )
-                                          : const Text(
-                                              'Update Progress',
-                                              style: TextStyle(
+                                          : Text(
+                                              AppLocalizations.of(context)
+                                                  .translate('update_progress'),
+                                              style: const TextStyle(
                                                 color: Color(0xFF456EFE),
                                               ),
                                             ),

@@ -2,6 +2,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/transaction_tile.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          "All Transactions",
-          style: TextStyle(
+        title:  Text(
+          AppLocalizations.of(context).translate('all_transactions'),
+          style: const TextStyle(
             fontSize: 20,
           ),
         ),
@@ -95,9 +96,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   },
                 );
               } else if (state is TransactionEmpty) {
-                return const Center(child: Text('No transactions found.'));
+                return Center(child: Text(AppLocalizations.of(context).translate('no_transactions_found'),));
               }
-              return const Center(child: Text('No transactions found.'));
+              return Center(child: Text(AppLocalizations.of(context).translate('no_transactions_found'),));
             },
           ),
         ),

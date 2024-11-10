@@ -1,6 +1,7 @@
 import 'package:financial_app/blocs/budget/budget_bloc.dart';
 import 'package:financial_app/components/budget_card.dart';
 import 'package:financial_app/components/balance_card.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,10 +38,10 @@ class _BudgetPageState extends State<BudgetPage> {
           ),
         ],
         centerTitle: true,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Your Budgets',
-            style: TextStyle(fontSize: 20),
+            AppLocalizations.of(context).translate('your_budgets'),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
@@ -70,19 +71,19 @@ class _BudgetPageState extends State<BudgetPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
+                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Create a budget',
-                        style: TextStyle(
+                        AppLocalizations.of(context).translate('create_a_budget'),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        'Save more by setting a budget',
-                        style: TextStyle(
+                        AppLocalizations.of(context).translate('save_more_by_setting_budget'),
+                        style: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
@@ -112,11 +113,11 @@ class _BudgetPageState extends State<BudgetPage> {
               ),
             ),
             const SizedBox(height: 30),
-            const Row(
+             Row(
               children: [
                 Text(
-                  'My Budgets',
-                  style: TextStyle(
+                  AppLocalizations.of(context).translate('my_budgets'),
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -154,14 +155,14 @@ class _BudgetPageState extends State<BudgetPage> {
                       },
                     );
                   } else if (state is BudgetsEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
-                        'Create budgets to track your expenses and reach your financial goals with ease.',
+                        AppLocalizations.of(context).translate('create_budgets_info'),
                         textAlign: TextAlign.center,
                       ),
                     );
                   }
-                  return const Center(child: Text('No Budgets found.'));
+                  return Center(child: Text(AppLocalizations.of(context).translate('no_budgets_found'),));
                 },
               ),
             ),

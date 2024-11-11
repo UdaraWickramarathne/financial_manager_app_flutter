@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/transaction/base_transaction_repository.dart';
@@ -206,6 +205,152 @@ class TransactionRepository extends BaseTransactionRepository {
       return {
         'weeklyTotals': weeklyTotals,
         'highestValue': highestValue,
+      };
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getMonthlyWeeklyAnalysis({
+    required String userID,
+    required int year,
+    required int month,
+  }) async {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    DateTime firstDayOfMonth = DateTime(year, month, 1);
+    DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
+
+    List<Map<String, dynamic>> weeklyTotals = [];
+    double highestValue = 0.0;
+    DateTime start = firstDayOfMonth;
+
+    try {
+      while (start.isBefore(lastDayOfMonth)) {
+        // Define the end of the week, either 6 days after the start or the last day of the month
+        DateTime end =
+            start.add(const Duration(days: 6)).isBefore(lastDayOfMonth)
+                ? start.add(const Duration(days: 6))
+                : lastDayOfMonth;
+
+        // Generate date range for the current week
+        List<String> dateRange =
+            List.generate(end.difference(start).inDays + 1, (index) {
+          return dateFormat.format(start.add(Duration(days: index)));
+        });
+
+        // Initialize Firestore query
+        QuerySnapshot querySnapshot = await _transactionsCollection
+            .where('userID', isEqualTo: userID)
+            .where('date', whereIn: dateRange)
+            .get();
+
+        // Initialize weekly income and expense totals
+        double weeklyIncome = 0.0;
+        double weeklyExpense = 0.0;
+
+        for (var doc in querySnapshot.docs) {
+          Transaction transaction = Transaction.fromJson(doc.data());
+
+          if (transaction.isIncome) {
+            weeklyIncome += transaction.amount;
+          } else {
+            weeklyExpense += transaction.amount;
+          }
+        }
+
+        // Store weekly totals
+        weeklyTotals.add({
+          'weekStart': dateFormat.format(start),
+          'weekEnd': dateFormat.format(end),
+          'income': weeklyIncome,
+          'expense': weeklyExpense,
+        });
+
+        // Update the highest value if this week has a higher income or expense
+        highestValue = [highestValue, weeklyIncome, weeklyExpense]
+            .reduce((a, b) => a > b ? a : b);
+
+        // Move start to the next week
+        start = end.add(const Duration(days: 1));
+      }
+
+      return {
+        'weeklyTotals': weeklyTotals,
+        'highestValue': highestValue,
+      };
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getYearlyTotals({
+    required String userID,
+    required int year,
+  }) async {
+    try {
+      DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+      // Initialize a list to hold totals for each month
+      List<Map<String, dynamic>> monthlyTotals = [];
+      double highestAmount = 0.0;
+
+      for (int month = 1; month <= 12; month++) {
+        DateTime startDate = DateTime(year, month, 1);
+        DateTime endDate =
+            DateTime(year, month + 1, 0); // Last day of the month
+
+        // Generate date range for the current month
+        List<String> dateRange =
+            List.generate(endDate.difference(startDate).inDays + 1, (index) {
+          return dateFormat.format(startDate.add(Duration(days: index)));
+        });
+
+        double totalIncome = 0.0;
+        double totalExpense = 0.0;
+
+        // Batch the date range into chunks of 30 dates
+        for (int i = 0; i < dateRange.length; i += 30) {
+          // Get the chunk of dates (maximum 30)
+          List<String> dateChunk = dateRange.sublist(
+              i, i + 30 > dateRange.length ? dateRange.length : i + 30);
+
+          // Initialize Firestore query for the chunk of dates
+          QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+              .collection('transactions')
+              .where('userID', isEqualTo: userID)
+              .where('date', whereIn: dateChunk)
+              .get();
+
+          // Calculate total income and expenses for this chunk
+          for (var doc in querySnapshot.docs) {
+            Transaction transaction = Transaction.fromJson(doc.data());
+
+            if (transaction.isIncome) {
+              totalIncome += transaction.amount;
+            } else {
+              totalExpense += transaction.amount;
+            }
+          }
+        }
+
+        // Add the monthly totals to the list
+        monthlyTotals.add({
+          'month': month,
+          'totalIncome': totalIncome,
+          'totalExpense': totalExpense,
+        });
+
+        // Track the highest value across all months
+        highestAmount = [highestAmount, totalIncome, totalExpense]
+            .reduce((a, b) => a > b ? a : b);
+      }
+
+      // Return the monthly totals and the highest value for the year
+      return {
+        'monthlyTotals': monthlyTotals,
+        'highestAmount': highestAmount,
       };
     } catch (e) {
       rethrow;

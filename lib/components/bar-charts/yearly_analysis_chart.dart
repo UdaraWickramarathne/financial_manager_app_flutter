@@ -63,75 +63,90 @@ class _YearlyAnalysisChartState extends State<YearlyAnalysisChart> {
             Expanded(
               child: BarChart(
                 BarChartData(
-                  titlesData: FlTitlesData(
-                    show: true,
-                    rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return const Text('0');
-                            case 2000:
-                              return const Text('2k');
-                            case 4000:
-                              return const Text('4k');
-                            case 6000:
-                              return const Text('6k');
-                            case 8000:
-                              return const Text('8k');
-                            default:
-                              return const Text('');
-                          }
-                        },
-                        interval: 10,
-                        reservedSize: 28,
+                    titlesData: FlTitlesData(
+                      show: true,
+                      rightTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            switch (value.toInt()) {
+                              case 0:
+                                return const Text('0');
+                              case 2000:
+                                return const Text('2k');
+                              case 4000:
+                                return const Text('4k');
+                              case 6000:
+                                return const Text('6k');
+                              case 8000:
+                                return const Text('8k');
+                              default:
+                                return const Text('');
+                            }
+                          },
+                          interval: 10,
+                          reservedSize: 28,
+                        ),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            switch (value.toInt()) {
+                              case 0:
+                                return const Text('2010');
+                              case 1:
+                                return const Text('2021');
+                              case 2:
+                                return const Text('2022');
+                              case 3:
+                                return const Text('2023');
+                              case 4:
+                                return const Text('2024');
+                              default:
+                                return const Text('');
+                            }
+                          },
+                        ),
                       ),
                     ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return const Text('2010');
-                            case 1:
-                              return const Text('2021');
-                            case 2:
-                              return const Text('2022');
-                            case 3:
-                              return const Text('2023');
-                            case 4:
-                              return const Text('2024');
-                            default:
-                              return const Text('');
-                          }
-                        },
+                    borderData: FlBorderData(show: false),
+                    gridData: const FlGridData(show: false),
+                    barGroups: [
+                      BarChartGroupData(
+                        x: 0,
+                        barRods: [
+                          BarChartRodData(
+                              toY: 4000 / 100, color: Colors.greenAccent),
+                          BarChartRodData(
+                              toY: 30000 / 100, color: Colors.redAccent)
+                        ],
                       ),
-                    ),
-                  ),
-                  borderData: FlBorderData(show: false),
-                  gridData: const FlGridData(show: false),
-                  barGroups: List.generate(
-                    5,
-                    (index) {
-                      return BarChartGroupData(x: index, barRods: [
-                        BarChartRodData(
-                            toY: incomes[index],
-                            color: Colors.greenAccent), // Income
-                        BarChartRodData(
-                            toY: expenses[index],
-                            color: Colors.redAccent), // Expense
-                      ]);
-                    },
-                  ),
-                ),
+                      BarChartGroupData(
+                        x: 1,
+                        barRods: [
+                          BarChartRodData(
+                              toY: 20000 / 100, color: Colors.greenAccent),
+                          BarChartRodData(
+                              toY: 30000 / 100, color: Colors.redAccent)
+                        ],
+                      ),
+                      BarChartGroupData(
+                        x: 2,
+                        barRods: [
+                          BarChartRodData(
+                              toY: 2000 / 100, color: Colors.greenAccent),
+                          BarChartRodData(
+                              toY: 16000 / 100, color: Colors.redAccent)
+                        ],
+                      ),
+                    ]),
               ),
             ),
           ],

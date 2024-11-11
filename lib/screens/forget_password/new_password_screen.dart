@@ -9,7 +9,6 @@ class NewPasswordScreen extends StatefulWidget {
 
   @override
   State<NewPasswordScreen> createState() => NewPasswordScreenState();
-
 }
 
 class NewPasswordScreenState extends State<NewPasswordScreen> {
@@ -24,9 +23,9 @@ class NewPasswordScreenState extends State<NewPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           AppLocalizations.of(context).translate('change_password'),
-          style:const TextStyle(fontSize: 22),
+          style: const TextStyle(fontSize: 22),
         ),
         centerTitle: true,
         elevation: 0,
@@ -40,8 +39,8 @@ class NewPasswordScreenState extends State<NewPasswordScreen> {
               isReadOnly: false,
               controller: newPasswordController,
               isObsecure: !_newPasswordVisible,
-              prefixIcon: Icons.lock,
-              label:  AppLocalizations.of(context).translate('new_password'),
+              prefixIcon: Icons.key,
+              label: AppLocalizations.of(context).translate('new_password'),
               suffixIcon: IconButton(
                 icon: Icon(
                   _newPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -59,7 +58,7 @@ class NewPasswordScreenState extends State<NewPasswordScreen> {
               isReadOnly: false,
               controller: confirmPasswordController,
               isObsecure: !_confirmPasswordVisible,
-              prefixIcon: Icons.lock,
+              prefixIcon: Icons.key,
               label: AppLocalizations.of(context).translate('confirm_password'),
               suffixIcon: IconButton(
                 icon: Icon(

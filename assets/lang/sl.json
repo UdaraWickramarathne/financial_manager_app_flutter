@@ -204,12 +204,6 @@
     "transaction_updated_successfully": "ඔබගේ ගනුදෙනුව සාර්ථකව යාවත්කාලීන කර ඇත.",
     "update": "යාවත්කාලීන කරන්න",
     "reminder_updated": "දැනුම්දීම යාවත්කාලීන කර ඇත!",
-    "bill_payment": "බිල් ගෙවීම",
-    "electricity": "විදුලිය",
-    "internet": "ඉන්ටර්නෙට්",
-    "water": "ජලය",
-    "mobile": "ජංගම දුරකථන",
-    "tv": "ටෙලිවිෂන්",
-    "scan_and_pay": "ස්කෑන් කර ගෙවීම"
+    "email_otp_verification": "ඊමේල් OTP සැකසීම"
   }
   

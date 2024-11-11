@@ -5,6 +5,7 @@ import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/screens/auth/signup_page.dart';
 import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/screens/forget_password/email_page.dart';
 import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -165,7 +166,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => EmailPage(),
+                                ),
+                              );
+                            },
                             child: Text(
                               AppLocalizations.of(context)
                                   .translate('forgot_password'),

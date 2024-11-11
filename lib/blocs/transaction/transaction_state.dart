@@ -79,12 +79,12 @@ final class TransactionGetTotalError extends TransactionState {
 // * TRANSACTION DAILY ANALYSIS STATES
 
 final class TransactionAnalysisDailyLoaded extends TransactionState {
-  final Map<String, dynamic> weelkyTotals;
+  final Map<String, dynamic> dailyTotals;
 
-  const TransactionAnalysisDailyLoaded({required this.weelkyTotals});
+  const TransactionAnalysisDailyLoaded({required this.dailyTotals});
 
   @override
-  List<Object> get props => [weelkyTotals];
+  List<Object> get props => [dailyTotals];
 }
 
 final class TransactionAnalysisDailyLoading extends TransactionState {}
@@ -93,6 +93,50 @@ final class TransactionAnalysisDailyError extends TransactionState {
   final String message;
 
   const TransactionAnalysisDailyError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+// * TRANSACTION WEEKLY ANALYSIS STATES
+
+final class TransactionAnalysisWeeklyLoaded extends TransactionState {
+  final Map<String, dynamic> weeklyTotals;
+
+  const TransactionAnalysisWeeklyLoaded({required this.weeklyTotals});
+
+  @override
+  List<Object> get props => [weeklyTotals];
+}
+
+final class TransactionAnalysisWeeklyLoading extends TransactionState {}
+
+final class TransactionAnalysisWeeklyError extends TransactionState {
+  final String message;
+
+  const TransactionAnalysisWeeklyError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+// * TRANSACTION MONTHLY ANALYSIS STATES
+
+final class TransactionAnalysisMonthlyLoaded extends TransactionState {
+  final Map<String, dynamic> monthlyTotals;
+
+  const TransactionAnalysisMonthlyLoaded({required this.monthlyTotals});
+
+  @override
+  List<Object> get props => [monthlyTotals];
+}
+
+final class TransactionAnalysisMonthlyLoading extends TransactionState {}
+
+final class TransactionAnalysisMonthlyError extends TransactionState {
+  final String message;
+
+  const TransactionAnalysisMonthlyError({required this.message});
 
   @override
   List<Object> get props => [message];

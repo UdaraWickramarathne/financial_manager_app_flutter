@@ -25,4 +25,22 @@ class CustomSnackBar {
         ),
       );
   }
+
+  static showErrorSnackBar(String error, BuildContext context) {
+    show(
+      context,
+      title: 'On Snap!',
+      message: error,
+      contentType: ContentType.failure,
+    );
+  }
+
+  static showSuccessSnackBar(String success, BuildContext context) {
+    show(
+      context,
+      title: 'Successful!',
+      message: success,
+      contentType: ContentType.success,
+    );
+  }
 }

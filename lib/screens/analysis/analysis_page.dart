@@ -1,4 +1,3 @@
-import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/bar-charts/daily_analysis_chart.dart';
 import 'package:financial_app/components/bar-charts/monthly_analysis_chart.dart';
 import 'package:financial_app/components/bar-charts/weekly_analysis_chart.dart';
@@ -25,7 +24,6 @@ class _AnalysisPageState extends State<AnalysisPage>
   DateTime endDate = DateTime.now();
   late DateTime startDate;
   late AuthRepository _authRepository;
-  late TransactionBloc _transactionBloc;
   double incomeBal = 0.0;
   double expenseBal = 0.0;
 
@@ -34,15 +32,12 @@ class _AnalysisPageState extends State<AnalysisPage>
     super.initState();
     startDate = endDate.subtract(const Duration(days: 30));
     _tabController = TabController(length: 4, vsync: this);
-    _authRepository = RepositoryProvider.of<AuthRepository>(context);
-    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
-    _transactionBloc.add(TransactionAnalysisDailyEvent(
-        userID: _authRepository.userID, dateTime: DateTime.now()));
+
     _pageController = PageController();
     _tabController.addListener(() {
       setState(() {});
     });
-
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
     incomeBal = _authRepository.user!.totalIncome;
     expenseBal = _authRepository.user!.totalExpense;
   }
@@ -56,329 +51,314 @@ class _AnalysisPageState extends State<AnalysisPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TransactionBloc, TransactionState>(
-      listenWhen: (previous, current) {
-        return current is TransactionAnalysisDailyLoaded;
-      },
-      listener: (context, state) {
-        if (state is TransactionAnalysisDailyLoaded) {
-          print(state.weelkyTotals);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF456EFE),
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF456EFE),
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
+        ),
+        centerTitle: true,
+        title: const Text(
+          "Analysis",
+          style: TextStyle(
+            fontSize: 20,
             color: Colors.white,
           ),
-          centerTitle: true,
-          title: const Text(
-            "Analysis",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-            ),
-          ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: const BoxDecoration(
-                color: Color(0xFF456EFE),
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Rs.${incomeBal.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            "(Monthly Income)",
-                            style: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Rs.${expenseBal.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            "(Monthly Expense)",
-                            style: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: const BoxDecoration(
+              color: Color(0xFF456EFE),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
               ),
             ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(25.0),
-                      child: DefaultTabController(
-                        animationDuration: const Duration(milliseconds: 600),
-                        length: 4, // Number of tabs
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceDim,
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: TabBar(
-                            controller: _tabController,
-                            dividerHeight: 0,
-                            overlayColor: const WidgetStatePropertyAll(
-                                Colors.transparent),
-                            labelColor: Colors.white,
-                            unselectedLabelColor: Colors.grey,
-                            indicator: BoxDecoration(
-                              color: const Color(
-                                  0xFF456EFE), // Color of the selected tab
-                              borderRadius: BorderRadius.circular(
-                                  30.0), // Rounded corners for selected tab
-                            ),
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            tabs: const [
-                              SizedBox(
-                                width: 80,
-                                child: Tab(text: "Daily"),
-                              ),
-                              SizedBox(
-                                width: 80,
-                                child: Tab(text: "Weekly"),
-                              ),
-                              SizedBox(
-                                width: 80,
-                                child: Tab(text: "Monthly"),
-                              ),
-                              SizedBox(
-                                width: 80,
-                                child: Tab(text: "Year"),
-                              ),
-                            ],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Rs.${incomeBal.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
-                      ),
+                        Text(
+                          "(Monthly Income)",
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 450,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: const [
-                          DailyAnalysisChart(),
-                          WeeklyAnalysisChart(),
-                          MonthlyAnalysisChart(),
-                          YearlyAnalysisChart(),
-                        ],
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Rs.${expenseBal.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          "(Monthly Expense)",
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 10),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Start Date',
-                        style: TextStyle(color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: DefaultTabController(
+                      animationDuration: const Duration(milliseconds: 600),
+                      length: 4, // Number of tabs
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceDim,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: TabBar(
+                          controller: _tabController,
+                          dividerHeight: 0,
+                          overlayColor:
+                              const WidgetStatePropertyAll(Colors.transparent),
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.grey,
+                          indicator: BoxDecoration(
+                            color: const Color(
+                                0xFF456EFE), // Color of the selected tab
+                            borderRadius: BorderRadius.circular(
+                                30.0), // Rounded corners for selected tab
+                          ),
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          tabs: const [
+                            SizedBox(
+                              width: 80,
+                              child: Tab(text: "Daily"),
+                            ),
+                            SizedBox(
+                              width: 80,
+                              child: Tab(text: "Weekly"),
+                            ),
+                            SizedBox(
+                              width: 80,
+                              child: Tab(text: "Monthly"),
+                            ),
+                            SizedBox(
+                              width: 80,
+                              child: Tab(text: "Year"),
+                            ),
+                          ],
+                        ),
                       ),
-                      Text(
-                        'End Date',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Baseline(
-                            baselineType: TextBaseline.alphabetic,
-                            baseline: 20.0,
-                            child: Text(
-                              DateFormat('yyyy-MM-dd').format(startDate),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryFixed,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Baseline(
-                            baselineType: TextBaseline.alphabetic,
-                            baseline: 20.0,
-                            child: GestureDetector(
-                              onTap: () {
-                                showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (context) {
-                                    return SizedBox(
-                                      height: 250,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surface,
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(20.0),
-                                            topRight: Radius.circular(20.0),
-                                          ),
-                                        ),
-                                        child: CupertinoDatePicker(
-                                          initialDateTime: startDate,
-                                          maximumDate: DateTime.now(),
-                                          mode: CupertinoDatePickerMode.date,
-                                          backgroundColor: Colors.transparent,
-                                          onDateTimeChanged: (value) {
-                                            setState(() {
-                                              startDate = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Icon(
-                                Icons.calendar_month,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryFixed,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Baseline(
-                            baselineType: TextBaseline.alphabetic,
-                            baseline: 20.0,
-                            child: Text(
-                              DateFormat('yyyy-MM-dd').format(endDate),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryFixed,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Baseline(
-                            baselineType: TextBaseline.alphabetic,
-                            baseline: 20.0,
-                            child: GestureDetector(
-                              onTap: () {
-                                showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (context) {
-                                    return SizedBox(
-                                      height: 250,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surface,
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(20.0),
-                                            topRight: Radius.circular(20.0),
-                                          ),
-                                        ),
-                                        child: CupertinoDatePicker(
-                                          initialDateTime: endDate,
-                                          maximumDate: DateTime.now(),
-                                          mode: CupertinoDatePickerMode.date,
-                                          backgroundColor: Colors.transparent,
-                                          onDateTimeChanged: (value) {
-                                            setState(() {
-                                              endDate = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Icon(
-                                Icons.calendar_month,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryFixed,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  SizedBox(
+                    height: 450,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: const [
+                        DailyAnalysisChart(),
+                        WeeklyAnalysisChart(),
+                        MonthlyAnalysisChart(),
+                        YearlyAnalysisChart(),
+                      ],
+                    ),
                   ),
-
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(25),
-              child: SimpleButton(
-                data: 'Generate Report',
-                onPressed: () => onGenerateReportPressed(context),
-              ),
-            )
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Start Date',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text(
+                      'End Date',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Baseline(
+                          baselineType: TextBaseline.alphabetic,
+                          baseline: 20.0,
+                          child: Text(
+                            DateFormat('yyyy-MM-dd').format(startDate),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color:
+                                  Theme.of(context).colorScheme.secondaryFixed,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Baseline(
+                          baselineType: TextBaseline.alphabetic,
+                          baseline: 20.0,
+                          child: GestureDetector(
+                            onTap: () {
+                              showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) {
+                                  return SizedBox(
+                                    height: 250,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(20.0),
+                                          topRight: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                      child: CupertinoDatePicker(
+                                        initialDateTime: startDate,
+                                        maximumDate: DateTime.now(),
+                                        mode: CupertinoDatePickerMode.date,
+                                        backgroundColor: Colors.transparent,
+                                        onDateTimeChanged: (value) {
+                                          setState(() {
+                                            startDate = value;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.calendar_month,
+                              color:
+                                  Theme.of(context).colorScheme.secondaryFixed,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Baseline(
+                          baselineType: TextBaseline.alphabetic,
+                          baseline: 20.0,
+                          child: Text(
+                            DateFormat('yyyy-MM-dd').format(endDate),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color:
+                                  Theme.of(context).colorScheme.secondaryFixed,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Baseline(
+                          baselineType: TextBaseline.alphabetic,
+                          baseline: 20.0,
+                          child: GestureDetector(
+                            onTap: () {
+                              showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) {
+                                  return SizedBox(
+                                    height: 250,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(20.0),
+                                          topRight: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                      child: CupertinoDatePicker(
+                                        initialDateTime: endDate,
+                                        maximumDate: DateTime.now(),
+                                        mode: CupertinoDatePickerMode.date,
+                                        backgroundColor: Colors.transparent,
+                                        onDateTimeChanged: (value) {
+                                          setState(() {
+                                            endDate = value;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.calendar_month,
+                              color:
+                                  Theme.of(context).colorScheme.secondaryFixed,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(25),
+            child: SimpleButton(
+              data: 'Generate Report',
+              onPressed: () => onGenerateReportPressed(context),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,6 +1,10 @@
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'dart:developer' as dev;
 
 class MonthlyAnalysisChart extends StatefulWidget {
   const MonthlyAnalysisChart({super.key});
@@ -12,44 +16,19 @@ class MonthlyAnalysisChart extends StatefulWidget {
 class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
   DateTime selectedYear = DateTime.now();
   bool isJanJunSelected = true;
-
-  // Sample income and expense data for both halves of the year
-  final List<double> incomesJanJun = [
-    4000,
-    3000,
-    2000,
-    5000,
-    4500,
-    3500
-  ]; // Income data for Jan-Jun
-  final List<double> expensesJanJun = [
-    2000,
-    1500,
-    1000,
-    2500,
-    2000,
-    1200
-  ]; // Expense data for Jan-Jun
-  final List<double> incomesJulDec = [
-    5000,
-    6000,
-    4500,
-    7000,
-    8000,
-    9000
-  ]; // Income data for Jul-Dec
-  final List<double> expensesJulDec = [
-    3000,
-    2500,
-    2000,
-    4000,
-    3500,
-    3000
-  ]; // Expense data for Jul-Dec
+  List<BarChartGroupData> barChartDataJan2Jun = [];
+  List<BarChartGroupData> barChartDataJul2Dec = [];
+  late AuthRepository _authRepository;
+  late TransactionBloc _transactionBloc;
+  int scaleFactor = 1;
 
   @override
   void initState() {
     super.initState();
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _transactionBloc.add(TransactionAnalysisMonthlyEvent(
+        userID: _authRepository.userID, year: selectedYear.year));
   }
 
   void _toggleButtons() {
@@ -94,31 +73,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text("Select Year"),
-                          content: SizedBox(
-                            width: 300,
-                            height: 300,
-                            child: YearPicker(
-                              firstDate: DateTime(DateTime.now().year - 100, 1),
-                              lastDate: DateTime.now(),
-                              selectedDate: selectedYear,
-                              onChanged: (DateTime dateTime) {
-                                setState(() {
-                                  selectedYear = dateTime;
-                                });
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
+                  onPressed: () => _showYearPicker(context),
                   child: Row(
                     children: [
                       Baseline(
@@ -169,90 +124,165 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
             const Divider(color: Colors.grey),
             const SizedBox(height: 10),
             Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 600),
-                switchInCurve: Curves.easeInOut,
-                switchOutCurve: Curves.easeInOut,
-                child: BarChart(
-                  key: ValueKey<bool>(isJanJunSelected),
-                  BarChartData(
-                    titlesData: FlTitlesData(
-                      show: true,
-                      rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      topTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) {
-                            switch (value.toInt()) {
-                              case 0:
-                                return const Text('0');
-                              case 2000:
-                                return const Text('2k');
-                              case 4000:
-                                return const Text('4k');
-                              case 6000:
-                                return const Text('6k');
-                              case 8000:
-                                return const Text('8k');
-                              default:
-                                return const Text('');
-                            }
-                          },
-                          interval: 10,
-                          reservedSize: 28,
-                        ),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) => isJanJunSelected
-                              ? getJanToJunTitles(value, meta)
-                              : getJulToDecTitles(value, meta),
-                        ),
-                      ),
-                    ),
-                    borderData: FlBorderData(show: false),
-                    gridData: const FlGridData(show: false),
-                    barGroups: isJanJunSelected
-                        ? List.generate(
-                            6,
-                            (index) {
-                              return BarChartGroupData(x: index, barRods: [
-                                BarChartRodData(
-                                    toY: incomesJanJun[index],
-                                    color: Colors.greenAccent), // Income
-                                BarChartRodData(
-                                    toY: expensesJanJun[index],
-                                    color: Colors.redAccent), // Expense
-                              ]);
-                            },
-                          )
-                        : List.generate(
-                            6,
-                            (index) {
-                              return BarChartGroupData(x: index, barRods: [
-                                BarChartRodData(
-                                    toY: incomesJulDec[index],
-                                    color: Colors.greenAccent), // Income
-                                BarChartRodData(
-                                    toY: expensesJulDec[index],
-                                    color: Colors.redAccent), // Expense
-                              ]);
-                            },
-                          ),
-                  ),
-                ),
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                builder: (context, state) {
+                  if (state is TransactionAnalysisMonthlyLoaded) {
+                    List<Map<String, dynamic>> monthlyTotals =
+                        state.monthlyTotals['monthlyTotals'];
+                    double highestVal = state.monthlyTotals['highestAmount'];
+                    if (highestVal > 10000) {
+                      scaleFactor = 1000;
+                    } else if (highestVal > 1000) {
+                      scaleFactor = 100;
+                    }
+                    if (highestVal == 0.0) {
+                      return const Center(
+                          child: Text('Not enough data to calaculations'));
+                    }
+                    _generateWeeklyBarChartDataJan2Jun(monthlyTotals);
+                    _generateWeeklyBarChartDataJul2Dec(monthlyTotals);
+                    return buildBarChart();
+                  } else if (state is TransactionAnalysisMonthlyLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<dynamic> _showYearPicker(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Select Year"),
+          content: SizedBox(
+            width: 300,
+            height: 300,
+            child: YearPicker(
+              firstDate: DateTime(DateTime.now().year - 100, 1),
+              lastDate: DateTime.now(),
+              selectedDate: selectedYear,
+              onChanged: (DateTime dateTime) {
+                setState(() {
+                  selectedYear = dateTime;
+                });
+                Navigator.pop(context);
+                _transactionBloc.add(TransactionAnalysisMonthlyEvent(
+                    userID: _authRepository.userID, year: selectedYear.year));
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  AnimatedSwitcher buildBarChart() {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 600),
+      switchInCurve: Curves.easeInOut,
+      switchOutCurve: Curves.easeInOut,
+      child: BarChart(
+        key: ValueKey<bool>(isJanJunSelected),
+        BarChartData(
+          barTouchData: BarTouchData(
+            touchTooltipData: BarTouchTooltipData(
+              getTooltipColor: (group) => const Color(0xFF456EFE),
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                final actualValue = rod.toY * scaleFactor;
+                return BarTooltipItem(
+                  'Rs.${actualValue.toStringAsFixed(2)}',
+                  const TextStyle(
+                    color: Colors.white,
+                  ),
+                );
+              },
+            ),
+          ),
+          titlesData: FlTitlesData(
+            show: true,
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: getTitlesOfY,
+                interval: 10,
+                reservedSize: 28,
+              ),
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) => isJanJunSelected
+                    ? getJanToJunTitles(value, meta)
+                    : getJulToDecTitles(value, meta),
+              ),
+            ),
+          ),
+          borderData: FlBorderData(show: false),
+          gridData: const FlGridData(show: false),
+          barGroups:
+              isJanJunSelected ? barChartDataJan2Jun : barChartDataJul2Dec,
+        ),
+      ),
+    );
+  }
+
+  void _generateWeeklyBarChartDataJan2Jun(
+      List<Map<String, dynamic>> monthlyTotals) {
+    barChartDataJan2Jun = [];
+    for (int i = 0; i <= 5; i++) {
+      final weekData = monthlyTotals[i];
+      barChartDataJan2Jun.add(
+        BarChartGroupData(
+          x: i, // X-axis position for each week
+          barRods: [
+            BarChartRodData(
+                toY: weekData['totalIncome'] / scaleFactor,
+                color: Colors.greenAccent),
+            BarChartRodData(
+                toY: weekData['totalExpense'] / scaleFactor,
+                color: Colors.redAccent)
+          ],
+        ),
+      );
+    }
+  }
+
+  void _generateWeeklyBarChartDataJul2Dec(
+      List<Map<String, dynamic>> monthlyTotals) {
+    barChartDataJul2Dec = [];
+    for (int i = 6; i <= 11; i++) {
+      final weekData = monthlyTotals[i];
+      barChartDataJul2Dec.add(
+        BarChartGroupData(
+          x: i, // X-axis position for each week
+          barRods: [
+            BarChartRodData(
+                toY: weekData['totalIncome'] / scaleFactor,
+                color: Colors.greenAccent),
+            BarChartRodData(
+                toY: weekData['totalExpense'] / scaleFactor,
+                color: Colors.redAccent)
+          ],
+        ),
+      );
+    }
+  }
+
+  Widget getTitlesOfY(value, meta) {
+    return Text('${(value).toStringAsFixed(0)}k');
   }
 
   Widget getJanToJunTitles(value, meta) {
@@ -276,17 +306,17 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
 
   Widget getJulToDecTitles(value, meta) {
     switch (value.toInt()) {
-      case 0:
+      case 6:
         return const Text('Jul');
-      case 1:
+      case 7:
         return const Text('Aug');
-      case 2:
+      case 8:
         return const Text('Sep');
-      case 3:
+      case 9:
         return const Text('Oct');
-      case 4:
+      case 10:
         return const Text('Nov');
-      case 5:
+      case 11:
         return const Text('Dec');
       default:
         return const Text('');

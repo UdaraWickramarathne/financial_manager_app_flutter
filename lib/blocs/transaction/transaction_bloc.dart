@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
-
+import 'dart:developer' as dev;
 part 'transaction_event.dart';
 part 'transaction_state.dart';
 
@@ -83,9 +83,30 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           await Future.delayed(const Duration(seconds: 1));
           final result = await _transactionRepository.getWeeklyTotals(
               userID: event.userID, startDate: event.dateTime);
-          emit(TransactionAnalysisDailyLoaded(weelkyTotals: result));
+          emit(TransactionAnalysisDailyLoaded(dailyTotals: result));
         } catch (e) {
           emit(const TransactionAnalysisDailyError(message: 'Error occured'));
+        }
+      }
+      if (event is TransactionAnalysisWeeklyEvent) {
+        try {
+          emit(TransactionAnalysisWeeklyLoading());
+          final result = await _transactionRepository.getMonthlyWeeklyAnalysis(
+              userID: event.userID, year: event.year, month: event.month);
+          emit(TransactionAnalysisWeeklyLoaded(weeklyTotals: result));
+        } catch (e) {
+          emit(const TransactionAnalysisWeeklyError(message: 'Error occured'));
+        }
+      }
+      if (event is TransactionAnalysisMonthlyEvent) {
+        try {
+          emit(TransactionAnalysisMonthlyLoading());
+          final result = await _transactionRepository.getYearlyTotals(
+              userID: event.userID, year: event.year);
+          emit(TransactionAnalysisMonthlyLoaded(monthlyTotals: result));
+        } catch (e) {
+          dev.log(e.toString());
+          emit(const TransactionAnalysisMonthlyError(message: 'Error occured'));
         }
       }
     });

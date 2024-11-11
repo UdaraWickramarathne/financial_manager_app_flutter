@@ -55,15 +55,9 @@
     "check_live_rates": "ජීවම මාරු අනුපාත පිරික්සන්න, අනුපාත සංකේත නිවේදන සැකසීම, නිවේදන ලබා ගැනීම සහ තවත් බොහෝ දේ",
     "indicative_exchange_rate": "උපුටාගත් විනිමය අනුපාතය",
     "convert": "පරිවර්තනය කරන්න",
-    "electricity": "විදුලි බලය",
-    "internet": "අන්තර්ජාලය",
-    "water": "ජලය",
     "transport": "ප්‍රවාහනය",
-    "mobile": "ජංගම",
-    "tv": "දුරකථන",
     "insurance": "රක්ෂණය",
     "other": "වෙනත්",
-    "bill_payment": "බිල් ගෙවීම",
     "all_transactions": "සියලු ගනුදෙනු",
     "select_your_transaction_type": "ඔබේ ගනුදෙනු වර්ගය තෝරන්න",
     "Expense": "වියදම්",
@@ -211,11 +205,11 @@
     "update": "යාවත්කාලීන කරන්න",
     "reminder_updated": "දැනුම්දීම යාවත්කාලීන කර ඇත!",
     "bill_payment": "බිල් ගෙවීම",
-  "electricity": "විදුලිය",
-  "internet": "ඉන්ටර්නෙට්",
-  "water": "ජලය",
-  "mobile": "ජංගම දුරකථන",
-  "tv": "ටෙලිවිෂන්",
-  "scan_and_pay": "ස්කෑන් කර ගෙවීම"
+    "electricity": "විදුලිය",
+    "internet": "ඉන්ටර්නෙට්",
+    "water": "ජලය",
+    "mobile": "ජංගම දුරකථන",
+    "tv": "ටෙලිවිෂන්",
+    "scan_and_pay": "ස්කෑන් කර ගෙවීම"
   }
   

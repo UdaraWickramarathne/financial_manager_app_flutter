@@ -9,7 +9,7 @@ import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/repositories/budget/budget_repository.dart';
-import 'package:financial_app/repositories/goal-repository/goal_repository.dart';
+import 'package:financial_app/repositories/goal/goal_repository.dart';
 import 'package:financial_app/repositories/reminder/reminder_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
 import 'package:financial_app/screens/auth/login_page.dart';

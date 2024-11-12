@@ -96,3 +96,14 @@ class TransactionAnalysisMonthlyEvent extends TransactionEvent {
   @override
   List<Object> get props => [userID, year];
 }
+
+class TransactionAnalysisYearlyEvent extends TransactionEvent {
+  final String userID;
+
+  const TransactionAnalysisYearlyEvent({
+    required this.userID,
+  });
+
+  @override
+  List<Object> get props => [userID];
+}

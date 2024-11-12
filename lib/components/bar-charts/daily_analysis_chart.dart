@@ -160,6 +160,16 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
                       day7Income,
                       day7Expense,
                     );
+                  } else if (state is TransactionAnalysisDailyLoading) {
+                    return const Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Fetching data...'),
+                        SizedBox(height: 5),
+                        CircularProgressIndicator(),
+                      ],
+                    ));
                   }
                   return const Center(
                     child: CircularProgressIndicator(),

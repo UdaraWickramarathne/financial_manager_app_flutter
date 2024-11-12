@@ -141,3 +141,25 @@ final class TransactionAnalysisMonthlyError extends TransactionState {
   @override
   List<Object> get props => [message];
 }
+
+// * TRANSACTION YEARLY ANALYSIS STATES
+
+final class TransactionAnalysisYearlyLoaded extends TransactionState {
+  final Map<String, dynamic> yearlyTotals;
+
+  const TransactionAnalysisYearlyLoaded({required this.yearlyTotals});
+
+  @override
+  List<Object> get props => [yearlyTotals];
+}
+
+final class TransactionAnalysisYearlyLoading extends TransactionState {}
+
+final class TransactionAnalysisYearlyError extends TransactionState {
+  final String message;
+
+  const TransactionAnalysisYearlyError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

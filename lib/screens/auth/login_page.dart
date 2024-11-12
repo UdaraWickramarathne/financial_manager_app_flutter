@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => EmailPage(),
+                                  builder: (_) => const EmailPage(),
                                 ),
                               );
                             },

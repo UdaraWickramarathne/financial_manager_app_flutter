@@ -109,6 +109,17 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionAnalysisMonthlyError(message: 'Error occured'));
         }
       }
+      if (event is TransactionAnalysisYearlyEvent) {
+        try {
+          emit(TransactionAnalysisYearlyLoading());
+          final result = await _transactionRepository.getLastThreeYearsTotals(
+              userID: event.userID);
+          emit(TransactionAnalysisYearlyLoaded(yearlyTotals: result));
+        } catch (e) {
+          dev.log(e.toString());
+          emit(const TransactionAnalysisYearlyError(message: 'Error occured'));
+        }
+      }
     });
   }
 }

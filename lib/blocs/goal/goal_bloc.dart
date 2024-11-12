@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:financial_app/models/goal.dart';
-import 'package:financial_app/repositories/goal-repository/goal_repository.dart';
+import 'package:financial_app/repositories/goal/goal_repository.dart';
 
 part 'goal_event.dart';
 part 'goal_state.dart';

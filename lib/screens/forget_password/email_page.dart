@@ -9,7 +9,7 @@ class EmailPage extends StatefulWidget {
   const EmailPage({super.key});
 
   @override
-  _EmailPageState createState() => _EmailPageState();
+  State<EmailPage> createState() => _EmailPageState();
 }
 
 class _EmailPageState extends State<EmailPage> {

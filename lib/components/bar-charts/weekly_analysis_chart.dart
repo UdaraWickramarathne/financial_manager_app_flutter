@@ -124,7 +124,15 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
               child: BlocBuilder<TransactionBloc, TransactionState>(
                 builder: (context, state) {
                   if (state is TransactionAnalysisWeeklyLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Fetching data...'),
+                        SizedBox(height: 5),
+                        CircularProgressIndicator(),
+                      ],
+                    ));
                   } else if (state is TransactionAnalysisWeeklyLoaded) {
                     List<Map<String, dynamic>> weeklyTotals =
                         state.weeklyTotals['weeklyTotals'];
@@ -182,7 +190,7 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
               showTitles: true,
               getTitlesWidget: getTitlesOfY,
               interval: 10,
-              reservedSize: 28,
+              reservedSize: 40,
             ),
           ),
           bottomTitles: AxisTitles(

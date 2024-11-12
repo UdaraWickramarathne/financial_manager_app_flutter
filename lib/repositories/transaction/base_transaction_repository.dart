@@ -37,4 +37,8 @@ abstract class BaseTransactionRepository {
     required String userID,
     required int year,
   });
+
+  Future<Map<String, dynamic>> getLastThreeYearsTotals({
+    required String userID,
+  });
 }

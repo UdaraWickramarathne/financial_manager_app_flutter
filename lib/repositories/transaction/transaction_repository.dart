@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/transaction/base_transaction_repository.dart';
-import 'dart:developer' as developer;
+import 'dart:developer' as dev;
 
 import 'package:intl/intl.dart';
 
@@ -45,10 +45,9 @@ class TransactionRepository extends BaseTransactionRepository {
 
       // Commit the batch to apply all changes
       await batch.commit();
-      developer.log('Transaction added and budget updated successfully.');
+      dev.log('Transaction added and budget updated successfully.');
     } catch (e) {
-      developer
-          .log('Error adding transaction and updating budget: ${e.toString()}');
+      dev.log('Error adding transaction and updating budget: ${e.toString()}');
       rethrow;
     }
   }
@@ -57,9 +56,9 @@ class TransactionRepository extends BaseTransactionRepository {
   Future<void> deleteTransaction({required String transactionID}) async {
     try {
       await _transactionsCollection.doc(transactionID).delete();
-      developer.log('transaction delete success');
+      dev.log('transaction delete success');
     } catch (e) {
-      developer.log('transaction deleting error');
+      dev.log('transaction deleting error');
       rethrow;
     }
   }
@@ -71,12 +70,12 @@ class TransactionRepository extends BaseTransactionRepository {
           .where('userID', isEqualTo: userID)
           .orderBy('createdAt', descending: true)
           .get();
-      developer.log('transaction get success');
+      dev.log('transaction get success');
       return querySnapshot.docs
           .map((doc) => Transaction.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      developer.log('transaction fetching error ${e.toString()}');
+      dev.log('transaction fetching error ${e.toString()}');
       rethrow;
     }
   }
@@ -88,9 +87,9 @@ class TransactionRepository extends BaseTransactionRepository {
       await _transactionsCollection
           .doc(transactionID)
           .set(transaction.toJson(), SetOptions(merge: true));
-      developer.log('transaction updated');
+      dev.log('transaction updated');
     } catch (e) {
-      developer.log('transaction fail ${e.toString()}');
+      dev.log('transaction fail ${e.toString()}');
       rethrow;
     }
   }
@@ -131,13 +130,13 @@ class TransactionRepository extends BaseTransactionRepository {
         totalExpense += transaction.amount;
       }
 
-      developer.log('Monthly transaction totals updated');
+      dev.log('Monthly transaction totals updated');
       return {
         'totalIncome': totalIncome,
         'totalExpense': totalExpense,
       };
     } catch (e) {
-      developer.log('Error updating monthly transaction totals: $e');
+      dev.log('Error updating monthly transaction totals: $e');
       return {
         'totalIncome': 0.0,
         'totalExpense': 0.0,
@@ -355,5 +354,93 @@ class TransactionRepository extends BaseTransactionRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getLastThreeYearsTotals({
+    required String userID,
+  }) async {
+    DateTime currentDate = DateTime.now();
+    int currentYear = currentDate.year;
+
+    // Initialize a list to store yearly totals for the last 3 years
+    List<Map<String, dynamic>> yearlyTotals = [];
+    double highestAmountOverall = 0.0;
+
+    // Iterate over the last 3 years
+    for (int year = currentYear; year > currentYear - 3; year--) {
+      DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+      double totalIncomeForYear = 0.0;
+      double totalExpenseForYear = 0.0;
+
+      // Loop through each month in the current year
+      for (int month = 1; month <= 12; month++) {
+        DateTime startDate = DateTime(year, month, 1);
+        DateTime endDate =
+            DateTime(year, month + 1, 0); // Last day of the month
+
+        // Generate date range for the current month
+        List<String> dateRange =
+            List.generate(endDate.difference(startDate).inDays + 1, (index) {
+          return dateFormat.format(startDate.add(Duration(days: index)));
+        });
+
+        double monthlyIncome = 0.0;
+        double monthlyExpense = 0.0;
+
+        // Batch the date range into chunks of 30 dates
+        for (int i = 0; i < dateRange.length; i += 30) {
+          // Get the chunk of dates (maximum 30)
+          List<String> dateChunk = dateRange.sublist(
+              i, i + 30 > dateRange.length ? dateRange.length : i + 30);
+
+          try {
+            // Firestore query for this chunk of dates
+            QuerySnapshot querySnapshot = await _transactionsCollection
+                .where('userID', isEqualTo: userID)
+                .where('date', whereIn: dateChunk)
+                .get();
+
+            // Calculate income and expenses for this chunk
+            for (var doc in querySnapshot.docs) {
+              Transaction transaction = Transaction.fromJson(doc.data());
+
+              if (transaction.isIncome) {
+                monthlyIncome += transaction.amount;
+              } else {
+                monthlyExpense += transaction.amount;
+              }
+            }
+          } catch (e) {
+            dev.log(e.toString());
+          }
+        }
+
+        // Update the yearly totals with the monthly totals
+        totalIncomeForYear += monthlyIncome;
+        totalExpenseForYear += monthlyExpense;
+
+        // Track the highest value across all months in this year
+        highestAmountOverall = [
+          highestAmountOverall,
+          monthlyIncome,
+          monthlyExpense
+        ].reduce((a, b) => a > b ? a : b);
+      }
+
+      // Add the totals for this year to the list
+      yearlyTotals.add({
+        'year': year,
+        'totalIncome': totalIncomeForYear,
+        'totalExpense': totalExpenseForYear,
+      });
+    }
+
+    // Return the yearly totals and the highest value for the past 3 years
+    return {
+      'yearlyTotals': yearlyTotals,
+      'highestAmountOverall': highestAmountOverall,
+    };
   }
 }

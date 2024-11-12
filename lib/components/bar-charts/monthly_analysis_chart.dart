@@ -142,7 +142,15 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                     _generateWeeklyBarChartDataJul2Dec(monthlyTotals);
                     return buildBarChart();
                   } else if (state is TransactionAnalysisMonthlyLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Fetching data...'),
+                        SizedBox(height: 5),
+                        CircularProgressIndicator(),
+                      ],
+                    ));
                   }
                   return const Center(child: CircularProgressIndicator());
                 },
@@ -217,7 +225,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                 showTitles: true,
                 getTitlesWidget: getTitlesOfY,
                 interval: 10,
-                reservedSize: 28,
+                reservedSize: 40,
               ),
             ),
             bottomTitles: AxisTitles(

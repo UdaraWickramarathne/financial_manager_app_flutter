@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_app/models/goal.dart';
-import 'package:financial_app/repositories/goal-repository/base_goal_repository.dart';
+import 'package:financial_app/repositories/goal/base_goal_repository.dart';
 import 'dart:developer' as developer;
 
 class GoalRepository extends BaseGoalRepository {

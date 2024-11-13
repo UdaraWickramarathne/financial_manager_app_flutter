@@ -35,9 +35,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final userDetails =
               await _authRepository.fetchUserData(_authRepository.userID);
 
-          _authRepository.setUser(userDetails!);
-
-          Future.delayed(const Duration(milliseconds: 500));
+          await _authRepository.setUser(userDetails!);
+          while (_authRepository.user == null) {
+            await _authRepository.setUser(userDetails);
+          }
           emit(AuthSuccess());
           developer.log(
               'Sign in success!. Sign in as ${_authRepository.user!.name}');
@@ -51,6 +52,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _authRepository.signOut();
         emit(AuthSignOut());
         developer.log('Logging out');
+      }
+
+      if (event is AuthChangePasswordEvent) {
+        emit(AuthChangePasswordLoading());
+        final result = await _authRepository.chnagePassword(
+          currentPassword: event.currentPassword,
+          newPassword: event.newPassword,
+        );
+        if (result.message == 'success') {
+          emit(AuthChangePasswordSuccess());
+        } else {
+          emit(AuthChangePasswordError(
+              result.message ?? 'Password change Error!'));
+        }
       }
     });
   }

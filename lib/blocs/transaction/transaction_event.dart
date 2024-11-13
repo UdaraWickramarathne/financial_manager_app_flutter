@@ -107,3 +107,18 @@ class TransactionAnalysisYearlyEvent extends TransactionEvent {
   @override
   List<Object> get props => [userID];
 }
+
+class TransactionFetchDateRangeEvent extends TransactionEvent {
+  final String userID;
+  final DateTime startDate;
+  final DateTime endDate;
+
+  const TransactionFetchDateRangeEvent(
+    this.startDate,
+    this.endDate, {
+    required this.userID,
+  });
+
+  @override
+  List<Object> get props => [userID];
+}

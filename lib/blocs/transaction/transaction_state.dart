@@ -163,3 +163,25 @@ final class TransactionAnalysisYearlyError extends TransactionState {
   @override
   List<Object> get props => [message];
 }
+
+// * TRANSACTION YEARLY ANALYSIS STATES
+
+final class TransactionDateRangeLoaded extends TransactionState {
+  final Map<String, List<Map<String, dynamic>>> transactionsMap;
+
+  const TransactionDateRangeLoaded({required this.transactionsMap});
+
+  @override
+  List<Object> get props => [transactionsMap];
+}
+
+final class TransactionDateRangeLoading extends TransactionState {}
+
+final class TransactionDateRangeError extends TransactionState {
+  final String message;
+
+  const TransactionDateRangeError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

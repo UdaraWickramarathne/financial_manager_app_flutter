@@ -96,7 +96,8 @@ Future<void> generateAndShowPdf(
                     ),
                     alignment: pw.Alignment.centerRight,
                     padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text('Title', style: pw.TextStyle(font: ttfBold)),
+                    child:
+                        pw.Text('Category', style: pw.TextStyle(font: ttfBold)),
                   ),
                 ],
               ),
@@ -119,7 +120,7 @@ Future<void> generateAndShowPdf(
                     pw.Container(
                       alignment: pw.Alignment.centerRight,
                       padding: const pw.EdgeInsets.all(8),
-                      child: pw.Text(income['description'],
+                      child: pw.Text(income['category'],
                           style: pw.TextStyle(font: ttf)),
                     ),
                   ],
@@ -169,7 +170,7 @@ Future<void> generateAndShowPdf(
                     ),
                     alignment: pw.Alignment.centerRight,
                     padding: const pw.EdgeInsets.all(8),
-                    child: pw.Text('Title',
+                    child: pw.Text('Category',
                         style: pw.TextStyle(
                             font: ttfBold, fontWeight: pw.FontWeight.bold)),
                   ),
@@ -193,7 +194,7 @@ Future<void> generateAndShowPdf(
                     pw.Container(
                       alignment: pw.Alignment.centerRight,
                       padding: const pw.EdgeInsets.all(8),
-                      child: pw.Text(expense['description'],
+                      child: pw.Text(expense['category'],
                           style: pw.TextStyle(font: ttf)),
                     ),
                   ],

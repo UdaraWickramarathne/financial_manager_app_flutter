@@ -21,7 +21,7 @@ class SimpleButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        padding: const EdgeInsets.symmetric(vertical: 13),
         backgroundColor: color,
       ),
       onPressed: onPressed,

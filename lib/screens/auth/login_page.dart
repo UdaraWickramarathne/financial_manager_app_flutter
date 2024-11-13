@@ -208,10 +208,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(AppLocalizations.of(context).translate('no_account')),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (c) => const SignupScreen()));
+                            builder: (context) => const SignupScreen(),
+                          ));
                     },
                     child: Text(
                       AppLocalizations.of(context).translate('sign_up'),

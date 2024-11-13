@@ -20,4 +20,9 @@ abstract class BaseAuthRepository {
   });
 
   Future<void> signOut();
+
+  Future<AuthResult> chnagePassword({
+    required String currentPassword,
+    required String newPassword,
+  });
 }

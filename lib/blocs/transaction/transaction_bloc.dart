@@ -14,6 +14,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc(this._transactionRepository, this._authRepository)
       : super(TransactionInitial()) {
     on<TransactionEvent>((event, emit) async {
+      // * transaction add event
       if (event is TransactionAddEvent) {
         try {
           emit(TransactionLoading());
@@ -24,6 +25,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionError(message: 'Error occurred!'));
         }
       }
+      // * transaction fetch event
       if (event is TransactionFetchEvent) {
         emit(TransactionFetchLoading());
         try {
@@ -39,6 +41,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionError(message: 'Error occurred!'));
         }
       }
+      // * transaction delete event
       if (event is TransactionDeleteEvent) {
         try {
           await _transactionRepository.deleteTransaction(
@@ -48,6 +51,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionError(message: 'Error occurred!'));
         }
       }
+      // * transaction update event
       if (event is TransactionUpdateEvent) {
         try {
           emit(TransactionUpdateLoading());
@@ -62,6 +66,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionUpdateError(message: 'Error occurred!'));
         }
       }
+      // * transaction get totals event
       if (event is TransactionGetTotalsEvent) {
         try {
           emit(TransactionGetTotalLoading());
@@ -77,6 +82,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionGetTotalError(message: 'Error occured'));
         }
       }
+      // * transaction daily totals event
       if (event is TransactionAnalysisDailyEvent) {
         try {
           emit(TransactionAnalysisDailyLoading());
@@ -88,6 +94,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionAnalysisDailyError(message: 'Error occured'));
         }
       }
+      // * transaction weekly totals event
       if (event is TransactionAnalysisWeeklyEvent) {
         try {
           emit(TransactionAnalysisWeeklyLoading());
@@ -98,6 +105,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionAnalysisWeeklyError(message: 'Error occured'));
         }
       }
+      // * transaction monthly totals event
       if (event is TransactionAnalysisMonthlyEvent) {
         try {
           emit(TransactionAnalysisMonthlyLoading());
@@ -109,6 +117,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionAnalysisMonthlyError(message: 'Error occured'));
         }
       }
+      // * transaction yearly totals event
       if (event is TransactionAnalysisYearlyEvent) {
         try {
           emit(TransactionAnalysisYearlyLoading());
@@ -118,6 +127,22 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         } catch (e) {
           dev.log(e.toString());
           emit(const TransactionAnalysisYearlyError(message: 'Error occured'));
+        }
+      }
+      // * transaction date range fetch event
+      if (event is TransactionFetchDateRangeEvent) {
+        try {
+          emit(TransactionDateRangeLoading());
+          final result =
+              await _transactionRepository.getTransactionsForDateRange(
+            userID: event.userID,
+            startDate: event.startDate,
+            endDate: event.endDate,
+          );
+          emit(TransactionDateRangeLoaded(transactionsMap: result));
+        } catch (e) {
+          dev.log(e.toString());
+          emit(const TransactionDateRangeError(message: 'Error occured'));
         }
       }
     });

@@ -41,4 +41,10 @@ abstract class BaseTransactionRepository {
   Future<Map<String, dynamic>> getLastThreeYearsTotals({
     required String userID,
   });
+
+  Future<Map<String, List<Map<String, dynamic>>>> getTransactionsForDateRange({
+    required String userID,
+    required DateTime startDate,
+    required DateTime endDate,
+  });
 }

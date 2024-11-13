@@ -205,10 +205,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   const Text("Already have an account?"),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (c) => const LoginScreen()));
+                            builder: (context) => const LoginScreen(),
+                          ));
                     },
                     child: const Text(
                       'Sign in',

@@ -443,4 +443,67 @@ class TransactionRepository extends BaseTransactionRepository {
       'highestAmountOverall': highestAmountOverall,
     };
   }
+
+  @override
+  Future<Map<String, List<Map<String, dynamic>>>> getTransactionsForDateRange({
+    required String userID,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+
+    // Generate the list of dates within the range
+    List<String> dateRange = List.generate(
+      endDate.difference(startDate).inDays + 1,
+      (index) => dateFormat.format(startDate.add(Duration(days: index))),
+    );
+
+    List<Map<String, dynamic>> incomeTransactions = [];
+    List<Map<String, dynamic>> expenseTransactions = [];
+
+    // Loop through the date range in chunks of 30 to avoid Firestore's limit
+    for (int i = 0; i < dateRange.length; i += 30) {
+      List<String> dateChunk = dateRange.sublist(
+        i,
+        i + 30 > dateRange.length ? dateRange.length : i + 30,
+      );
+
+      try {
+        // Query Firestore for the current chunk of dates
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('transactions')
+            .where('userID', isEqualTo: userID)
+            .where('date', whereIn: dateChunk)
+            .get();
+
+        // Process each document in the query result
+        for (var doc in querySnapshot.docs) {
+          Transaction transaction = Transaction.fromJson(doc.data());
+
+          // Create a map with only date, amount, and category
+          Map<String, dynamic> transactionData = {
+            'date': transaction.date,
+            'amount': transaction.amount,
+            'category': transaction.category,
+          };
+
+          // Add to the respective list based on isIncome
+          if (transaction.isIncome) {
+            incomeTransactions.add(transactionData);
+          } else {
+            expenseTransactions.add(transactionData);
+          }
+        }
+      } catch (e) {
+        dev.log(e.toString());
+        rethrow;
+      }
+    }
+
+    // Return the two lists as a map
+    return {
+      'income': incomeTransactions,
+      'expense': expenseTransactions,
+    };
+  }
 }

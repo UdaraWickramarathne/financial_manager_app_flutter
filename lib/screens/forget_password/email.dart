@@ -4,15 +4,14 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
 class Email {
-
-
-  String otp = '';  // Store OTP
+  String otp = ''; // Store OTP
 
   // Function to generate a random 4-digit OTP
   String generateOtp() {
     final random = Random();
     String otp = '';
-    for (int i = 0; i < 4; i++) {  // Generate 4-digit OTP
+    for (int i = 0; i < 4; i++) {
+      // Generate 4-digit OTP
       otp += random.nextInt(10).toString();
     }
     return otp;

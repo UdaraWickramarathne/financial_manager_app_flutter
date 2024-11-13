@@ -3,7 +3,7 @@ import 'package:financial_app/models/user.dart';
 import 'package:financial_app/repositories/auth/auth_result.dart';
 import 'package:financial_app/repositories/auth/base_auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'dart:developer' as developer;
+import 'dart:developer' as dev;
 
 class AuthRepository extends BaseAuthRepository {
   final auth.FirebaseAuth _firebaseAuth;
@@ -27,7 +27,7 @@ class AuthRepository extends BaseAuthRepository {
 
   User? get user => _user;
 
-  void setUser(User? user) {
+  Future<void> setUser(User? user) async {
     _user = user;
   }
 
@@ -114,7 +114,7 @@ class AuthRepository extends BaseAuthRepository {
     try {
       await _firebaseAuth.signOut();
     } catch (e) {
-      developer.log(e.toString());
+      dev.log(e.toString());
     }
   }
 
@@ -133,8 +133,50 @@ class AuthRepository extends BaseAuthRepository {
         return User.fromJson(doc.data() as Map<String, dynamic>);
       }
     } catch (e) {
-      developer.log(e.toString());
+      dev.log(e.toString());
     }
     return null;
+  }
+
+  @override
+  Future<AuthResult> chnagePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      if (currentUser != null) {
+        auth.AuthCredential credential = auth.EmailAuthProvider.credential(
+          email: currentUser!.email!,
+          password: currentPassword,
+        );
+        await currentUser!.reauthenticateWithCredential(credential);
+        await currentUser!.updatePassword(newPassword);
+        await currentUser!.reload();
+
+        return AuthResult(message: 'success');
+      }
+      return AuthResult(message: 'Password Change Error!');
+    } on auth.FirebaseAuthException catch (e) {
+      String errorMessage;
+      dev.log(e.code);
+      switch (e.code) {
+        case 'invalid-credential':
+          errorMessage = 'Incorrect current password!';
+          break;
+        case 'weak-password':
+          errorMessage = 'Password must have 6 characters';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password provided.';
+          break;
+        default:
+          errorMessage =
+              'An unexpected error occurred. Please try again later.';
+      }
+      return AuthResult(message: errorMessage);
+    } catch (e) {
+      dev.log(e.toString());
+      return AuthResult(message: 'Password Change Error!');
+    }
   }
 }

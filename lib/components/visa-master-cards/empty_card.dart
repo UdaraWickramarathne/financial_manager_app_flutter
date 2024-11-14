@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MasterCard2 extends StatelessWidget {
-  const MasterCard2({super.key});
+class EmptyCard extends StatelessWidget {
+  const EmptyCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +10,7 @@ class MasterCard2 extends StatelessWidget {
       child: Stack(
         children: [
           Image.asset(
-            'assets/images/mastercard2.png',
+            'assets/images/visacard2.png',
             height: 210,
           ),
           const Padding(
@@ -20,7 +20,7 @@ class MasterCard2 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'Anuara Kumara',
+                  'Add Your Card',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -38,7 +38,7 @@ class MasterCard2 extends StatelessWidget {
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: '4135',
+                            text: '----',
                             style: TextStyle(
                               fontSize: 20,
                             ),
@@ -47,7 +47,7 @@ class MasterCard2 extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '02/26',
+                      '--/--',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

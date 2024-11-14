@@ -1,12 +1,11 @@
+import 'dart:math';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/glass_effect_icon.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
-import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 
 class BalanaceCard extends StatefulWidget {
   const BalanaceCard({super.key});
@@ -21,6 +20,13 @@ class _BalanaceCardState extends State<BalanaceCard> {
   double totalBalance = 0.0;
   double totalIncome = 0.0;
   double totalExpense = 0.0;
+  final List<String> visaCardImages = [
+    'assets/images/visacard1.png',
+    'assets/images/visacard3.png',
+    'assets/images/mastercard1.png',
+    'assets/images/mastercard2.png',
+    'assets/images/mastercard3.png',
+  ];
 
   @override
   void initState() {
@@ -31,10 +37,13 @@ class _BalanaceCardState extends State<BalanaceCard> {
         .add(TransactionGetTotalsEvent(userID: _authRepository.userID));
   }
 
+  String getRandomVisaCardImage() {
+    final random = Random();
+    return visaCardImages[random.nextInt(visaCardImages.length)];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return BlocListener<TransactionBloc, TransactionState>(
       listenWhen: (previous, current) {
         return current is TransactionSuccess ||
@@ -48,9 +57,7 @@ class _BalanaceCardState extends State<BalanaceCard> {
       child: Stack(
         children: [
           Image.asset(
-            isDarkMode
-                ? 'assets/images/visacard3.png'
-                : 'assets/images/visacard1.png',
+            getRandomVisaCardImage(),
             height: 210,
           ),
           Padding(

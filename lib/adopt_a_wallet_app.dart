@@ -1,6 +1,7 @@
 import 'package:feedback/feedback.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/blocs/budget/budget_bloc.dart';
+import 'package:financial_app/blocs/card/card_bloc.dart';
 import 'package:financial_app/blocs/goal/goal_bloc.dart';
 import 'package:financial_app/blocs/reminder/reminder_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/repositories/budget/budget_repository.dart';
+import 'package:financial_app/repositories/card/card_repository.dart';
 import 'package:financial_app/repositories/goal/goal_repository.dart';
 import 'package:financial_app/repositories/reminder/reminder_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
@@ -85,6 +87,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     var goalRepository = GoalRepository();
     var reminderRepository = ReminderRepository();
     var budgetRepository = BudgetRepository();
+    var cardRepository = CardRepository();
     var transactionBloc =
         TransactionBloc(transactionRepository, authRepository);
 
@@ -143,6 +146,9 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           create: (context) => budgetRepository,
         ),
         RepositoryProvider(
+          create: (context) => cardRepository,
+        ),
+        RepositoryProvider(
           create: (context) => AuthBloc(authRepository),
         ),
         RepositoryProvider(
@@ -156,6 +162,9 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         ),
         RepositoryProvider(
           create: (context) => BudgetBloc(budgetRepository),
+        ),
+        RepositoryProvider(
+          create: (context) => CardBloc(cardRepository),
         ),
         Provider(create: (context) => smsService),
       ],

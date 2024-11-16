@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:financial_app/data/keys.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
+import 'dart:developer' as dev;
 
 class Email {
   String otp = ''; // Store OTP
@@ -38,11 +39,11 @@ class Email {
     try {
       // Send the email
       final sendReport = await send(message, smtpServer);
-      print('Email sent: ${sendReport.toString()}');
+      dev.log('Email sent: ${sendReport.toString()}');
     } on MailerException catch (e) {
-      print('Failed to send email: ${e.toString()}');
+      dev.log('Failed to send email: ${e.toString()}');
       for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
+        dev.log('Problem: ${p.code}: ${p.msg}');
       }
     }
   }

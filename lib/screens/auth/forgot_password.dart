@@ -1,7 +1,7 @@
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/screens/auth/email.dart';
+import 'package:financial_app/services/email_service.dart';
 import 'package:financial_app/screens/auth/otp_verification_screen.dart';
 import 'package:flutter/material.dart';
 

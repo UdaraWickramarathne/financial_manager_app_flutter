@@ -8,6 +8,7 @@ import 'package:financial_app/models/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // ignore: must_be_immutable
 class BudgetUpdatePopup extends StatefulWidget {
@@ -51,7 +52,10 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
             context: context,
             builder: (context) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
               );
             },
           );
@@ -109,8 +113,9 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                         Text(
-                          AppLocalizations.of(context).translate('budget_amount_label'),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('budget_amount_label'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -159,7 +164,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         Text(
+                        Text(
                           AppLocalizations.of(context).translate('time_period'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,

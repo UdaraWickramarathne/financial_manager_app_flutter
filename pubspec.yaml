@@ -73,7 +73,6 @@ dependencies:
 
   #for screenshots
   screenshot: ^3.0.0
-  image_gallery_saver: ^2.0.3
   permission_handler: ^11.3.1
 
   #for flip effect

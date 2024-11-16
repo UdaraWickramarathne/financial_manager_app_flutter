@@ -7,6 +7,7 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/cards/add_card_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CardsPage extends StatefulWidget {
@@ -52,7 +53,10 @@ class _CardsPageState extends State<CardsPage> {
                 builder: (context, state) {
                   if (state is CardFetchLoading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
+                      ),
                     );
                   } else if (state is CardFetchLoaded) {
                     return PageView.builder(
@@ -96,7 +100,10 @@ class _CardsPageState extends State<CardsPage> {
                     );
                   } else if (state is CardDeleteLoading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
+                      ),
                     );
                   } else if (state is CardDeleteSuccess) {
                     _cardBloc

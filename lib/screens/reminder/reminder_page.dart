@@ -8,6 +8,7 @@ import 'package:financial_app/screens/reminder/add_reminder.dart';
 import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:month_year_picker/month_year_picker.dart';
@@ -82,7 +83,7 @@ class _ReminderPageState extends State<ReminderPage> {
           color: Colors.white,
         ),
         centerTitle: true,
-        title:  Text(
+        title: Text(
           AppLocalizations.of(context).translate('your_reminders'),
           style: const TextStyle(
             fontSize: 20,
@@ -140,7 +141,7 @@ class _ReminderPageState extends State<ReminderPage> {
                       ),
                     ],
                   ),
-                   Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -149,7 +150,7 @@ class _ReminderPageState extends State<ReminderPage> {
                           color: Colors.white,
                         ),
                       ),
-                       Text(
+                      Text(
                         AppLocalizations.of(context).translate('event'),
                         style: const TextStyle(
                           color: Colors.white,
@@ -180,7 +181,12 @@ class _ReminderPageState extends State<ReminderPage> {
                 },
                 builder: (context, state) {
                   if (state is ReminderFetchLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
+                      ),
+                    );
                   } else if (state is ReminderLoaded) {
                     return ListView.builder(
                       itemCount: state.reminders.length,
@@ -202,11 +208,19 @@ class _ReminderPageState extends State<ReminderPage> {
                       },
                     );
                   } else if (state is ReminderEmpty) {
-                    return Center(child: Text(AppLocalizations.of(context).translate('no_reminders_found'),));
+                    return Center(
+                        child: Text(
+                      AppLocalizations.of(context)
+                          .translate('no_reminders_found'),
+                    ));
                   } else if (state is ReminderError) {
                     return Center(child: Text(state.message));
                   }
-                  return Center(child: Text(AppLocalizations.of(context).translate('no_reminders_found'),));
+                  return Center(
+                      child: Text(
+                    AppLocalizations.of(context)
+                        .translate('no_reminders_found'),
+                  ));
                 },
               ),
             ),
@@ -224,9 +238,12 @@ class _ReminderPageState extends State<ReminderPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title:  Text(AppLocalizations.of(context).translate('permission_denied'),),
+          title: Text(
+            AppLocalizations.of(context).translate('permission_denied'),
+          ),
           content: Text(
-            AppLocalizations.of(context).translate('notification_permission_required'),
+            AppLocalizations.of(context)
+                .translate('notification_permission_required'),
           ),
           actions: [
             TextButton(
@@ -234,13 +251,17 @@ class _ReminderPageState extends State<ReminderPage> {
                 Navigator.of(context).pop();
                 openAppSettings(); // Open the app settings page
               },
-              child: Text(AppLocalizations.of(context).translate('go_to_settings'),),
+              child: Text(
+                AppLocalizations.of(context).translate('go_to_settings'),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Just close the dialog
               },
-              child:  Text(AppLocalizations.of(context).translate('cancel'),),
+              child: Text(
+                AppLocalizations.of(context).translate('cancel'),
+              ),
             ),
           ],
         ),

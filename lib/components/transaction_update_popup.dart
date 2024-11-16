@@ -8,6 +8,7 @@ import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 import 'custome_snackbar.dart';
@@ -99,7 +100,8 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                                 children: [
                                   Text(category['icon'] ?? ''),
                                   const SizedBox(width: 6),
-                                  Text(AppLocalizations.of(context).translate(category['name'] ?? '')),
+                                  Text(AppLocalizations.of(context)
+                                      .translate(category['name'] ?? '')),
                                 ],
                               ),
                             ),
@@ -128,7 +130,8 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                                 children: [
                                   Text(category['icon'] ?? ''),
                                   const SizedBox(width: 6),
-                                  Text(AppLocalizations.of(context).translate(category['name'] ?? '')),
+                                  Text(AppLocalizations.of(context)
+                                      .translate(category['name'] ?? '')),
                                 ],
                               ),
                             ),
@@ -235,7 +238,10 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
             context: context,
             builder: (context) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
               );
             },
           );
@@ -257,10 +263,10 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 15),
-               Text(
+              Text(
                 AppLocalizations.of(context).translate('amount'),
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.grey),
               ),
               const SizedBox(height: 10),
               InputField(
@@ -273,17 +279,17 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                   onPressed: () {
                     amountController.text = '';
                   },
-                  child: Text (AppLocalizations.of(context).translate('clear')),
+                  child: Text(AppLocalizations.of(context).translate('clear')),
                 ),
                 prefixText: 'Rs. ',
                 controller: amountController,
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 20),
-               Text(
+              Text(
                 AppLocalizations.of(context).translate('title'),
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.grey),
               ),
               const SizedBox(height: 10),
               InputField(
@@ -301,8 +307,9 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Text(
-                          AppLocalizations.of(context).translate('expense_type'),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('expense_type'),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey),
                         ),
@@ -314,7 +321,8 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                           prefixIcon: selectedIcon,
                           focusNode: categoryFocusNode,
                           isReadOnly: true,
-                          label: AppLocalizations.of(context).translate('eg_food'),
+                          label:
+                              AppLocalizations.of(context).translate('eg_food'),
                           suffixIcon:
                               const Icon(Icons.keyboard_arrow_down_sharp),
                           onTap: showCategories,
@@ -327,7 +335,7 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Text(
+                        Text(
                           AppLocalizations.of(context).translate('date'),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey),
@@ -360,10 +368,10 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                 ],
               ),
               const SizedBox(height: 20),
-               Text(
+              Text(
                 AppLocalizations.of(context).translate('invoice_optional'),
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.grey),
               ),
               const SizedBox(height: 10),
               DashedButton(
@@ -445,21 +453,24 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
     if (amount.isEmpty) {
       setState(() {
         amountBorderColor = Colors.red;
-        String message = AppLocalizations.of(context).translate('enter_valid_amount');
+        String message =
+            AppLocalizations.of(context).translate('enter_valid_amount');
         errorMessage = message;
       });
       return false;
     } else if (category.isEmpty) {
       setState(() {
         categoryBorderColor = Colors.red;
-        String message = AppLocalizations.of(context).translate('select_expense_category');
+        String message =
+            AppLocalizations.of(context).translate('select_expense_category');
         errorMessage = message;
       });
       return false;
     } else if (title.isEmpty) {
       setState(() {
         titleBorderColor = Colors.red;
-        String message = AppLocalizations.of(context).translate('enter_transaction_title');
+        String message =
+            AppLocalizations.of(context).translate('enter_transaction_title');
         errorMessage = message;
       });
       return false;
@@ -480,7 +491,8 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
     CustomSnackBar.show(
       context,
       title: AppLocalizations.of(context).translate('successfully'),
-      message: AppLocalizations.of(context).translate('transaction_updated_successfully'),
+      message: AppLocalizations.of(context)
+          .translate('transaction_updated_successfully'),
       contentType: ContentType.success,
     );
   }

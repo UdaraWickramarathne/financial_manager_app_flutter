@@ -10,6 +10,7 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
@@ -89,7 +90,10 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
             context: context,
             builder: (context) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
               );
             },
           );
@@ -190,8 +194,9 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                         Text(
-                          AppLocalizations.of(context).translate('target_amount_label'),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('target_amount_label'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -238,8 +243,9 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                         Text(
-                          AppLocalizations.of(context).translate('deadline_label'),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('deadline_label'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -280,7 +286,7 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                       ],
                     ),
                     const SizedBox(height: 30),
-                     Row(
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

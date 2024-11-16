@@ -19,7 +19,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         if (result.user != null) {
           emit(AuthSuccess());
-
           developer.log('Signup success');
         } else {
           emit(AuthError(result.message ?? 'Signup Failed'));

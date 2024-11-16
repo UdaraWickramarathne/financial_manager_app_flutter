@@ -52,7 +52,6 @@ class AuthChangePasswordEvent extends AuthEvent {
 
 class AuthInfoFetching extends AuthEvent {
   final String userID;
-
   const AuthInfoFetching({required this.userID});
 
   @override

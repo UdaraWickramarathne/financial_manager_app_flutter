@@ -10,6 +10,7 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class BudgetAdd extends StatefulWidget {
   const BudgetAdd({super.key});
@@ -110,7 +111,8 @@ class _BudgetAddState extends State<BudgetAdd> {
                           children: [
                             Text(category['icon'] ?? ''),
                             const SizedBox(width: 6),
-                            Text(AppLocalizations.of(context).translate(category['name'] ?? '')),
+                            Text(AppLocalizations.of(context)
+                                .translate(category['name'] ?? '')),
                           ],
                         ),
                       ),
@@ -180,7 +182,10 @@ class _BudgetAddState extends State<BudgetAdd> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );
@@ -202,7 +207,7 @@ class _BudgetAddState extends State<BudgetAdd> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
+                      Text(
                         AppLocalizations.of(context).translate('amount'),
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
@@ -216,7 +221,9 @@ class _BudgetAddState extends State<BudgetAdd> {
                           onPressed: () {
                             amountController.text = '';
                           },
-                          child: Text(AppLocalizations.of(context).translate('clear'),),
+                          child: Text(
+                            AppLocalizations.of(context).translate('clear'),
+                          ),
                         ),
                         prefixText: 'Rs.',
                         focusNode: amountFocusNode,
@@ -230,7 +237,7 @@ class _BudgetAddState extends State<BudgetAdd> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                       Text(
+                      Text(
                         AppLocalizations.of(context).translate('time_period'),
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
@@ -239,7 +246,10 @@ class _BudgetAddState extends State<BudgetAdd> {
                       DropdownButtonHideUnderline(
                         child: DropdownButtonFormField<String>(
                           elevation: 2,
-                          hint:  Text( AppLocalizations.of(context).translate('select_time_period'),),
+                          hint: Text(
+                            AppLocalizations.of(context)
+                                .translate('select_time_period'),
+                          ),
                           value: _selectedItem,
                           style: TextStyle(
                             fontSize: 16,
@@ -289,8 +299,9 @@ class _BudgetAddState extends State<BudgetAdd> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                       Text(
-                        AppLocalizations.of(context).translate('expense_category'),
+                      Text(
+                        AppLocalizations.of(context)
+                            .translate('expense_category'),
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
@@ -301,7 +312,8 @@ class _BudgetAddState extends State<BudgetAdd> {
                         prefixIcon: selectedIcon,
                         isReadOnly: true,
                         focusNode: categoryFocusNode,
-                        label: AppLocalizations.of(context).translate('select_expense_category'),
+                        label: AppLocalizations.of(context)
+                            .translate('select_expense_category'),
                         suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
                         onTap: showExpenseTypes,
                       ),
@@ -347,7 +359,8 @@ class _BudgetAddState extends State<BudgetAdd> {
     CustomSnackBar.show(
       context,
       title: AppLocalizations.of(context).translate('successfully'),
-      message: AppLocalizations.of(context).translate('budget_created_successfully'),
+      message:
+          AppLocalizations.of(context).translate('budget_created_successfully'),
       contentType: ContentType.success,
     );
   }
@@ -371,21 +384,24 @@ class _BudgetAddState extends State<BudgetAdd> {
       setState(() {
         amountBorderColor = Colors.red;
       });
-      String message = AppLocalizations.of(context).translate('enter_valid_amount');
+      String message =
+          AppLocalizations.of(context).translate('enter_valid_amount');
       showErrorSnackBar(message);
       return false;
     } else if (_selectedItem == null) {
       setState(() {
         timePeriodBorderColor = Colors.red;
       });
-      String message = AppLocalizations.of(context).translate('select_time_period_error');
+      String message =
+          AppLocalizations.of(context).translate('select_time_period_error');
       showErrorSnackBar(message);
       return false;
     } else if (category.isEmpty) {
       setState(() {
         categoryBorderColor = Colors.red;
       });
-      String message = AppLocalizations.of(context).translate('select_expense_category_error');
+      String message = AppLocalizations.of(context)
+          .translate('select_expense_category_error');
       showErrorSnackBar(message);
       return false;
     }

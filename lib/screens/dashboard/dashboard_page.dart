@@ -101,6 +101,11 @@ class _DashboardState extends State<Dashboard> {
                         children: [
                           Text(getGreeting()),
                           BlocBuilder<AuthBloc, AuthState>(
+                            buildWhen: (previous, current) {
+                              return current is AuthInfoLoading ||
+                                  current is AuthInfoSuccess ||
+                                  current is AuthInfoError;
+                            },
                             builder: (context, state) {
                               if (state is AuthInfoSuccess) {
                                 return Text(

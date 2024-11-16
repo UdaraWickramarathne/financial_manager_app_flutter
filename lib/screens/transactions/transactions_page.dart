@@ -7,6 +7,7 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        title:  Text(
+        title: Text(
           AppLocalizations.of(context).translate('all_transactions'),
           style: const TextStyle(
             fontSize: 20,
@@ -74,7 +75,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
             },
             builder: (context, state) {
               if (state is TransactionFetchLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
+                );
               } else if (state is TransactionLoaded) {
                 return ListView.builder(
                   itemCount: state.transactions.length,
@@ -96,9 +102,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   },
                 );
               } else if (state is TransactionEmpty) {
-                return Center(child: Text(AppLocalizations.of(context).translate('no_transactions_found'),));
+                return Center(
+                    child: Text(
+                  AppLocalizations.of(context)
+                      .translate('no_transactions_found'),
+                ));
               }
-              return Center(child: Text(AppLocalizations.of(context).translate('no_transactions_found'),));
+              return Center(
+                  child: Text(
+                AppLocalizations.of(context).translate('no_transactions_found'),
+              ));
             },
           ),
         ),

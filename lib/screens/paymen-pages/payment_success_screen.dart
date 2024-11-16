@@ -1,9 +1,5 @@
-import 'dart:typed_data';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'package:screenshot/screenshot.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
@@ -23,16 +19,16 @@ class PaymentSuccessScreen extends StatefulWidget {
 class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   final ScreenshotController screenshotController = ScreenshotController();
 
-  Future<void> saveImage(Uint8List bytes) async {
-    String time = DateTime.now()
-        .toIso8601String()
-        .replaceAll('.', '-')
-        .replaceAll(':', '-');
-    final name = 'screenshot_$time';
-    await Permission.storage.request();
-    final result = await ImageGallerySaver.saveImage(bytes, name: name);
-    debugPrint('result: $result');
-  }
+  // Future<void> saveImage(Uint8List bytes) async {
+  //   String time = DateTime.now()
+  //       .toIso8601String()
+  //       .replaceAll('.', '-')
+  //       .replaceAll(':', '-');
+  //   final name = 'screenshot_$time';
+  //   await Permission.storage.request();
+  //   final result = await ImageGallerySaver.saveImage(bytes, name: name);
+  //   debugPrint('result: $result');
+  // }
 
   void showBottomDialog(BuildContext context) {
     showModalBottomSheet(
@@ -163,17 +159,17 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () async {
-                      await screenshotController.capture().then(
-                        (bytes) {
-                          if (bytes != null) {
-                            saveImage(bytes);
-                          }
-                        },
-                      ).catchError(
-                        (error) {
-                          debugPrint(error);
-                        },
-                      );
+                      // await screenshotController.capture().then(
+                      //   (bytes) {
+                      //     if (bytes != null) {
+                      //       saveImage(bytes);
+                      //     }
+                      //   },
+                      // ).catchError(
+                      //   (error) {
+                      //     debugPrint(error);
+                      //   },
+                      // );
                     },
                     child: const Text('Take Screenshot'),
                   ),

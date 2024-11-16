@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:financial_app/screens/auth/login_page.dart';
+import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/onboard/first_page.dart';
 import 'package:financial_app/screens/onboard/fourth_page.dart';
 import 'package:financial_app/screens/onboard/second_page.dart';
@@ -182,12 +182,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
+                          globalNavigatorKey.currentState!
+                              .pushReplacementNamed('/login');
                         }
                       },
                       child: const Icon(

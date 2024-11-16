@@ -1,8 +1,8 @@
 import 'package:financial_app/language/transalation.dart';
-import 'package:financial_app/screens/paymen-pages/types_of_bill/electricity_bill.dart';
-import 'package:financial_app/screens/paymen-pages/types_of_bill/internet_bill.dart';
-import 'package:financial_app/screens/paymen-pages/types_of_bill/mobile_bill.dart';
-import 'package:financial_app/screens/paymen-pages/types_of_bill/water_bill.dart';
+import 'package:financial_app/screens/payment-pages/types_of_bill/electricity_bill.dart';
+import 'package:financial_app/screens/payment-pages/types_of_bill/internet_bill.dart';
+import 'package:financial_app/screens/payment-pages/types_of_bill/mobile_bill.dart';
+import 'package:financial_app/screens/payment-pages/types_of_bill/water_bill.dart';
 import 'package:flutter/material.dart';
 
 class BillPayScreen extends StatelessWidget {

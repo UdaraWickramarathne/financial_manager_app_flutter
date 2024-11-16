@@ -66,6 +66,7 @@ dependencies:
 
   #for onboarding page indicator
   smooth_page_indicator: ^1.2.0+3
+  is_first_run: ^1.0.0
 
   #for animations
   lottie: ^3.0.0

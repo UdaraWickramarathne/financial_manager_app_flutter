@@ -26,8 +26,8 @@ class _AnalysisPageState extends State<AnalysisPage>
   late DateTime startDate;
   late AuthRepository _authRepository;
   late TransactionBloc _transactionBloc;
-  double incomeBal = 0.0;
-  double expenseBal = 0.0;
+  double totalIncome = 0.0;
+  double totalExpense = 0.0;
 
   @override
   void initState() {
@@ -41,8 +41,8 @@ class _AnalysisPageState extends State<AnalysisPage>
     });
     _authRepository = RepositoryProvider.of<AuthRepository>(context);
     _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
-    incomeBal = _authRepository.user!.totalIncome;
-    expenseBal = _authRepository.user!.totalExpense;
+    _transactionBloc
+        .add(TransactionGetTotalsEvent(userID: _authRepository.userID));
   }
 
   @override
@@ -117,50 +117,67 @@ class _AnalysisPageState extends State<AnalysisPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Rs.${incomeBal.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  BlocListener<TransactionBloc, TransactionState>(
+                    listenWhen: (previous, current) {
+                      return current is TransactionGetTotalLoading ||
+                          current is TransactionGetTotalLoaded ||
+                          current is TransactionGetTotalError;
+                    },
+                    listener: (context, state) {
+                      if (state is TransactionGetTotalLoaded) {
+                        setState(() {
+                          totalIncome =
+                              state.totalIncomeExpense['totalIncome'] ?? 0.0;
+                          totalExpense =
+                              state.totalIncomeExpense['totalExpense'] ?? 0.0;
+                        });
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Rs.${totalIncome.toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "(Monthly Income)",
-                            style: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
+                            Text(
+                              "(Monthly Income)",
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Rs.${expenseBal.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Rs.${totalExpense.toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "(Monthly Expense)",
-                            style: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
+                            Text(
+                              "(Monthly Expense)",
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
                 ],

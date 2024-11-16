@@ -1,8 +1,8 @@
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
-import 'package:financial_app/screens/forget_password/new_password_screen.dart';
-import 'package:financial_app/screens/forget_password/email.dart';
+import 'package:financial_app/screens/auth/new_password_screen.dart';
+import 'package:financial_app/screens/auth/email.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
   final String otp; // Receive OTP as a parameter

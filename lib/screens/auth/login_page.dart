@@ -3,10 +3,10 @@ import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/auth/signup_page.dart';
 import 'package:financial_app/language/transalation.dart';
-import 'package:financial_app/screens/forget_password/email_page.dart';
-import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/screens/auth/forgot_password.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -69,11 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is AuthSuccess) {
             Navigator.pop(context); // Pop the loading animation
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomePage(),
-                ));
+            globalNavigatorKey.currentState!.pushReplacementNamed('/home');
           } else if (state is AuthError) {
             Navigator.pop(context);
             showErrorSnackBar(state.message);
@@ -170,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const EmailPage(),
+                                  builder: (_) => const ForgotPasswordPage(),
                                 ),
                               );
                             },

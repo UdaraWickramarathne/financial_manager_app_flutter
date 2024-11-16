@@ -49,3 +49,12 @@ class AuthChangePasswordEvent extends AuthEvent {
   @override
   List<Object> get props => [currentPassword, newPassword];
 }
+
+class AuthInfoFetching extends AuthEvent {
+  final String userID;
+
+  const AuthInfoFetching({required this.userID});
+
+  @override
+  List<Object> get props => [userID];
+}

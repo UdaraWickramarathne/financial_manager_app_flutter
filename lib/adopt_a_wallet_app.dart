@@ -20,11 +20,13 @@ import 'package:financial_app/screens/auth/signup_page.dart';
 import 'package:financial_app/screens/auth/forgot_password.dart';
 import 'package:financial_app/screens/home/home_page.dart';
 import 'package:financial_app/screens/onboard/onboarding_page.dart';
+import 'package:financial_app/screens/splash_screen/splash_screen.dart';
 import 'package:financial_app/services/feedback_repository.dart';
 import 'package:financial_app/services/sms_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shake/shake.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
@@ -45,19 +47,22 @@ class AdoptAWalletApp extends StatefulWidget {
 class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     with WidgetsBindingObserver {
   late ShakeDetector shakeDetector;
-  late StreamSubscription<User?> _sub;
+  bool _hasCheckedAuthState = false;
   User? currentUser;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     FirebaseAuth.instance.currentUser?.reload();
-    _sub = FirebaseAuth.instance.authStateChanges().listen((user) async {
-      currentUser = user;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _routeUserForAuth(user);
+    if (!_hasCheckedAuthState) {
+      _hasCheckedAuthState = true; // Prevent future invocations
+      FirebaseAuth.instance.authStateChanges().first.then((user) {
+        currentUser = user;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _routeUserForAuth(user);
+        });
       });
-    });
+    }
 
     shakeDetector = ShakeDetector.autoStart(
       onPhoneShake: () {
@@ -94,7 +99,6 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     shakeDetector.stopListening();
-    _sub.cancel();
     super.dispose();
   }
 
@@ -145,6 +149,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         return supportedLocales.first;
       },
     );
+    FlutterNativeSplash.remove();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
@@ -211,11 +216,12 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
       case '/home':
         return const HomePage();
       default:
-        return const LoginScreen();
+        return const SplashScreen();
     }
   }
 
   static void _routeUserForAuth(User? user) async {
+    await Future.delayed(const Duration(seconds: 2));
     if (user != null) {
       globalNavigatorKey.currentState!.pushReplacementNamed('/home');
     } else {

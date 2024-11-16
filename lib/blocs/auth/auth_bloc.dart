@@ -41,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event is AuthSignOutRequest) {
         emit(AuthLoading());
         await _authRepository.signOut();
+        await Future.delayed(const Duration(seconds: 1));
         emit(AuthSignOut());
         developer.log('Logging out');
       }

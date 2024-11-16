@@ -18,6 +18,7 @@ import 'package:financial_app/services/sms_service.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -282,7 +283,12 @@ class _DashboardState extends State<Dashboard> {
                 },
                 builder: (context, state) {
                   if (state is TransactionFetchLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
+                      ),
+                    );
                   } else if (state is TransactionLoaded) {
                     return ListView.builder(
                       itemCount: state.transactions.length > 6

@@ -5,6 +5,7 @@ import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'login_page.dart';
 
@@ -68,7 +69,10 @@ class _SignupScreenState extends State<SignupScreen> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );

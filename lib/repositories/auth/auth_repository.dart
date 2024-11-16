@@ -23,14 +23,6 @@ class AuthRepository extends BaseAuthRepository {
   @override
   String get userID => _firebaseAuth.currentUser?.uid ?? '';
 
-  User? _user;
-
-  User? get user => _user;
-
-  Future<void> setUser(User? user) async {
-    _user = user;
-  }
-
   @override
   Future<AuthResult> signUp(
       {required String email,

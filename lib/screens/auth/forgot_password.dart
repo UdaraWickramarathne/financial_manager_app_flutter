@@ -1,18 +1,18 @@
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/screens/forget_password/email.dart';
-import 'package:financial_app/screens/forget_password/otp_verification_screen.dart';
+import 'package:financial_app/screens/auth/email.dart';
+import 'package:financial_app/screens/auth/otp_verification_screen.dart';
 import 'package:flutter/material.dart';
 
-class EmailPage extends StatefulWidget {
-  const EmailPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
-  State<EmailPage> createState() => _EmailPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _EmailPageState extends State<EmailPage> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final TextEditingController _emailController = TextEditingController();
   String otp = ''; // Store OTP
 

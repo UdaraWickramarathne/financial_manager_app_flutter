@@ -36,3 +36,23 @@ final class AuthChangePasswordError extends AuthState {
   @override
   List<Object> get props => [message];
 }
+
+final class AuthInfoLoading extends AuthState {}
+
+final class AuthInfoSuccess extends AuthState {
+  final String name;
+
+  const AuthInfoSuccess({required this.name});
+
+  @override
+  List<Object> get props => [name];
+}
+
+final class AuthInfoError extends AuthState {
+  final String message;
+
+  const AuthInfoError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

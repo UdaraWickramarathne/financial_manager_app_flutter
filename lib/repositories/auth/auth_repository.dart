@@ -40,7 +40,7 @@ class AuthRepository extends BaseAuthRepository {
           email: email,
           createdAt: Timestamp.now(),
         );
-        _addUserIfNotExists(newUser);
+        await _addUserIfNotExists(newUser);
       }
       return AuthResult(user: user);
     } on auth.FirebaseAuthException catch (e) {

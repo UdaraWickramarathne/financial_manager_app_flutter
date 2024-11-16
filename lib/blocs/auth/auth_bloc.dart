@@ -19,7 +19,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         if (result.user != null) {
           emit(AuthSuccess());
-
           developer.log('Signup success');
         } else {
           emit(AuthError(result.message ?? 'Signup Failed'));
@@ -41,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event is AuthSignOutRequest) {
         emit(AuthLoading());
         await _authRepository.signOut();
+        await Future.delayed(const Duration(seconds: 1));
         emit(AuthSignOut());
         developer.log('Logging out');
       }

@@ -3,10 +3,10 @@ import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'login_page.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -54,11 +54,7 @@ class _SignupScreenState extends State<SignupScreen> {
           if (state is AuthSuccess) {
             Navigator.pop(context);
             showSuccessSnakBar();
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ));
+            globalNavigatorKey.currentState!.pushReplacementNamed('/home');
           } else if (state is AuthError) {
             Navigator.pop(context);
             showErrorSnackBar(state.message);
@@ -68,7 +64,10 @@ class _SignupScreenState extends State<SignupScreen> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );
@@ -205,11 +204,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   const Text("Already have an account?"),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ));
+                      globalNavigatorKey.currentState!
+                          .pushReplacementNamed('/login');
                     },
                     child: const Text(
                       'Sign in',

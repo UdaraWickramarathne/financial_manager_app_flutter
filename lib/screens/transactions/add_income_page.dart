@@ -11,6 +11,7 @@ import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 class AddIncomePage extends StatefulWidget {
@@ -130,7 +131,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         children: [
                           Text(category['icon'] ?? ''),
                           const SizedBox(width: 4),
-                          Text(AppLocalizations.of(context).translate(category['name'] ?? '')),
+                          Text(AppLocalizations.of(context)
+                              .translate(category['name'] ?? '')),
                         ],
                       ),
                       selected: selectedCategory == category['name'],
@@ -167,7 +169,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           AppLocalizations.of(context).translate('add_income'),
           style: const TextStyle(fontSize: 22),
         ),
@@ -181,7 +183,10 @@ class _AddIncomePageState extends State<AddIncomePage> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );
@@ -201,7 +206,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 15),
-                       Text(
+                      Text(
                         AppLocalizations.of(context).translate('amount'),
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
@@ -218,13 +223,14 @@ class _AddIncomePageState extends State<AddIncomePage> {
                           onPressed: () {
                             amountController.text = '';
                           },
-                          child: Text(AppLocalizations.of(context).translate('clear')),
+                          child: Text(
+                              AppLocalizations.of(context).translate('clear')),
                         ),
                         controller: amountController,
                         keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: 20),
-                       Text(
+                      Text(
                         AppLocalizations.of(context).translate('title'),
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
@@ -236,7 +242,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         focusNode: titleFocusNode,
                         borderColor: titleBorderColor,
                         isReadOnly: false,
-                        label: AppLocalizations.of(context).translate('add_a_title'),
+                        label: AppLocalizations.of(context)
+                            .translate('add_a_title'),
                       ),
                       const SizedBox(height: 20),
                       Row(
@@ -245,8 +252,9 @@ class _AddIncomePageState extends State<AddIncomePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Text(
-                                  AppLocalizations.of(context).translate('income_type'),
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .translate('income_type'),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey),
@@ -259,7 +267,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                   borderColor: categoryBorderColor,
                                   prefixIcon: selectedIcon,
                                   isReadOnly: true,
-                                  label:  AppLocalizations.of(context).translate('eg_salary'),
+                                  label: AppLocalizations.of(context)
+                                      .translate('eg_salary'),
                                   suffixIcon: const Icon(
                                       Icons.keyboard_arrow_down_sharp),
                                   onTap: showIncomeTypes,
@@ -272,8 +281,9 @@ class _AddIncomePageState extends State<AddIncomePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Text(
-                                  AppLocalizations.of(context).translate('date'),
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .translate('date'),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey),
@@ -308,16 +318,18 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                       Text(
-                        AppLocalizations.of(context).translate('invoice_optional'),
-                        style:const TextStyle(
+                      Text(
+                        AppLocalizations.of(context)
+                            .translate('invoice_optional'),
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
                       const SizedBox(height: 10),
                       DashedButton(
                         onPressed: pickFile,
                         icon: Icons.add_circle,
-                        text: AppLocalizations.of(context).translate('add_invoice'),
+                        text: AppLocalizations.of(context)
+                            .translate('add_invoice'),
                       ),
                       const SizedBox(height: 10),
                       Center(
@@ -372,7 +384,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
     CustomSnackBar.show(
       context,
       title: AppLocalizations.of(context).translate('successfully'),
-      message: AppLocalizations.of(context).translate('transaction_added_successfully'),
+      message: AppLocalizations.of(context)
+          .translate('transaction_added_successfully'),
       contentType: ContentType.success,
     );
   }
@@ -406,21 +419,24 @@ class _AddIncomePageState extends State<AddIncomePage> {
       setState(() {
         amountBorderColor = Colors.red;
       });
-      String message = AppLocalizations.of(context).translate('enter_valid_amount');
+      String message =
+          AppLocalizations.of(context).translate('enter_valid_amount');
       showErrorSnackBar(message);
       return false;
     } else if (category.isEmpty) {
       setState(() {
         categoryBorderColor = Colors.red;
       });
-      String message = AppLocalizations.of(context).translate('select_income_category');
+      String message =
+          AppLocalizations.of(context).translate('select_income_category');
       showErrorSnackBar(message);
       return false;
     } else if (description.isEmpty) {
       setState(() {
         titleBorderColor = Colors.red;
       });
-      String message = AppLocalizations.of(context).translate('enter_transaction_title');
+      String message =
+          AppLocalizations.of(context).translate('enter_transaction_title');
       showErrorSnackBar(message);
       return false;
     }

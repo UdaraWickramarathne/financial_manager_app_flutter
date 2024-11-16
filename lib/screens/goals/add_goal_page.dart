@@ -8,6 +8,7 @@ import 'package:financial_app/models/goal.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 import '../../components/custome_snackbar.dart';
@@ -64,7 +65,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );
@@ -80,10 +84,11 @@ class _AddGoalPageState extends State<AddGoalPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Padding(
+            Padding(
               padding: const EdgeInsets.all(25),
               child: Text(
-                AppLocalizations.of(context).translate('create_new_saving_goal'),
+                AppLocalizations.of(context)
+                    .translate('create_new_saving_goal'),
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -114,8 +119,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Text(
-                          AppLocalizations.of(context).translate('enter_your_plan'),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('enter_your_plan'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -129,8 +135,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           borderColor: titleBorderColor,
                         ),
                         const SizedBox(height: 45),
-                         Text(
-                          AppLocalizations.of(context).translate('target_amount'),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('target_amount'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -151,8 +158,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           prefixText: 'Rs.',
                         ),
                         const SizedBox(height: 45),
-                         Text(
-                          AppLocalizations.of(context).translate('current_amount'),
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('current_amount'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
@@ -173,7 +181,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           prefixText: 'Rs.',
                         ),
                         const SizedBox(height: 45),
-                         Text(
+                        Text(
                           AppLocalizations.of(context).translate('deadline'),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
@@ -299,7 +307,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
     CustomSnackBar.show(
       context,
       title: AppLocalizations.of(context).translate('successfully'),
-      message: AppLocalizations.of(context).translate('goal_added_successfully'),
+      message:
+          AppLocalizations.of(context).translate('goal_added_successfully'),
       contentType: ContentType.success,
     );
   }

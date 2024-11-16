@@ -4,13 +4,13 @@ import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
-import 'package:financial_app/screens/auth/signup_page.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/auth/forgot_password.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -79,7 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );
@@ -204,11 +207,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(AppLocalizations.of(context).translate('no_account')),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignupScreen(),
-                          ));
+                      globalNavigatorKey.currentState!
+                          .pushReplacementNamed('/signup');
                     },
                     child: Text(
                       AppLocalizations.of(context).translate('sign_up'),

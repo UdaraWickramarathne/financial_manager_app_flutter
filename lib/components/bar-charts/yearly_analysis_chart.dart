@@ -3,6 +3,7 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class YearlyAnalysisChart extends StatefulWidget {
   const YearlyAnalysisChart({super.key});
@@ -91,11 +92,19 @@ class _YearlyAnalysisChartState extends State<YearlyAnalysisChart> {
                       children: [
                         Text('Fetching data...'),
                         SizedBox(height: 5),
-                        CircularProgressIndicator(),
+                        SpinKitThreeBounce(
+                          color: Colors.grey,
+                          size: 50.0,
+                        ),
                       ],
                     ));
                   }
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                    child: SpinKitThreeBounce(
+                      color: Colors.grey,
+                      size: 50.0,
+                    ),
+                  );
                 },
               ),
             ),

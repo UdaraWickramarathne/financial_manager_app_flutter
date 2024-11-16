@@ -1,6 +1,6 @@
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/language/transalation.dart';
-import 'package:financial_app/screens/auth/login_page.dart';
+import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
 import 'package:financial_app/screens/paymen-pages/bill_payment_page.dart';
@@ -12,6 +12,7 @@ import 'package:financial_app/screens/profile-pages/settings/settings_page.dart'
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:transitioned_indexed_stack/transitioned_indexed_stack.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,17 +47,16 @@ class _HomePageState extends State<HomePage> {
       listener: (context, state) {
         if (state is AuthSignOut) {
           Navigator.pop(context);
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginScreen(),
-              ));
+          globalNavigatorKey.currentState!.pushReplacementNamed('/login');
         } else if (state is AuthLoading) {
           showDialog(
             context: context,
             builder: (context) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
               );
             },
           );
@@ -81,9 +81,12 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       ListTile(
                         leading: const Icon(Icons.person),
-                        title:  Padding(
+                        title: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Text(AppLocalizations.of(context).translate('account_info'),),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('account_info'),
+                          ),
                         ),
                         onTap: () {
                           Navigator.pop(context);
@@ -95,9 +98,12 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
                       ListTile(
                         leading: const Icon(Icons.privacy_tip),
-                        title:  Padding(
+                        title: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Text(AppLocalizations.of(context).translate('privacy_policy'),),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate('privacy_policy'),
+                          ),
                         ),
                         onTap: () {
                           Navigator.pop(context);
@@ -112,9 +118,11 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
                       ListTile(
                         leading: const Icon(Icons.settings),
-                        title:  Padding(
+                        title: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Text(AppLocalizations.of(context).translate('settings'),),
+                          child: Text(
+                            AppLocalizations.of(context).translate('settings'),
+                          ),
                         ),
                         onTap: () {
                           Navigator.pop(context);
@@ -127,18 +135,20 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                       const SizedBox(height: 20),
-                       ListTile(
+                      ListTile(
                         leading: const Icon(Icons.star_rate),
                         title: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Text(AppLocalizations.of(context).translate('rate_app'),),
+                          child: Text(
+                            AppLocalizations.of(context).translate('rate_app'),
+                          ),
                         ),
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>  RatingDialog(),
+                              builder: (context) => RatingDialog(),
                             ),
                           );
                         },
@@ -147,11 +157,14 @@ class _HomePageState extends State<HomePage> {
                       ListTile(
                         leading: const Icon(Icons.power_settings_new),
                         onTap: () {
+                          Navigator.of(context).pop();
                           _authBloc.add(AuthSignOutRequest());
                         },
-                        title:  Padding(
+                        title: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Text(AppLocalizations.of(context).translate('logout'),),
+                          child: Text(
+                            AppLocalizations.of(context).translate('logout'),
+                          ),
                         ),
                       ),
                     ],

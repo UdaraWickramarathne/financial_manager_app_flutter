@@ -1,17 +1,18 @@
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../components/clickble_textfield.dart';
 import '../../../components/input_field.dart';
 
-class InternetBillScreen extends StatefulWidget {
-  const InternetBillScreen({super.key});
+class TvBillScreen extends StatefulWidget {
+  const TvBillScreen({super.key});
 
   @override
-  State<InternetBillScreen> createState() => _InternetBillScreenState();
+  State<TvBillScreen> createState() => _TvBillScreen();
 }
 
-class _InternetBillScreenState extends State<InternetBillScreen> {
+class _TvBillScreen extends State<TvBillScreen> {
   final TextEditingController dueDateController = TextEditingController();
   final TextEditingController selectBillerController = TextEditingController();
   final TextEditingController paymentDateController = TextEditingController();
@@ -34,7 +35,7 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Select Biller'),
+          title: Text(AppLocalizations.of(context).translate('select_biller')),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: billers.map((biller) {
@@ -66,10 +67,10 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
           ),
         ],
         centerTitle: true,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Internet Bill Payment',
-            style: TextStyle(fontSize: 20),
+            AppLocalizations.of(context).translate('tv_bill_payment'),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
@@ -86,15 +87,15 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
                 child: Icon(Icons.tv, size: 50, color: Colors.white),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Enter Your Payment Details',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                AppLocalizations.of(context).translate('enter_payment_details'),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 30),
               ClickbleTextfield(
                 prefixIcon: Icons.cell_tower,
                 controller: selectBillerController,
-                label: 'Select Biller',
+                label: AppLocalizations.of(context).translate('select_biller'),
                 onTap: () => _showBillerSelectionDialog(),
               ),
               const SizedBox(height: 16),
@@ -104,19 +105,19 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
                 isReadOnly: false,
                 prefixIcon: Icons.tv,
                 keyboardType: TextInputType.number,
-                label: 'Account Number',
+                label: AppLocalizations.of(context).translate('account_number'),
               ),
               const SizedBox(height: 16),
               InputField(
                 isReadOnly: false,
                 isObsecure: false,
                 prefixIcon: Icons.money,
-                label: 'Amount',
+                label: AppLocalizations.of(context).translate('amount'),
                 suffixIcon: TextButton(
                   onPressed: () {
                     amountController.text = '';
                   },
-                  child: const Text('Clear'),
+                  child: Text(AppLocalizations.of(context).translate('clear')),
                 ),
                 prefixText: 'Rs.',
                 controller: amountController,
@@ -126,7 +127,7 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
               InputField(
                 isReadOnly: true,
                 isObsecure: false,
-                label: 'Due Date',
+                label: AppLocalizations.of(context).translate('due_date'),
                 prefixIcon: Icons.date_range,
                 suffixIcon: IconButton(
                   onPressed: () async {
@@ -150,7 +151,7 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
               InputField(
                 isReadOnly: true,
                 isObsecure: false,
-                label: 'Date of Payment',
+                label: AppLocalizations.of(context).translate('date_of_payment'),
                 prefixIcon: Icons.date_range,
                 suffixIcon: IconButton(
                   onPressed: () async {
@@ -172,7 +173,7 @@ class _InternetBillScreenState extends State<InternetBillScreen> {
               ),
               const SizedBox(height: 96),
               SimpleButton(
-                data: 'Pay Bill',
+                data: AppLocalizations.of(context).translate('pay_bill'),
                 onPressed: () {
                   if (accountNumberController.text.isNotEmpty &&
                       amountController.text.isNotEmpty) {

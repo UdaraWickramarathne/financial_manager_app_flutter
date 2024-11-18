@@ -3,6 +3,7 @@ import 'package:financial_app/screens/payment-pages/types_of_bill/electricity_bi
 import 'package:financial_app/screens/payment-pages/types_of_bill/internet_bill.dart';
 import 'package:financial_app/screens/payment-pages/types_of_bill/mobile_bill.dart';
 import 'package:financial_app/screens/payment-pages/types_of_bill/qr_payment/qr_scanner.dart';
+import 'package:financial_app/screens/payment-pages/types_of_bill/tv_bill.dart';
 import 'package:financial_app/screens/payment-pages/types_of_bill/water_bill.dart';
 import 'package:flutter/material.dart';
 
@@ -89,7 +90,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ElectricityBillScreen(),
+                    builder: (context) => const TvBillScreen(),
                   ),
                 );
               },
@@ -98,7 +99,7 @@ class BillPayScreen extends StatelessWidget {
               color: Colors.cyan,
               icon: const ImageIcon(AssetImage('assets/icons/scan.ico'),
                   size: 50, color: Colors.white),
-              title: 'Scan & Pay',
+              title: 'scan_pay',
               onTap: () {
                 Navigator.push(
                   context,

@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,21 +19,14 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF456EFE),
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.white,
-        ),
-        centerTitle: true,
-        title: const Text(
-          "Privacy Policy",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.white,
+        scrolledUnderElevation: 0,
+        title: Center(
+          child: Text(
+            AppLocalizations.of(context).translate('privacy_policy'),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
           ),
         ),
       ),

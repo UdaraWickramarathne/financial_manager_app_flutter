@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/services/transaction_types.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -91,16 +92,16 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surfaceDim,
                       borderRadius: BorderRadius.circular(10)),
-                  child: const Text.rich(
+                  child:  Text.rich(
                     TextSpan(
-                      text: 'Transaction Status: ', // Regular text
-                      style: TextStyle(
+                      text: AppLocalizations.of(context).translate('transaction_status'), // Regular text
+                      style: const TextStyle(
                         color: Color(0xFF13c999),
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Paid', // Bold text
-                          style: TextStyle(
+                          text: AppLocalizations.of(context).translate('paid'), // Bold text
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -127,9 +128,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Transaction ID:',
-                      style: TextStyle(
+                     Text(
+                      AppLocalizations.of(context).translate('transaction_id'),
+                      style: const TextStyle(
                         color: Colors.grey,
                       ),
                     ),
@@ -144,9 +145,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Date',
-                      style: TextStyle(
+                     Text(
+                      AppLocalizations.of(context).translate('date'),
+                      style: const TextStyle(
                         color: Colors.grey,
                       ),
                     ),
@@ -161,9 +162,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Time',
-                      style: TextStyle(
+                     Text(
+                      AppLocalizations.of(context).translate('time'),
+                      style: const TextStyle(
                         color: Colors.grey,
                       ),
                     ),
@@ -193,9 +194,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
           child: Column(
             children: [
               const SizedBox(height: 15),
-              const Text(
-                'Payment Successful!',
-                style: TextStyle(
+               Text(
+                AppLocalizations.of(context).translate('payment_successful'),
+                style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF456EFE),
@@ -203,9 +204,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 25),
-              const Text(
-                'Thank you! Your payment was processed successfully.',
-                style: TextStyle(
+               Text(
+                AppLocalizations.of(context).translate('thank_you_payment'),
+                style: const TextStyle(
                   fontSize: 18,
                   color: Colors.grey,
                 ),
@@ -219,13 +220,13 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
               const Spacer(),
               TextButton(
                 onPressed: () => showBottomDialog(context),
-                child: const Text('View Receipt'),
+                child: Text(AppLocalizations.of(context).translate('view_receipt')),
               ),
               const SizedBox(
                 height: 10,
               ),
               SimpleButton(
-                data: 'Done',
+                data: AppLocalizations.of(context).translate('done'),
                 onPressed: () {
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },

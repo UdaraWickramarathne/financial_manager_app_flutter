@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,10 +30,10 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
           ),
         ],
         centerTitle: true,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Water Bill Payment',
-            style: TextStyle(fontSize: 20),
+            AppLocalizations.of(context).translate('water_bill_payment'),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
@@ -50,9 +51,9 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
                       child: Icon(Icons.water, size: 50, color: Colors.white),
                     ),
                     const SizedBox(height: 40),
-                    const Text(
-                      'Enter Your Payment Details',
-                      style: TextStyle(
+                     Text(
+                      AppLocalizations.of(context).translate('enter_payment_details'),
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey,
@@ -65,19 +66,19 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
                       isReadOnly: false,
                       prefixIcon: Icons.account_circle,
                       keyboardType: TextInputType.number,
-                      label: 'Account Number',
+                      label: AppLocalizations.of(context).translate('account_number'),
                     ),
                     const SizedBox(height: 16),
                     InputField(
                       isReadOnly: false,
                       isObsecure: false,
+                      label: AppLocalizations.of(context).translate('amount'),
                       prefixIcon: Icons.money,
-                      label: '0.00',
                       suffixIcon: TextButton(
                         onPressed: () {
                           amountController.text = '';
                         },
-                        child: const Text('Clear'),
+                        child: Text(AppLocalizations.of(context).translate('clear')),
                       ),
                       prefixText: 'Rs.',
                       controller: amountController,
@@ -87,7 +88,7 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
                     InputField(
                       isReadOnly: true,
                       isObsecure: false,
-                      label: 'Due Date',
+                      label: AppLocalizations.of(context).translate('due_date'),
                       prefixIcon: Icons.date_range,
                       suffixIcon: IconButton(
                         onPressed: () async {
@@ -111,6 +112,7 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
                     InputField(
                       isReadOnly: true,
                       isObsecure: false,
+                      label: AppLocalizations.of(context).translate('date_of_payment'),
                       prefixIcon: Icons.date_range,
                       suffixIcon: IconButton(
                         onPressed: () async {
@@ -136,7 +138,7 @@ class _WaterBillScreenState extends State<WaterBillScreen> {
               ),
             ),
             SimpleButton(
-              data: 'Pay Bill',
+              data: AppLocalizations.of(context).translate('pay_bill'),
               onPressed: () {
                 if (accountNumberController.text.isNotEmpty &&
                     amountController.text.isNotEmpty) {

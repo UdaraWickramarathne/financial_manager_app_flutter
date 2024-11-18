@@ -108,11 +108,11 @@ class _GoalPageState extends State<GoalPage> {
               } else if (state is GoalsEmpty) {
                 return Center(
                     child: Text(AppLocalizations.of(context)
-                        .translate('task_no_goals_foundname_missing')));
+                        .translate('task_no_goals_found')));
               }
               return Center(
                   child: Text(AppLocalizations.of(context)
-                      .translate('task_no_goals_foundname_missing')));
+                      .translate('task_no_goals_found')));
             },
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/payment-pages/types_of_bill/qr_payment/scan_datails_page.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -169,11 +170,11 @@ class _QRScannerState extends State<QRScanner> {
               ),
             ),
           ),
-          const Align(
-            alignment: AlignmentDirectional(0, -0.7),
+           Align(
+            alignment: const AlignmentDirectional(0, -0.7),
             child: Text(
-              'Scan shop\'s QR',
-              style: TextStyle(fontSize: 20),
+              AppLocalizations.of(context).translate('scan_shop_qr'),
+              style: const TextStyle(fontSize: 20),
             ),
           ),
         ],

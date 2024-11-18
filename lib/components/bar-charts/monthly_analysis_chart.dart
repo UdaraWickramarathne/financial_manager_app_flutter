@@ -130,7 +130,9 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
                     List<Map<String, dynamic>> monthlyTotals =
                         state.monthlyTotals['monthlyTotals'];
                     double highestVal = state.monthlyTotals['highestAmount'];
-                    if (highestVal > 10000) {
+                    if (highestVal > 100000) {
+                      scaleFactor = 10000;
+                    } else if (highestVal > 10000) {
                       scaleFactor = 1000;
                     } else if (highestVal > 1000) {
                       scaleFactor = 100;
@@ -298,7 +300,7 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
   }
 
   Widget getTitlesOfY(value, meta) {
-    return Text('${(value).toStringAsFixed(0)}k');
+    return Text('${value * scaleFactor ~/ 1000}k');
   }
 
   Widget getJanToJunTitles(value, meta) {

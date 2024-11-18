@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'dart:developer' as dev;
 
 class DailyAnalysisChart extends StatefulWidget {
   const DailyAnalysisChart({
@@ -114,8 +115,9 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
                 builder: (context, state) {
                   if (state is TransactionAnalysisDailyLoaded) {
                     double highestVal = state.dailyTotals['highestValue'];
-
-                    if (highestVal > 10000) {
+                    if (highestVal > 100000) {
+                      scaleFactor = 10000;
+                    } else if (highestVal > 10000) {
                       scaleFactor = 1000;
                     } else if (highestVal > 1000) {
                       scaleFactor = 100;
@@ -352,6 +354,7 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
   }
 
   Widget getTitlesOfY(value, meta) {
-    return Text('${(value).toStringAsFixed(0)}k');
+    dev.log(value.toString());
+    return Text('${value * scaleFactor ~/ 1000}k');
   }
 }

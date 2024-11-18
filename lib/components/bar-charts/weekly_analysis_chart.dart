@@ -141,7 +141,9 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
                     List<Map<String, dynamic>> weeklyTotals =
                         state.weeklyTotals['weeklyTotals'];
                     double highestVal = state.weeklyTotals['highestValue'];
-                    if (highestVal > 10000) {
+                    if (highestVal > 100000) {
+                      scaleFactor = 10000;
+                    } else if (highestVal > 10000) {
                       scaleFactor = 1000;
                     } else if (highestVal > 1000) {
                       scaleFactor = 100;
@@ -232,7 +234,7 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
   }
 
   Widget getTitlesOfY(value, meta) {
-    return Text('${(value).toStringAsFixed(0)}k');
+    return Text('${value * scaleFactor ~/ 1000}k');
   }
 
   void _generateWeeklyBarChartData(List<Map<String, dynamic>> weeklyTotals) {

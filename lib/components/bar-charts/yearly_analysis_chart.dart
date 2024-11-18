@@ -78,7 +78,9 @@ class _YearlyAnalysisChartState extends State<YearlyAnalysisChart> {
                         state.yearlyTotals['yearlyTotals'];
                     double highestVal =
                         state.yearlyTotals['highestAmountOverall'];
-                    if (highestVal > 10000) {
+                    if (highestVal > 100000) {
+                      scaleFactor = 10000;
+                    } else if (highestVal > 10000) {
                       scaleFactor = 1000;
                     } else if (highestVal > 1000) {
                       scaleFactor = 100;
@@ -173,7 +175,7 @@ class _YearlyAnalysisChartState extends State<YearlyAnalysisChart> {
   }
 
   Widget getTitlesOfY(value, meta) {
-    return Text('${(value).toStringAsFixed(0)}k');
+    return Text('${value * scaleFactor ~/ 1000}k');
   }
 
   void _generateYearlyBarChartData(List<Map<String, dynamic>> yearlyTotals) {

@@ -19,8 +19,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool pinCode = false;
   String pinNumber = '';
 
-  final bool _isListening = false;
-
   @override
   void initState() {
     super.initState();

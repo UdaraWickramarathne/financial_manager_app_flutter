@@ -57,3 +57,11 @@ class AuthInfoFetching extends AuthEvent {
   @override
   List<Object> get props => [userID];
 }
+
+class AuthUpdateUser extends AuthEvent {
+  final User user;
+  const AuthUpdateUser({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}

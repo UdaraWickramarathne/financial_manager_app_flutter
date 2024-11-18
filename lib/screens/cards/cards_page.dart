@@ -54,7 +54,8 @@ class _CardsPageState extends State<CardsPage> {
                   return current is CardFetchLoading ||
                       current is CardFetchLoaded ||
                       current is CardDeleteLoading ||
-                      current is CardDeleteSuccess;
+                      current is CardDeleteSuccess ||
+                      current is CardFetchEmpty;
                 },
                 builder: (context, state) {
                   if (state is CardFetchLoading) {
@@ -116,6 +117,8 @@ class _CardsPageState extends State<CardsPage> {
                         .add(CardFetchEvent(userID: _authRepository.userID));
                   } else if (state is CardDeleteError) {
                     CustomSnackBar.showErrorSnackBar(state.message, context);
+                  } else if (state is CardFetchEmpty) {
+                    return const EmptyCard();
                   }
                   return const EmptyCard();
                 },

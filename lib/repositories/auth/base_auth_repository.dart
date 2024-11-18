@@ -1,3 +1,4 @@
+import 'package:financial_app/models/user.dart';
 import 'package:financial_app/repositories/auth/auth_result.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
@@ -20,6 +21,8 @@ abstract class BaseAuthRepository {
   });
 
   Future<void> signOut();
+
+  Future<void> updateUser(User user);
 
   Future<AuthResult> chnagePassword({
     required String currentPassword,

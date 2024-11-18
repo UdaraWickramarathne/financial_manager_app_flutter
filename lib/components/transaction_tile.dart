@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import "dart:developer" as developer;
+import 'package:marquee/marquee.dart';
 
 class TransactionTile extends StatefulWidget {
   final Transaction transaction;
@@ -197,11 +198,23 @@ class _TransactionTileState extends State<TransactionTile> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          title.length > 10 ? title.substring(0, 10) : title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 4,
+                          height: 20,
+                          child: title.length > 10
+                              ? Marquee(
+                                  text: title,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                  velocity: 30.0,
+                                  pauseAfterRound: const Duration(seconds: 2),
+                                  blankSpace: 30.0,
+                                )
+                              : Text(
+                                  title,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ),
                         Text(
                           AppLocalizations.of(context).translate(category),

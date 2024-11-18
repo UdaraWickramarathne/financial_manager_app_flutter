@@ -171,4 +171,13 @@ class AuthRepository extends BaseAuthRepository {
       return AuthResult(message: 'Password Change Error!');
     }
   }
+
+  @override
+  Future<void> updateUser(User user) async {
+    try {
+      await _usersCollection.doc(user.userID).update(user.toJson());
+    } catch (e) {
+      throw Exception('Error updating user: $e');
+    }
+  }
 }

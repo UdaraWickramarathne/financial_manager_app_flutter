@@ -2,7 +2,6 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
-import 'package:financial_app/components/dropdown_button.dart';
 import 'package:financial_app/components/services_icon.dart';
 import 'package:financial_app/components/balance_card.dart';
 import 'package:financial_app/components/transaction_tile.dart';
@@ -91,7 +90,7 @@ class _DashboardState extends State<Dashboard> {
                       Stack(
                         children: [
                           Lottie.asset(
-                            'assets/onboard/dashboard_animation.json',
+                            'assets/animations/dashboard_animation.json',
                             width: 120,
                           ),
                         ],
@@ -109,7 +108,7 @@ class _DashboardState extends State<Dashboard> {
                             builder: (context, state) {
                               if (state is AuthInfoSuccess) {
                                 return Text(
-                                  state.name,
+                                  state.user.name,
                                   style: const TextStyle(
                                     letterSpacing: 2,
                                     fontSize: 25,
@@ -264,7 +263,7 @@ class _DashboardState extends State<Dashboard> {
             ),
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   AppLocalizations.of(context).translate('recent_history'),
@@ -273,7 +272,6 @@ class _DashboardState extends State<Dashboard> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const ChoiceBox(),
               ],
             ),
             const SizedBox(height: 20),

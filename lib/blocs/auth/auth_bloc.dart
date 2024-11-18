@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:financial_app/models/user.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'dart:developer' as developer;
 part 'auth_event.dart';
@@ -63,12 +64,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthInfoLoading());
           final user = await _authRepository.fetchUserData(event.userID);
           if (user != null) {
-            emit(AuthInfoSuccess(name: user.name));
+            emit(AuthInfoSuccess(user: user));
           } else {
             emit(const AuthInfoError(message: 'Error while getting user data'));
           }
         } catch (e) {
           emit(const AuthInfoError(message: 'Error while getting user data'));
+        }
+      }
+      if (event is AuthUpdateUser) {
+        try {
+          emit(AuthUpdateLoading());
+          await _authRepository.updateUser(event.user);
+          emit(AuthUpdateSuccess());
+        } catch (e) {
+          emit(const AuthUpdateError(message: 'Error while updating user'));
         }
       }
     });

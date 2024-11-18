@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               const SizedBox(height: 20),
               Lottie.asset(
-                'assets/onboard/dashboard_animation.json',
+                'assets/animations/dashboard_animation.json',
                 width: 350,
               ),
               const Text(

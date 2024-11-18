@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
               const DrawerHeader(
                 child: CircleAvatar(
                   radius: 60.0,
-                  backgroundImage: AssetImage('assets/images/anura.jpg'),
+                  backgroundImage: AssetImage('assets/images/app_photo.jpg'),
                 ),
               ),
               const SizedBox(height: 40),
@@ -157,16 +157,19 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
                       ListTile(
                         leading: const Icon(Icons.calendar_month_outlined),
-                        title:  Padding(
+                        title: Padding(
                           padding: const EdgeInsets.only(left: 15),
-                          child: Text(AppLocalizations.of(context).translate('Calender'),),
+                          child: Text(
+                            AppLocalizations.of(context).translate('Calender'),
+                          ),
                         ),
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>  const CalendarReminderPage(),
+                              builder: (context) =>
+                                  const CalendarReminderPage(),
                             ),
                           );
                         },
@@ -221,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: const CircleAvatar(
                     radius: 20.0,
-                    backgroundImage: AssetImage('assets/images/anura.jpg'),
+                    backgroundImage: AssetImage('assets/images/app_photo.jpg'),
                   ),
                 ),
               ),

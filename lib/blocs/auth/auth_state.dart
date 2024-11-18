@@ -40,18 +40,31 @@ final class AuthChangePasswordError extends AuthState {
 final class AuthInfoLoading extends AuthState {}
 
 final class AuthInfoSuccess extends AuthState {
-  final String name;
+  final User user;
 
-  const AuthInfoSuccess({required this.name});
+  const AuthInfoSuccess({required this.user});
 
   @override
-  List<Object> get props => [name];
+  List<Object> get props => [user];
 }
 
 final class AuthInfoError extends AuthState {
   final String message;
 
   const AuthInfoError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class AuthUpdateLoading extends AuthState {}
+
+final class AuthUpdateSuccess extends AuthState {}
+
+final class AuthUpdateError extends AuthState {
+  final String message;
+
+  const AuthUpdateError({required this.message});
 
   @override
   List<Object> get props => [message];

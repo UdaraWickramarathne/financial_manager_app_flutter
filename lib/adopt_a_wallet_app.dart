@@ -28,7 +28,6 @@ import 'package:financial_app/services/secure_enctypted_key/key_manager.dart';
 import 'package:financial_app/services/sms_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:is_first_run/is_first_run.dart';
 import 'package:mailer/mailer.dart';
@@ -71,34 +70,31 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     }
 
     shakeDetector = ShakeDetector.autoStart(
-    onPhoneShake: () {
-    BetterFeedback.of(context).show((UserFeedback feedback) async {
+      onPhoneShake: () {
+        BetterFeedback.of(context).show((UserFeedback feedback) async {
+          final screenshotFilePath =
+              await writeImageToStorage(feedback.screenshot);
 
-      final screenshotFilePath = await writeImageToStorage(feedback.screenshot);
+          final smtpServer = gmail(username, password);
 
-      final smtpServer = gmail(username, password);
+          final message = Message()
+            ..from = const Address(username, 'Adopt A Wallet')
+            ..recipients.add('adoptawallet.devnet.error@gmail.com')
+            ..subject = 'App Feedback'
+            ..text = feedback.text
+            ..attachments = [FileAttachment(File(screenshotFilePath))];
 
-      final message = Message()
-        ..from = Address(username, 'Adopt A Wallet')
-        ..recipients.add('adoptawallet.devnet.error@gmail.com')
-        ..subject = 'App Feedback'
-        ..text = feedback.text
-        ..attachments = [
-          FileAttachment(File(screenshotFilePath))
-        ];
-
-      try {
-        final sendReport = await send(message, smtpServer);
-        dev.log('Feedback Email sent: ${sendReport.toString()}');
-      } on MailerException catch (e) {
-        dev.log('Failed to send feedback email: ${e.toString()}');
-        for (var p in e.problems) {
-          dev.log('Problem: ${p.code}: ${p.msg}');
-        }
-      }
-    }
-    );
-  },
+          try {
+            final sendReport = await send(message, smtpServer);
+            dev.log('Feedback Email sent: ${sendReport.toString()}');
+          } on MailerException catch (e) {
+            dev.log('Failed to send feedback email: ${e.toString()}');
+            for (var p in e.problems) {
+              dev.log('Problem: ${p.code}: ${p.msg}');
+            }
+          }
+        });
+      },
       minimumShakeCount: 2,
       shakeSlopTimeMS: 500,
       shakeCountResetTime: 3000,

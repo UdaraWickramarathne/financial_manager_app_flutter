@@ -1,17 +1,22 @@
+import 'dart:math';
+
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/services/transaction_types.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
   final String accountNumber;
   final double amount;
   final TransactionType type;
+  final DateTime dateTime;
 
   const PaymentSuccessScreen({
     super.key,
     required this.accountNumber,
     required this.amount,
     required this.type,
+    required this.dateTime,
   });
 
   @override
@@ -30,6 +35,13 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
       case TransactionType.water:
         return 'Water Bill';
     }
+  }
+
+  String generateTransactionId() {
+    const prefix = 'TXN';
+    final random = Random();
+    final number = random.nextInt(900000000) + 100000000; // Ensures 9 digits
+    return '$prefix$number';
   }
 
   void showBottomDialog(BuildContext context) {
@@ -110,16 +122,16 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Transaction ID:',
                       style: TextStyle(
                         color: Colors.grey,
                       ),
                     ),
-                    Text('TXN123456789'),
+                    Text(generateTransactionId()),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -127,16 +139,16 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   color: Color(0xFFebf1f5),
                 ),
                 const SizedBox(height: 10),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Date',
                       style: TextStyle(
                         color: Colors.grey,
                       ),
                     ),
-                    Text('2024/10/25'),
+                    Text(DateFormat('yyyy-MM-dd').format(widget.dateTime)),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -144,16 +156,16 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   color: Color(0xFFebf1f5),
                 ),
                 const SizedBox(height: 10),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Time',
                       style: TextStyle(
                         color: Colors.grey,
                       ),
                     ),
-                    Text('06:25 PM'),
+                    Text(DateFormat.jm().format(widget.dateTime)),
                   ],
                 ),
                 const SizedBox(height: 20),

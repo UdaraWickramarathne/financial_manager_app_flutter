@@ -29,6 +29,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
   Color accNumBorderColor = Colors.transparent;
   Color confirmAccNumBorderColor = Colors.transparent;
   Color amountBorderColor = Colors.transparent;
+  DateTime dateTime = DateTime.now();
 
   final FocusNode accNumNode = FocusNode();
   final FocusNode confirmAccNumNode = FocusNode();
@@ -100,6 +101,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                   accountNumber: accountNumberController.text,
                   amount: double.parse(amountController.text),
                   type: TransactionType.electricity,
+                  dateTime: dateTime,
                 ),
               ),
             );
@@ -210,8 +212,8 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                         billingNumber: accNum,
                       ),
                     );
-                    final date =
-                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+                    dateTime = DateTime.now();
+                    final date = DateFormat('yyyy-MM-dd').format(dateTime);
                     if (mounted && result == true) {
                       _transactionBloc.add(
                         TransactionAddEvent(

@@ -39,6 +39,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   late TransactionBloc _transactionBloc;
   late AuthRepository _authRepository;
   late CardBloc _cardBloc;
+  DateTime dateTime = DateTime.now();
 
   bool saveCard = false;
   Color nameBorderColor = Colors.transparent;
@@ -147,6 +148,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                   accountNumber: widget.accountNumber,
                   amount: widget.amount,
                   type: widget.type,
+                  dateTime: dateTime,
                 ),
               ),
             );
@@ -289,8 +291,8 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                         ),
                       );
                     }
-                    final date =
-                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+                    dateTime = DateTime.now();
+                    final date = DateFormat('yyyy-MM-dd').format(dateTime);
                     _transactionBloc.add(
                       TransactionAddEvent(
                         transaction: Transaction(

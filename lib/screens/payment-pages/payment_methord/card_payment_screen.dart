@@ -47,11 +47,24 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   Color dateBorderColor = Colors.transparent;
   Color cvvBorderColor = Colors.transparent;
 
+  FocusNode nameFocusNode = FocusNode();
+  FocusNode numberFocusNode = FocusNode();
+  FocusNode dateFocusNode = FocusNode();
+  FocusNode cvvFocusNode = FocusNode();
+
   String getTitle() {
-    if (widget.type == TransactionType.electricity) {
-      return 'Electricity Bill';
+    switch (widget.type) {
+      case TransactionType.electricity:
+        return 'Electricity Bill';
+      case TransactionType.internet:
+        return 'Internet Bill';
+      case TransactionType.mobile:
+        return 'Mobile Bill';
+      case TransactionType.water:
+        return 'Water Bill';
+      case TransactionType.shopping:
+        return 'Shopping';
     }
-    return 'Other';
   }
 
   @override
@@ -191,6 +204,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                           isObsecure: false,
                           controller: nameController,
                           borderColor: nameBorderColor,
+                          focusNode: nameFocusNode,
                           isReadOnly: false,
                           label: 'Card Holder Name',
                           inputFormat: [
@@ -202,6 +216,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                           isObsecure: false,
                           controller: cardNumberController,
                           borderColor: numberBorderColor,
+                          focusNode: numberFocusNode,
                           isReadOnly: false,
                           label: 'Card Number',
                           keyboardType: TextInputType.number,
@@ -219,6 +234,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                                 isObsecure: false,
                                 controller: expiryDateController,
                                 borderColor: dateBorderColor,
+                                focusNode: dateFocusNode,
                                 isReadOnly: false,
                                 label: 'MM/YY',
                                 keyboardType: TextInputType.number,
@@ -235,6 +251,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                                 isObsecure: false,
                                 controller: cvvController,
                                 borderColor: cvvBorderColor,
+                                focusNode: cvvFocusNode,
                                 isReadOnly: false,
                                 keyboardType: TextInputType.number,
                                 label: 'CVV',
@@ -271,6 +288,10 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                 data: 'Pay Now',
                 onPressed: () {
                   FocusScope.of(context).unfocus();
+                  nameFocusNode.unfocus();
+                  numberFocusNode.unfocus();
+                  cvvFocusNode.unfocus();
+                  cvvFocusNode.unfocus();
                   String name = nameController.text;
                   String cardNumber = cardNumberController.text;
                   String expireDate = expiryDateController.text;

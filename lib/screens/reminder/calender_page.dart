@@ -62,7 +62,7 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
           color: Colors.white,
         ),
         centerTitle: true,
-        title:  Text(
+        title: Text(
           AppLocalizations.of(context).translate('Calender'),
           style: const TextStyle(
             fontSize: 20,
@@ -79,7 +79,6 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ReminderLoaded) {
             _loadRemindersAsEvents(state.reminders);
-
             return CalendarControllerProvider(
               controller: _eventController,
               child: MonthView(
@@ -94,9 +93,13 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
                   return Container(
                     margin: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: hasReminders ? Colors.blueAccent.withOpacity(0.2) : Colors.transparent,
+                      color: hasReminders
+                          ? Colors.blueAccent.withOpacity(0.2)
+                          : Colors.transparent,
                       shape: BoxShape.circle,
-                      border: isToday ? Border.all(color: Colors.blue, width: 2) : null,
+                      border: isToday
+                          ? Border.all(color: Colors.blue, width: 2)
+                          : null,
                     ),
                     alignment: Alignment.center,
                     child: Column(
@@ -105,8 +108,12 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
                         Text(
                           date.day.toString(),
                           style: TextStyle(
-                            color: hasReminders ? Colors.blueAccent : const Color.fromARGB(255, 79, 78, 78),
-                            fontWeight: hasReminders ? FontWeight.bold : FontWeight.normal,
+                            color: hasReminders
+                                ? Colors.blueAccent
+                                : const Color.fromARGB(255, 79, 78, 78),
+                            fontWeight: hasReminders
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
                         if (hasReminders)

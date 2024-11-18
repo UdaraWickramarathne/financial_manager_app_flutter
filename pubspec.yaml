@@ -137,6 +137,8 @@ dependencies:
   qr_scanner_overlay: ^0.0.2
   qr_flutter: ^4.1.0
 
+  overlay_support: ^2.1.0
+
 
 
 

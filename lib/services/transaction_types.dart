@@ -3,4 +3,5 @@ enum TransactionType {
   mobile,
   water,
   internet,
+  shopping,
 }

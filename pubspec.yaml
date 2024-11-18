@@ -128,6 +128,11 @@ dependencies:
   #for calender
   calendar_view: ^1.3.0
 
+  #for qr scan
+  mobile_scanner: ^2.1.0
+  qr_scanner_overlay: ^0.0.2
+  qr_flutter: ^4.1.0
+
 
 
 

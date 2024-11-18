@@ -1,4 +1,5 @@
 import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/screens/paymen-pages/qr/qr_scanner_page.dart';
 import 'package:financial_app/screens/paymen-pages/types_of_bill/electricity_bill.dart';
 import 'package:financial_app/screens/paymen-pages/types_of_bill/internet_bill.dart';
 import 'package:financial_app/screens/paymen-pages/types_of_bill/mobile_bill.dart';
@@ -102,7 +103,7 @@ class BillPayScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ElectricityBillScreen(),
+                    builder: (context) => const QRScanner(),
                   ),
                 );
               },

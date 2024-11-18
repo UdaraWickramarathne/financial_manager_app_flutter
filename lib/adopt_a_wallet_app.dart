@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:feedback/feedback.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/blocs/budget/budget_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:financial_app/blocs/card/card_bloc.dart';
 import 'package:financial_app/blocs/goal/goal_bloc.dart';
 import 'package:financial_app/blocs/reminder/reminder_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/data/keys.dart';
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
@@ -26,9 +28,11 @@ import 'package:financial_app/services/secure_enctypted_key/key_manager.dart';
 import 'package:financial_app/services/sms_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
+
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:is_first_run/is_first_run.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:shake/shake.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
@@ -67,20 +71,34 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     }
 
     shakeDetector = ShakeDetector.autoStart(
-      onPhoneShake: () {
-        BetterFeedback.of(context).show((UserFeedback feedback) async {
-          final screenshotFilePath =
-              await writeImageToStorage(feedback.screenshot);
-          final Email email = Email(
-            body: feedback.text,
-            subject: 'App Feedback',
-            recipients: ['adoptawallet.devnet@gmail.com'],
-            attachmentPaths: [screenshotFilePath],
-            isHTML: false,
-          );
-          await FlutterEmailSender.send(email);
-        });
-      },
+    onPhoneShake: () {
+    BetterFeedback.of(context).show((UserFeedback feedback) async {
+
+      final screenshotFilePath = await writeImageToStorage(feedback.screenshot);
+
+      final smtpServer = gmail(username, password);
+
+      final message = Message()
+        ..from = Address(username, 'Adopt A Wallet')
+        ..recipients.add('adoptawallet.devnet.error@gmail.com')
+        ..subject = 'App Feedback'
+        ..text = feedback.text
+        ..attachments = [
+          FileAttachment(File(screenshotFilePath))
+        ];
+
+      try {
+        final sendReport = await send(message, smtpServer);
+        dev.log('Feedback Email sent: ${sendReport.toString()}');
+      } on MailerException catch (e) {
+        dev.log('Failed to send feedback email: ${e.toString()}');
+        for (var p in e.problems) {
+          dev.log('Problem: ${p.code}: ${p.msg}');
+        }
+      }
+    }
+    );
+  },
       minimumShakeCount: 2,
       shakeSlopTimeMS: 500,
       shakeCountResetTime: 3000,

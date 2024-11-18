@@ -9,6 +9,7 @@ import 'package:financial_app/screens/profile-pages/privacy_policy/privacy_polic
 import 'package:financial_app/screens/cards/cards_page.dart';
 import 'package:financial_app/screens/profile-pages/rating/rating_dialog.dart';
 import 'package:financial_app/screens/profile-pages/settings/settings_page.dart';
+import 'package:financial_app/screens/reminder/calender_page.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -149,6 +150,23 @@ class _HomePageState extends State<HomePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => RatingDialog(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      ListTile(
+                        leading: const Icon(Icons.calendar_month_outlined),
+                        title:  Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(AppLocalizations.of(context).translate('Calender'),),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>  const CalendarReminderPage(),
                             ),
                           );
                         },

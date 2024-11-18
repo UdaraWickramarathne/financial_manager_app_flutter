@@ -133,7 +133,7 @@ class NotificationService {
   static Future<void> snoozeNotification(int id) async {
     // Snooze logic (e.g., 5 minutes from now)
     final snoozeTime =
-        tz.TZDateTime.now(tz.local).add(const Duration(minutes: 1));
+        tz.TZDateTime.now(tz.local).add(const Duration(minutes: 5));
     await scheduleNotification(
         id, 'Reminder', 'Snoozed notification', snoozeTime, 'never');
   }

@@ -17,6 +17,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(TransactionLoading());
           await _transactionRepository.addTransaction(
               transaction: event.transaction);
+          await Future.delayed(const Duration(seconds: 1));
           emit(TransactionSuccess());
         } catch (e) {
           emit(const TransactionError(message: 'Error occurred!'));

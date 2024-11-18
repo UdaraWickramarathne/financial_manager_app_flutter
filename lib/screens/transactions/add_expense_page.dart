@@ -60,6 +60,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
     {'name': 'Kids', 'icon': '🧸'},
     {'name': 'Entertainment', 'icon': '🎮'},
     {'name': 'Education', 'icon': '🎓'},
+    {'name': 'Utility', 'icon': '💡'},
     {'name': 'Other', 'icon': '🔍'},
   ];
 
@@ -85,6 +86,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
         break;
       case 'Entertainment':
         selectedIcon = Icons.theaters;
+        break;
+      case 'Utility':
+        selectedIcon = Icons.lightbulb;
         break;
       case 'Education':
         selectedIcon = Icons.school;
@@ -228,6 +232,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
           if (state is TransactionLoading) {
             showDialog(
               context: context,
+              barrierDismissible: false,
               builder: (context) {
                 return const Center(
                   child: SpinKitThreeBounce(

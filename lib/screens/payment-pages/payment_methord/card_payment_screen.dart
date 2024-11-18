@@ -1,15 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:financial_app/blocs/card/card_bloc.dart';
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:flutter/material.dart';
+import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
+import 'package:financial_app/screens/payment-pages/payment_success_screen.dart';
+import 'package:financial_app/services/transaction_types.dart';
+import 'package:flutter/material.dart' hide Card;
 import 'package:flutter/services.dart';
-import '../payment_success_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
+import 'package:financial_app/models/card.dart';
 
 class CardPaymentScreen extends StatefulWidget {
   final String accountNumber;
-  final String amount;
+  final double amount;
+  final TransactionType type;
 
   const CardPaymentScreen(
-      {super.key, required this.accountNumber, required this.amount});
+      {super.key,
+      required this.accountNumber,
+      required this.amount,
+      required this.type});
 
   @override
   State<CardPaymentScreen> createState() => _CardPaymentScreenState();
@@ -21,14 +36,30 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   final TextEditingController expiryDateController = TextEditingController();
   final TextEditingController cvvController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
+  late TransactionBloc _transactionBloc;
+  late AuthRepository _authRepository;
+  late CardBloc _cardBloc;
 
   bool saveCard = false;
+  Color nameBorderColor = Colors.transparent;
+  Color numberBorderColor = Colors.transparent;
+  Color dateBorderColor = Colors.transparent;
+  Color cvvBorderColor = Colors.transparent;
+
+  String getTitle() {
+    if (widget.type == TransactionType.electricity) {
+      return 'Electricity Bill';
+    }
+    return 'Other';
+  }
 
   @override
   void initState() {
     super.initState();
-
     cardNumberController.addListener(_updateCardType);
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _cardBloc = RepositoryProvider.of<CardBloc>(context);
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
   }
 
   void _updateCardType() {
@@ -54,126 +85,9 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
     }
   }
 
-  void saveCardDetails(String cardNumber, String expiryDate, String cvv) {
-    // Add logging for debugging purposes
-    print('Card details saved: $cardNumber, $expiryDate, $cvv');
-  }
-
-  bool _isExpiryDateValid(String expiryDate) {
-    if (expiryDate.length != 5 ||
-        !RegExp(r'^\d{2}/\d{2}$').hasMatch(expiryDate)) {
-      return false;
-    }
-
-    // Extract month and year
-    final parts = expiryDate.split('/');
-    final month = int.parse(parts[0]);
-    final year = int.parse(parts[1]) + 2000;
-
-    // Get the current date
-    final now = DateTime.now();
-    final currentYear = now.year;
-    final currentMonth = now.month;
-
-    if (month < 1 || month > 12) {
-      return false;
-    }
-    if (year < now.year || year > 2032) {
-      return false;
-    }
-
-    return (year > currentYear) ||
-        (year == currentYear && month >= currentMonth);
-  }
-
-  void _onContinuePressed() {
-    if (cardNumberController.text.isEmpty ||
-        expiryDateController.text.isEmpty ||
-        cvvController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all card details before continuing.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-    if (cardNumberController.text.replaceAll(RegExp(r'\D'), '').length != 16) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Card number must be 16 digits.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-    if (!_isExpiryDateValid(expiryDateController.text)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Expiry date must be in MM/YY format and valid.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-    if (cvvController.text.replaceAll(RegExp(r'\D'), '').length != 3) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('CVV must be 3 digits.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Save Card'),
-          content: const Text('Do you want to save this card?'),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentSuccessScreen(
-                      accountNumber: widget.accountNumber,
-                      amount: widget.amount,
-                    ),
-                  ),
-                );
-              },
-            ),
-            TextButton(
-              child: const Text('Save'),
-              onPressed: () {
-                saveCardDetails(cardNumberController.text,
-                    expiryDateController.text, cvvController.text);
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentSuccessScreen(
-                      accountNumber: widget.accountNumber,
-                      amount: widget.amount,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   void dispose() {
-    cardNumberController
-        .removeListener(_updateCardType); // Remove listener on dispose
+    cardNumberController.removeListener(_updateCardType);
     cardNumberController.dispose();
     expiryDateController.dispose();
     cvvController.dispose();
@@ -194,132 +108,284 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          left: 25,
-          right: 25,
-          bottom: 25,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Enter Card Details',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    right: 10,
-                    left: 10,
-                    bottom: 30,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.surfaceDim,
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+      body: BlocListener<TransactionBloc, TransactionState>(
+        listenWhen: (previous, current) {
+          return current is TransactionSuccess ||
+              current is TransactionLoading ||
+              current is TransactionError;
+        },
+        listener: (context, state) {
+          if (state is TransactionLoading) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return const Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildCardTypeSelection(),
-                      const SizedBox(height: 16),
-                      InputField(
-                        isObsecure: false,
-                        controller: nameController,
-                        isReadOnly: false,
-                        label: 'Card Holder Name',
-                        inputFormat: [
-                          LengthLimitingTextInputFormatter(16),
-                        ],
+                      SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
                       ),
-                      const SizedBox(height: 20),
-                      InputField(
-                        isObsecure: false,
-                        controller: cardNumberController,
-                        isReadOnly: false,
-                        label: 'Card Number',
-                        keyboardType: TextInputType.number,
-                        inputFormat: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(16),
-                          CardNumberInputFormatter(),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InputField(
-                              isObsecure: false,
-                              controller: expiryDateController,
-                              isReadOnly: false,
-                              label: 'Expire Date',
-                              keyboardType: TextInputType.number,
-                              inputFormat: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                LengthLimitingTextInputFormatter(4),
-                                ExpiryDateInputFormatter(),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: InputField(
-                              isObsecure: false,
-                              controller: cvvController,
-                              isReadOnly: false,
-                              keyboardType: TextInputType.number,
-                              label: 'CVV',
-                              inputFormat: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                LengthLimitingTextInputFormatter(3),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: saveCard,
-                            onChanged: (value) {
-                              setState(() {
-                                saveCard = value ?? false;
-                                if (saveCard) {
-                                  saveCardDetails(
-                                      cardNumberController.text,
-                                      expiryDateController.text,
-                                      cvvController.text);
-                                }
-                              });
-                            },
-                          ),
-                          const Text('Save Card Details'),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      _buildAmountDisplay(),
+                      SizedBox(height: 10),
+                      Text('Processing payment..')
                     ],
+                  ),
+                );
+              },
+            );
+          } else if (state is TransactionSuccess) {
+            Navigator.pop(context);
+            _transactionBloc
+                .add(TransactionFetchEvent(userID: _authRepository.userID));
+            _cardBloc.add(CardFetchEvent(userID: _authRepository.userID));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PaymentSuccessScreen(
+                  accountNumber: widget.accountNumber,
+                  amount: widget.amount,
+                  type: widget.type,
+                ),
+              ),
+            );
+          } else if (state is TransactionError) {
+            Navigator.pop(context);
+            CustomSnackBar.showErrorSnackBar(
+                'Payment failed! Try again later', context);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 25,
+            right: 25,
+            bottom: 25,
+            top: 25,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      right: 10,
+                      left: 10,
+                      bottom: 30,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.surfaceDim,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildCardTypeSelection(),
+                        const SizedBox(height: 16),
+                        InputField(
+                          isObsecure: false,
+                          controller: nameController,
+                          borderColor: nameBorderColor,
+                          isReadOnly: false,
+                          label: 'Card Holder Name',
+                          inputFormat: [
+                            LengthLimitingTextInputFormatter(16),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        InputField(
+                          isObsecure: false,
+                          controller: cardNumberController,
+                          borderColor: numberBorderColor,
+                          isReadOnly: false,
+                          label: 'Card Number',
+                          keyboardType: TextInputType.number,
+                          inputFormat: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(16),
+                            CardNumberInputFormatter(),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: InputField(
+                                isObsecure: false,
+                                controller: expiryDateController,
+                                borderColor: dateBorderColor,
+                                isReadOnly: false,
+                                label: 'MM/YY',
+                                keyboardType: TextInputType.number,
+                                inputFormat: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(4),
+                                  ExpiryDateInputFormatter(),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            Expanded(
+                              child: InputField(
+                                isObsecure: false,
+                                controller: cvvController,
+                                borderColor: cvvBorderColor,
+                                isReadOnly: false,
+                                keyboardType: TextInputType.number,
+                                label: 'CVV',
+                                inputFormat: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(3),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: saveCard,
+                              onChanged: (value) {
+                                setState(() {
+                                  saveCard = value ?? false;
+                                });
+                              },
+                            ),
+                            const Text('Save Card Details'),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
+                        _buildAmountDisplay(),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SimpleButton(
-              data: 'Pay Now',
-              onPressed: () {},
-            )
-          ],
+              SimpleButton(
+                data: 'Pay Now',
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  String name = nameController.text;
+                  String cardNumber = cardNumberController.text;
+                  String expireDate = expiryDateController.text;
+                  String cvv = cvvController.text;
+                  if (_validateInputs(name, cardNumber, expireDate, cvv)) {
+                    if (saveCard) {
+                      _cardBloc.add(
+                        CardAddEvent(
+                          card: Card(
+                            userID: _authRepository.userID,
+                            cardholderName: name,
+                            cardNumber: cardNumber,
+                            expireDate: expireDate,
+                            cvv: cvv,
+                            isVisa: selectedCardType == 'Visa' ? true : false,
+                            createdAt: Timestamp.now(),
+                          ),
+                        ),
+                      );
+                    }
+                    final date =
+                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+                    _transactionBloc.add(
+                      TransactionAddEvent(
+                        transaction: Transaction(
+                          userID: _authRepository.userID,
+                          title: getTitle(),
+                          category: 'Utility',
+                          amount: widget.amount,
+                          date: date,
+                          isIncome: false,
+                          createdAt: Timestamp.now(),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  bool _validateInputs(
+      String name, String cardNumber, String expireDate, String cvv) {
+    setState(() {
+      nameBorderColor = Colors.transparent;
+      numberBorderColor = Colors.transparent;
+      dateBorderColor = Colors.transparent;
+      cvvBorderColor = Colors.transparent;
+    });
+
+    if (name.isEmpty) {
+      setState(() {
+        nameBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Name must be required', context);
+      return false;
+    } else if (cardNumber.isEmpty) {
+      setState(() {
+        numberBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Card number must be required', context);
+      return false;
+    } else if (cardNumber.length != 19) {
+      setState(() {
+        numberBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar(
+          'Card number must have 16 characters', context);
+      return false;
+    } else if (expireDate.isEmpty) {
+      setState(() {
+        dateBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Expire date must be required', context);
+      return false;
+    } else if (expireDate.length != 5 || isFutureDate(expireDate)) {
+      setState(() {
+        dateBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Invalid expire date', context);
+      return false;
+    } else if (cvv.isEmpty || cvv.length != 3) {
+      setState(() {
+        cvvBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Invalid CVV!', context);
+      return false;
+    }
+    return true;
+  }
+
+  bool isFutureDate(String expireDate) {
+    // Split the input to get month and year parts
+    final parts = expireDate.split('/');
+    if (parts.length != 2) return true; // Ensure input format is correct
+
+    final int month = int.tryParse(parts[0]) ?? 0;
+    final int year = int.tryParse(parts[1]) ?? 0;
+
+    if (month < 1 || month > 12) return true; // Check if month is valid
+
+    // Get the current date
+    final DateTime now = DateTime.now();
+    final int currentYear =
+        now.year % 100; // Get the last two digits of the year
+    final int currentMonth = now.month;
+
+    // Check if the entered year and month are in the future
+    if (year > currentYear || (year == currentYear && month >= currentMonth)) {
+      return false;
+    }
+
+    return true;
   }
 
   Widget _buildCardTypeSelection() {
@@ -363,7 +429,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
           ),
         ),
         Text(
-          '\$${widget.amount}',
+          'Rs.${widget.amount}',
           style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,

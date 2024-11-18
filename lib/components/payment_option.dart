@@ -21,28 +21,38 @@ class PaymentOption extends StatefulWidget {
 class _PaymentOptionState extends State<PaymentOption> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color:
-            widget.isSelected ? Theme.of(context).colorScheme.surfaceDim : null,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: ListTile(
-          leading: Image.asset(
-            widget.isVisa
-                ? 'assets/payments/visa_edit.png'
-                : 'assets/payments/master_edit.png',
-            width: 80,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Container(
+        decoration: BoxDecoration(
+          color: widget.isSelected
+              ? Theme.of(context).colorScheme.surfaceDim
+              : null,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: Colors.grey.shade200,
           ),
-          title: Text(
-            widget.name,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Text('**** ${widget.number}'),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ListTile(
+            leading: Image.asset(
+              widget.isVisa
+                  ? 'assets/payments/visa_edit.png'
+                  : 'assets/payments/master_edit.png',
+              width: 80,
+            ),
+            title: Text(
+              widget.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            trailing: widget.isSelected
+                ? const Icon(Icons.check_circle, color: Colors.green)
+                : null,
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text('**** ${widget.number.substring(15)}'),
+            ),
           ),
         ),
       ),

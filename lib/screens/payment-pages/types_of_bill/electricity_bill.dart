@@ -1,8 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-
+import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/payment-pages/payment_methord/show_payment_methods.dart';
+import 'package:financial_app/screens/payment-pages/payment_success_screen.dart';
+import 'package:financial_app/services/transaction_types.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 class ElectricityBillScreen extends StatefulWidget {
@@ -13,16 +22,25 @@ class ElectricityBillScreen extends StatefulWidget {
 }
 
 class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
-  final TextEditingController dueDateController = TextEditingController();
-  final TextEditingController paymentDateController = TextEditingController();
+  final TextEditingController confirmAccountNumberController =
+      TextEditingController();
   final TextEditingController accountNumberController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
+  Color accNumBorderColor = Colors.transparent;
+  Color confirmAccNumBorderColor = Colors.transparent;
+  Color amountBorderColor = Colors.transparent;
+
+  final FocusNode accNumNode = FocusNode();
+  final FocusNode confirmAccNumNode = FocusNode();
+  final FocusNode amountNode = FocusNode();
+  late TransactionBloc _transactionBloc;
+  late AuthRepository _authRepository;
 
   @override
   void initState() {
     super.initState();
-    paymentDateController.text =
-        DateTime.now().toLocal().toString().split(' ')[0];
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
   }
 
   @override
@@ -44,146 +62,235 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Colors.blue,
-                      child:
-                          Icon(Icons.flash_on, size: 50, color: Colors.white),
-                    ),
-                    const SizedBox(height: 40),
-                    const Text(
-                      'Enter Your Payment Details',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
+      body: BlocListener<TransactionBloc, TransactionState>(
+        listenWhen: (previous, current) {
+          return current is TransactionSuccess ||
+              current is TransactionLoading ||
+              current is TransactionError;
+        },
+        listener: (context, state) {
+          if (state is TransactionLoading) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
                       ),
-                    ),
-                    const SizedBox(height: 40),
-                    InputField(
-                      isObsecure: false,
-                      controller: accountNumberController,
-                      isReadOnly: false,
-                      prefixIcon: Icons.account_circle,
-                      keyboardType: TextInputType.number,
-                      label: 'Account Number',
-                    ),
-                    const SizedBox(height: 16),
-                    InputField(
-                      isReadOnly: false,
-                      isObsecure: false,
-                      prefixIcon: Icons.money,
-                      label: 'Amount',
-                      suffixIcon: TextButton(
-                        onPressed: () {
-                          amountController.text = '';
-                        },
-                        child: const Text('Clear'),
-                      ),
-                      prefixText: 'Rs.',
-                      controller: amountController,
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 16),
-                    InputField(
-                      isReadOnly: true,
-                      isObsecure: false,
-                      label: 'Due Date',
-                      prefixIcon: Icons.date_range,
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now(),
-                          );
-
-                          if (pickedDate != null) {
-                            dueDateController.text =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        icon: const Icon(Icons.edit),
-                      ),
-                      controller: dueDateController,
-                    ),
-                    const SizedBox(height: 16),
-                    InputField(
-                      isReadOnly: true,
-                      isObsecure: false,
-                      prefixIcon: Icons.date_range,
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now(),
-                          );
-
-                          if (pickedDate != null) {
-                            paymentDateController.text =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        icon: const Icon(Icons.edit),
-                      ),
-                      controller: paymentDateController,
-                    ),
-                    const SizedBox(height: 96),
-                  ],
+                      SizedBox(height: 10),
+                      Text('Processing payment..')
+                    ],
+                  ),
+                );
+              },
+            );
+          } else if (state is TransactionSuccess) {
+            Navigator.pop(context);
+            _transactionBloc
+                .add(TransactionFetchEvent(userID: _authRepository.userID));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PaymentSuccessScreen(
+                  accountNumber: accountNumberController.text,
+                  amount: double.parse(amountController.text),
+                  type: TransactionType.electricity,
                 ),
               ),
-            ),
-            SimpleButton(
-              data: 'Pay Bill',
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => const PaymentMethodSheet(),
-                );
-                // if (accountNumberController.text.isNotEmpty &&
-                //     amountController.text.isNotEmpty) {
-                //   // Add your payment processing logic here
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => PaymentMethodScreen(
-                //         accountNumber: accountNumberController.text,
-                //         amount: amountController.text,
-                //       ),
-                //     ),
-                //   );
-                // } else {
-                //   showDialog(
-                //     context: context,
-                //     builder: (context) => AlertDialog(
-                //       title: const Text('Error'),
-                //       content: const Text('Please fill in all fields'),
-                //       actions: [
-                //         TextButton(
-                //           onPressed: () => Navigator.pop(context),
-                //           child: const Text('OK'),
-                //         ),
-                //       ],
-                //     ),
-                //   );
-                // }
-              },
-            ),
-          ],
+            );
+          } else if (state is TransactionError) {
+            Navigator.pop(context);
+            CustomSnackBar.showErrorSnackBar(
+                'Payment failed! Try again later', context);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const CircleAvatar(
+                        radius: 80,
+                        backgroundColor: Colors.blue,
+                        child:
+                            Icon(Icons.flash_on, size: 50, color: Colors.white),
+                      ),
+                      const SizedBox(height: 40),
+                      const Text(
+                        'Enter Your Payment Details',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      InputField(
+                        isObsecure: false,
+                        controller: accountNumberController,
+                        isReadOnly: false,
+                        prefixIcon: Icons.numbers,
+                        focusNode: accNumNode,
+                        borderColor: accNumBorderColor,
+                        keyboardType: TextInputType.number,
+                        inputFormat: [
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        label: 'Account Number',
+                      ),
+                      const SizedBox(height: 16),
+                      InputField(
+                        isObsecure: false,
+                        controller: confirmAccountNumberController,
+                        focusNode: confirmAccNumNode,
+                        borderColor: confirmAccNumBorderColor,
+                        isReadOnly: false,
+                        inputFormat: [
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        prefixIcon: Icons.numbers,
+                        keyboardType: TextInputType.number,
+                        label: 'Confirm Account Number',
+                      ),
+                      const SizedBox(height: 16),
+                      InputField(
+                        isReadOnly: false,
+                        isObsecure: false,
+                        focusNode: amountNode,
+                        prefixIcon: Icons.money,
+                        borderColor: amountBorderColor,
+                        label: 'Amount',
+                        suffixIcon: TextButton(
+                          onPressed: () {
+                            amountController.text = '';
+                          },
+                          child: const Text('Clear'),
+                        ),
+                        prefixText: 'Rs.',
+                        controller: amountController,
+                        keyboardType: TextInputType.number,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+              SimpleButton(
+                data: 'Pay Bill',
+                onPressed: () async {
+                  accNumNode.unfocus();
+                  confirmAccNumNode.unfocus();
+                  amountNode.unfocus();
+                  FocusScope.of(context).unfocus();
+                  String accNum = accountNumberController.text;
+                  String confirmAccNum = confirmAccountNumberController.text;
+                  double amount = 0.0;
+                  try {
+                    amount = double.parse(amountController.text);
+                  } catch (e) {
+                    CustomSnackBar.showErrorSnackBar(
+                        'Please enter valid amount', context);
+                    return;
+                  }
+                  if (_validateInputs(accNum, confirmAccNum, amount)) {
+                    final result = await showModalBottomSheet<bool>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => PaymentMethodSheet(
+                        amount: amount,
+                        type: TransactionType.electricity,
+                        billingNumber: accNum,
+                      ),
+                    );
+                    final date =
+                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+                    if (mounted && result == true) {
+                      _transactionBloc.add(
+                        TransactionAddEvent(
+                          transaction: Transaction(
+                            userID: _authRepository.userID,
+                            title: 'Electricity Bill',
+                            category: 'Utility',
+                            amount: amount,
+                            date: date,
+                            isIncome: false,
+                            createdAt: Timestamp.now(),
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  bool _validateInputs(String accNum, String confirmAccNum, double amount) {
+    setState(() {
+      accNumBorderColor = Colors.transparent;
+      confirmAccNumBorderColor = Colors.transparent;
+      amountBorderColor = Colors.transparent;
+    });
+    if (accNum.isEmpty) {
+      setState(() {
+        accNumBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Please enter account number', context);
+      return false;
+    } else if (accNum.length != 10) {
+      setState(() {
+        accNumBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar(
+          'Please enter valid account number', context);
+      return false;
+    } else if (confirmAccNum.isEmpty) {
+      setState(() {
+        confirmAccNumBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar(
+          'Please re-enter account number', context);
+      return false;
+    } else if (confirmAccNum.length != 10) {
+      setState(() {
+        confirmAccNumBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar(
+          'Please re-enter valid account number', context);
+      return false;
+    } else if (confirmAccNum != accNum) {
+      setState(() {
+        confirmAccNumBorderColor = Colors.red;
+        accNumBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Account number didn\'t match', context);
+      return false;
+    } else if (amount == 0.0) {
+      setState(() {
+        amountBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar('Amount must be required', context);
+      return false;
+    } else if (amount < 100) {
+      setState(() {
+        amountBorderColor = Colors.red;
+      });
+      CustomSnackBar.showErrorSnackBar(
+          'Amount must be geater than LKR 100', context);
+      return false;
+    }
+    return true;
   }
 }

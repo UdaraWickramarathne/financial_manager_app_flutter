@@ -116,7 +116,7 @@
     "add_your_card": "Add Your Card",
     "card_holder_name": "Card Holder Name",
     "card_number": "Card Number",
-    "expire_date": "Expire Date",
+    "expire_date": "MM/YY",
     "cvv": "CVV",
     "save_card": "Save Card",
     "capture_back_side_of_card": "Now, capture the back side of the card.",

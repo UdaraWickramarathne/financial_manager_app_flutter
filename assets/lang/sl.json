@@ -111,7 +111,7 @@
     "add_your_card": "ඔබගේ කාඩ්පත එක් කරන්න",
     "card_holder_name": "කාඩ් හිමියාගේ නම",
     "card_number": "කාඩ්පත් අංකය",
-    "expire_date": "කල් ඉකුත් වන දිනය",
+    "expire_date": "MM/YY",
     "cvv": "සී.වී.වී",
     "save_card": "කාඩ්පත සුරකින්න",
     "capture_back_side_of_card": "දැන්, කාඩ්පතේ පිටුපස දිශාව අල්ලා ගන්න.",

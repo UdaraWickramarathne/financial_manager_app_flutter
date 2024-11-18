@@ -131,7 +131,7 @@ class _AddCardPageState extends State<AddCardPage> {
                   ),
                   Text(
                     _dateController.text.isEmpty
-                        ? '__ /__'
+                        ? 'MM/YY'
                         : _dateController.text,
                     style: const TextStyle(
                       color: Colors.white,

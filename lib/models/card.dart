@@ -4,9 +4,9 @@ class Card {
   String id;
   final String userID;
   final String cardholderName;
-  final String cardNumber;
-  final String expireDate;
-  final String cvv;
+  String cardNumber;
+  String expireDate;
+  String cvv;
   final bool isVisa;
   final Timestamp createdAt;
 

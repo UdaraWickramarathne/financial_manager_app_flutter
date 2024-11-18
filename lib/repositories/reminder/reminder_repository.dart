@@ -17,9 +17,9 @@ class ReminderRepository extends BaseReminderRepository {
       reminder.id = doc.id;
       await doc.set(reminder.toJson());
       await scheduleReminderNotification(reminder: reminder);
-      developer.log('goal add success');
+      developer.log('reminder add success');
     } catch (e) {
-      developer.log('goal add error');
+      developer.log('reminder add error');
       rethrow;
     }
   }

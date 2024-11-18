@@ -22,7 +22,7 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       if (event is CardFetchEvent) {
         try {
           emit(CardFetchLoading());
-          final result = await _cardRepository.getCrads(userID: event.userID);
+          final result = await _cardRepository.getCards(userID: event.userID);
           if (result.isNotEmpty) {
             emit(CardFetchLoaded(cards: result));
           } else {

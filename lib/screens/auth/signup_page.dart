@@ -180,6 +180,7 @@ class _SignupScreenState extends State<SignupScreen> {
               SimpleButton(
                 data: 'Sign Up',
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
                   final email = emailController.text;
                   final name = nameController.text;
                   final password = passwordController.text;

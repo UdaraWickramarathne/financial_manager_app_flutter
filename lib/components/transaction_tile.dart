@@ -107,6 +107,11 @@ class _TransactionTileState extends State<TransactionTile> {
         containerColor = Colors.green[100]!;
         icon = Icons.movie;
         break;
+      case 'Utility':
+        iconColor = Colors.blueGrey[800]!;
+        containerColor = Colors.blueGrey[100]!;
+        icon = Icons.lightbulb;
+        break;
       case 'Education':
         iconColor = Colors.deepOrange[800]!;
         containerColor = Colors.deepOrange[100]!;
@@ -213,7 +218,9 @@ class _TransactionTileState extends State<TransactionTile> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      widget.transaction.isIncome ? '+\$$amount' : '-\$$amount',
+                      widget.transaction.isIncome
+                          ? '+Rs.$amount'
+                          : '-Rs.$amount',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: widget.transaction.isIncome

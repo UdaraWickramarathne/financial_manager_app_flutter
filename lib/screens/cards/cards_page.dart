@@ -50,6 +50,12 @@ class _CardsPageState extends State<CardsPage> {
             child: SizedBox(
               height: 210,
               child: BlocBuilder<CardBloc, CardState>(
+                buildWhen: (previous, current) {
+                  return current is CardFetchLoading ||
+                      current is CardFetchLoaded ||
+                      current is CardDeleteLoading ||
+                      current is CardDeleteSuccess;
+                },
                 builder: (context, state) {
                   if (state is CardFetchLoading) {
                     return const Center(
@@ -119,13 +125,20 @@ class _CardsPageState extends State<CardsPage> {
           const SizedBox(height: 20),
           BlocBuilder<CardBloc, CardState>(
             builder: (context, state) {
-              int itemCount = 1;
               if (state is CardFetchLoaded) {
-                itemCount = state.cards.length;
+                return SmoothPageIndicator(
+                  controller: _controller,
+                  count: state.cards.length,
+                  effect: SwapEffect(
+                    activeDotColor: Theme.of(context).colorScheme.primary,
+                    dotColor: Theme.of(context).colorScheme.surfaceDim,
+                    dotHeight: 10,
+                  ),
+                );
               }
               return SmoothPageIndicator(
                 controller: _controller,
-                count: itemCount,
+                count: 1,
                 effect: SwapEffect(
                   activeDotColor: Theme.of(context).colorScheme.primary,
                   dotColor: Theme.of(context).colorScheme.surfaceDim,

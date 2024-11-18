@@ -3,7 +3,7 @@ import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/convertor/money_convertor.dart';
 import 'package:financial_app/screens/dashboard/dashboard_page.dart';
-import 'package:financial_app/screens/paymen-pages/bill_payment_page.dart';
+import 'package:financial_app/screens/payment-pages/bill_payment_page.dart';
 import 'package:financial_app/screens/profile-pages/account_info/account_info_page.dart';
 import 'package:financial_app/screens/profile-pages/privacy_policy/privacy_policy_page.dart';
 import 'package:financial_app/screens/cards/cards_page.dart';

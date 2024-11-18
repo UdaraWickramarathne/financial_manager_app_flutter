@@ -59,7 +59,7 @@ class SmsService {
               transaction: Transaction(
                 userID: authRepository.userID,
                 title: description,
-                category: 'Food',
+                category: 'Other',
                 amount: double.parse(amount),
                 date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
                 isIncome: isIncome,

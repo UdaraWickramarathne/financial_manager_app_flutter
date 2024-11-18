@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'dart:developer' as dev;
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -9,15 +10,13 @@ class NotificationService {
       NotificationResponse notificationResponse) async {
     // Handle different actions based on the actionId
     if (notificationResponse.actionId == 'complete_action') {
-      // Logic for handling "Complete" action
-      print("Notification marked as complete.");
+      dev.log('Notification marked as complete.');
       await flutterLocalNotificationsPlugin.cancel(notificationResponse.id!);
     } else if (notificationResponse.actionId == 'snooze_action') {
-      // Logic for handling "Snooze" action
-      print("Notification snoozed.");
+      dev.log('Notification snoozed.');
       await snoozeNotification(notificationResponse.id!);
     } else {
-      print("Notification received.");
+      dev.log('Notification received.');
     }
   }
 

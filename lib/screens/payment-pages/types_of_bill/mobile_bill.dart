@@ -1,4 +1,5 @@
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../components/clickble_textfield.dart';
@@ -37,7 +38,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Select Biller'),
+          title: Text(AppLocalizations.of(context).translate('select_biller')),
           content: SingleChildScrollView(
             child: ListBody(
               children: billers.map((biller) {
@@ -123,10 +124,10 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
           ),
         ],
         centerTitle: true,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Mobile Bill Payment',
-            style: TextStyle(fontSize: 20),
+            AppLocalizations.of(context).translate('mobile_bill_payment'),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
@@ -146,16 +147,16 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
                           size: 50, color: Colors.white),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      'Enter Your Payment Details',
+                     Text(
+                      AppLocalizations.of(context).translate('enter_payment_details'),
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 30),
                     ClickbleTextfield(
                       prefixIcon: Icons.cell_tower,
                       controller: selectBillerController,
-                      label: 'Select Biller',
+                      label: AppLocalizations.of(context).translate('select_biller'),
                       onTap: () => _showBillerSelectionDialog(),
                     ),
                     const SizedBox(height: 16),
@@ -171,7 +172,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
                             });
                           },
                         ),
-                        const Text('Postpaid'),
+                        Text(AppLocalizations.of(context).translate('postpaid')),
                         const SizedBox(width: 20),
                         Checkbox(
                           value: _isPrepaidSelected,
@@ -182,7 +183,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
                             });
                           },
                         ),
-                        const Text('Prepaid'),
+                        Text(AppLocalizations.of(context).translate('prepaid')),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -192,19 +193,19 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
                       isReadOnly: false,
                       prefixIcon: Icons.mobile_friendly,
                       keyboardType: TextInputType.number,
-                      label: 'Mobile Number',
+                      label: AppLocalizations.of(context).translate('mobile_number'),
                     ),
                     const SizedBox(height: 16),
                     InputField(
                       isReadOnly: false,
                       isObsecure: false,
                       prefixIcon: Icons.money,
-                      label: 'Amount',
+                      label: AppLocalizations.of(context).translate('amount'),
                       suffixIcon: TextButton(
                         onPressed: () {
                           amountController.text = '';
                         },
-                        child: const Text('Clear'),
+                        child: Text(AppLocalizations.of(context).translate('clear')),
                       ),
                       prefixText: 'Rs.',
                       controller: amountController,
@@ -215,7 +216,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
                       InputField(
                         isReadOnly: true,
                         isObsecure: false,
-                        label: 'Due Date',
+                        label: AppLocalizations.of(context).translate('due_date'),
                         prefixIcon: Icons.date_range,
                         suffixIcon: IconButton(
                           onPressed: () async {
@@ -240,7 +241,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
                     InputField(
                       isReadOnly: true,
                       isObsecure: false,
-                      label: 'Date of Payment',
+                      label: AppLocalizations.of(context).translate('date_of_payment'),
                       prefixIcon: Icons.date_range,
                       suffixIcon: IconButton(
                         onPressed: () async {
@@ -265,7 +266,7 @@ class _MobileBillScreenState extends State<MobileBillScreen> {
               ),
             ),
             SimpleButton(
-              data: 'Pay Bill',
+              data: AppLocalizations.of(context).translate('pay_bill'),
               onPressed: () {
                 // Validate all inputs
                 if (_validateInputs()) {}

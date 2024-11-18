@@ -137,6 +137,26 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 20),
                       ListTile(
+                        leading: const Icon(Icons.calendar_month_outlined),
+                        title: Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            AppLocalizations.of(context).translate('calendar'),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const CalendarReminderPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      ListTile(
                         leading: const Icon(Icons.star_rate),
                         title: Padding(
                           padding: const EdgeInsets.only(left: 15),
@@ -150,26 +170,6 @@ class _HomePageState extends State<HomePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => RatingDialog(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      ListTile(
-                        leading: const Icon(Icons.calendar_month_outlined),
-                        title: Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Text(
-                            AppLocalizations.of(context).translate('Calender'),
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const CalendarReminderPage(),
                             ),
                           );
                         },

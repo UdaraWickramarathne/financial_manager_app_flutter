@@ -63,7 +63,7 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
         ),
         centerTitle: true,
         title: Text(
-          AppLocalizations.of(context).translate('Calender'),
+          AppLocalizations.of(context).translate('calender'),
           style: const TextStyle(
             fontSize: 20,
             color: Colors.white,
@@ -125,7 +125,7 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
               ),
             );
           } else {
-            return const Center(child: Text('No reminders found.'));
+            return const Center(child: Text('no_reminders_found'));
           }
         },
       ),
@@ -149,7 +149,7 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Reminders'),
+          title: Text(AppLocalizations.of(context).translate('your_reminders')),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: events.map((event) {
@@ -162,7 +162,7 @@ class _CalendarReminderPageState extends State<CalendarReminderPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text(AppLocalizations.of(context).translate('close'),),
             ),
           ],
         );

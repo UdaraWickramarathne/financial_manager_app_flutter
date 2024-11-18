@@ -3,6 +3,7 @@ import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/payment-pages/payment_methord/show_payment_methods.dart';
@@ -99,16 +100,16 @@ class _QRResultState extends State<ScanDetailsPage> {
               context: context,
               barrierDismissible: false,
               builder: (context) {
-                return const Center(
+                return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SpinKitThreeBounce(
+                      const SpinKitThreeBounce(
                         color: Colors.white,
                         size: 50.0,
                       ),
-                      SizedBox(height: 10),
-                      Text('Processing payment..')
+                      const SizedBox(height: 10),
+                      Text(AppLocalizations.of(context).translate('processing_payment'))
                     ],
                   ),
                 );
@@ -205,7 +206,7 @@ class _QRResultState extends State<ScanDetailsPage> {
                 ),
               ),
               SimpleButton(
-                data: 'Pay Now',
+                data: AppLocalizations.of(context).translate('pay_now'),
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
                   amountFocus.unfocus();

@@ -3,6 +3,7 @@ import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/transaction.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/payment-pages/payment_methord/show_payment_methods.dart';
@@ -56,10 +57,10 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
           ),
         ],
         centerTitle: true,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Electricity Bill Payment',
-            style: TextStyle(fontSize: 20),
+            AppLocalizations.of(context).translate('electricity_bill_payment'),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
@@ -75,16 +76,16 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
               context: context,
               barrierDismissible: false,
               builder: (context) {
-                return const Center(
+                return  Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SpinKitThreeBounce(
+                      const SpinKitThreeBounce(
                         color: Colors.white,
                         size: 50.0,
                       ),
-                      SizedBox(height: 10),
-                      Text('Processing payment..')
+                      const SizedBox(height: 10),
+                      Text(AppLocalizations.of(context).translate('processing_payment'))
                     ],
                   ),
                 );
@@ -126,9 +127,9 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                             Icon(Icons.flash_on, size: 50, color: Colors.white),
                       ),
                       const SizedBox(height: 40),
-                      const Text(
-                        'Enter Your Payment Details',
-                        style: TextStyle(
+                       Text(
+                        AppLocalizations.of(context).translate('enter_payment_details'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
@@ -146,7 +147,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                         inputFormat: [
                           LengthLimitingTextInputFormatter(10),
                         ],
-                        label: 'Account Number',
+                        label: AppLocalizations.of(context).translate('account_number'),
                       ),
                       const SizedBox(height: 16),
                       InputField(
@@ -160,7 +161,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                         ],
                         prefixIcon: Icons.numbers,
                         keyboardType: TextInputType.number,
-                        label: 'Confirm Account Number',
+                        label: AppLocalizations.of(context).translate('confirm_account_number'),
                       ),
                       const SizedBox(height: 16),
                       InputField(
@@ -169,12 +170,12 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                         focusNode: amountNode,
                         prefixIcon: Icons.money,
                         borderColor: amountBorderColor,
-                        label: 'Amount',
+                        label: AppLocalizations.of(context).translate('amount'),
                         suffixIcon: TextButton(
                           onPressed: () {
                             amountController.text = '';
                           },
-                          child: const Text('Clear'),
+                          child: Text(AppLocalizations.of(context).translate('clear')),
                         ),
                         prefixText: 'Rs.',
                         controller: amountController,
@@ -186,7 +187,7 @@ class _ElectricityBillScreenState extends State<ElectricityBillScreen> {
                 ),
               ),
               SimpleButton(
-                data: 'Pay Bill',
+                data: AppLocalizations.of(context).translate('pay_bill'),
                 onPressed: () async {
                   accNumNode.unfocus();
                   confirmAccNumNode.unfocus();

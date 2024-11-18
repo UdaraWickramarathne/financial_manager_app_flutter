@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class TransactionTypeTile extends StatelessWidget {
@@ -38,7 +39,7 @@ class TransactionTypeTile extends StatelessWidget {
             Icon(icon),
             const SizedBox(width: 16),
             Text(
-              title,
+              AppLocalizations.of(context).translate(title),
               style: const TextStyle(
                 fontSize: 16,
               ),

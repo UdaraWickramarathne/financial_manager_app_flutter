@@ -1,5 +1,9 @@
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
@@ -12,12 +16,11 @@ class WeeklyAnalysisChart extends StatefulWidget {
 
 class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
   DateTime selectedDate = DateTime.now();
-  List<String> weeks = [];
   late int year;
-
-  _WeeklyAnalysisChartState() {
-    year = selectedDate.year;
-  }
+  late AuthRepository _authRepository;
+  late TransactionBloc _transactionBloc;
+  int scaleFactor = 1;
+  List<BarChartGroupData> barChartGroupData = [];
 
   Future<void> _selectMonthYear(BuildContext context) async {
     final DateTime? pickedDate = await showMonthPicker(
@@ -48,44 +51,26 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
       setState(() {
         selectedDate = pickedDate;
         year = pickedDate.year;
-        weeks.clear();
-        weeks = _getWeeksOfMonth(pickedDate);
-        //return weeks of month
-        print('year $year');
-        print(weeks.map((week) => Text(week)).toList());
       });
+      _transactionBloc.add(TransactionAnalysisWeeklyEvent(
+        userID: _authRepository.userID,
+        year: year,
+        month: selectedDate.month,
+      ));
     }
-  }
-
-  List<String> _getWeeksOfMonth(DateTime month) {
-    List<String> weeks = [];
-    DateTime firstDayOfMonth = DateTime(month.year, month.month, 1);
-    DateTime lastDayOfMonth = DateTime(month.year, month.month + 1, 0);
-
-    DateTime startOfWeek = firstDayOfMonth;
-    while (startOfWeek.isBefore(lastDayOfMonth)) {
-      DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
-      if (endOfWeek.isAfter(lastDayOfMonth)) {
-        endOfWeek = lastDayOfMonth;
-      }
-      weeks.add(
-          '${DateFormat('dd MMM').format(startOfWeek)} - ${DateFormat('dd MMM').format(endOfWeek)}');
-      startOfWeek = endOfWeek.add(
-        const Duration(days: 1),
-      );
-    }
-
-    return weeks;
   }
 
   @override
   void initState() {
     super.initState();
-    weeks = _getWeeksOfMonth(selectedDate);
-
-    //return weeks of month
-    print('year $year');
-    print(weeks.map((week) => Text(week)).toList());
+    year = selectedDate.year;
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _transactionBloc.add(TransactionAnalysisWeeklyEvent(
+      userID: _authRepository.userID,
+      year: year,
+      month: selectedDate.month,
+    ));
   }
 
   @override
@@ -97,7 +82,7 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceDim,
             borderRadius: BorderRadius.circular(25)),
-        height: 350,
+        height: 450,
         child: Column(
           children: [
             TextButton(
@@ -137,105 +122,135 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: BarChart(
-                BarChartData(
-                  titlesData: FlTitlesData(
-                    show: true,
-                    rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return const Text('0');
-                            case 10:
-                              return const Text('10k');
-                            case 20:
-                              return const Text('20k');
-                            case 30:
-                              return const Text('30k');
-                            default:
-                              return const Text('');
-                          }
-                        },
-                        interval: 10,
-                        reservedSize: 28,
-                      ),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return const Text('W1');
-                            case 1:
-                              return const Text('W2');
-                            case 2:
-                              return const Text('W3');
-                            case 3:
-                              return const Text('W4');
-                            case 4:
-                              return const Text('W5');
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                builder: (context, state) {
+                  if (state is TransactionAnalysisWeeklyLoading) {
+                    return const Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Fetching data...'),
+                        SizedBox(height: 5),
+                        SpinKitThreeBounce(
+                          color: Colors.grey,
+                          size: 50.0,
+                        ),
+                      ],
+                    ));
+                  } else if (state is TransactionAnalysisWeeklyLoaded) {
+                    List<Map<String, dynamic>> weeklyTotals =
+                        state.weeklyTotals['weeklyTotals'];
+                    double highestVal = state.weeklyTotals['highestValue'];
+                    if (highestVal > 10000) {
+                      scaleFactor = 1000;
+                    } else if (highestVal > 1000) {
+                      scaleFactor = 100;
+                    }
+                    if (highestVal == 0.0) {
+                      return const Center(
+                          child: Text('Not enough data to calaculations'));
+                    }
+                    _generateWeeklyBarChartData(weeklyTotals);
 
-                            default:
-                              return const Text('');
-                          }
-                        },
-                      ),
+                    return buildBarChart();
+                  }
+                  return const Center(
+                    child: SpinKitThreeBounce(
+                      color: Colors.grey,
+                      size: 50.0,
                     ),
-                  ),
-                  borderData: FlBorderData(show: false),
-                  gridData: const FlGridData(show: false),
-                  barGroups: [
-                    BarChartGroupData(
-                      x: 0,
-                      barRods: [
-                        BarChartRodData(toY: 4, color: Colors.greenAccent),
-                        BarChartRodData(toY: 3, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 1,
-                      barRods: [
-                        BarChartRodData(toY: 20, color: Colors.greenAccent),
-                        BarChartRodData(toY: 3, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 2,
-                      barRods: [
-                        BarChartRodData(toY: 20, color: Colors.greenAccent),
-                        BarChartRodData(toY: 16, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 3,
-                      barRods: [
-                        BarChartRodData(toY: 3, color: Colors.greenAccent),
-                        BarChartRodData(toY: 10, color: Colors.redAccent)
-                      ],
-                    ),
-                    BarChartGroupData(
-                      x: 4,
-                      barRods: [
-                        BarChartRodData(toY: 9, color: Colors.greenAccent),
-                        BarChartRodData(toY: 10, color: Colors.redAccent)
-                      ],
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  BarChart buildBarChart() {
+    return BarChart(
+      BarChartData(
+        barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+            getTooltipColor: (group) => const Color(0xFF456EFE),
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              final actualValue = rod.toY * scaleFactor;
+              return BarTooltipItem(
+                'Rs.${actualValue.toStringAsFixed(2)}',
+                const TextStyle(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ),
+        titlesData: FlTitlesData(
+          show: true,
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: getTitlesOfY,
+              interval: 10,
+              reservedSize: 40,
+            ),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, meta) {
+                switch (value.toInt()) {
+                  case 0:
+                    return const Text('W1');
+                  case 1:
+                    return const Text('W2');
+                  case 2:
+                    return const Text('W3');
+                  case 3:
+                    return const Text('W4');
+                  case 4:
+                    return const Text('W5');
+                  default:
+                    return const Text('');
+                }
+              },
+            ),
+          ),
+        ),
+        borderData: FlBorderData(show: false),
+        gridData: const FlGridData(show: false),
+        barGroups: barChartGroupData,
+      ),
+    );
+  }
+
+  Widget getTitlesOfY(value, meta) {
+    return Text('${(value).toStringAsFixed(0)}k');
+  }
+
+  void _generateWeeklyBarChartData(List<Map<String, dynamic>> weeklyTotals) {
+    barChartGroupData = [];
+    for (int i = 0; i < weeklyTotals.length; i++) {
+      final weekData = weeklyTotals[i];
+      barChartGroupData.add(
+        BarChartGroupData(
+          x: i, // X-axis position for each week
+          barRods: [
+            BarChartRodData(
+                toY: weekData['income'] / scaleFactor,
+                color: Colors.greenAccent),
+            BarChartRodData(
+                toY: weekData['expense'] / scaleFactor, color: Colors.redAccent)
+          ],
+        ),
+      );
+    }
   }
 }

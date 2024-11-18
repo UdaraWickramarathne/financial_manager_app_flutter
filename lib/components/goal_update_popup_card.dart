@@ -4,11 +4,13 @@ import 'package:financial_app/blocs/goal/goal_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/goal.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
@@ -88,7 +90,10 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
             context: context,
             builder: (context) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
               );
             },
           );
@@ -189,9 +194,10 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
-                          'Target Amount: ',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('target_amount_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
@@ -237,9 +243,10 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
-                          'Deadline: ',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('deadline_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
@@ -279,13 +286,13 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    const Row(
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Current Amount: 5000',
-                          style: TextStyle(
+                          "${AppLocalizations.of(context).translate('current_amount_label')}: 5000",
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
@@ -302,7 +309,7 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                       ),
                     const SizedBox(height: 20),
                     SimpleButton(
-                      data: 'Update Progress',
+                      data: 'update progress',
                       onPressed: () {
                         double amount;
                         double targetAmount;

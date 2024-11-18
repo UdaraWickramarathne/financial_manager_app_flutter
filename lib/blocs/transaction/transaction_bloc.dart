@@ -1,29 +1,29 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:financial_app/models/transaction.dart';
-import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
-
+import 'dart:developer' as dev;
 part 'transaction_event.dart';
 part 'transaction_state.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final TransactionRepository _transactionRepository;
-  final AuthRepository _authRepository;
 
-  TransactionBloc(this._transactionRepository, this._authRepository)
-      : super(TransactionInitial()) {
+  TransactionBloc(this._transactionRepository) : super(TransactionInitial()) {
     on<TransactionEvent>((event, emit) async {
+      // * transaction add event
       if (event is TransactionAddEvent) {
         try {
           emit(TransactionLoading());
           await _transactionRepository.addTransaction(
               transaction: event.transaction);
+          await Future.delayed(const Duration(seconds: 1));
           emit(TransactionSuccess());
         } catch (e) {
           emit(const TransactionError(message: 'Error occurred!'));
         }
       }
+      // * transaction fetch event
       if (event is TransactionFetchEvent) {
         emit(TransactionFetchLoading());
         try {
@@ -39,6 +39,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionError(message: 'Error occurred!'));
         }
       }
+      // * transaction delete event
       if (event is TransactionDeleteEvent) {
         try {
           await _transactionRepository.deleteTransaction(
@@ -48,6 +49,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionError(message: 'Error occurred!'));
         }
       }
+      // * transaction update event
       if (event is TransactionUpdateEvent) {
         try {
           emit(TransactionUpdateLoading());
@@ -62,30 +64,79 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           emit(const TransactionUpdateError(message: 'Error occurred!'));
         }
       }
+      // * transaction get totals event
       if (event is TransactionGetTotalsEvent) {
         try {
           emit(TransactionGetTotalLoading());
           final totalIncomeExpense = await _transactionRepository
               .getTotalIncomeExpense(userID: event.userID);
-          _authRepository.user!.totalIncome =
-              totalIncomeExpense['totalIncome'] ?? 0.0;
-          _authRepository.user!.totalExpense =
-              totalIncomeExpense['totalExpense'] ?? 0.0;
           emit(TransactionGetTotalLoaded(
               totalIncomeExpense: totalIncomeExpense));
         } catch (e) {
           emit(const TransactionGetTotalError(message: 'Error occured'));
         }
       }
+      // * transaction daily totals event
       if (event is TransactionAnalysisDailyEvent) {
         try {
           emit(TransactionAnalysisDailyLoading());
           await Future.delayed(const Duration(seconds: 1));
           final result = await _transactionRepository.getWeeklyTotals(
               userID: event.userID, startDate: event.dateTime);
-          emit(TransactionAnalysisDailyLoaded(weelkyTotals: result));
+          emit(TransactionAnalysisDailyLoaded(dailyTotals: result));
         } catch (e) {
           emit(const TransactionAnalysisDailyError(message: 'Error occured'));
+        }
+      }
+      // * transaction weekly totals event
+      if (event is TransactionAnalysisWeeklyEvent) {
+        try {
+          emit(TransactionAnalysisWeeklyLoading());
+          final result = await _transactionRepository.getMonthlyWeeklyAnalysis(
+              userID: event.userID, year: event.year, month: event.month);
+          emit(TransactionAnalysisWeeklyLoaded(weeklyTotals: result));
+        } catch (e) {
+          emit(const TransactionAnalysisWeeklyError(message: 'Error occured'));
+        }
+      }
+      // * transaction monthly totals event
+      if (event is TransactionAnalysisMonthlyEvent) {
+        try {
+          emit(TransactionAnalysisMonthlyLoading());
+          final result = await _transactionRepository.getYearlyTotals(
+              userID: event.userID, year: event.year);
+          emit(TransactionAnalysisMonthlyLoaded(monthlyTotals: result));
+        } catch (e) {
+          dev.log(e.toString());
+          emit(const TransactionAnalysisMonthlyError(message: 'Error occured'));
+        }
+      }
+      // * transaction yearly totals event
+      if (event is TransactionAnalysisYearlyEvent) {
+        try {
+          emit(TransactionAnalysisYearlyLoading());
+          final result = await _transactionRepository.getLastThreeYearsTotals(
+              userID: event.userID);
+          emit(TransactionAnalysisYearlyLoaded(yearlyTotals: result));
+        } catch (e) {
+          dev.log(e.toString());
+          emit(const TransactionAnalysisYearlyError(message: 'Error occured'));
+        }
+      }
+      // * transaction date range fetch event
+      if (event is TransactionFetchDateRangeEvent) {
+        try {
+          emit(TransactionDateRangeLoading());
+          final result =
+              await _transactionRepository.getTransactionsForDateRange(
+            userID: event.userID,
+            startDate: event.startDate,
+            endDate: event.endDate,
+          );
+          emit(TransactionDateRangeLoaded(transactionsMap: result));
+        } catch (e) {
+          dev.log(e.toString());
+          emit(const TransactionDateRangeError(message: 'Error occured'));
         }
       }
     });

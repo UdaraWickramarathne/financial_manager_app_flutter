@@ -68,3 +68,57 @@ class TransactionAnalysisDailyEvent extends TransactionEvent {
   @override
   List<Object> get props => [userID, dateTime];
 }
+
+class TransactionAnalysisWeeklyEvent extends TransactionEvent {
+  final String userID;
+  final int year;
+  final int month;
+
+  const TransactionAnalysisWeeklyEvent({
+    required this.userID,
+    required this.year,
+    required this.month,
+  });
+
+  @override
+  List<Object> get props => [userID, year, month];
+}
+
+class TransactionAnalysisMonthlyEvent extends TransactionEvent {
+  final String userID;
+  final int year;
+
+  const TransactionAnalysisMonthlyEvent({
+    required this.userID,
+    required this.year,
+  });
+
+  @override
+  List<Object> get props => [userID, year];
+}
+
+class TransactionAnalysisYearlyEvent extends TransactionEvent {
+  final String userID;
+
+  const TransactionAnalysisYearlyEvent({
+    required this.userID,
+  });
+
+  @override
+  List<Object> get props => [userID];
+}
+
+class TransactionFetchDateRangeEvent extends TransactionEvent {
+  final String userID;
+  final DateTime startDate;
+  final DateTime endDate;
+
+  const TransactionFetchDateRangeEvent(
+    this.startDate,
+    this.endDate, {
+    required this.userID,
+  });
+
+  @override
+  List<Object> get props => [userID];
+}

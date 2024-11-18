@@ -2,11 +2,13 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/blocs/reminder/reminder_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/reminder_card.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/reminder/add_reminder.dart';
 import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:month_year_picker/month_year_picker.dart';
@@ -81,9 +83,9 @@ class _ReminderPageState extends State<ReminderPage> {
           color: Colors.white,
         ),
         centerTitle: true,
-        title: const Text(
-          "Your Reminders",
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context).translate('your_reminders'),
+          style: const TextStyle(
             fontSize: 20,
             color: Colors.white,
           ),
@@ -139,18 +141,18 @@ class _ReminderPageState extends State<ReminderPage> {
                       ),
                     ],
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Date',
-                        style: TextStyle(
+                        AppLocalizations.of(context).translate('date'),
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        'Event',
-                        style: TextStyle(
+                        AppLocalizations.of(context).translate('event'),
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
@@ -179,7 +181,12 @@ class _ReminderPageState extends State<ReminderPage> {
                 },
                 builder: (context, state) {
                   if (state is ReminderFetchLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
+                      ),
+                    );
                   } else if (state is ReminderLoaded) {
                     return ListView.builder(
                       itemCount: state.reminders.length,
@@ -201,11 +208,19 @@ class _ReminderPageState extends State<ReminderPage> {
                       },
                     );
                   } else if (state is ReminderEmpty) {
-                    return const Center(child: Text('No Reminders found.'));
+                    return Center(
+                        child: Text(
+                      AppLocalizations.of(context)
+                          .translate('no_reminders_found'),
+                    ));
                   } else if (state is ReminderError) {
                     return Center(child: Text(state.message));
                   }
-                  return const Center(child: Text('No Reminders found.'));
+                  return Center(
+                      child: Text(
+                    AppLocalizations.of(context)
+                        .translate('no_reminders_found'),
+                  ));
                 },
               ),
             ),
@@ -223,9 +238,12 @@ class _ReminderPageState extends State<ReminderPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Permission Denied'),
-          content: const Text(
-            'Notification permission is required to send reminders. Please enable it in the app settings.',
+          title: Text(
+            AppLocalizations.of(context).translate('permission_denied'),
+          ),
+          content: Text(
+            AppLocalizations.of(context)
+                .translate('notification_permission_required'),
           ),
           actions: [
             TextButton(
@@ -233,13 +251,17 @@ class _ReminderPageState extends State<ReminderPage> {
                 Navigator.of(context).pop();
                 openAppSettings(); // Open the app settings page
               },
-              child: const Text('Go to Settings'),
+              child: Text(
+                AppLocalizations.of(context).translate('go_to_settings'),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Just close the dialog
               },
-              child: const Text('Cancel'),
+              child: Text(
+                AppLocalizations.of(context).translate('cancel'),
+              ),
             ),
           ],
         ),
@@ -254,7 +276,7 @@ class _ReminderPageState extends State<ReminderPage> {
     CustomSnackBar.show(
       context,
       title: 'On Snap!',
-      message: error,
+      message: AppLocalizations.of(context).translate(error),
       contentType: ContentType.failure,
     );
   }

@@ -1,9 +1,11 @@
 import 'package:financial_app/blocs/goal/goal_bloc.dart';
 import 'package:financial_app/components/goal_card.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/goals/add_goal_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class GoalPage extends StatefulWidget {
@@ -40,10 +42,10 @@ class _GoalPageState extends State<GoalPage> {
           ),
         ],
         centerTitle: true,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Your Goals',
-            style: TextStyle(fontSize: 20),
+            AppLocalizations.of(context).translate('your_goals'),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
@@ -77,7 +79,12 @@ class _GoalPageState extends State<GoalPage> {
             },
             builder: (context, state) {
               if (state is GoalFetchLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
+                );
               } else if (state is GoalLoaded) {
                 return ListView.builder(
                   itemCount: state.goals.length,
@@ -99,9 +106,13 @@ class _GoalPageState extends State<GoalPage> {
                   },
                 );
               } else if (state is GoalsEmpty) {
-                return const Center(child: Text('No goals found.'));
+                return Center(
+                    child: Text(AppLocalizations.of(context)
+                        .translate('task_no_goals_foundname_missing')));
               }
-              return const Center(child: Text('No goals found.'));
+              return Center(
+                  child: Text(AppLocalizations.of(context)
+                      .translate('task_no_goals_foundname_missing')));
             },
           ),
         ),

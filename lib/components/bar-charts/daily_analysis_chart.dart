@@ -3,6 +3,7 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 class DailyAnalysisChart extends StatefulWidget {
@@ -20,8 +21,7 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
   DateTime? _endOfWeek;
   late AuthRepository _authRepository;
   late TransactionBloc _transactionBloc;
-
-  List<int> yAxisValues = [];
+  int scaleFactor = 1;
 
   void _pickWeek(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -37,6 +37,8 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
             picked.subtract(Duration(days: picked.weekday % 7)); // Sunday
         _endOfWeek = _startOfWeek!.add(const Duration(days: 6)); // Saturday
       });
+      _transactionBloc.add(TransactionAnalysisDailyEvent(
+          userID: _authRepository.userID, dateTime: _startOfWeek!));
     }
   }
 
@@ -111,10 +113,15 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
                 },
                 builder: (context, state) {
                   if (state is TransactionAnalysisDailyLoaded) {
-                    double highestVal = state.weelkyTotals['highestValue'];
-                    yAxisValues = divideIntoFourParts(highestVal.toInt());
+                    double highestVal = state.dailyTotals['highestValue'];
+
+                    if (highestVal > 10000) {
+                      scaleFactor = 1000;
+                    } else if (highestVal > 1000) {
+                      scaleFactor = 100;
+                    }
                     List<Map<String, dynamic>> weeklyTotals =
-                        state.weelkyTotals['weeklyTotals'];
+                        state.dailyTotals['weeklyTotals'];
                     var day1 = weeklyTotals[0];
                     var day2 = weeklyTotals[1];
                     var day3 = weeklyTotals[2];
@@ -124,20 +131,20 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
                     var day7 = weeklyTotals[6];
 
                     // Access income and expense for each day
-                    double day1Income = day1['income'];
-                    double day1Expense = day1['expense'];
-                    double day2Income = day2['income'];
-                    double day2Expense = day2['expense'];
-                    double day3Income = day3['income'];
-                    double day3Expense = day3['expense'];
-                    double day4Income = day4['income'];
-                    double day4Expense = day4['expense'];
-                    double day5Income = day5['income'];
-                    double day5Expense = day5['expense'];
-                    double day6Income = day6['income'];
-                    double day6Expense = day6['expense'];
-                    double day7Income = day7['income'];
-                    double day7Expense = day7['expense'];
+                    double day1Income = day1['income'] / scaleFactor;
+                    double day1Expense = day1['expense'] / scaleFactor;
+                    double day2Income = day2['income'] / scaleFactor;
+                    double day2Expense = day2['expense'] / scaleFactor;
+                    double day3Income = day3['income'] / scaleFactor;
+                    double day3Expense = day3['expense'] / scaleFactor;
+                    double day4Income = day4['income'] / scaleFactor;
+                    double day4Expense = day4['expense'] / scaleFactor;
+                    double day5Income = day5['income'] / scaleFactor;
+                    double day5Expense = day5['expense'] / scaleFactor;
+                    double day6Income = day6['income'] / scaleFactor;
+                    double day6Expense = day6['expense'] / scaleFactor;
+                    double day7Income = day7['income'] / scaleFactor;
+                    double day7Expense = day7['expense'] / scaleFactor;
                     return buildBarChart(
                       day1Income,
                       day1Expense,
@@ -154,9 +161,25 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
                       day7Income,
                       day7Expense,
                     );
+                  } else if (state is TransactionAnalysisDailyLoading) {
+                    return const Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Fetching data...'),
+                        SizedBox(height: 5),
+                        SpinKitThreeBounce(
+                          color: Colors.grey,
+                          size: 50.0,
+                        ),
+                      ],
+                    ));
                   }
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: SpinKitThreeBounce(
+                      color: Colors.grey,
+                      size: 50.0,
+                    ),
                   );
                 },
               ),
@@ -185,6 +208,20 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
   ) {
     return BarChart(
       BarChartData(
+        barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+            getTooltipColor: (group) => const Color(0xFF456EFE),
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              final actualValue = rod.toY * scaleFactor;
+              return BarTooltipItem(
+                'Rs.${actualValue.toStringAsFixed(2)}',
+                const TextStyle(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+        ),
         titlesData: FlTitlesData(
           show: true,
           rightTitles: const AxisTitles(
@@ -315,46 +352,6 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
   }
 
   Widget getTitlesOfY(value, meta) {
-    switch (value.toInt()) {
-      case 0:
-        return const Text('0');
-      case int value when value == yAxisValues[0]:
-        return Text(
-          '${yAxisValues[0] % 1000 == 0 ? yAxisValues[0] ~/ 1000 : yAxisValues[0] / 1000}k',
-        );
-      case int value when value == yAxisValues[1]:
-        return Text(
-          '${yAxisValues[1] % 1000 == 0 ? yAxisValues[1] ~/ 1000 : yAxisValues[1] / 1000}k',
-        );
-      case int value when value == yAxisValues[2]:
-        return Text(
-          '${yAxisValues[2] % 1000 == 0 ? yAxisValues[2] ~/ 1000 : yAxisValues[2] / 1000}k',
-        );
-      case int value when value == yAxisValues[3]:
-        return Text(
-          '${yAxisValues[3] % 1000 == 0 ? yAxisValues[3] ~/ 1000 : yAxisValues[3] / 1000}k',
-        );
-      default:
-        return const Text('');
-    }
-  }
-
-  // * Method for calculate Y axix AxisTitles
-
-  List<int> divideIntoFourParts(int number) {
-    // Find the closest higher multiple of 10000
-    int closestHigherMultiple = (number / 10000).ceil() * 10000;
-
-    // Divide the closest higher multiple by 4
-    int part = closestHigherMultiple ~/
-        4; // Integer division to get the base value for each part
-
-    // Generate the 4 parts using the base part value
-    return [
-      part,
-      part * 2,
-      part * 3,
-      closestHigherMultiple // The last part is the closest higher multiple itself
-    ];
+    return Text('${(value).toStringAsFixed(0)}k');
   }
 }

@@ -3,13 +3,14 @@ import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-import 'package:financial_app/screens/auth/signup_page.dart';
+import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/language/transalation.dart';
-import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/screens/auth/forgot_password.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -68,11 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is AuthSuccess) {
             Navigator.pop(context); // Pop the loading animation
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomePage(),
-                ));
+            globalNavigatorKey.currentState!.pushReplacementNamed('/home');
           } else if (state is AuthError) {
             Navigator.pop(context);
             showErrorSnackBar(state.message);
@@ -82,7 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );
@@ -165,7 +165,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const ForgotPasswordPage(),
+                                ),
+                              );
+                            },
                             child: Text(
                               AppLocalizations.of(context)
                                   .translate('forgot_password'),
@@ -200,10 +207,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(AppLocalizations.of(context).translate('no_account')),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (c) => const SignupScreen()));
+                      globalNavigatorKey.currentState!
+                          .pushReplacementNamed('/signup');
                     },
                     child: Text(
                       AppLocalizations.of(context).translate('sign_up'),

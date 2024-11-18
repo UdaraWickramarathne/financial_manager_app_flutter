@@ -2,10 +2,12 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/transaction_tile.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -34,9 +36,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          "All Transactions",
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context).translate('all_transactions'),
+          style: const TextStyle(
             fontSize: 20,
           ),
         ),
@@ -73,7 +75,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
             },
             builder: (context, state) {
               if (state is TransactionFetchLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
+                );
               } else if (state is TransactionLoaded) {
                 return ListView.builder(
                   itemCount: state.transactions.length,
@@ -95,9 +102,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   },
                 );
               } else if (state is TransactionEmpty) {
-                return const Center(child: Text('No transactions found.'));
+                return Center(
+                    child: Text(
+                  AppLocalizations.of(context)
+                      .translate('no_transactions_found'),
+                ));
               }
-              return const Center(child: Text('No transactions found.'));
+              return Center(
+                  child: Text(
+                AppLocalizations.of(context).translate('no_transactions_found'),
+              ));
             },
           ),
         ),

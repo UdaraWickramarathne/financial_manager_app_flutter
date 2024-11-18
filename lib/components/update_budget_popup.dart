@@ -3,10 +3,12 @@ import 'package:financial_app/blocs/budget/budget_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // ignore: must_be_immutable
 class BudgetUpdatePopup extends StatefulWidget {
@@ -50,7 +52,10 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
             context: context,
             builder: (context) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
               );
             },
           );
@@ -108,9 +113,10 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
-                          'Budget Amount: ',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('budget_amount_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
@@ -158,9 +164,9 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Time Period: ',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context).translate('time_period'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                           ),
@@ -212,7 +218,7 @@ class _BudgetUpdatePopupState extends State<BudgetUpdatePopup> {
                       ),
                     const SizedBox(height: 30),
                     SimpleButton(
-                      data: 'Update Budget',
+                      data: 'update budget',
                       onPressed: () {
                         setState(() {
                           errorMessage = '';

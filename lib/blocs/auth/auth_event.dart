@@ -36,3 +36,24 @@ class AuthSignInRequest extends AuthEvent {
 }
 
 class AuthSignOutRequest extends AuthEvent {}
+
+class AuthChangePasswordEvent extends AuthEvent {
+  final String currentPassword;
+  final String newPassword;
+
+  const AuthChangePasswordEvent({
+    required this.currentPassword,
+    required this.newPassword,
+  });
+
+  @override
+  List<Object> get props => [currentPassword, newPassword];
+}
+
+class AuthInfoFetching extends AuthEvent {
+  final String userID;
+  const AuthInfoFetching({required this.userID});
+
+  @override
+  List<Object> get props => [userID];
+}

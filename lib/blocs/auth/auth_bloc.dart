@@ -19,7 +19,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         if (result.user != null) {
           emit(AuthSuccess());
-
           developer.log('Signup success');
         } else {
           emit(AuthError(result.message ?? 'Signup Failed'));
@@ -32,15 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             email: event.email, password: event.password);
 
         if (result.user != null) {
-          final userDetails =
-              await _authRepository.fetchUserData(_authRepository.userID);
-
-          _authRepository.setUser(userDetails!);
-
-          Future.delayed(const Duration(milliseconds: 500));
           emit(AuthSuccess());
-          developer.log(
-              'Sign in success!. Sign in as ${_authRepository.user!.name}');
         } else {
           emit(AuthError(result.message ?? 'Sign In Failed'));
         }
@@ -49,8 +40,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event is AuthSignOutRequest) {
         emit(AuthLoading());
         await _authRepository.signOut();
+        await Future.delayed(const Duration(seconds: 1));
         emit(AuthSignOut());
         developer.log('Logging out');
+      }
+
+      if (event is AuthChangePasswordEvent) {
+        emit(AuthChangePasswordLoading());
+        final result = await _authRepository.chnagePassword(
+          currentPassword: event.currentPassword,
+          newPassword: event.newPassword,
+        );
+        if (result.message == 'success') {
+          emit(AuthChangePasswordSuccess());
+        } else {
+          emit(AuthChangePasswordError(
+              result.message ?? 'Password change Error!'));
+        }
+      }
+      if (event is AuthInfoFetching) {
+        try {
+          emit(AuthInfoLoading());
+          final user = await _authRepository.fetchUserData(event.userID);
+          if (user != null) {
+            emit(AuthInfoSuccess(name: user.name));
+          } else {
+            emit(const AuthInfoError(message: 'Error while getting user data'));
+          }
+        } catch (e) {
+          emit(const AuthInfoError(message: 'Error while getting user data'));
+        }
       }
     });
   }

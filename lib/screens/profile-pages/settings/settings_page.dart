@@ -1,4 +1,5 @@
 import 'package:financial_app/language/language_provider.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/profile-pages/account_info/change_password.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -64,9 +65,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontSize: 22),
+        title:  Text(
+          AppLocalizations.of(context).translate('settings'),
+          style: const TextStyle(fontSize: 22),
         ),
         centerTitle: true,
         elevation: 0,
@@ -74,9 +75,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          const Text(
-            'ACCOUNT',
-            style: TextStyle(
+           Text(
+            AppLocalizations.of(context).translate('account'),
+            style: const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -93,9 +94,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.key,
                 size: 26,
               ),
-              title: const Text(
-                'Change Password',
-                style: TextStyle(
+              title:  Text(
+                AppLocalizations.of(context).translate('change_password'),
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
@@ -147,9 +148,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Divider(color: Colors.grey),
           ),
-          const Text(
-            'APPEARENCE',
-            style: TextStyle(
+           Text(
+            AppLocalizations.of(context).translate('appearance'),
+            style: const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -166,9 +167,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 isDarkMode ? Icons.dark_mode : Icons.light_mode,
                 size: 26,
               ),
-              title: const Text(
-                'Dark Mode',
-                style: TextStyle(
+              title:  Text(
+                AppLocalizations.of(context).translate('dark_mode'),
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
@@ -194,9 +195,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.language,
                 size: 26,
               ),
-              title: const Text(
-                'Language',
-                style: TextStyle(
+              title:  Text(
+                AppLocalizations.of(context).translate('language'),
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
@@ -222,9 +223,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Divider(color: Colors.grey),
           ),
-          const Text(
-            'SECURITY',
-            style: TextStyle(
+           Text(
+            AppLocalizations.of(context).translate('security'),
+            style:const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -241,9 +242,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 pinCode ? Icons.lock : Icons.lock_open,
                 size: 26,
               ),
-              title: const Text(
-                'PIN Code',
-                style: TextStyle(
+              title:  Text(
+                 AppLocalizations.of(context).translate('pin_code'),
+                style:const TextStyle(
                   fontSize: 18,
                 ),
               ),
@@ -264,9 +265,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Divider(color: Colors.grey),
           ),
-          const Text(
-            'APP INFORMATION',
-            style: TextStyle(
+           Text(
+            AppLocalizations.of(context).translate('app_information'),
+            style:const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -283,9 +284,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.help_outline,
                 size: 26,
               ),
-              title: const Text(
-                'Help & Support',
-                style: TextStyle(
+              title:  Text(
+                AppLocalizations.of(context).translate('help_support'),
+                style:const TextStyle(
                   fontSize: 18,
                 ),
               ),

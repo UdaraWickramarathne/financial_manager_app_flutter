@@ -9,6 +9,7 @@ import 'package:financial_app/services/generate_pdf.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 class AnalysisPage extends StatefulWidget {
@@ -26,25 +27,23 @@ class _AnalysisPageState extends State<AnalysisPage>
   late DateTime startDate;
   late AuthRepository _authRepository;
   late TransactionBloc _transactionBloc;
-  double incomeBal = 0.0;
-  double expenseBal = 0.0;
+  double totalIncome = 0.0;
+  double totalExpense = 0.0;
 
   @override
   void initState() {
     super.initState();
     startDate = endDate.subtract(const Duration(days: 30));
     _tabController = TabController(length: 4, vsync: this);
-    _authRepository = RepositoryProvider.of<AuthRepository>(context);
-    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
-    _transactionBloc.add(TransactionAnalysisDailyEvent(
-        userID: _authRepository.userID, dateTime: DateTime.now()));
+
     _pageController = PageController();
     _tabController.addListener(() {
       setState(() {});
     });
-
-    incomeBal = _authRepository.user!.totalIncome;
-    expenseBal = _authRepository.user!.totalExpense;
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _transactionBloc
+        .add(TransactionGetTotalsEvent(userID: _authRepository.userID));
   }
 
   @override
@@ -58,11 +57,34 @@ class _AnalysisPageState extends State<AnalysisPage>
   Widget build(BuildContext context) {
     return BlocListener<TransactionBloc, TransactionState>(
       listenWhen: (previous, current) {
-        return current is TransactionAnalysisDailyLoaded;
+        return current is TransactionDateRangeLoading ||
+            current is TransactionDateRangeLoaded ||
+            current is TransactionDateRangeError;
       },
-      listener: (context, state) {
-        if (state is TransactionAnalysisDailyLoaded) {
-          print(state.weelkyTotals);
+      listener: (context, state) async {
+        if (state is TransactionDateRangeLoading) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: SpinKitThreeBounce(
+                  color: Colors.white,
+                  size: 50.0,
+                ),
+              );
+            },
+          );
+        } else if (state is TransactionDateRangeLoaded) {
+          Navigator.pop(context);
+          List<Map<String, dynamic>> incomeList =
+              state.transactionsMap['income']!;
+          List<Map<String, dynamic>> expenseList =
+              state.transactionsMap['expense']!;
+          String startDateString = DateFormat('yyyy-MM-dd').format(startDate);
+          String endDateString = DateFormat('yyyy-MM-dd').format(endDate);
+
+          await generateAndShowPdf(
+              context, incomeList, expenseList, startDateString, endDateString);
         }
       },
       child: Scaffold(
@@ -99,50 +121,67 @@ class _AnalysisPageState extends State<AnalysisPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Rs.${incomeBal.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  BlocListener<TransactionBloc, TransactionState>(
+                    listenWhen: (previous, current) {
+                      return current is TransactionGetTotalLoading ||
+                          current is TransactionGetTotalLoaded ||
+                          current is TransactionGetTotalError;
+                    },
+                    listener: (context, state) {
+                      if (state is TransactionGetTotalLoaded) {
+                        setState(() {
+                          totalIncome =
+                              state.totalIncomeExpense['totalIncome'] ?? 0.0;
+                          totalExpense =
+                              state.totalIncomeExpense['totalExpense'] ?? 0.0;
+                        });
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Rs.${totalIncome.toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "(Monthly Income)",
-                            style: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
+                            Text(
+                              "(Monthly Income)",
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Rs.${expenseBal.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Rs.${totalExpense.toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "(Monthly Expense)",
-                            style: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
+                            Text(
+                              "(Monthly Expense)",
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 10),
                 ],
@@ -273,16 +312,34 @@ class _AnalysisPageState extends State<AnalysisPage>
                                             topRight: Radius.circular(20.0),
                                           ),
                                         ),
-                                        child: CupertinoDatePicker(
-                                          initialDateTime: startDate,
-                                          maximumDate: DateTime.now(),
-                                          mode: CupertinoDatePickerMode.date,
-                                          backgroundColor: Colors.transparent,
-                                          onDateTimeChanged: (value) {
-                                            setState(() {
-                                              startDate = value;
-                                            });
-                                          },
+                                        child: CupertinoTheme(
+                                          data: CupertinoThemeData(
+                                            textTheme: CupertinoTextThemeData(
+                                              dateTimePickerTextStyle:
+                                                  TextStyle(
+                                                fontSize: 20,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondaryFixed,
+                                              ),
+                                            ),
+                                            primaryColor:
+                                                CupertinoColors.activeGreen,
+                                            scaffoldBackgroundColor:
+                                                CupertinoColors
+                                                    .lightBackgroundGray,
+                                          ),
+                                          child: CupertinoDatePicker(
+                                            initialDateTime: startDate,
+                                            maximumDate: DateTime.now(),
+                                            mode: CupertinoDatePickerMode.date,
+                                            backgroundColor: Colors.transparent,
+                                            onDateTimeChanged: (value) {
+                                              setState(() {
+                                                startDate = value;
+                                              });
+                                            },
+                                          ),
                                         ),
                                       ),
                                     );
@@ -337,16 +394,34 @@ class _AnalysisPageState extends State<AnalysisPage>
                                             topRight: Radius.circular(20.0),
                                           ),
                                         ),
-                                        child: CupertinoDatePicker(
-                                          initialDateTime: endDate,
-                                          maximumDate: DateTime.now(),
-                                          mode: CupertinoDatePickerMode.date,
-                                          backgroundColor: Colors.transparent,
-                                          onDateTimeChanged: (value) {
-                                            setState(() {
-                                              endDate = value;
-                                            });
-                                          },
+                                        child: CupertinoTheme(
+                                          data: CupertinoThemeData(
+                                            textTheme: CupertinoTextThemeData(
+                                              dateTimePickerTextStyle:
+                                                  TextStyle(
+                                                fontSize: 20,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondaryFixed,
+                                              ),
+                                            ),
+                                            primaryColor:
+                                                CupertinoColors.activeGreen,
+                                            scaffoldBackgroundColor:
+                                                CupertinoColors
+                                                    .lightBackgroundGray,
+                                          ),
+                                          child: CupertinoDatePicker(
+                                            initialDateTime: endDate,
+                                            maximumDate: DateTime.now(),
+                                            mode: CupertinoDatePickerMode.date,
+                                            backgroundColor: Colors.transparent,
+                                            onDateTimeChanged: (value) {
+                                              setState(() {
+                                                endDate = value;
+                                              });
+                                            },
+                                          ),
                                         ),
                                       ),
                                     );
@@ -373,74 +448,20 @@ class _AnalysisPageState extends State<AnalysisPage>
               padding: const EdgeInsets.all(25),
               child: SimpleButton(
                 data: 'Generate Report',
-                onPressed: () => onGenerateReportPressed(context),
+                onPressed: () {
+                  _transactionBloc.add(
+                    TransactionFetchDateRangeEvent(
+                      startDate,
+                      endDate,
+                      userID: _authRepository.userID,
+                    ),
+                  );
+                },
               ),
             )
           ],
         ),
       ),
     );
-  }
-
-  void onGenerateReportPressed(BuildContext context) {
-    //dummy data for pdf
-
-    List<Map<String, dynamic>> incomeData = [
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      {'date': '2024-10-01', 'amount': 1000, 'description': 'Salary'},
-      // Add more income data
-    ];
-
-    List<Map<String, dynamic>> expenseData = [
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      {'date': '2024-10-02', 'amount': 200, 'description': 'Groceries'},
-      // Add more expense data
-    ];
-
-    String startDate = '2024-10-01';
-    String endDate = '2024-10-31';
-
-    generateAndShowPdf(context, incomeData, expenseData, startDate, endDate);
   }
 }

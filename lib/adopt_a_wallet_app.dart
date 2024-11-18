@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:feedback/feedback.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/blocs/budget/budget_bloc.dart';
+import 'package:financial_app/blocs/card/card_bloc.dart';
 import 'package:financial_app/blocs/goal/goal_bloc.dart';
 import 'package:financial_app/blocs/reminder/reminder_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
@@ -9,14 +11,24 @@ import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/repositories/budget/budget_repository.dart';
-import 'package:financial_app/repositories/goal-repository/goal_repository.dart';
+import 'package:financial_app/repositories/card/card_repository.dart';
+import 'package:financial_app/repositories/goal/goal_repository.dart';
 import 'package:financial_app/repositories/reminder/reminder_repository.dart';
 import 'package:financial_app/repositories/transaction/transaction_repository.dart';
 import 'package:financial_app/screens/auth/login_page.dart';
+import 'package:financial_app/screens/auth/signup_page.dart';
+import 'package:financial_app/screens/auth/forgot_password.dart';
+import 'package:financial_app/screens/home/home_page.dart';
+import 'package:financial_app/screens/onboard/onboarding_page.dart';
+import 'package:financial_app/screens/splash_screen/splash_screen.dart';
 import 'package:financial_app/services/feedback_repository.dart';
+import 'package:financial_app/services/secure_enctypted_key/key_manager.dart';
 import 'package:financial_app/services/sms_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:is_first_run/is_first_run.dart';
 import 'package:shake/shake.dart';
 import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
@@ -25,6 +37,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:provider/provider.dart';
+import 'dart:developer' as dev;
 
 class AdoptAWalletApp extends StatefulWidget {
   const AdoptAWalletApp({super.key});
@@ -36,10 +49,23 @@ class AdoptAWalletApp extends StatefulWidget {
 class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     with WidgetsBindingObserver {
   late ShakeDetector shakeDetector;
+  bool _hasCheckedAuthState = false;
+  User? currentUser;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    FirebaseAuth.instance.currentUser?.reload();
+    if (!_hasCheckedAuthState) {
+      _hasCheckedAuthState = true; // Prevent future invocations
+      FirebaseAuth.instance.authStateChanges().first.then((user) {
+        currentUser = user;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _routeUserForAuth(user);
+        });
+      });
+    }
+
     shakeDetector = ShakeDetector.autoStart(
       onPhoneShake: () {
         BetterFeedback.of(context).show((UserFeedback feedback) async {
@@ -85,8 +111,8 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     var goalRepository = GoalRepository();
     var reminderRepository = ReminderRepository();
     var budgetRepository = BudgetRepository();
-    var transactionBloc =
-        TransactionBloc(transactionRepository, authRepository);
+    var cardRepository = CardRepository();
+    var transactionBloc = TransactionBloc(transactionRepository);
 
     var smsService = SmsService(
       transactionBloc: transactionBloc,
@@ -98,6 +124,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     var app = MaterialApp(
       navigatorKey: globalNavigatorKey,
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: getPageRouteSettings(),
       theme: lightMode,
       darkTheme: darkMode,
       themeMode: themeProvider.themeMode,
@@ -123,8 +150,8 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         }
         return supportedLocales.first;
       },
-      home: const LoginScreen(),
     );
+    FlutterNativeSplash.remove();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
@@ -143,6 +170,9 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           create: (context) => budgetRepository,
         ),
         RepositoryProvider(
+          create: (context) => cardRepository,
+        ),
+        RepositoryProvider(
           create: (context) => AuthBloc(authRepository),
         ),
         RepositoryProvider(
@@ -157,9 +187,54 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         RepositoryProvider(
           create: (context) => BudgetBloc(budgetRepository),
         ),
+        RepositoryProvider(
+          create: (context) => CardBloc(cardRepository),
+        ),
         Provider(create: (context) => smsService),
       ],
       child: app,
     );
+  }
+
+  MaterialPageRoute Function(RouteSettings settings) getPageRouteSettings() {
+    return (RouteSettings settings) {
+      return MaterialPageRoute(
+        builder: (context) => _getPageRoutes(context, settings),
+      );
+    };
+  }
+
+  _getPageRoutes(BuildContext context, RouteSettings settings) {
+    dev.log('Navigating to: ${settings.name}');
+    switch (settings.name) {
+      case '/onboarding':
+        return const OnboardingPage();
+      case '/login':
+        return const LoginScreen();
+      case '/signup':
+        return const SignupScreen();
+      case '/forgot_password':
+        return const ForgotPasswordPage();
+      case '/home':
+        return const HomePage();
+      default:
+        return const SplashScreen();
+    }
+  }
+
+  static void _routeUserForAuth(User? user) async {
+    await Future.delayed(const Duration(seconds: 2));
+    bool isFirstRun = await IsFirstRun.isFirstCall();
+    if (isFirstRun) {
+      final keyManager = KeyManager();
+      await keyManager.generateAndStoreKey();
+      globalNavigatorKey.currentState!.pushReplacementNamed('/onboarding');
+    } else {
+      if (user != null) {
+        globalNavigatorKey.currentState!.pushReplacementNamed('/home');
+      } else {
+        globalNavigatorKey.currentState!.pushReplacementNamed('/login');
+      }
+    }
   }
 }

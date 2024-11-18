@@ -1,4 +1,5 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/dropdown_button.dart';
@@ -14,8 +15,10 @@ import 'package:financial_app/screens/notification/notification_page.dart';
 import 'package:financial_app/screens/reminder/reminder_page.dart';
 import 'package:financial_app/screens/transactions/transactions_page.dart';
 import 'package:financial_app/services/sms_service.dart';
+import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +44,9 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
+  String? name;
   late TransactionBloc _transactionBloc;
+  late AuthBloc _authBloc;
   late AuthRepository _authRepository;
   late SmsService _smsService;
 
@@ -49,6 +54,8 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
     _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _authBloc = RepositoryProvider.of<AuthBloc>(context);
+    _authBloc.add(AuthInfoFetching(userID: _authRepository.userID));
     _transactionBloc.add(TransactionFetchEvent(userID: _authRepository.userID));
     _smsService = Provider.of<SmsService>(context, listen: false);
     _smsService.startListening();
@@ -57,6 +64,8 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0.0),
@@ -91,13 +100,44 @@ class _DashboardState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(getGreeting()),
-                          Text(
-                            _authRepository.user!.name,
-                            style: const TextStyle(
-                              letterSpacing: 2,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          BlocBuilder<AuthBloc, AuthState>(
+                            buildWhen: (previous, current) {
+                              return current is AuthInfoLoading ||
+                                  current is AuthInfoSuccess ||
+                                  current is AuthInfoError;
+                            },
+                            builder: (context, state) {
+                              if (state is AuthInfoSuccess) {
+                                return Text(
+                                  state.name,
+                                  style: const TextStyle(
+                                    letterSpacing: 2,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              } else if (state is AuthInfoLoading) {
+                                if (isDarkMode) {
+                                  return Lottie.asset(
+                                    'assets/animations/text-animation.json',
+                                    height: 25,
+                                  );
+                                } else {
+                                  return Lottie.asset(
+                                    'assets/animations/text-animation-black.json',
+                                    height: 25,
+                                  );
+                                }
+                              }
+                              return const Text(
+                                'Welcome',
+                                style: TextStyle(
+                                  letterSpacing: 2,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            },
                           ),
                           const Text(''),
                         ],
@@ -185,7 +225,7 @@ class _DashboardState extends State<Dashboard> {
                           },
                           backgroundColor:
                               const Color.fromARGB(255, 251, 218, 187),
-                          text: 'Reminders',
+                          text: 'reminders',
                           icon: Icons.alarm,
                           foregroundColor:
                               const Color.fromARGB(255, 253, 159, 71),
@@ -248,7 +288,12 @@ class _DashboardState extends State<Dashboard> {
                 },
                 builder: (context, state) {
                   if (state is TransactionFetchLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: SpinKitThreeBounce(
+                        color: Colors.white,
+                        size: 50.0,
+                      ),
+                    );
                   } else if (state is TransactionLoaded) {
                     return ListView.builder(
                       itemCount: state.transactions.length > 6
@@ -273,9 +318,17 @@ class _DashboardState extends State<Dashboard> {
                       },
                     );
                   } else if (state is TransactionEmpty) {
-                    return const Center(child: Text('No transactions found.'));
+                    return Center(
+                        child: Text(
+                      AppLocalizations.of(context)
+                          .translate('no_transactions_found'),
+                    ));
                   }
-                  return const Center(child: Text('No transactions found.'));
+                  return Center(
+                      child: Text(
+                    AppLocalizations.of(context)
+                        .translate('no_transactions_found'),
+                  ));
                 },
               ),
             )
@@ -289,7 +342,8 @@ class _DashboardState extends State<Dashboard> {
     CustomSnackBar.show(
       context,
       title: 'Deleted!!',
-      message: 'Your transaction has been deleted successfully.',
+      message: AppLocalizations.of(context)
+          .translate('transaction_deleted_successfully'),
       contentType: ContentType.success,
     );
   }

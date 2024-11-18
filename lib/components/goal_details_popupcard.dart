@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -117,9 +118,9 @@ class _GoalDetailsCardState extends State<GoalDetailsCard>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Target Amount:',
-                          style: TextStyle(
+                         Text(
+                          AppLocalizations.of(context).translate('target_amount_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Color(0xFFbabcbb),
                           ),
@@ -131,9 +132,9 @@ class _GoalDetailsCardState extends State<GoalDetailsCard>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Current Amount:',
-                          style: TextStyle(
+                         Text(
+                          AppLocalizations.of(context).translate('current_amount_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Color(0xFFbabcbb),
                           ),
@@ -145,9 +146,9 @@ class _GoalDetailsCardState extends State<GoalDetailsCard>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Start Date:',
-                          style: TextStyle(
+                         Text(
+                          AppLocalizations.of(context).translate('start_date_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Color(0xFFbabcbb),
                           ),
@@ -159,9 +160,9 @@ class _GoalDetailsCardState extends State<GoalDetailsCard>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'End Date:',
-                          style: TextStyle(
+                         Text(
+                          AppLocalizations.of(context).translate('end_date_label'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Color(0xFFbabcbb),
                           ),
@@ -174,8 +175,8 @@ class _GoalDetailsCardState extends State<GoalDetailsCard>
                       onPressed: () {
                         _closeCard(context);
                       },
-                      child: const Text(
-                        'Close',
+                      child: Text(
+                        AppLocalizations.of(context).translate('close'),
                       ),
                     )
                   ],

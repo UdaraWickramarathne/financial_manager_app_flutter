@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class SimpleButton extends StatelessWidget {
@@ -20,7 +21,7 @@ class SimpleButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 15),
+        padding: const EdgeInsets.symmetric(vertical: 13),
         backgroundColor: color,
       ),
       onPressed: onPressed,
@@ -28,7 +29,7 @@ class SimpleButton extends StatelessWidget {
         width: double.infinity,
         child: Center(
           child: Text(
-            data,
+            AppLocalizations.of(context).translate(data),
             style: TextStyle(
               color: textColor,
               fontSize: 20,

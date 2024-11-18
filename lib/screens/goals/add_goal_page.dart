@@ -3,10 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_app/blocs/goal/goal_bloc.dart';
 import 'package:financial_app/components/input_field_bottom_border.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/models/goal.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 import '../../components/custome_snackbar.dart';
@@ -63,7 +65,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
               context: context,
               builder: (context) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
                 );
               },
             );
@@ -79,11 +84,12 @@ class _AddGoalPageState extends State<AddGoalPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(25),
+            Padding(
+              padding: const EdgeInsets.all(25),
               child: Text(
-                'Create your new \nsaving goal!',
-                style: TextStyle(
+                AppLocalizations.of(context)
+                    .translate('create_new_saving_goal'),
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
@@ -113,9 +119,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Enter your plan',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('enter_your_plan'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                             fontSize: 18,
@@ -128,9 +135,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           borderColor: titleBorderColor,
                         ),
                         const SizedBox(height: 45),
-                        const Text(
-                          'Target Amount',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('target_amount'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                             fontSize: 18,
@@ -150,9 +158,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           prefixText: 'Rs.',
                         ),
                         const SizedBox(height: 45),
-                        const Text(
-                          'Current Amount',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)
+                              .translate('current_amount'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                             fontSize: 18,
@@ -172,9 +181,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           prefixText: 'Rs.',
                         ),
                         const SizedBox(height: 45),
-                        const Text(
-                          'Deadline',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context).translate('deadline'),
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey,
                             fontSize: 18,
@@ -250,7 +259,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     SimpleButton(
                       textColor: const Color(0xFF456EFE),
                       color: Colors.white,
-                      data: 'Create Goal',
+                      data: 'create goal',
                       onPressed: () {
                         FocusScope.of(context).unfocus();
                         final title = titleController.text;
@@ -297,8 +306,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
   void showSuccessSnakBar() {
     CustomSnackBar.show(
       context,
-      title: 'Successfully!!',
-      message: 'Your goal has been added successfully.',
+      title: AppLocalizations.of(context).translate('successfully'),
+      message:
+          AppLocalizations.of(context).translate('goal_added_successfully'),
       contentType: ContentType.success,
     );
   }

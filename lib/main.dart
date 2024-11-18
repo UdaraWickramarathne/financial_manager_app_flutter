@@ -6,6 +6,7 @@ import 'package:financial_app/themes/themedata.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -25,9 +26,11 @@ void main() async {
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
       ],
-      child: BetterFeedback(
-        theme: feedbackThemeData,
-        child: const AdoptAWalletApp(),
+      child: OverlaySupport.global(
+        child: BetterFeedback(
+          theme: feedbackThemeData,
+          child: const AdoptAWalletApp(),
+        ),
       ),
     ),
   );

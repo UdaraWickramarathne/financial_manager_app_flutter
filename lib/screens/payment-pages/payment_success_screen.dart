@@ -34,6 +34,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
         return 'Mobile Bill';
       case TransactionType.water:
         return 'Water Bill';
+      case TransactionType.shopping:
+        return 'Shopping';
     }
   }
 

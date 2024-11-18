@@ -29,7 +29,7 @@ class CustomSnackBar {
   static showErrorSnackBar(String error, BuildContext context) {
     show(
       context,
-      title: 'On Snap!',
+      title: 'Oh Snap!',
       message: error,
       contentType: ContentType.failure,
     );

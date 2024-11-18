@@ -22,6 +22,8 @@ abstract class BaseAuthRepository {
 
   Future<void> signOut();
 
+  Future<auth.User?> signInWithGoogle();
+
   Future<void> updateUser(User user);
 
   Future<AuthResult> chnagePassword({

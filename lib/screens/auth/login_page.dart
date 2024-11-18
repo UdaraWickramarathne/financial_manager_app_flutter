@@ -90,134 +90,165 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Padding(
           padding: const EdgeInsets.all(25),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(height: 80),
-                      Text(
-                        AppLocalizations.of(context).translate('login_account'),
-                        style: const TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFF446efe)),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        AppLocalizations.of(context).translate('welcome_back'),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 50),
-                      const SizedBox(height: 20),
-                      InputField(
-                        isReadOnly: false,
-                        isObsecure: false,
-                        label: AppLocalizations.of(context).translate('email'),
-                        suffixIcon: null,
-                        focusNode: emailFocusNode,
-                        controller: emailController,
-                        borderColor: emailBorderColor,
-                      ),
-                      const SizedBox(height: 20),
-                      InputField(
-                        isReadOnly: false,
-                        controller: passwordController,
-                        isObsecure: !_isPasswordVisible,
-                        focusNode: passwordFocusNode,
-                        borderColor: passwordBorderColor,
-                        label:
-                            AppLocalizations.of(context).translate('password'),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
-                          icon: Icon(_isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _rememberMe,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _rememberMe = value ?? false;
-                                  });
-                                },
-                              ),
-                              Text(AppLocalizations.of(context)
-                                  .translate('remember_me')),
-                            ],
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const ForgotPasswordPage(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)
-                                  .translate('forgot_password'),
-                              style: const TextStyle(color: Color(0xFF446efe)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 160),
-                    ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                Text(
+                  AppLocalizations.of(context).translate('login_account'),
+                  style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF446efe)),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  AppLocalizations.of(context).translate('welcome_back'),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
                   ),
                 ),
-              ),
-              SimpleButton(
-                data: AppLocalizations.of(context).translate('login'),
-                onPressed: () {
-                  emailFocusNode.unfocus();
-                  passwordFocusNode.unfocus();
-                  FocusScope.of(context).unfocus();
-                  final email = emailController.text;
-                  final password = passwordController.text;
-                  if (_validateInputs(email, password)) {
-                    authBloc.add(
-                        AuthSignInRequest(email: email, password: password));
-                  }
-                },
-              ),
-              const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(AppLocalizations.of(context).translate('no_account')),
-                  TextButton(
+                const SizedBox(height: 50),
+                const SizedBox(height: 20),
+                InputField(
+                  isReadOnly: false,
+                  isObsecure: false,
+                  label: AppLocalizations.of(context).translate('email'),
+                  suffixIcon: null,
+                  focusNode: emailFocusNode,
+                  controller: emailController,
+                  borderColor: emailBorderColor,
+                ),
+                const SizedBox(height: 20),
+                InputField(
+                  isReadOnly: false,
+                  controller: passwordController,
+                  isObsecure: !_isPasswordVisible,
+                  focusNode: passwordFocusNode,
+                  borderColor: passwordBorderColor,
+                  label: AppLocalizations.of(context).translate('password'),
+                  suffixIcon: IconButton(
                     onPressed: () {
-                      globalNavigatorKey.currentState!
-                          .pushReplacementNamed('/signup');
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
                     },
-                    child: Text(
-                      AppLocalizations.of(context).translate('sign_up'),
-                      style: const TextStyle(color: Color(0xFF446efe)),
-                    ),
+                    icon: Icon(_isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off),
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _rememberMe,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _rememberMe = value ?? false;
+                            });
+                          },
+                        ),
+                        Text(AppLocalizations.of(context)
+                            .translate('remember_me')),
+                      ],
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordPage(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate('forgot_password'),
+                        style: const TextStyle(color: Color(0xFF446efe)),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                SimpleButton(
+                  data: AppLocalizations.of(context).translate('login'),
+                  onPressed: () {
+                    emailFocusNode.unfocus();
+                    passwordFocusNode.unfocus();
+                    FocusScope.of(context).unfocus();
+                    final email = emailController.text;
+                    final password = passwordController.text;
+                    if (_validateInputs(email, password)) {
+                      authBloc.add(
+                          AuthSignInRequest(email: email, password: password));
+                    }
+                  },
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(AppLocalizations.of(context).translate('no_account')),
+                    TextButton(
+                      onPressed: () {
+                        globalNavigatorKey.currentState!
+                            .pushReplacementNamed('/signup');
+                      },
+                      child: Text(
+                        AppLocalizations.of(context).translate('sign_up'),
+                        style: const TextStyle(color: Color(0xFF446efe)),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: Divider()),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text('Or Sign In With'),
+                    ),
+                    Expanded(child: Divider()),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        authBloc.add(AuthSignInWithGoogle());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Theme.of(context).colorScheme.surfaceDim,
+                        ),
+                        child: Image.asset(
+                          'assets/images/google.png',
+                          height: 25,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

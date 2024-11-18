@@ -24,37 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    // _loadListeningPreference();
   }
-
-  // // Load the saved listening preference from SharedPreferences
-  // Future<void> _loadListeningPreference() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     _isListening = prefs.getBool('isListening') ?? false;
-  //   });
-
-  //   // Start listening automatically if the saved preference is true
-  //   if (_isListening) {
-  //     SmsService.startListening();
-  //   }
-  // }
-
-  // // Toggle listening state and save it to SharedPreferences
-  // Future<void> _toggleListening(bool value) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     _isListening = value;
-  //   });
-
-  //   await prefs.setBool('isListening', _isListening);
-
-  //   if (_isListening) {
-  //     SmsService.startListening();
-  //   } else {
-  //     // Optionally, add functionality to stop listening if needed
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           AppLocalizations.of(context).translate('settings'),
           style: const TextStyle(fontSize: 22),
         ),
@@ -75,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-           Text(
+          Text(
             AppLocalizations.of(context).translate('account'),
             style: const TextStyle(
               color: Colors.grey,
@@ -94,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.key,
                 size: 26,
               ),
-              title:  Text(
+              title: Text(
                 AppLocalizations.of(context).translate('change_password'),
                 style: const TextStyle(
                   fontSize: 18,
@@ -116,58 +86,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               borderRadius: BorderRadius.circular(15),
             ),
             child: ListTile(
-              leading: const Icon(
-                Icons.timer,
-                size: 26,
-              ),
-              title: const Text(
-                'Realitime Tracking',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-              trailing: Transform.scale(
-                scale: 0.7,
-                child: Switch(
-                  value: _isListening,
-                  onChanged: (value) {
-                    // _toggleListening(value);
-                  },
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ChangePassword(),
-                    ));
-              },
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Divider(color: Colors.grey),
-          ),
-           Text(
-            AppLocalizations.of(context).translate('appearance'),
-            style: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 5),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceDim,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: ListTile(
               leading: Icon(
                 isDarkMode ? Icons.dark_mode : Icons.light_mode,
                 size: 26,
               ),
-              title:  Text(
+              title: Text(
                 AppLocalizations.of(context).translate('dark_mode'),
                 style: const TextStyle(
                   fontSize: 18,
@@ -195,7 +118,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.language,
                 size: 26,
               ),
-              title:  Text(
+              title: Text(
                 AppLocalizations.of(context).translate('language'),
                 style: const TextStyle(
                   fontSize: 18,
@@ -223,9 +146,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Divider(color: Colors.grey),
           ),
-           Text(
+          Text(
             AppLocalizations.of(context).translate('security'),
-            style:const TextStyle(
+            style: const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -242,9 +165,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 pinCode ? Icons.lock : Icons.lock_open,
                 size: 26,
               ),
-              title:  Text(
-                 AppLocalizations.of(context).translate('pin_code'),
-                style:const TextStyle(
+              title: Text(
+                AppLocalizations.of(context).translate('pin_code'),
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
@@ -265,9 +188,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Divider(color: Colors.grey),
           ),
-           Text(
+          Text(
             AppLocalizations.of(context).translate('app_information'),
-            style:const TextStyle(
+            style: const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -284,9 +207,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.help_outline,
                 size: 26,
               ),
-              title:  Text(
+              title: Text(
                 AppLocalizations.of(context).translate('help_support'),
-                style:const TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),

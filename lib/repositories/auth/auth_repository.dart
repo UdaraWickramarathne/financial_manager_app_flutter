@@ -5,6 +5,8 @@ import 'package:financial_app/repositories/auth/base_auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'dart:developer' as dev;
 
+import 'package:google_sign_in/google_sign_in.dart';
+
 class AuthRepository extends BaseAuthRepository {
   final auth.FirebaseAuth _firebaseAuth;
   final CollectionReference _usersCollection =
@@ -178,6 +180,32 @@ class AuthRepository extends BaseAuthRepository {
       await _usersCollection.doc(user.userID).update(user.toJson());
     } catch (e) {
       throw Exception('Error updating user: $e');
+    }
+  }
+
+  @override
+  Future<auth.User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        // User canceled the sign-in
+        return null;
+      }
+
+      // Obtain the Google Sign-In authentication details
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create a new credential
+      final credential = auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase with the Google credential
+      return (await _firebaseAuth.signInWithCredential(credential)).user;
+    } catch (e) {
+      rethrow;
     }
   }
 }

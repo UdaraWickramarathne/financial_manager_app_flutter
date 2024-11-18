@@ -81,6 +81,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(const AuthUpdateError(message: 'Error while updating user'));
         }
       }
+      if (event is AuthSignInWithGoogle) {
+        try {
+          final user = await _authRepository.signInWithGoogle();
+          print(user);
+        } catch (e) {
+          print('Error ${e.toString()}');
+        }
+      }
     });
   }
 }

@@ -32,11 +32,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   late AuthBloc _authBloc;
   late AuthRepository _authRepository;
 
-  String originalName = 'Anura kumara';
-  String originalEmail = 'anurakumara@gmail.com';
-  String originalPhone = '07111111111';
-  String originalGender = 'Select Gender';
-  String originalBirthdate = '';
+  String name = '';
 
   User? user;
 
@@ -137,6 +133,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
             phoneController.text = state.user.phoneNumber;
             genderController.text = state.user.gender;
             birthdateController.text = state.user.birthDate;
+            setState(() {
+              name = state.user.name;
+            });
           }
           if (state is AuthUpdateLoading) {
             showDialog(
@@ -207,9 +206,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'Anura Kumara',
-                        style: TextStyle(
+                      Text(
+                        name,
+                        style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),

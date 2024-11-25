@@ -78,7 +78,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
           final smtpServer = gmail(username, password);
 
           final message = Message()
-            ..from = Address(username, 'Adopt A Wallet')
+            ..from = const Address(username, 'Adopt A Wallet')
             ..recipients.add('adoptawallet.devnet.error@gmail.com')
             ..subject = 'App Feedback'
             ..text = feedback.text

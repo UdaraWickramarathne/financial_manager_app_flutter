@@ -229,6 +229,7 @@
     "water_bill_payment": "Water Bill Payment",
     "tv_bill_payment": "TV Bill Payment",
     "scan_shop_qr": "Scan shop's QR",
-    "pay_now": "Pay Now"
+    "pay_now": "Pay Now",
+    "auto_transaction": "Auto Transaction"
   }
   

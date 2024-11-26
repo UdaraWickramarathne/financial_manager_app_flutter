@@ -9,11 +9,13 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository extends BaseAuthRepository {
   final auth.FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
+  AuthRepository({auth.FirebaseAuth? firebaseAuth, GoogleSignIn? googleSignIn})
+      : _firebaseAuth = firebaseAuth ?? auth.FirebaseAuth.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
+
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('users');
-
-  AuthRepository({auth.FirebaseAuth? firebaseAuth})
-      : _firebaseAuth = firebaseAuth ?? auth.FirebaseAuth.instance;
 
   @override
   Stream<auth.User?> get userStream => _firebaseAuth.userChanges();
@@ -106,6 +108,7 @@ class AuthRepository extends BaseAuthRepository {
   @override
   Future<void> signOut() async {
     try {
+      await _googleSignIn.signOut();
       await _firebaseAuth.signOut();
     } catch (e) {
       dev.log(e.toString());
@@ -184,26 +187,31 @@ class AuthRepository extends BaseAuthRepository {
   }
 
   @override
-  Future<auth.User?> signInWithGoogle() async {
+  Future<AuthResult> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) {
-        // User canceled the sign-in
-        return null;
+        return AuthResult(message: 'cancled');
       }
-
-      // Obtain the Google Sign-In authentication details
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-
-      // Create a new credential
       final credential = auth.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-
-      // Sign in to Firebase with the Google credential
-      return (await _firebaseAuth.signInWithCredential(credential)).user;
+      final user = (await _firebaseAuth.signInWithCredential(credential)).user;
+      if (user != null) {
+        User newUser = User(
+          userID: user.uid,
+          name: user.displayName!,
+          email: user.email!,
+          createdAt: Timestamp.now(),
+        );
+        _addUserIfNotExists(newUser);
+        return AuthResult(user: user);
+      } else {
+        return AuthResult(message: 'Authentication incomplete! Try again.');
+      }
     } catch (e) {
       rethrow;
     }

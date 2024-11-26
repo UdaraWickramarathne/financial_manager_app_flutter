@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:226464748993:android:b5fc5d196a113c1be9cb40',
     messagingSenderId: '226464748993',
     projectId: 'adoptawallet',
-    storageBucket: 'adoptawallet.appspot.com',
+    storageBucket: 'adoptawallet.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

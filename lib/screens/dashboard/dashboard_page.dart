@@ -60,6 +60,9 @@ class _DashboardState extends State<Dashboard> {
   Future<void> _initializeSmsService() async {
     bool isTransactionEnabled = await getBoolValue(); // Await the Future
     _smsService.toggleListen(isTransactionEnabled); // Now pass the bool value
+    if (isTransactionEnabled) {
+      _smsService.getMessages();
+    }
   }
 
   @override

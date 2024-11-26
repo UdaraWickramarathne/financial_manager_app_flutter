@@ -86,7 +86,15 @@ class NotificationService {
       ),
     );
 
-    // Use `periodicallyShow` for repeat frequencies
+    final now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime firstNotificationTime =
+        tz.TZDateTime.from(scheduledTime, tz.local);
+
+    if (firstNotificationTime.isBefore(now)) {
+      firstNotificationTime =
+          firstNotificationTime.add(const Duration(days: 1));
+    }
+
     if (frequency == 'Every minute') {
       await flutterLocalNotificationsPlugin.periodicallyShow(
         id,
@@ -97,35 +105,55 @@ class NotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       );
     } else if (frequency == 'Everyday') {
-      await flutterLocalNotificationsPlugin.periodicallyShow(
-        id,
-        title,
-        body,
-        RepeatInterval.daily,
-        notificationDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      );
-    } else if (frequency == 'Every week') {
-      await flutterLocalNotificationsPlugin.periodicallyShow(
-        id,
-        title,
-        body,
-        RepeatInterval.weekly,
-        notificationDetails,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      );
-    } else {
-      // For custom intervals like monthly or one-time notifications, use `zonedSchedule`
       await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         title,
         body,
-        tz.TZDateTime.from(scheduledTime, tz.local),
+        firstNotificationTime,
         notificationDetails,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.dateAndTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } else if (frequency == 'Every week') {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        firstNotificationTime,
+        notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents:
+            DateTimeComponents.dayOfWeekAndTime,
+      );
+    } else if (frequency == 'Every month') {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        firstNotificationTime,
+        notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents:
+            DateTimeComponents.dayOfMonthAndTime,
+      );
+    } else {
+
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        firstNotificationTime,
+        notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+
       );
     }
   }

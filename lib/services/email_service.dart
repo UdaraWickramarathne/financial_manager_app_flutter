@@ -22,7 +22,7 @@ class Email {
     final smtpServer = gmail(username, password);
 
     final message = Message()
-      ..from = Address(username, 'Adopt A Wallet')
+      ..from = const Address(username, 'Adopt A Wallet')
       ..recipients.add(email)
       ..subject = 'Your OTP for Email Verification'
       ..text = '''

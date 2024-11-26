@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier {
   late ThemeMode _themeMode;
@@ -10,6 +11,12 @@ class ThemeProvider with ChangeNotifier {
         SchedulerBinding.instance.platformDispatcher.platformBrightness;
     _themeMode =
         brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+    SharedPreferences.getInstance().then(
+      (value) {
+        var isDarkMode = value.getBool('isDarkMode') ?? false;
+        toggleTheme(isDarkMode);
+      },
+    );
   }
 
   // Get current theme mode
@@ -18,6 +25,11 @@ class ThemeProvider with ChangeNotifier {
   // Switch theme mode based on user choice
   void toggleTheme(bool isDarkMode) {
     _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    SharedPreferences.getInstance().then(
+      (value) {
+        value.setBool('isDarkMode', isDarkMode);
+      },
+    );
     notifyListeners();
   }
 

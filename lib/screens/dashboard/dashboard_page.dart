@@ -19,8 +19,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:marquee/marquee.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -49,16 +51,27 @@ class _DashboardState extends State<Dashboard> {
   late AuthRepository _authRepository;
   late SmsService _smsService;
 
+  Future<bool> getBoolValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? value = prefs.getBool('isTransactionEnabled') ?? false;
+    return value;
+  }
+
+  Future<void> _initializeSmsService() async {
+    bool isTransactionEnabled = await getBoolValue(); // Await the Future
+    _smsService.toggleListen(isTransactionEnabled); // Now pass the bool value
+  }
+
   @override
   void initState() {
+    super.initState();
     _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
     _authRepository = RepositoryProvider.of<AuthRepository>(context);
     _authBloc = RepositoryProvider.of<AuthBloc>(context);
     _authBloc.add(AuthInfoFetching(userID: _authRepository.userID));
     _transactionBloc.add(TransactionFetchEvent(userID: _authRepository.userID));
     _smsService = Provider.of<SmsService>(context, listen: false);
-    _smsService.startListening();
-    super.initState();
+    _initializeSmsService();
   }
 
   @override
@@ -107,14 +120,36 @@ class _DashboardState extends State<Dashboard> {
                             },
                             builder: (context, state) {
                               if (state is AuthInfoSuccess) {
-                                return Text(
-                                  state.user.name,
-                                  style: const TextStyle(
-                                    letterSpacing: 2,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                );
+                                return SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    child: state.user.name
+                                                .substring(
+                                                    0,
+                                                    state.user.name
+                                                        .indexOf(' '))
+                                                .length >=
+                                            10
+                                        ? Marquee(
+                                            text: state.user.name.substring(0,
+                                                state.user.name.indexOf(' ')),
+                                            style: const TextStyle(
+                                                letterSpacing: 2,
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold),
+                                            velocity: 30.0,
+                                            pauseAfterRound:
+                                                const Duration(seconds: 2),
+                                            blankSpace: 30.0,
+                                          )
+                                        : Text(
+                                            state.user.name.substring(0,
+                                                state.user.name.indexOf(' ')),
+                                            style: const TextStyle(
+                                              letterSpacing: 2,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                            )));
                               } else if (state is AuthInfoLoading) {
                                 if (isDarkMode) {
                                   return Lottie.asset(
@@ -288,7 +323,7 @@ class _DashboardState extends State<Dashboard> {
                   if (state is TransactionFetchLoading) {
                     return const Center(
                       child: SpinKitThreeBounce(
-                        color: Colors.white,
+                        color: Colors.grey,
                         size: 50.0,
                       ),
                     );

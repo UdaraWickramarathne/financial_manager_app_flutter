@@ -1,9 +1,12 @@
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/profile-pages/account_info/change_password.dart';
+import 'package:financial_app/services/sms_service.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as dev;
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,10 +21,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool rememberLoginDetails = false;
   bool pinCode = false;
   String pinNumber = '';
+  late SmsService _smsService;
+  bool isTransactionEnabled = false;
+
+  Future<bool> getBoolValue() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? value = prefs.getBool('isTransactionEnabled') ?? false;
+
+    return value;
+  }
+
+  Future<void> saveBoolValue(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isTransactionEnabled', value);
+  }
+
+  Future<void> _initializeSmsService() async {
+    isTransactionEnabled = await getBoolValue();
+    setState(() {});
+    dev.log(isTransactionEnabled.toString());
+  }
 
   @override
   void initState() {
     super.initState();
+    _smsService = Provider.of<SmsService>(context, listen: false);
+    _initializeSmsService();
   }
 
   @override
@@ -30,7 +55,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -75,6 +99,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       builder: (context) => const ChangePassword(),
                     ));
               },
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceDim,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              leading: const Icon(
+                Icons.sync,
+                size: 26,
+              ),
+              title: Text(
+                AppLocalizations.of(context).translate('auto_transaction'),
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              trailing: Transform.scale(
+                scale: 0.7,
+                child: Switch(
+                  value: isTransactionEnabled,
+                  onChanged: (value) {
+                    _smsService.toggleListen(value);
+                    saveBoolValue(value);
+                    setState(() {
+                      isTransactionEnabled = value;
+                    });
+                  },
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 20),

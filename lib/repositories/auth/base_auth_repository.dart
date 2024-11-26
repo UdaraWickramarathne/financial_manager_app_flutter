@@ -22,7 +22,7 @@ abstract class BaseAuthRepository {
 
   Future<void> signOut();
 
-  Future<auth.User?> signInWithGoogle();
+  Future<AuthResult> signInWithGoogle();
 
   Future<void> updateUser(User user);
 

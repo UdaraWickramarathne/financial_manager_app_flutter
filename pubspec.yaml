@@ -62,7 +62,7 @@ dependencies:
   #for pdf generate
   pdf: ^3.11.1
   path_provider: ^2.1.4
-  open_file: ^3.5.9
+  open_file: 
 
   #for onboarding page indicator
   smooth_page_indicator: ^1.2.0+3
@@ -141,7 +141,8 @@ dependencies:
 
   overlay_support: ^2.1.0
 
-
+  #for pin
+  local_auth: ^2.1.7
 
 
 

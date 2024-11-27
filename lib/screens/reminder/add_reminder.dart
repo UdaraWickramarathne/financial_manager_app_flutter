@@ -317,8 +317,7 @@ class _AddReminderState extends State<AddReminder> {
                       userID: _authRepository.userID,
                       createdAt: Timestamp.now(),
                       date: date,
-                      description:
-                          description == '' ? 'Empty description' : description,
+                      description: description == '' ? ' ' : description,
                       frequancy: _selectedItem!,
                       time: time,
                       title: title,

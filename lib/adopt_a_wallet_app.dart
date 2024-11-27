@@ -68,38 +68,6 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         });
       });
     }
-
-    shakeDetector = ShakeDetector.autoStart(
-      onPhoneShake: () {
-        BetterFeedback.of(context).show((UserFeedback feedback) async {
-          final screenshotFilePath =
-              await writeImageToStorage(feedback.screenshot);
-
-          final smtpServer = gmail(username, password);
-
-          final message = Message()
-            ..from = Address(username, 'Adopt A Wallet')
-            ..recipients.add('adoptawallet.devnet.error@gmail.com')
-            ..subject = 'App Feedback'
-            ..text = feedback.text
-            ..attachments = [FileAttachment(File(screenshotFilePath))];
-
-          try {
-            final sendReport = await send(message, smtpServer);
-            dev.log('Feedback Email sent: ${sendReport.toString()}');
-          } on MailerException catch (e) {
-            dev.log('Failed to send feedback email: ${e.toString()}');
-            for (var p in e.problems) {
-              dev.log('Problem: ${p.code}: ${p.msg}');
-            }
-          }
-        });
-      },
-      minimumShakeCount: 2,
-      shakeSlopTimeMS: 500,
-      shakeCountResetTime: 3000,
-      shakeThresholdGravity: 2.7,
-    );
   }
 
   @override
@@ -132,7 +100,37 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
       transactionBloc: transactionBloc,
       authRepository: authRepository,
     );
+    shakeDetector = ShakeDetector.autoStart(
+      onPhoneShake: () {
+        BetterFeedback.of(context).show((UserFeedback feedback) async {
+          final screenshotFilePath =
+              await writeImageToStorage(feedback.screenshot);
 
+          final smtpServer = gmail(username, password);
+
+          final message = Message()
+            ..from = const Address(username, 'Adopt A Wallet')
+            ..recipients.add('adoptawallet.devnet.error@gmail.com')
+            ..subject = 'App Feedback'
+            ..text = feedback.text
+            ..attachments = [FileAttachment(File(screenshotFilePath))];
+
+          try {
+            final sendReport = await send(message, smtpServer);
+            dev.log('Feedback Email sent: ${sendReport.toString()}');
+          } on MailerException catch (e) {
+            dev.log('Failed to send feedback email: ${e.toString()}');
+            for (var p in e.problems) {
+              dev.log('Problem: ${p.code}: ${p.msg}');
+            }
+          }
+        });
+      },
+      minimumShakeCount: 2,
+      shakeSlopTimeMS: 500,
+      shakeCountResetTime: 3000,
+      shakeThresholdGravity: 2.7,
+    );
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
     var app = MaterialApp(

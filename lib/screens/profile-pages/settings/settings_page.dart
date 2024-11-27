@@ -1,6 +1,7 @@
 import 'package:financial_app/language/language_provider.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/profile-pages/account_info/change_password.dart';
+import 'package:financial_app/screens/profile-pages/settings/pin/authscreen.dart';
 import 'package:financial_app/services/sms_service.dart';
 import 'package:financial_app/themes/themeprovider.dart';
 import 'package:flutter/material.dart';
@@ -233,6 +234,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     setState(() {
                       pinCode = value;
                     });
+                     Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AuthScreen()),
+          );
                   },
                 ),
               ),

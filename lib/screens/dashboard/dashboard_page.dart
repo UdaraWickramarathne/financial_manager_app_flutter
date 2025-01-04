@@ -10,7 +10,6 @@ import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/screens/analysis/analysis_page.dart';
 import 'package:financial_app/screens/budget/budget_page.dart';
 import 'package:financial_app/screens/goals/goal_page.dart';
-import 'package:financial_app/screens/notification/notification_page.dart';
 import 'package:financial_app/screens/reminder/reminder_page.dart';
 import 'package:financial_app/screens/transactions/transactions_page.dart';
 import 'package:financial_app/services/sms_service.dart';
@@ -20,7 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,13 +33,13 @@ class _DashboardState extends State<Dashboard> {
   String getGreeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'Good Morning,';
+      return 'Good Morning ☀️';
     } else if (hour < 17) {
-      return 'Good Afternoon,';
+      return 'Good Afternoon 🌞';
     } else if (hour < 20) {
-      return 'Good Evening,';
+      return 'Good Evening 🌅';
     } else {
-      return 'Good Night,';
+      return 'Good Night 🌔';
     }
   }
 
@@ -93,118 +91,195 @@ class _DashboardState extends State<Dashboard> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            const SizedBox(height: 10),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Expanded(
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Stack(
+            //             children: [
+            // Lottie.asset(
+            //   'assets/animations/dashboard_animation.json',
+            //   width: 120,
+            // ),
+            //             ],
+            //           ),
+            //           Column(
+            //             crossAxisAlignment: CrossAxisAlignment.start,
+            //             children: [
+            //               Text(getGreeting()),
+            // BlocBuilder<AuthBloc, AuthState>(
+            //   buildWhen: (previous, current) {
+            //     return current is AuthInfoLoading ||
+            //         current is AuthInfoSuccess ||
+            //         current is AuthInfoError;
+            //   },
+            //   builder: (context, state) {
+            //     if (state is AuthInfoSuccess) {
+            // return SizedBox(
+            //     width:
+            //         MediaQuery.of(context).size.width / 3,
+            //     child: state.user.name
+            //                 .substring(
+            //                     0,
+            //                     state.user.name
+            //                         .indexOf(' '))
+            //                 .length >=
+            //             10
+            //         ? Marquee(
+            //             text: state.user.name.substring(0,
+            //                 state.user.name.indexOf(' ')),
+            //             style: const TextStyle(
+            //                 letterSpacing: 2,
+            //                 fontSize: 25,
+            //                 fontWeight: FontWeight.bold),
+            //             velocity: 30.0,
+            //             pauseAfterRound:
+            //                 const Duration(seconds: 2),
+            //             blankSpace: 30.0,
+            //           )
+            //         : Text(
+            //             state.user.name.substring(0,
+            //                 state.user.name.indexOf(' ')),
+            //             style: const TextStyle(
+            //               letterSpacing: 2,
+            //               fontSize: 25,
+            //               fontWeight: FontWeight.bold,
+            //             )));
+            //     } else if (state is AuthInfoLoading) {
+            //       if (isDarkMode) {
+            //         return Lottie.asset(
+            //           'assets/animations/text-animation.json',
+            //           height: 25,
+            //         );
+            //       } else {
+            //         return Lottie.asset(
+            //           'assets/animations/text-animation-black.json',
+            //           height: 25,
+            //         );
+            //       }
+            //     }
+            //     return const Text(
+            //       'Welcome',
+            //       style: TextStyle(
+            //         letterSpacing: 2,
+            //         fontSize: 25,
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     );
+            //   },
+            // ),
+            //               const Text(''),
+            //             ],
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     Column(
+            //       children: [
+            //         GestureDetector(
+            //           onTap: () {
+            //             Navigator.push(
+            //                 context,
+            //                 PageTransition(
+            //                     child: const NotificationPage(),
+            //                     duration: const Duration(milliseconds: 400),
+            //                     reverseDuration:
+            //                         const Duration(milliseconds: 400),
+            //                     curve: Curves.elasticIn,
+            //                     opaque: true,
+            //                     type: PageTransitionType.rightToLeft));
+            //           },
+            //           child: const Icon(
+            //             Icons.notifications,
+            //             size: 30,
+            //           ),
+            //         ),
+            //         const Text(''),
+            //         const Text(''),
+            //         const Text(''),
+            //       ],
+            //     )
+            //   ],
+            // ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(
-                        children: [
-                          Lottie.asset(
-                            'assets/animations/dashboard_animation.json',
-                            width: 120,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(getGreeting()),
-                          BlocBuilder<AuthBloc, AuthState>(
-                            buildWhen: (previous, current) {
-                              return current is AuthInfoLoading ||
-                                  current is AuthInfoSuccess ||
-                                  current is AuthInfoError;
-                            },
-                            builder: (context, state) {
-                              if (state is AuthInfoSuccess) {
-                                return SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 3,
-                                    child: state.user.name
-                                                .substring(
-                                                    0,
-                                                    state.user.name
-                                                        .indexOf(' '))
-                                                .length >=
-                                            10
-                                        ? Marquee(
-                                            text: state.user.name.substring(0,
-                                                state.user.name.indexOf(' ')),
-                                            style: const TextStyle(
-                                                letterSpacing: 2,
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold),
-                                            velocity: 30.0,
-                                            pauseAfterRound:
-                                                const Duration(seconds: 2),
-                                            blankSpace: 30.0,
-                                          )
-                                        : Text(
-                                            state.user.name.substring(0,
-                                                state.user.name.indexOf(' ')),
-                                            style: const TextStyle(
-                                              letterSpacing: 2,
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold,
-                                            )));
-                              } else if (state is AuthInfoLoading) {
-                                if (isDarkMode) {
-                                  return Lottie.asset(
-                                    'assets/animations/text-animation.json',
-                                    height: 25,
-                                  );
-                                } else {
-                                  return Lottie.asset(
-                                    'assets/animations/text-animation-black.json',
-                                    height: 25,
-                                  );
-                                }
-                              }
-                              return const Text(
-                                'Welcome',
-                                style: TextStyle(
-                                  letterSpacing: 2,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            },
-                          ),
-                          const Text(''),
-                        ],
-                      ),
-                    ],
-                  ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Lottie.asset(
+                  'assets/animations/dashboard_animation.json',
+                  width: 120,
                 ),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: const NotificationPage(),
-                                duration: const Duration(milliseconds: 400),
-                                reverseDuration:
-                                    const Duration(milliseconds: 400),
-                                curve: Curves.elasticIn,
-                                opaque: true,
-                                type: PageTransitionType.rightToLeft));
-                      },
-                      child: const Icon(
-                        Icons.notifications,
-                        size: 30,
+                    Text(
+                      getGreeting(),
+                      style: const TextStyle(
+                        letterSpacing: 2,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(''),
-                    const Text(''),
-                    const Text(''),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      buildWhen: (previous, current) {
+                        return current is AuthInfoLoading ||
+                            current is AuthInfoSuccess ||
+                            current is AuthInfoError;
+                      },
+                      builder: (context, state) {
+                        if (state is AuthInfoSuccess) {
+                          return SizedBox(
+                              width: MediaQuery.of(context).size.width / 3,
+                              child: state.user.name.split(" ")[0].length >= 10
+                                  ? Marquee(
+                                      text: state.user.name.split(" ")[0],
+                                      style: const TextStyle(
+                                          letterSpacing: 2,
+                                          fontSize: 25,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold),
+                                      velocity: 30.0,
+                                      pauseAfterRound:
+                                          const Duration(seconds: 2),
+                                      blankSpace: 30.0,
+                                    )
+                                  : Text(state.user.name.split(" ")[0],
+                                      style: const TextStyle(
+                                        letterSpacing: 2,
+                                        color: Colors.grey,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      )));
+                        } else if (state is AuthInfoLoading) {
+                          if (isDarkMode) {
+                            return Lottie.asset(
+                              'assets/animations/text-animation.json',
+                              height: 25,
+                            );
+                          } else {
+                            return Lottie.asset(
+                              'assets/animations/text-animation-black.json',
+                              height: 25,
+                            );
+                          }
+                        }
+                        return const Text(
+                          'Welcome',
+                          style: TextStyle(
+                            letterSpacing: 2,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 )
               ],

@@ -61,7 +61,7 @@ class AuthRepository extends BaseAuthRepository {
           break;
         default:
           errorMessage =
-              'An unexpected error occurred. Please try again later.';
+              'An unexpected error occurred. Please try again later. ';
       }
       return AuthResult(message: errorMessage);
     } catch (e) {
@@ -95,7 +95,7 @@ class AuthRepository extends BaseAuthRepository {
           break;
         default:
           errorMessage =
-              'An unexpected error occurred. Please try again later.';
+              'An unexpected error occurred. Please try again later. ${e.code} ${e.message}';
       }
       return AuthResult(message: errorMessage);
     } catch (e) {

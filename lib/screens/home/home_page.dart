@@ -45,6 +45,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
+      listenWhen: (previous, current) {
+        return current is AuthSignOut || current is AuthLoading;
+      },
       listener: (context, state) {
         if (state is AuthSignOut) {
           Navigator.pop(context);

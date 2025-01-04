@@ -25,6 +25,7 @@ import 'package:financial_app/screens/onboard/onboarding_page.dart';
 import 'package:financial_app/screens/splash_screen/splash_screen.dart';
 import 'package:financial_app/services/feedback_repository.dart';
 import 'package:financial_app/services/secure_enctypted_key/key_manager.dart';
+import 'package:financial_app/services/size_config.dart';
 import 'package:financial_app/services/sms_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,6 +96,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     var budgetRepository = BudgetRepository();
     var cardRepository = CardRepository();
     var transactionBloc = TransactionBloc(transactionRepository);
+    SizeConfig.init(context);
 
     var smsService = SmsService(
       transactionBloc: transactionBloc,

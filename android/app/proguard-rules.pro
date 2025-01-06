@@ -8,3 +8,4 @@
 -dontwarn com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions$Builder
 -dontwarn com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions
 -keep class com.dexterous.flutterlocalnotifications.** { *; }
+-keep class com.dexterous.** { *; }

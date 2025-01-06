@@ -12,7 +12,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:month_year_picker/month_year_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ReminderPage extends StatefulWidget {
   const ReminderPage({super.key});

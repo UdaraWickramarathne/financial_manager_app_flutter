@@ -17,8 +17,7 @@ class ReminderBloc extends Bloc<ReminderEvent, ReminderState> {
           await _reminderRepository.addReminder(reminder: event.reminder);
           emit(ReminderSuccess());
         } catch (e) {
-          emit(const ReminderError(
-              message: 'Error while uploading to database'));
+          emit(ReminderError(message: e.toString()));
         }
       }
       if (event is ReminderFetchEvent) {

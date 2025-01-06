@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddReminder extends StatefulWidget {
   const AddReminder({super.key});
@@ -39,6 +40,49 @@ class _AddReminderState extends State<AddReminder> {
     'Every month',
     'Every year',
   ];
+
+  Future<void> requestNotificationPermission() async {
+    PermissionStatus status = await Permission.notification.request();
+
+    if (status.isDenied) {
+      // Permission denied. Show a dialog to ask the user to open app settings
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            AppLocalizations.of(context).translate('permission_denied'),
+          ),
+          content: Text(
+            AppLocalizations.of(context)
+                .translate('notification_permission_required'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                openAppSettings(); // Open the app settings page
+              },
+              child: Text(
+                AppLocalizations.of(context).translate('go_to_settings'),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Just close the dialog
+              },
+              child: Text(
+                AppLocalizations.of(context).translate('cancel'),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else if (status.isPermanentlyDenied) {
+      // The permission is permanently denied, guide the user to settings
+      openAppSettings();
+    }
+  }
 
   void _showTimePicker(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -88,9 +132,10 @@ class _AddReminderState extends State<AddReminder> {
 
   @override
   void initState() {
+    super.initState();
     _authRepository = RepositoryProvider.of<AuthRepository>(context);
     _reminderBloc = RepositoryProvider.of<ReminderBloc>(context);
-    super.initState();
+    requestNotificationPermission();
   }
 
   @override

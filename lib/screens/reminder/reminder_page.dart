@@ -93,7 +93,6 @@ class _ReminderPageState extends State<ReminderPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          requestNotificationPermission();
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -228,48 +227,6 @@ class _ReminderPageState extends State<ReminderPage> {
         ],
       ),
     );
-  }
-
-  Future<void> requestNotificationPermission() async {
-    PermissionStatus status = await Permission.notification.request();
-
-    if (status.isDenied) {
-      // Permission denied. Show a dialog to ask the user to open app settings
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(
-            AppLocalizations.of(context).translate('permission_denied'),
-          ),
-          content: Text(
-            AppLocalizations.of(context)
-                .translate('notification_permission_required'),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                openAppSettings(); // Open the app settings page
-              },
-              child: Text(
-                AppLocalizations.of(context).translate('go_to_settings'),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Just close the dialog
-              },
-              child: Text(
-                AppLocalizations.of(context).translate('cancel'),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else if (status.isPermanentlyDenied) {
-      // The permission is permanently denied, guide the user to settings
-      openAppSettings();
-    }
   }
 
   void showErrorSnackBar(String error) {

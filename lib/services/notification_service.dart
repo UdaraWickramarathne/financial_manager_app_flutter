@@ -22,14 +22,11 @@ class NotificationService {
 
   static Future<void> init() async {
     const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
-    const DarwinInitializationSettings iOSInitializationSettings =
-        DarwinInitializationSettings();
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
       android: androidInitializationSettings,
-      iOS: iOSInitializationSettings,
     );
 
     await flutterLocalNotificationsPlugin.initialize(
@@ -37,6 +34,18 @@ class NotificationService {
       onDidReceiveNotificationResponse: onDidReceiveNotification,
       onDidReceiveBackgroundNotificationResponse: onDidReceiveNotification,
     );
+
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'reminder_channel', // id
+      'Reminder_Channel', // name
+      description: 'Channel for instant notifications', // description
+      importance: Importance.max,
+    );
+
+    final AndroidFlutterLocalNotificationsPlugin androidPlugin =
+        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()!;
+    await androidPlugin.createNotificationChannel(channel);
   }
 
   static Future<void> showInstantNotification(String title, String body) async {
@@ -72,7 +81,7 @@ class NotificationService {
     const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         'reminder_channel',
-        'Reminder Channel',
+        'Reminder_Channel',
         importance: Importance.high,
         priority: Priority.high,
         playSound: true,
@@ -126,8 +135,7 @@ class NotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents:
-            DateTimeComponents.dayOfWeekAndTime,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
       );
     } else if (frequency == 'Every month') {
       await flutterLocalNotificationsPlugin.zonedSchedule(
@@ -139,11 +147,9 @@ class NotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents:
-            DateTimeComponents.dayOfMonthAndTime,
+        matchDateTimeComponents: DateTimeComponents.dayOfMonthAndTime,
       );
     } else {
-
       await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         title,
@@ -153,7 +159,6 @@ class NotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-
       );
     }
   }

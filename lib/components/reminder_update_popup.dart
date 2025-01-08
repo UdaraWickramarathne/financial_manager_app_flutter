@@ -49,7 +49,11 @@ class _ReminderUpdatePopupState extends State<ReminderUpdatePopup> {
               ),
             ),
           ),
-          child: child!,
+          child: Localizations.override(
+            context: context,
+            locale: const Locale('en'),
+            child: child!,
+          ),
         );
       },
     );

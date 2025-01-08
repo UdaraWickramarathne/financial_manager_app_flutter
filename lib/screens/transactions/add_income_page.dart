@@ -297,6 +297,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                                       DateTime? pickedDate =
                                           await showDatePicker(
                                         context: context,
+                                        locale: const Locale('en'),
                                         initialDate: DateTime.now(),
                                         firstDate: DateTime(1900),
                                         lastDate: DateTime.now(),

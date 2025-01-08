@@ -351,6 +351,7 @@ class _TransactionUpdatePopupState extends State<TransactionUpdatePopup> {
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1900),
                                 lastDate: DateTime.now(),
+                                locale: const Locale('en'),
                               );
 
                               if (pickedDate != null) {

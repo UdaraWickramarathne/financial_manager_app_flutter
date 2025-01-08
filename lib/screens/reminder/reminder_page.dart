@@ -29,6 +29,7 @@ class _ReminderPageState extends State<ReminderPage> {
       initialDate: selectedDate,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
+      locale: const Locale('en'),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(

@@ -149,6 +149,7 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         AppLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         MonthYearPickerLocalizations.delegate,
       ],
       localeResolutionCallback: (locale, supportedLocales) {

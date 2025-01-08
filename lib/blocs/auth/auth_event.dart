@@ -60,10 +60,25 @@ class AuthInfoFetching extends AuthEvent {
 
 class AuthUpdateUser extends AuthEvent {
   final User user;
-  const AuthUpdateUser({required this.user});
+  final bool isImageChange;
+  final File? image;
+  const AuthUpdateUser({
+    required this.isImageChange,
+    required this.user,
+    required this.image,
+  });
 
   @override
   List<Object> get props => [user];
 }
 
 class AuthSignInWithGoogle extends AuthEvent {}
+
+class AuthProfileImageUpdate extends AuthEvent {
+  final File image;
+  final User user;
+  const AuthProfileImageUpdate({required this.user, required this.image});
+
+  @override
+  List<Object> get props => [image, user];
+}

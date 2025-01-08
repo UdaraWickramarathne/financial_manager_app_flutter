@@ -24,6 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String pinNumber = '';
   late SmsService _smsService;
   bool isTransactionEnabled = false;
+  bool _isLoading = true; // Add this line
 
   Future<bool> getBoolValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -39,7 +40,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _initializeSmsService() async {
     isTransactionEnabled = await getBoolValue();
-    setState(() {});
+    setState(() {
+      _isLoading = false; // Add this line
+    });
     dev.log(isTransactionEnabled.toString());
   }
 
@@ -56,6 +59,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     final languageProvider =
         Provider.of<LanguageProvider>(context, listen: false);
+
+    if (_isLoading) {
+      // Add this block
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).translate('settings'),
+            style: const TextStyle(fontSize: 22),
+          ),
+          centerTitle: true,
+          elevation: 0,
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -234,10 +255,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     setState(() {
                       pinCode = value;
                     });
-                     Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AuthScreen()),
-          );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AuthScreen()),
+                    );
                   },
                 ),
               ),

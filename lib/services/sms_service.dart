@@ -71,10 +71,12 @@ class SmsService {
   }
 
   onNewMessage(SmsMessage message) async {
-    dev.log(message.address!);
-    await saveLastDate(message.date ?? DateTime.now().millisecondsSinceEpoch);
-    // if (message.address! == '8822') {
-    await addTransaction(message: message);
+    if (message.address! == '8822') {
+      dev.log(message.address!);
+      await saveLastDate(message.date ?? DateTime.now().millisecondsSinceEpoch);
+
+      await addTransaction(message: message);
+    }
   }
 
   Future<void> addTransaction(

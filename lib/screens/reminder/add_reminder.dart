@@ -104,7 +104,11 @@ class _AddReminderState extends State<AddReminder> {
               ),
             ),
           ),
-          child: child!,
+          child: Localizations.override(
+            context: context,
+            locale: const Locale('en'),
+            child: child,
+          ),
         );
       },
     );
@@ -119,6 +123,7 @@ class _AddReminderState extends State<AddReminder> {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
+      locale: const Locale('en'),
       firstDate: DateTime(1900),
       lastDate: DateTime(2099),
     );

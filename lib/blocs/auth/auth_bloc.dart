@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:financial_app/models/user.dart';
@@ -75,7 +77,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event is AuthUpdateUser) {
         try {
           emit(AuthUpdateLoading());
-          await _authRepository.updateUser(event.user);
+          User user = event.user;
+          if (event.image != null) {
+            String url = await _authRepository.uploadImage(
+                user: event.user, image: event.image!);
+            emit(AuthProfileImageUpdateSuccess(url: url));
+            await _authRepository.updateUser(
+              User(
+                userID: user.userID,
+                name: user.name,
+                email: user.email,
+                createdAt: user.createdAt,
+                phoneNumber: user.phoneNumber,
+                gender: user.gender,
+                birthDate: user.birthDate,
+                profileImageURL: url,
+                languagePreference: user.languagePreference,
+                currencyPreference: user.currencyPreference,
+              ),
+            );
+          } else {
+            await _authRepository.updateUser(event.user);
+          }
           emit(AuthUpdateSuccess());
         } catch (e) {
           emit(const AuthUpdateError(message: 'Error while updating user'));

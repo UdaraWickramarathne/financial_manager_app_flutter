@@ -265,11 +265,11 @@ class _GoalUpdatePopupCardState extends State<GoalUpdatePopupCard> {
                         GestureDetector(
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.parse(widget.deadLine),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime(2100),
-                            );
+                                context: context,
+                                initialDate: DateTime.parse(widget.deadLine),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2100),
+                                locale: const Locale('en'));
 
                             if (pickedDate != null) {
                               dateController.text =

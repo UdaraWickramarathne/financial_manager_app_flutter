@@ -24,9 +24,14 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
 
   Future<void> _selectMonthYear(BuildContext context) async {
     final DateTime? pickedDate = await showMonthPicker(
+      context: context,
+      initialDate: selectedDate,
+      lastDate: DateTime.now(),
+      firstDate: DateTime(2000),
       monthPickerDialogSettings: MonthPickerDialogSettings(
         dialogSettings: const PickerDialogSettings(
           dialogRoundedCornersRadius: 15,
+          locale: Locale('en'),
         ),
         headerSettings: const PickerHeaderSettings(
           headerBackgroundColor: Color(0xFF456EFE),
@@ -42,11 +47,8 @@ class _WeeklyAnalysisChartState extends State<WeeklyAnalysisChart> {
           ),
         ),
       ),
-      context: context,
-      initialDate: selectedDate,
-      lastDate: DateTime.now(),
-      firstDate: DateTime(2000),
     );
+
     if (pickedDate != null) {
       setState(() {
         selectedDate = pickedDate;

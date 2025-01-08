@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:financial_app/models/user.dart';
 import 'package:financial_app/repositories/auth/auth_result.dart';
 import 'package:financial_app/repositories/auth/base_auth_repository.dart';
+import 'package:financial_app/services/profile_image_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'dart:developer' as dev;
+import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -27,6 +31,7 @@ class AuthRepository extends BaseAuthRepository {
   @override
   String get userID => _firebaseAuth.currentUser?.uid ?? '';
 
+  // * Sign up user
   @override
   Future<AuthResult> signUp(
       {required String email,
@@ -42,9 +47,11 @@ class AuthRepository extends BaseAuthRepository {
           userID: user.uid,
           name: name,
           email: email,
+          profileImageURL:
+              'https://wlujgctqyxyyegjttlce.supabase.co/storage/v1/object/public/users_propics/users_propics/default_img.png',
           createdAt: Timestamp.now(),
         );
-        await _addUserIfNotExists(newUser);
+        await addUserIfNotExists(newUser);
       }
       return AuthResult(user: user);
     } on auth.FirebaseAuthException catch (e) {
@@ -69,8 +76,7 @@ class AuthRepository extends BaseAuthRepository {
     }
   }
 
-  //method for signIn user
-
+  // * Sign in user
   @override
   Future<AuthResult> signIn(
       {required String email, required String password}) async {
@@ -103,8 +109,7 @@ class AuthRepository extends BaseAuthRepository {
     }
   }
 
-  //method for signOut user
-
+  // * Sign out user
   @override
   Future<void> signOut() async {
     try {
@@ -115,7 +120,9 @@ class AuthRepository extends BaseAuthRepository {
     }
   }
 
-  Future<void> _addUserIfNotExists(User newUser) async {
+  // * Add user to firestore if not exists
+  @override
+  Future<void> addUserIfNotExists(User newUser) async {
     var doc = await _usersCollection.doc(newUser.userID).get();
 
     if (!doc.exists) {
@@ -123,6 +130,8 @@ class AuthRepository extends BaseAuthRepository {
     }
   }
 
+  // * Fetch user data
+  @override
   Future<User?> fetchUserData(String userID) async {
     try {
       DocumentSnapshot doc = await _usersCollection.doc(userID).get();
@@ -135,6 +144,7 @@ class AuthRepository extends BaseAuthRepository {
     return null;
   }
 
+  // * Change password
   @override
   Future<AuthResult> chnagePassword({
     required String currentPassword,
@@ -177,6 +187,7 @@ class AuthRepository extends BaseAuthRepository {
     }
   }
 
+  // * Update user data
   @override
   Future<void> updateUser(User user) async {
     try {
@@ -186,6 +197,7 @@ class AuthRepository extends BaseAuthRepository {
     }
   }
 
+  // * Sign in with Google
   @override
   Future<AuthResult> signInWithGoogle() async {
     try {
@@ -205,9 +217,11 @@ class AuthRepository extends BaseAuthRepository {
           userID: user.uid,
           name: user.displayName!,
           email: user.email!,
+          profileImageURL:
+              'https://wlujgctqyxyyegjttlce.supabase.co/storage/v1/object/public/users_propics/users_propics/default_img.png',
           createdAt: Timestamp.now(),
         );
-        _addUserIfNotExists(newUser);
+        addUserIfNotExists(newUser);
         return AuthResult(user: user);
       } else {
         return AuthResult(message: 'Authentication incomplete! Try again.');
@@ -215,5 +229,38 @@ class AuthRepository extends BaseAuthRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<String> uploadImage({required User user, required File image}) async {
+    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    final pathName = 'users_propics/$fileName';
+    const defaultImageUrl =
+        'https://wlujgctqyxyyegjttlce.supabase.co/storage/v1/object/public/users_propics/users_propics/default_img.png';
+
+    if (user.profileImageURL != defaultImageUrl) {
+      // Remove the existing image if it's not the default image
+      try {
+        await supa.Supabase.instance.client.storage
+            .from('users_propics')
+            .remove([user.profileImageURL]);
+      } catch (e) {
+        rethrow;
+      }
+    }
+
+    // Upload the new image
+    try {
+      await supa.Supabase.instance.client.storage
+          .from('users_propics')
+          .upload(pathName, image);
+    } catch (e) {
+      rethrow;
+    }
+    // Get the public URL of the uploaded image
+    final url = supa.Supabase.instance.client.storage
+        .from('users_propics')
+        .getPublicUrl(pathName);
+    await ProfileImageService().saveImageUrl(url);
+    return url;
   }
 }

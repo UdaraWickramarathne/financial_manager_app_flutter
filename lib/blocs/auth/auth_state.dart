@@ -69,3 +69,21 @@ final class AuthUpdateError extends AuthState {
   @override
   List<Object> get props => [message];
 }
+
+final class AuthProfileImageUpdateSuccess extends AuthState {
+  final String url;
+
+  const AuthProfileImageUpdateSuccess({required this.url});
+
+  @override
+  List<Object> get props => [url];
+}
+
+final class AuthProfileImageUpdateError extends AuthState {
+  final String message;
+
+  const AuthProfileImageUpdateError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

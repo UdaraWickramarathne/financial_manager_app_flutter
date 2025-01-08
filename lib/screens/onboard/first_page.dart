@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatelessWidget {
@@ -27,19 +28,20 @@ class FirstPage extends StatelessWidget {
                 height: 300,
               ),
             ),
-            const Text(
-              'Track Your Finances in Real-Time',
+            Text(
+              AppLocalizations.of(context).translate('track_finances'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Introduce users to the real-time tracking of income and expenses, showcasing how they can manage their finances effortlessly.',
+            Text(
+              AppLocalizations.of(context)
+                  .translate('track_finances_description'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
               ),

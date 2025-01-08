@@ -33,7 +33,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   late AuthRepository _authRepository;
 
   String name = '';
-
+  String? url;
   User? user;
 
   @override
@@ -135,6 +135,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
             birthdateController.text = state.user.birthDate;
             setState(() {
               name = state.user.name;
+              url = state.user.profileImageURL;
             });
           }
           if (state is AuthUpdateLoading) {
@@ -177,12 +178,14 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       Stack(
                         children: [
                           CircleAvatar(
+                            backgroundColor: Colors.white,
                             radius: 80,
                             backgroundImage: _image != null
                                 ? FileImage(_image!)
-                                : const AssetImage(
-                                        'assets/images/app_photo.jpg')
-                                    as ImageProvider,
+                                : NetworkImage(
+                                    url ??
+                                        'https://wlujgctqyxyyegjttlce.supabase.co/storage/v1/object/public/users_propics/users_propics/default_img.png',
+                                  ),
                           ),
                           Positioned(
                             bottom: 0,
@@ -276,9 +279,11 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               ),
               SimpleButton(
                 data: 'save',
-                onPressed: () {
+                onPressed: () async {
                   _authBloc.add(
                     AuthUpdateUser(
+                      image: _image,
+                      isImageChange: _image != null,
                       user: User(
                         userID: user!.userID,
                         name: nameController.text,
@@ -287,7 +292,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         phoneNumber: phoneController.text,
                         gender: genderController.text,
                         birthDate: birthdateController.text,
-                        profileImageURL: user!.profileImageURL,
+                        profileImageURL: url!,
                         languagePreference: user!.languagePreference,
                         currencyPreference: user!.currencyPreference,
                       ),

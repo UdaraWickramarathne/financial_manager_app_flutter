@@ -11,6 +11,7 @@ import 'package:financial_app/screens/profile-pages/rating/rating_dialog.dart';
 import 'package:financial_app/screens/profile-pages/settings/settings_page.dart';
 import 'package:financial_app/screens/reminder/calender_page.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
+import 'package:financial_app/services/profile_image_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -34,19 +35,31 @@ class _HomePageState extends State<HomePage> {
   final String _visa = 'assets/icons/visa_fill.ico';
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  String? _url;
+
   late AuthBloc _authBloc;
 
   @override
   void initState() {
-    _authBloc = RepositoryProvider.of<AuthBloc>(context);
     super.initState();
+    _authBloc = RepositoryProvider.of<AuthBloc>(context);
+    loadProfileImage();
+  }
+
+  Future<void> loadProfileImage() async {
+    final url = await ProfileImageService().getImageUrl();
+    setState(() {
+      _url = url;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listenWhen: (previous, current) {
-        return current is AuthSignOut || current is AuthLoading;
+        return current is AuthSignOut ||
+            current is AuthLoading ||
+            current is AuthProfileImageUpdateSuccess;
       },
       listener: (context, state) {
         if (state is AuthSignOut) {
@@ -64,6 +77,10 @@ class _HomePageState extends State<HomePage> {
               );
             },
           );
+        } else if (state is AuthProfileImageUpdateSuccess) {
+          setState(() {
+            _url = state.url;
+          });
         }
       },
       child: Scaffold(
@@ -71,10 +88,12 @@ class _HomePageState extends State<HomePage> {
         drawer: Drawer(
           child: Column(
             children: [
-              const DrawerHeader(
+              DrawerHeader(
                 child: CircleAvatar(
                   radius: 60.0,
-                  backgroundImage: AssetImage('assets/images/app_photo.jpg'),
+                  backgroundColor: Colors.white,
+                  backgroundImage: NetworkImage(_url ??
+                      'https://wlujgctqyxyyegjttlce.supabase.co/storage/v1/object/public/users_propics/users_propics/default_img.png'),
                 ),
               ),
               const SizedBox(height: 40),
@@ -212,7 +231,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             Align(
-              alignment: const AlignmentDirectional(-0.92, -0.92),
+              alignment: const AlignmentDirectional(-0.90, -0.88),
               child: GestureDetector(
                 onTap: () {
                   _scaffoldKey.currentState?.openDrawer();
@@ -225,9 +244,11 @@ class _HomePageState extends State<HomePage> {
                       width: 2.0,
                     ),
                   ),
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 20.0,
-                    backgroundImage: AssetImage('assets/images/app_photo.jpg'),
+                    backgroundColor: const Color.fromARGB(255, 226, 226, 226),
+                    backgroundImage: NetworkImage(_url ??
+                        'https://wlujgctqyxyyegjttlce.supabase.co/storage/v1/object/public/users_propics/users_propics/default_img.png'),
                   ),
                 ),
               ),

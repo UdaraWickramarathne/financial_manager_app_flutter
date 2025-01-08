@@ -182,18 +182,22 @@ class _MonthlyAnalysisChartState extends State<MonthlyAnalysisChart> {
           content: SizedBox(
             width: 300,
             height: 300,
-            child: YearPicker(
-              firstDate: DateTime(DateTime.now().year - 100, 1),
-              lastDate: DateTime.now(),
-              selectedDate: selectedYear,
-              onChanged: (DateTime dateTime) {
-                setState(() {
-                  selectedYear = dateTime;
-                });
-                Navigator.pop(context);
-                _transactionBloc.add(TransactionAnalysisMonthlyEvent(
-                    userID: _authRepository.userID, year: selectedYear.year));
-              },
+            child: Localizations.override(
+              context: context,
+              locale: const Locale('en'),
+              child: YearPicker(
+                firstDate: DateTime(DateTime.now().year - 100, 1),
+                lastDate: DateTime.now(),
+                selectedDate: selectedYear,
+                onChanged: (DateTime dateTime) {
+                  setState(() {
+                    selectedYear = dateTime;
+                  });
+                  Navigator.pop(context);
+                  _transactionBloc.add(TransactionAnalysisMonthlyEvent(
+                      userID: _authRepository.userID, year: selectedYear.year));
+                },
+              ),
             ),
           ),
         );

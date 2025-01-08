@@ -30,4 +30,7 @@ abstract class BaseAuthRepository {
     required String currentPassword,
     required String newPassword,
   });
+  Future<User?> fetchUserData(String userID);
+
+  Future<void> addUserIfNotExists(User newUser);
 }

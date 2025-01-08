@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class SecondPage extends StatelessWidget {
@@ -27,19 +28,19 @@ class SecondPage extends StatelessWidget {
                 height: 300,
               ),
             ),
-            const Text(
-              'Set Your Financial Goals',
+            Text(
+              AppLocalizations.of(context).translate('set_goals'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Highlight how the app allows users to set and track their financial goals, helping them stay on top of their financial planning.',
+            Text(
+              AppLocalizations.of(context).translate('set_goals_description'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
               ),

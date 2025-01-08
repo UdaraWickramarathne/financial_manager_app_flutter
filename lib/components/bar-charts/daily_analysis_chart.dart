@@ -27,6 +27,7 @@ class _DailyAnalysisChartState extends State<DailyAnalysisChart> {
   void _pickWeek(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
+      locale: const Locale('en'),
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),

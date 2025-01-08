@@ -143,6 +143,7 @@ dependencies:
 
   #for pin
   local_auth: ^2.1.7
+  supabase_flutter: ^2.8.3
 
 dev_dependencies:
   flutter_test:

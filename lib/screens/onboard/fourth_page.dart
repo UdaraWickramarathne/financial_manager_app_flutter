@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class FourthPage extends StatelessWidget {
@@ -27,19 +28,19 @@ class FourthPage extends StatelessWidget {
                 height: 300,
               ),
             ),
-            const Text(
-              'Get Started',
+            Text(
+              AppLocalizations.of(context).translate('get_started'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Start your journey to smarter spending and financial success. Get started today!',
+            Text(
+              AppLocalizations.of(context).translate('get_started_description'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
               ),

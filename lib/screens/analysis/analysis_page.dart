@@ -329,16 +329,22 @@ class _AnalysisPageState extends State<AnalysisPage>
                                                 CupertinoColors
                                                     .lightBackgroundGray,
                                           ),
-                                          child: CupertinoDatePicker(
-                                            initialDateTime: startDate,
-                                            maximumDate: DateTime.now(),
-                                            mode: CupertinoDatePickerMode.date,
-                                            backgroundColor: Colors.transparent,
-                                            onDateTimeChanged: (value) {
-                                              setState(() {
-                                                startDate = value;
-                                              });
-                                            },
+                                          child: Localizations.override(
+                                            context: context,
+                                            locale: const Locale('en'),
+                                            child: CupertinoDatePicker(
+                                              initialDateTime: startDate,
+                                              maximumDate: DateTime.now(),
+                                              mode:
+                                                  CupertinoDatePickerMode.date,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              onDateTimeChanged: (value) {
+                                                setState(() {
+                                                  startDate = value;
+                                                });
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -411,16 +417,22 @@ class _AnalysisPageState extends State<AnalysisPage>
                                                 CupertinoColors
                                                     .lightBackgroundGray,
                                           ),
-                                          child: CupertinoDatePicker(
-                                            initialDateTime: endDate,
-                                            maximumDate: DateTime.now(),
-                                            mode: CupertinoDatePickerMode.date,
-                                            backgroundColor: Colors.transparent,
-                                            onDateTimeChanged: (value) {
-                                              setState(() {
-                                                endDate = value;
-                                              });
-                                            },
+                                          child: Localizations.override(
+                                            context: context,
+                                            locale: const Locale('en'),
+                                            child: CupertinoDatePicker(
+                                              initialDateTime: endDate,
+                                              maximumDate: DateTime.now(),
+                                              mode:
+                                                  CupertinoDatePickerMode.date,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              onDateTimeChanged: (value) {
+                                                setState(() {
+                                                  endDate = value;
+                                                });
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),

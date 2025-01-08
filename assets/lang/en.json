@@ -10,7 +10,7 @@
   "sign_up": "Sign up",
   "good_morning": "Good Morning",
   "total_balance": "Total Balance",
-  "Income": "Income",
+  "income": "Income",
   "expenses": "Expenses",
   "services": "Services",
   "transactions": "Transactions",
@@ -241,5 +241,6 @@
   "control_spending": "Control Your Spending with Ease",
   "control_spending_description": "Categorize expenses and monitor spending patterns across different areas, helping them allocate money wisely and track where they're spending the most.",
   "get_started": "Get Started",
-  "get_started_description": "Start your journey to smarter spending and financial success. Get started today!"
+  "get_started_description": "Start your journey to smarter spending and financial success. Get started today!",
+  "or_sign_up_with": "Or Sign In With"
 }

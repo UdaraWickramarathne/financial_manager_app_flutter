@@ -87,7 +87,6 @@ class NotificationService {
         playSound: true,
         actions: [
           AndroidNotificationAction('complete_action', 'Complete'),
-          AndroidNotificationAction('snooze_action', 'Snooze'),
         ],
       ),
       iOS: DarwinNotificationDetails(

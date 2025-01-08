@@ -71,7 +71,7 @@ class ReminderRepository extends BaseReminderRepository {
   Future<void> scheduleReminderNotification(
       {required Reminder reminder}) async {
     DateTime selectedDate = DateTime.parse(reminder.date);
-    final DateFormat format = DateFormat.Hm();
+    final DateFormat format = DateFormat.jm();
     developer.log(reminder.time);
     final DateTime selectedTime = format.parse(reminder.time);
     // Combine date and time into a single DateTime object

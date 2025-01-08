@@ -84,6 +84,13 @@ class _AddReminderState extends State<AddReminder> {
     }
   }
 
+  String formatTimeOfDay(TimeOfDay time) {
+    final hour =
+        time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod; // Convert 0 to 12
+    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+    return '$hour:${time.minute.toString().padLeft(2, '0')} $period';
+  }
+
   void _showTimePicker(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -106,7 +113,7 @@ class _AddReminderState extends State<AddReminder> {
           ),
           child: Localizations.override(
             context: context,
-            locale: const Locale('en'),
+            locale: const Locale('en', 'US'),
             child: child,
           ),
         );
@@ -114,7 +121,7 @@ class _AddReminderState extends State<AddReminder> {
     );
     if (picked != null) {
       setState(() {
-        timeController.text = picked.format(context);
+        timeController.text = formatTimeOfDay(picked);
       });
     }
   }

@@ -214,15 +214,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text('Or Sign In With'),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(AppLocalizations.of(context)
+                          .translate('or_sign_up_with')),
                     ),
-                    Expanded(child: Divider()),
+                    const Expanded(child: Divider()),
                   ],
                 ),
                 const SizedBox(height: 20),

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:file_picker/file_picker.dart';
 import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
-import 'package:financial_app/components/dashed_border_button.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/language/transalation.dart';
@@ -373,29 +372,29 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           )
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      Text(
-                        AppLocalizations.of(context)
-                            .translate('invoice_optional'),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 10),
-                      DashedButton(
-                        onPressed: pickFile,
-                        icon: Icons.add_circle,
-                        text: AppLocalizations.of(context)
-                            .translate('add_invoice'),
-                      ),
-                      const SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          result != null ? file.name : '',
-                          style: const TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
+                      // const SizedBox(height: 20),
+                      // Text(
+                      //   AppLocalizations.of(context)
+                      //       .translate('invoice_optional'),
+                      //   style: const TextStyle(
+                      //       fontWeight: FontWeight.bold, color: Colors.grey),
+                      // ),
+                      // const SizedBox(height: 10),
+                      // DashedButton(
+                      //   onPressed: pickFile,
+                      //   icon: Icons.add_circle,
+                      //   text: AppLocalizations.of(context)
+                      //       .translate('add_invoice'),
+                      // ),
+                      // const SizedBox(height: 10),
+                      // Center(
+                      //   child: Text(
+                      //     result != null ? file.name : '',
+                      //     style: const TextStyle(
+                      //       color: Colors.grey,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

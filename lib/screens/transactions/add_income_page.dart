@@ -1,9 +1,16 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' hide Transaction;
 import 'package:file_picker/file_picker.dart';
-import 'package:financial_app/components/dashed_border_button.dart';
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
-
+import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/models/transaction.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 class AddIncomePage extends StatefulWidget {
@@ -14,16 +21,32 @@ class AddIncomePage extends StatefulWidget {
 }
 
 class _AddIncomePageState extends State<AddIncomePage> {
-  final TextEditingController typeController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+
+  //focus nodes
+  final FocusNode amountFocusNode = FocusNode();
+  final FocusNode categoryFocusNode = FocusNode();
+  final FocusNode titleFocusNode = FocusNode();
+
+  //border colors
+  Color amountBorderColor = Colors.transparent;
+  Color categoryBorderColor = Colors.transparent;
+  Color titleBorderColor = Colors.transparent;
 
   FilePickerResult? result;
   late PlatformFile file;
   String? selectedCategory;
 
   IconData? selectedIcon;
+
+  //transaction repo
+  late TransactionBloc _transactionBloc;
+
+  //transaction bloc
+  late AuthRepository _authRepository;
 
   final List<Map<String, String>> incomeCategories = [
     {'name': 'Salary', 'icon': '💼'},
@@ -55,7 +78,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
         selectedIcon = Icons.category;
         break;
       default:
-        selectedIcon = Icons.category;
+        selectedIcon = null;
     }
   }
 
@@ -71,14 +94,22 @@ class _AddIncomePageState extends State<AddIncomePage> {
     }
   }
 
+  @override
+  void dispose() {
+    amountFocusNode.dispose();
+    categoryFocusNode.dispose();
+    titleFocusNode.dispose();
+    super.dispose();
+  }
+
   void showIncomeTypes() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text(
-            'Select Income Type',
-            style: TextStyle(
+          title: Text(
+            AppLocalizations.of(context).translate('select_income_type'),
+            style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
             ),
@@ -99,7 +130,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         children: [
                           Text(category['icon'] ?? ''),
                           const SizedBox(width: 4),
-                          Text(category['name'] ?? ''),
+                          Text(AppLocalizations.of(context)
+                              .translate(category['name'] ?? '')),
                         ],
                       ),
                       selected: selectedCategory == category['name'],
@@ -107,7 +139,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                         setState(() {
                           if (selected) {
                             selectedCategory = category['name'];
-                            typeController.text = category['name']!;
+                            categoryController.text = category['name']!;
                             selectIcon(selectedCategory);
                             Navigator.of(context).pop(); // Dismiss dialog
                           }
@@ -127,6 +159,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
   @override
   void initState() {
     dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
     super.initState();
   }
 
@@ -134,133 +168,278 @@ class _AddIncomePageState extends State<AddIncomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Add Income',
-          style: TextStyle(fontSize: 22),
+        title: Text(
+          AppLocalizations.of(context).translate('add_income'),
+          style: const TextStyle(fontSize: 22),
         ),
         centerTitle: true,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 15),
-                    const Text(
-                      ' AMOUNT',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    InputField(
-                      isReadOnly: false,
-                      isObsecure: false,
-                      label: '0.00',
-                      prefixText: 'Rs. ',
-                      suffixIcon: TextButton(
-                        onPressed: () {
-                          amountController.text = '';
-                        },
-                        child: const Text('Clear'),
-                      ),
-                      controller: amountController,
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      ' INCOME TYPE',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    InputField(
-                      isObsecure: false,
-                      controller: typeController,
-                      prefixIcon: selectedIcon,
-                      isReadOnly: true,
-                      label: 'Select Category',
-                      suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
-                      onTap: showIncomeTypes,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      ' DATE',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    InputField(
-                      isReadOnly: true,
-                      isObsecure: false,
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now(),
-                          );
-
-                          if (pickedDate != null) {
-                            dateController.text =
-                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        icon: const Icon(Icons.date_range),
-                      ),
-                      controller: dateController,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      ' DESCRIPTION',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    InputField(
-                      isObsecure: false,
-                      controller: descriptionController,
-                      isReadOnly: false,
-                      label: 'Add a note or description',
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      ' INVOICE(Optional)',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    DashedButton(
-                      onPressed: pickFile,
-                      icon: Icons.add_circle,
-                      text: 'Add Invoice',
-                    ),
-                    const SizedBox(height: 10),
-                    Center(
-                      child: Text(
-                        result != null ? file.name : '',
+      body: BlocListener<TransactionBloc, TransactionState>(
+        listener: (context, state) {
+          if (state is TransactionLoading) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
+                );
+              },
+            );
+          } else if (state is TransactionSuccess) {
+            Navigator.pop(context);
+            showSuccessSnakBar();
+            _clearInputFields();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 15),
+                      Text(
+                        AppLocalizations.of(context).translate('amount'),
                         style: const TextStyle(
-                          color: Colors.grey,
-                        ),
+                            fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      InputField(
+                        isReadOnly: false,
+                        isObsecure: false,
+                        focusNode: amountFocusNode,
+                        borderColor: amountBorderColor,
+                        label: '0.00',
+                        prefixText: 'Rs. ',
+                        suffixIcon: TextButton(
+                          onPressed: () {
+                            amountController.text = '';
+                          },
+                          child: Text(
+                              AppLocalizations.of(context).translate('clear')),
+                        ),
+                        controller: amountController,
+                        keyboardType: TextInputType.number,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        AppLocalizations.of(context).translate('title'),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 10),
+                      InputField(
+                        isObsecure: false,
+                        controller: titleController,
+                        focusNode: titleFocusNode,
+                        borderColor: titleBorderColor,
+                        isReadOnly: false,
+                        label: AppLocalizations.of(context)
+                            .translate('add_a_title'),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .translate('income_type'),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                ),
+                                const SizedBox(height: 10),
+                                InputField(
+                                  isObsecure: false,
+                                  controller: categoryController,
+                                  focusNode: categoryFocusNode,
+                                  borderColor: categoryBorderColor,
+                                  prefixIcon: selectedIcon,
+                                  isReadOnly: true,
+                                  label: AppLocalizations.of(context)
+                                      .translate('eg_salary'),
+                                  suffixIcon: const Icon(
+                                      Icons.keyboard_arrow_down_sharp),
+                                  onTap: showIncomeTypes,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .translate('date'),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                ),
+                                const SizedBox(height: 10),
+                                InputField(
+                                  isReadOnly: true,
+                                  isObsecure: false,
+                                  suffixIcon: IconButton(
+                                    onPressed: () async {
+                                      DateTime? pickedDate =
+                                          await showDatePicker(
+                                        context: context,
+                                        locale: const Locale('en'),
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1900),
+                                        lastDate: DateTime.now(),
+                                      );
+
+                                      if (pickedDate != null) {
+                                        dateController.text =
+                                            DateFormat('yyyy-MM-dd')
+                                                .format(pickedDate);
+                                      }
+                                    },
+                                    icon: const Icon(Icons.date_range),
+                                  ),
+                                  controller: dateController,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      // const SizedBox(height: 20),
+                      // Text(
+                      //   AppLocalizations.of(context)
+                      //       .translate('invoice_optional'),
+                      //   style: const TextStyle(
+                      //       fontWeight: FontWeight.bold, color: Colors.grey),
+                      // ),
+                      // const SizedBox(height: 10),
+                      // DashedButton(
+                      //   onPressed: pickFile,
+                      //   icon: Icons.add_circle,
+                      //   text: AppLocalizations.of(context)
+                      //       .translate('add_invoice'),
+                      // ),
+                      // const SizedBox(height: 10),
+                      // Center(
+                      //   child: Text(
+                      //     result != null ? file.name : '',
+                      //     style: const TextStyle(
+                      //       color: Colors.grey,
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            SimpleButton(
-              data: 'Save',
-              onPressed: () {},
-            ),
-          ],
+              const SizedBox(height: 20),
+              SimpleButton(
+                data: 'save',
+                onPressed: () {
+                  amountFocusNode.unfocus();
+                  categoryFocusNode.unfocus();
+                  titleFocusNode.unfocus();
+
+                  final amount = amountController.text;
+                  final category = categoryController.text;
+                  final title = titleController.text;
+
+                  if (_validateInputs(amount, category, title)) {
+                    _transactionBloc.add(
+                      TransactionAddEvent(
+                        transaction: Transaction(
+                          userID: _authRepository.userID,
+                          title: title,
+                          category: category,
+                          amount: double.parse(amount),
+                          date: dateController.text,
+                          isIncome: true,
+                          createdAt: Timestamp.now(),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void showSuccessSnakBar() {
+    CustomSnackBar.show(
+      context,
+      title: AppLocalizations.of(context).translate('successfully'),
+      message: AppLocalizations.of(context)
+          .translate('transaction_added_successfully'),
+      contentType: ContentType.success,
+    );
+  }
+
+  void showErrorSnackBar(String error) {
+    CustomSnackBar.show(
+      context,
+      title: 'On Snap!',
+      message: error,
+      contentType: ContentType.failure,
+    );
+  }
+
+  void _clearInputFields() {
+    amountController.text = '';
+    dateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    categoryController.text = '';
+    titleController.text = '';
+    setState(() {
+      selectIcon('default');
+    });
+  }
+
+  bool _validateInputs(String amount, String category, String description) {
+    setState(() {
+      amountBorderColor = Colors.transparent;
+      categoryBorderColor = Colors.transparent;
+      titleBorderColor = Colors.transparent;
+    });
+    if (amount.isEmpty) {
+      setState(() {
+        amountBorderColor = Colors.red;
+      });
+      String message =
+          AppLocalizations.of(context).translate('enter_valid_amount');
+      showErrorSnackBar(message);
+      return false;
+    } else if (category.isEmpty) {
+      setState(() {
+        categoryBorderColor = Colors.red;
+      });
+      String message =
+          AppLocalizations.of(context).translate('select_income_category');
+      showErrorSnackBar(message);
+      return false;
+    } else if (description.isEmpty) {
+      setState(() {
+        titleBorderColor = Colors.red;
+      });
+      String message =
+          AppLocalizations.of(context).translate('enter_transaction_title');
+      showErrorSnackBar(message);
+      return false;
+    }
+    return true;
   }
 }

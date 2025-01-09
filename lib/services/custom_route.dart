@@ -7,14 +7,14 @@ class CustomPageRoute extends PageRouteBuilder {
   CustomPageRoute(
       {required this.page,
       this.duration =
-          const Duration(milliseconds: 450)}) // Set a default duration
+          const Duration(milliseconds: 600)}) // Set a default duration
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
           transitionDuration: duration, // Set the transition duration
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0); // Start from the right
             const end = Offset.zero; // End at the original position
-            const curve = Curves.easeInOut;
+            const curve = Curves.easeInToLinear;
 
             var tween =
                 Tween(begin: begin, end: end).chain(CurveTween(curve: curve));

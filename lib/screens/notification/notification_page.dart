@@ -1,4 +1,5 @@
 import 'package:financial_app/components/notification_card.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -63,9 +64,9 @@ class _NotificationPageState extends State<NotificationPage> {
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Notifications',
-          style: TextStyle(fontSize: 22),
+        title:  Text(
+          AppLocalizations.of(context).translate('notifications'),
+          style: const TextStyle(fontSize: 22),
         ),
       ),
       body: Padding(
@@ -77,9 +78,9 @@ class _NotificationPageState extends State<NotificationPage> {
               children: [
                 TextButton(
                   onPressed: markAllAsRead, // Call markAllAsRead on press
-                  child: const Text(
-                    'Mark as read',
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context).translate('mark_as_read'),
+                    style: const TextStyle(
                       color: Color(0xFF456EFE),
                     ),
                   ),

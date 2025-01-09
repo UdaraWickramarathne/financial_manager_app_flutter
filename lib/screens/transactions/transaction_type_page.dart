@@ -1,8 +1,13 @@
+import 'package:financial_app/blocs/transaction/transaction_bloc.dart';
 import 'package:financial_app/components/simple_button.dart';
 import 'package:financial_app/components/transaction_type_tile.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/screens/transactions/add_expense_page.dart';
 import 'package:financial_app/screens/transactions/add_income_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../repositories/auth/auth_repository.dart';
 
 class TransactionTypePage extends StatefulWidget {
   const TransactionTypePage({super.key});
@@ -13,6 +18,15 @@ class TransactionTypePage extends StatefulWidget {
 
 class _TransactionTypePageState extends State<TransactionTypePage> {
   String _selectedType = 'Expense';
+  late TransactionBloc _transactionBloc;
+  late AuthRepository _authRepository;
+
+  @override
+  void initState() {
+    super.initState();
+    _transactionBloc = RepositoryProvider.of<TransactionBloc>(context);
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +37,17 @@ class _TransactionTypePageState extends State<TransactionTypePage> {
             padding: EdgeInsets.only(right: 35),
           ),
         ],
-        title: const Center(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _transactionBloc
+                  .add(TransactionFetchEvent(userID: _authRepository.userID));
+            },
+            icon: const Icon(Icons.arrow_back)),
+        title:  Center(
           child: Text(
-            'Transaction',
-            style: TextStyle(fontSize: 22),
+            AppLocalizations.of(context).translate('transaction'),
+            style: const TextStyle(fontSize: 22),
           ),
         ),
       ),
@@ -35,9 +56,9 @@ class _TransactionTypePageState extends State<TransactionTypePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Select your transaction type',
-              style: TextStyle(
+             Text(
+             AppLocalizations.of(context).translate('select_your_transaction_type'),
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
               ),

@@ -1,6 +1,16 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:financial_app/blocs/budget/budget_bloc.dart';
+import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/models/budget.dart';
+import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class BudgetAdd extends StatefulWidget {
   const BudgetAdd({super.key});
@@ -10,15 +20,20 @@ class BudgetAdd extends StatefulWidget {
 }
 
 class _BudgetAddState extends State<BudgetAdd> {
-  final TextEditingController nameController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
 
   String? _selectedItem;
   final List<String> repeatOptions = [
     'Weekly',
     'Monthly',
   ];
+  final FocusNode amountFocusNode = FocusNode();
+  final FocusNode categoryFocusNode = FocusNode();
+
+  Color amountBorderColor = Colors.transparent;
+  Color categoryBorderColor = Colors.transparent;
+  Color timePeriodBorderColor = Colors.transparent;
 
   String? selectedCategory;
 
@@ -62,7 +77,7 @@ class _BudgetAddState extends State<BudgetAdd> {
         selectedIcon = Icons.category;
         break;
       default:
-        selectedIcon = Icons.category;
+        selectedIcon = null;
     }
   }
 
@@ -71,9 +86,9 @@ class _BudgetAddState extends State<BudgetAdd> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text(
-            'Select Expense Type',
-            style: TextStyle(
+          title: Text(
+            AppLocalizations.of(context).translate('select_expense_type'),
+            style: const TextStyle(
               fontSize: 25,
             ),
           ),
@@ -96,7 +111,8 @@ class _BudgetAddState extends State<BudgetAdd> {
                           children: [
                             Text(category['icon'] ?? ''),
                             const SizedBox(width: 6),
-                            Text(category['name'] ?? ''),
+                            Text(AppLocalizations.of(context)
+                                .translate(category['name'] ?? '')),
                           ],
                         ),
                       ),
@@ -105,7 +121,7 @@ class _BudgetAddState extends State<BudgetAdd> {
                         setState(() {
                           if (selected) {
                             selectedCategory = category['name'];
-                            typeController.text = category['name']!;
+                            categoryController.text = category['name']!;
                             selectIcon(selectedCategory);
                             Navigator.of(context).pop(); // Dismiss dialog
                           }
@@ -122,6 +138,16 @@ class _BudgetAddState extends State<BudgetAdd> {
     );
   }
 
+  late AuthRepository _authRepository;
+  late BudgetBloc _budgetBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _authRepository = RepositoryProvider.of<AuthRepository>(context);
+    _budgetBloc = RepositoryProvider.of<BudgetBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,135 +159,261 @@ class _BudgetAddState extends State<BudgetAdd> {
             padding: EdgeInsets.only(right: 30),
           ),
         ],
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+            _budgetBloc.add(BudgetFetchEvent(userID: _authRepository.userID));
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         centerTitle: true,
-        title: const Center(
+        title: Center(
           child: Text(
-            'Add New Budget',
-            style: TextStyle(fontSize: 20),
+            AppLocalizations.of(context).translate('add_new_budget'),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      ' BUDGET NAME',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    InputField(
-                      isObsecure: false,
-                      controller: nameController,
-                      isReadOnly: false,
-                      label: 'Add budget name',
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      ' AMOUNT',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    InputField(
-                      isReadOnly: false,
-                      isObsecure: false,
-                      label: '0.00',
-                      suffixIcon: TextButton(
-                        onPressed: () {
-                          amountController.text = '';
-                        },
-                        child: const Text('Clear'),
+      body: BlocListener<BudgetBloc, BudgetState>(
+        bloc: _budgetBloc,
+        listener: (context, state) {
+          if (state is BudgetLoading) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 50.0,
+                  ),
+                );
+              },
+            );
+          } else if (state is BudgetSuccess) {
+            Navigator.pop(context);
+            showSuccessSnakBar();
+            _clearFields();
+          } else if (state is BudgetError) {
+            Navigator.pop(context);
+            showErrorSnackBar(state.message);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context).translate('amount'),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.grey),
                       ),
-                      prefixText: 'Rs.',
-                      controller: amountController,
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      ' TIME PERIOD',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButtonFormField<String>(
-                        elevation: 2,
-                        hint: const Text('Select Time Period'),
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.secondaryFixed,
-                          fontWeight: FontWeight.w400,
+                      const SizedBox(height: 10),
+                      InputField(
+                        isReadOnly: false,
+                        isObsecure: false,
+                        label: '0.00',
+                        suffixIcon: TextButton(
+                          onPressed: () {
+                            amountController.text = '';
+                          },
+                          child: Text(
+                            AppLocalizations.of(context).translate('clear'),
+                          ),
                         ),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedItem = newValue!;
-                          });
-                        },
-                        items: repeatOptions
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(value),
+                        prefixText: 'Rs.',
+                        focusNode: amountFocusNode,
+                        controller: amountController,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormat: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d*\.?\d*')),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        AppLocalizations.of(context).translate('time_period'),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButtonHideUnderline(
+                        child: DropdownButtonFormField<String>(
+                          elevation: 2,
+                          hint: Text(
+                            AppLocalizations.of(context)
+                                .translate('select_time_period'),
+                          ),
+                          value: _selectedItem,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.secondaryFixed,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedItem = newValue!;
+                            });
+                          },
+                          items: repeatOptions
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(value),
+                              ),
+                            );
+                          }).toList(),
+                          decoration: InputDecoration(
+                            labelStyle: const TextStyle(
+                                color: Color.fromARGB(255, 145, 145, 145)),
+                            filled: true,
+                            fillColor: Theme.of(context).colorScheme.surfaceDim,
+                            prefixIcon: const Icon(
+                              Icons.repeat,
+                              color: Color(0xFF456EFE),
                             ),
-                          );
-                        }).toList(),
-                        decoration: InputDecoration(
-                          labelStyle: const TextStyle(
-                              color: Color.fromARGB(255, 145, 145, 145)),
-                          filled: true,
-                          fillColor: Theme.of(context).colorScheme.surfaceDim,
-                          prefixIcon: const Icon(
-                            Icons.repeat,
-                            color: Color(0xFF456EFE),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide.none,
+                            ),
+                            labelText: "Repeat",
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide:
+                                  BorderSide(color: timePeriodBorderColor),
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                           ),
-                          labelText: "Repeat",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide.none,
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          dropdownColor:
+                              Theme.of(context).colorScheme.surfaceDim,
+                          menuMaxHeight: 200,
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        dropdownColor: Theme.of(context).colorScheme.surfaceDim,
-                        menuMaxHeight: 200,
-                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      ' EXPENSE CATEGORY',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 10),
-                    InputField(
-                      isObsecure: false,
-                      controller: typeController,
-                      prefixIcon: selectedIcon,
-                      isReadOnly: true,
-                      label: 'Select Expense Category',
-                      suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
-                      onTap: showExpenseTypes,
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      Text(
+                        AppLocalizations.of(context)
+                            .translate('expense_category'),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 10),
+                      InputField(
+                        isObsecure: false,
+                        controller: categoryController,
+                        prefixIcon: selectedIcon,
+                        isReadOnly: true,
+                        focusNode: categoryFocusNode,
+                        label: AppLocalizations.of(context)
+                            .translate('select_expense_category'),
+                        suffixIcon: const Icon(Icons.keyboard_arrow_down_sharp),
+                        onTap: showExpenseTypes,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SimpleButton(
-              data: 'Create Budget',
-              onPressed: () {},
-            )
-          ],
+              SimpleButton(
+                data: 'create budget',
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  amountFocusNode.unfocus();
+                  categoryFocusNode.unfocus();
+
+                  final amount = amountController.text;
+                  final category = categoryController.text;
+                  final now = Timestamp.now();
+                  if (_validateInputs(amount, category)) {
+                    _budgetBloc.add(
+                      BudgetAddEvent(
+                        budget: Budget(
+                          userID: _authRepository.userID,
+                          category: category,
+                          amount: double.parse(amount),
+                          currentAmount: 0,
+                          timePeriod: _selectedItem!,
+                          createdAt: now,
+                          lastReset: now,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void showSuccessSnakBar() {
+    CustomSnackBar.show(
+      context,
+      title: AppLocalizations.of(context).translate('successfully'),
+      message:
+          AppLocalizations.of(context).translate('budget_created_successfully'),
+      contentType: ContentType.success,
+    );
+  }
+
+  void showErrorSnackBar(String error) {
+    CustomSnackBar.show(
+      context,
+      title: 'On Snap!',
+      message: error,
+      contentType: ContentType.failure,
+    );
+  }
+
+  bool _validateInputs(String amount, String category) {
+    setState(() {
+      amountBorderColor = Colors.transparent;
+      categoryBorderColor = Colors.transparent;
+      timePeriodBorderColor = Colors.transparent;
+    });
+    if (amount.isEmpty) {
+      setState(() {
+        amountBorderColor = Colors.red;
+      });
+      String message =
+          AppLocalizations.of(context).translate('enter_valid_amount');
+      showErrorSnackBar(message);
+      return false;
+    } else if (_selectedItem == null) {
+      setState(() {
+        timePeriodBorderColor = Colors.red;
+      });
+      String message =
+          AppLocalizations.of(context).translate('select_time_period_error');
+      showErrorSnackBar(message);
+      return false;
+    } else if (category.isEmpty) {
+      setState(() {
+        categoryBorderColor = Colors.red;
+      });
+      String message = AppLocalizations.of(context)
+          .translate('select_expense_category_error');
+      showErrorSnackBar(message);
+      return false;
+    }
+    return true;
+  }
+
+  void _clearFields() {
+    amountController.text = '';
+    categoryController.text = '';
+    setState(() {
+      _selectedItem = null;
+      selectIcon('default');
+    });
   }
 }

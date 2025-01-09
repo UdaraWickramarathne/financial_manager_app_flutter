@@ -1,7 +1,9 @@
 import 'dart:ui';
-import 'package:financial_app/screens/auth/login_page.dart';
+import 'package:financial_app/language/transalation.dart';
+import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/onboard/first_page.dart';
 import 'package:financial_app/screens/onboard/fourth_page.dart';
+import 'package:financial_app/screens/onboard/language_selection.dart';
 import 'package:financial_app/screens/onboard/second_page.dart';
 import 'package:financial_app/screens/onboard/third_pgae.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +125,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 child: PageView(
                   controller: _controller,
                   children: const [
+                    LanguageSelection(),
                     FirstPage(),
                     SecondPage(),
                     ThirdPage(),
@@ -143,11 +146,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             .shrinkWrap, // Shrink to fit content
                       ),
                       onPressed: () {
-                        _controller.jumpToPage(3); //Jump to last page
+                        currentPage != 0
+                            ? _controller.jumpToPage(4)
+                            : null; //Jump to last page
                       },
-                      child: const Text(
-                        'Skip',
-                        style: TextStyle(
+                      child: Text(
+                        currentPage != 0
+                            ? AppLocalizations.of(context).translate('skip')
+                            : '',
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
@@ -161,7 +168,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         );
                       },
                       controller: _controller,
-                      count: 4,
+                      count: 5,
                       effect: const ExpandingDotsEffect(
                         activeDotColor: Colors.white,
                         dotColor: Colors.white30,
@@ -175,19 +182,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ),
                       onPressed: () {
                         int nextPage = currentPage + 1;
-                        if (nextPage < 4) {
+                        if (nextPage < 5) {
                           _controller.animateToPage(
                             nextPage,
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
+                          globalNavigatorKey.currentState!
+                              .pushReplacementNamed('/login');
                         }
                       },
                       child: const Icon(

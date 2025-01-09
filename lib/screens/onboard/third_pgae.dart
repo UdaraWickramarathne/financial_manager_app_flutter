@@ -1,3 +1,4 @@
+import 'package:financial_app/language/transalation.dart';
 import 'package:flutter/material.dart';
 
 class ThirdPage extends StatelessWidget {
@@ -27,19 +28,20 @@ class ThirdPage extends StatelessWidget {
                 height: 300,
               ),
             ),
-            const Text(
-              'Control Your Spending with Ease  ',
+            Text(
+              AppLocalizations.of(context).translate('control_spending'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Categorize expenses and monitor spending patterns across different areas, helping them allocate money wisely and track where they\'re spending the most.',
+            Text(
+              AppLocalizations.of(context)
+                  .translate('control_spending_description'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
               ),

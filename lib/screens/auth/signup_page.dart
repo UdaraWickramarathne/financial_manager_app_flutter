@@ -3,6 +3,7 @@ import 'package:financial_app/blocs/auth/auth_bloc.dart';
 import 'package:financial_app/components/custome_snackbar.dart';
 import 'package:financial_app/components/input_field.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,19 +85,21 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: [
                       const SizedBox(height: 40),
                       // Header
-                      const Text(
-                        'Create Account',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)
+                            .translate('create_account'),
+                        style: const TextStyle(
                           color: Color(0xFF446efe),
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Text(
+                      Text(
                         textAlign: TextAlign.center,
-                        ' Create your account and make every penny count!',
-                        style: TextStyle(
+                        AppLocalizations.of(context)
+                            .translate('create_account_subtitle'),
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
                         ),
@@ -107,7 +110,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         isReadOnly: false,
                         controller: nameController,
                         isObsecure: false,
-                        label: 'Name',
+                        label: AppLocalizations.of(context).translate('name'),
                         suffixIcon: null,
                         onChanged: (text) {
                           String formattedText = _capitalizeWords(text);
@@ -128,7 +131,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           isReadOnly: false,
                           controller: emailController,
                           isObsecure: false,
-                          label: 'Email',
+                          label:
+                              AppLocalizations.of(context).translate('email'),
                           borderColor: emailBorderColor,
                           suffixIcon: null),
                       const SizedBox(height: 25),
@@ -139,7 +143,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: passwordController,
                         isObsecure: !_isPasswordVisible,
                         borderColor: passwordBorderColor,
-                        label: 'Password',
+                        label:
+                            AppLocalizations.of(context).translate('password'),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -158,7 +163,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: conformPasswordController,
                         isObsecure: !_isConfirmPasswordVisible,
                         borderColor: confirmPasswordBorderColor,
-                        label: 'Confirm Password',
+                        label: AppLocalizations.of(context)
+                            .translate('confirm_password'),
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -178,7 +184,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               SimpleButton(
-                data: 'Sign Up',
+                data: AppLocalizations.of(context).translate('sign_up'),
                 onPressed: () {
                   FocusScope.of(context).unfocus();
                   final email = emailController.text;
@@ -202,15 +208,18 @@ class _SignupScreenState extends State<SignupScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Already have an account?"),
+                  Text(
+                    AppLocalizations.of(context)
+                        .translate('already_have_account'),
+                  ),
                   TextButton(
                     onPressed: () {
                       globalNavigatorKey.currentState!
                           .pushReplacementNamed('/login');
                     },
-                    child: const Text(
-                      'Sign in',
-                      style: TextStyle(color: Color(0xFF456EFE)),
+                    child: Text(
+                      AppLocalizations.of(context).translate('login'),
+                      style: const TextStyle(color: Color(0xFF456EFE)),
                     ),
                   ),
                 ],

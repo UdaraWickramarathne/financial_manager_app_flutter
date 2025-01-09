@@ -103,19 +103,20 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
     shakeDetector = ShakeDetector.autoStart(
       onPhoneShake: () {
         BetterFeedback.of(context).show((UserFeedback feedback) async {
-          final screenshotFilePath =
-              await writeImageToStorage(feedback.screenshot);
-
-          final smtpServer = gmail(username, password);
-
-          final message = Message()
-            ..from = const Address(username, 'Adopt A Wallet')
-            ..recipients.add('adoptawallet.devnet.error@gmail.com')
-            ..subject = 'App Feedback'
-            ..text = feedback.text
-            ..attachments = [FileAttachment(File(screenshotFilePath))];
-
+          BetterFeedback.of(context).hide();
           try {
+            final screenshotFilePath =
+                await writeImageToStorage(feedback.screenshot);
+
+            final smtpServer = gmail(username, password);
+
+            final message = Message()
+              ..from = const Address(username, 'Adopt A Wallet')
+              ..recipients.add('adoptawallet.devnet.error@gmail.com')
+              ..subject = 'App Feedback'
+              ..text = feedback.text
+              ..attachments = [FileAttachment(File(screenshotFilePath))];
+
             final sendReport = await send(message, smtpServer);
             dev.log('Feedback Email sent: ${sendReport.toString()}');
           } on MailerException catch (e) {
@@ -215,6 +216,22 @@ class _AdoptAWalletAppState extends State<AdoptAWalletApp>
         builder: (context) => _getPageRoutes(context, settings),
       );
     };
+  }
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent dismissing the dialog
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop(); // Close the dialog
   }
 
   _getPageRoutes(BuildContext context, RouteSettings settings) {

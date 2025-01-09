@@ -197,7 +197,7 @@
   "yearly": "වාර්ෂික",
   "start_date": "ආරම්භක දිනය",
   "end_date": "අවසන් දිනය",
-  "generate report": "වාර්තාව ජනනය කරන්න",
+  "generate_report": "වාර්තාව ජනනය කරන්න",
   "transaction_deleted_successfully": "ඔබගේ ගනුදෙනුව සාර්ථකව මකා ඇත.",
   "budget_amount_label": "අයවැය මුදල:",
   "update budget": "අයවැය යාවත්කාලීන කරන්න",
@@ -242,5 +242,11 @@
   "control_spending_description": "වියදම් අංශීකරණය කරන්න සහ විවිධ ප්‍රදේශවල වියදම් රටාවන් මොනීටර් කරන්න, ඔවුන්ට මුදල් නියමිත ලෙස වෙන්කිරීමට සහ වියදම් වැඩිපුර සිදුවන ප්‍රදේශ හඳුනා ගැනීමට උපකාරී වන්න.",
   "get_started": "ආරම්භ කරන්න",
   "get_started_description": "පහසු වියදම් සහ ආර්ථික ජයග්‍රහණය වෙත ඔබේ ගමන අරඹන්න. අදම ආරම්භ කරන්න!",
-  "or_sign_up_with": "වෙනත් විකල්ප"
+  "or_sign_up_with": "වෙනත් විකල්ප",
+  "create_account": "ගිණුමක් සාදන්න",
+  "create_account_subtitle": "ඔබේ ගිණුමක් සාදන්න සහ ඔබේ සෑම රුපියලකම වටිනාකම ගණනය කරන්න!",
+  "already_have_account": "දැනටමත් ගිණුමක් තිබේද?",
+  "monthly_expense": "(මාසික වියදම්)",
+  "monthly_income": "(මාසික ආදායම)",
+  "feedback": "ප්‍රතිචාරය"
 }

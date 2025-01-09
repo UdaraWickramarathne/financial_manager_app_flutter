@@ -67,6 +67,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final user = await _authRepository.fetchUserData(event.userID);
           if (user != null) {
             emit(AuthInfoSuccess(user: user));
+            emit(AuthProfileImageUpdateSuccess(url: user.profileImageURL));
           } else {
             emit(const AuthInfoError(message: 'Error while getting user data'));
           }

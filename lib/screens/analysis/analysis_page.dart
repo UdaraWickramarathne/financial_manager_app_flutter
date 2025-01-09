@@ -4,6 +4,7 @@ import 'package:financial_app/components/bar-charts/monthly_analysis_chart.dart'
 import 'package:financial_app/components/bar-charts/weekly_analysis_chart.dart';
 import 'package:financial_app/components/bar-charts/yearly_analysis_chart.dart';
 import 'package:financial_app/components/simple_button.dart';
+import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/repositories/auth/auth_repository.dart';
 import 'package:financial_app/services/generate_pdf.dart';
 import 'package:flutter/cupertino.dart';
@@ -99,9 +100,9 @@ class _AnalysisPageState extends State<AnalysisPage>
             color: Colors.white,
           ),
           centerTitle: true,
-          title: const Text(
-            "Analysis",
-            style: TextStyle(
+          title: Text(
+            AppLocalizations.of(context).translate('analysis'),
+            style: const TextStyle(
               fontSize: 20,
               color: Colors.white,
             ),
@@ -152,7 +153,8 @@ class _AnalysisPageState extends State<AnalysisPage>
                               ),
                             ),
                             Text(
-                              "(Monthly Income)",
+                              AppLocalizations.of(context)
+                                  .translate('monthly_income'),
                               style: TextStyle(
                                 color: Colors.grey.shade400,
                                 fontSize: 14,
@@ -172,7 +174,8 @@ class _AnalysisPageState extends State<AnalysisPage>
                               ),
                             ),
                             Text(
-                              "(Monthly Expense)",
+                              AppLocalizations.of(context)
+                                  .translate('monthly_expense'),
                               style: TextStyle(
                                 color: Colors.grey.shade400,
                                 fontSize: 14,
@@ -217,22 +220,34 @@ class _AnalysisPageState extends State<AnalysisPage>
                                   30.0), // Rounded corners for selected tab
                             ),
                             indicatorSize: TabBarIndicatorSize.tab,
-                            tabs: const [
+                            tabs: [
                               SizedBox(
                                 width: 80,
-                                child: Tab(text: "Daily"),
+                                child: Tab(
+                                  text: AppLocalizations.of(context)
+                                      .translate('daily'),
+                                ),
                               ),
                               SizedBox(
                                 width: 80,
-                                child: Tab(text: "Weekly"),
+                                child: Tab(
+                                  text: AppLocalizations.of(context)
+                                      .translate('weekly'),
+                                ),
                               ),
                               SizedBox(
                                 width: 80,
-                                child: Tab(text: "Monthly"),
+                                child: Tab(
+                                  text: AppLocalizations.of(context)
+                                      .translate('monthly'),
+                                ),
                               ),
                               SizedBox(
                                 width: 80,
-                                child: Tab(text: "Year"),
+                                child: Tab(
+                                  text: AppLocalizations.of(context)
+                                      .translate('yearly'),
+                                ),
                               ),
                             ],
                           ),
@@ -259,16 +274,18 @@ class _AnalysisPageState extends State<AnalysisPage>
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Start Date',
-                        style: TextStyle(color: Colors.grey),
+                        AppLocalizations.of(context)
+                            .translate('start_date_label'),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                       Text(
-                        'End Date',
-                        style: TextStyle(color: Colors.grey),
+                        AppLocalizations.of(context)
+                            .translate('end_date_label'),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
@@ -459,7 +476,7 @@ class _AnalysisPageState extends State<AnalysisPage>
             Padding(
               padding: const EdgeInsets.all(25),
               child: SimpleButton(
-                data: 'Generate Report',
+                data: AppLocalizations.of(context).translate('generate_report'),
                 onPressed: () {
                   _transactionBloc.add(
                     TransactionFetchDateRangeEvent(

@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:feedback/feedback.dart';
 import 'package:financial_app/blocs/auth/auth_bloc.dart';
+import 'package:financial_app/data/keys.dart';
 import 'package:financial_app/language/transalation.dart';
 import 'package:financial_app/navigators/navigation_keys.dart';
 import 'package:financial_app/screens/convertor/money_convertor.dart';
@@ -9,13 +13,16 @@ import 'package:financial_app/screens/profile-pages/privacy_policy/privacy_polic
 import 'package:financial_app/screens/cards/cards_page.dart';
 import 'package:financial_app/screens/profile-pages/rating/rating_dialog.dart';
 import 'package:financial_app/screens/profile-pages/settings/settings_page.dart';
-import 'package:financial_app/screens/reminder/calender_page.dart';
 import 'package:financial_app/screens/transactions/transaction_type_page.dart';
+import 'package:financial_app/services/feedback_repository.dart';
 import 'package:financial_app/services/profile_image_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:transitioned_indexed_stack/transitioned_indexed_stack.dart';
+import 'dart:developer' as dev;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -159,22 +166,47 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 20),
                       ListTile(
-                        leading: const Icon(Icons.calendar_month_outlined),
+                        leading: const Icon(Icons.feedback),
                         title: Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: Text(
-                            AppLocalizations.of(context).translate('calendar'),
+                            AppLocalizations.of(context).translate('feedback'),
                           ),
                         ),
                         onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const CalendarReminderPage(),
-                            ),
-                          );
+                          BetterFeedback.of(context)
+                              .show((UserFeedback feedback) async {
+                            BetterFeedback.of(context).hide();
+                            try {
+                              final screenshotFilePath =
+                                  await writeImageToStorage(
+                                      feedback.screenshot);
+
+                              final smtpServer = gmail(username, password);
+
+                              final message = Message()
+                                ..from =
+                                    const Address(username, 'Adopt A Wallet')
+                                ..recipients
+                                    .add('adoptawallet.devnet.error@gmail.com')
+                                ..subject = 'App Feedback'
+                                ..text = feedback.text
+                                ..attachments = [
+                                  FileAttachment(File(screenshotFilePath))
+                                ];
+
+                              final sendReport =
+                                  await send(message, smtpServer);
+                              dev.log(
+                                  'Feedback Email sent: ${sendReport.toString()}');
+                            } on MailerException catch (e) {
+                              dev.log(
+                                  'Failed to send feedback email: ${e.toString()}');
+                              for (var p in e.problems) {
+                                dev.log('Problem: ${p.code}: ${p.msg}');
+                              }
+                            }
+                          });
                         },
                       ),
                       const SizedBox(height: 20),

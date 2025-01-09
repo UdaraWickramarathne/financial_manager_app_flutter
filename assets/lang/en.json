@@ -199,10 +199,10 @@
   "daily": "Daily",
   "weekly": "Weekly",
   "monthly": "Monthly",
-  "yearly": "Year",
+  "yearly": "Yearly",
   "start_date": "Start Date",
   "end_date": "End Date",
-  "generate report": "Generate Report",
+  "generate_report": "Generate Report",
   "transaction_deleted_successfully": "Your transaction has been deleted successfully.",
   "budget_amount_label": "Budget Amount:",
   "update budget": "Update Budget",
@@ -242,5 +242,11 @@
   "control_spending_description": "Categorize expenses and monitor spending patterns across different areas, helping them allocate money wisely and track where they're spending the most.",
   "get_started": "Get Started",
   "get_started_description": "Start your journey to smarter spending and financial success. Get started today!",
-  "or_sign_up_with": "Or Sign In With"
+  "or_sign_up_with": "Or Sign In With",
+  "create_account": "Create Account",
+  "create_account_subtitle": "Create your account and make every penny count!",
+  "already_have_account": "Already have an account?",
+  "monthly_expense": "(Monthly Expense)",
+  "monthly_income": "(Monthly Income)",
+  "feedback": "Feedback"
 }
